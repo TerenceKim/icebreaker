@@ -1,0 +1,3760 @@
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"Application.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.HandleUserInputs,"ax",%progbits
+  18              		.align	2
+  19              		.code	16
+  20              		.thumb_func
+  21              		.type	HandleUserInputs, %function
+  22              	HandleUserInputs:
+  23              	.LFB327:
+  24              		.file 1 ".\\Application.c"
+   1:.\Application.c **** /*******************************************************************************
+   2:.\Application.c **** * File Name: Application.c
+   3:.\Application.c **** *
+   4:.\Application.c **** * Version 1.0
+   5:.\Application.c **** *
+   6:.\Application.c **** *  Description: This file contains all the application layer code which performs
+   7:.\Application.c **** *               the user interface handling
+   8:.\Application.c **** *
+   9:.\Application.c **** *******************************************************************************
+  10:.\Application.c **** * Copyright (2015), Cypress Semiconductor Corporation.
+  11:.\Application.c **** *******************************************************************************
+  12:.\Application.c **** * This software, including source code, documentation and related materials
+  13:.\Application.c **** * ("Software") is owned by Cypress Semiconductor Corporation (Cypress) and is
+  14:.\Application.c **** * protected by and subject to worldwide patent protection (United States and 
+  15:.\Application.c **** * foreign), United States copyright laws and international treaty provisions. 
+  16:.\Application.c **** * Cypress hereby grants to licensee a personal, non-exclusive, non-transferable
+  17:.\Application.c **** * license to copy, use, modify, create derivative works of, and compile the 
+  18:.\Application.c **** * Cypress source code and derivative works for the sole purpose of creating 
+  19:.\Application.c **** * custom software in support of licensee product, such licensee product to be
+  20:.\Application.c **** * used only in conjunction with Cypress's integrated circuit as specified in the
+  21:.\Application.c **** * applicable agreement. Any reproduction, modification, translation, compilation,
+  22:.\Application.c **** * or representation of this Software except as specified above is prohibited 
+  23:.\Application.c **** * without the express written permission of Cypress.
+  24:.\Application.c **** * 
+  25:.\Application.c **** * Disclaimer: THIS SOFTWARE IS PROVIDED AS-IS, WITH NO WARRANTY OF ANY KIND, 
+  26:.\Application.c **** * EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, NONINFRINGEMENT, IMPLIED 
+  27:.\Application.c **** * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+  28:.\Application.c **** * Cypress reserves the right to make changes to the Software without notice. 
+  29:.\Application.c **** * Cypress does not assume any liability arising out of the application or use
+  30:.\Application.c **** * of Software or any product or circuit described in the Software. Cypress does
+  31:.\Application.c **** * not authorize its products for use as critical components in any products 
+  32:.\Application.c **** * where a malfunction or failure may reasonably be expected to result in 
+  33:.\Application.c **** * significant injury or death ("ACTIVE Risk Product"). By including Cypress's 
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 2
+
+
+  34:.\Application.c **** * product in a ACTIVE Risk Product, the manufacturer of such system or application
+  35:.\Application.c **** * assumes all risk of such use and in doing so indemnifies Cypress against all
+  36:.\Application.c **** * liability. Use of this Software may be limited by and subject to the applicable
+  37:.\Application.c **** * Cypress software license agreement.
+  38:.\Application.c **** *******************************************************************************/
+  39:.\Application.c **** #include <Application.h>
+  40:.\Application.c **** #include <AudioControl.h>
+  41:.\Application.c **** #include <Config.h>
+  42:.\Application.c **** #include <project.h>
+  43:.\Application.c **** #include <Interrupts.h>
+  44:.\Application.c **** #include <stdio.h>
+  45:.\Application.c **** #include <USBInterface.h>
+  46:.\Application.c **** #include <Gesture.h>
+  47:.\Application.c **** #include <Codec.h>
+  48:.\Application.c **** 
+  49:.\Application.c **** static void HandleUserInputs(uint32 gesture);
+  50:.\Application.c **** 
+  51:.\Application.c **** 
+  52:.\Application.c **** extern CYPDATA uint8 audioSource;
+  53:.\Application.c **** extern CYDATA uint8 auxConfigured;
+  54:.\Application.c **** 
+  55:.\Application.c **** extern uint32 accSliderDelta;
+  56:.\Application.c **** 
+  57:.\Application.c **** uint8 playlistControlReport;
+  58:.\Application.c **** uint8 prevReport = 0;
+  59:.\Application.c **** uint8 audioControlStatus;
+  60:.\Application.c **** uint8 reportClearFlag;
+  61:.\Application.c **** 
+  62:.\Application.c **** extern volatile uint8 USBFS_currentVolume[];
+  63:.\Application.c **** extern volatile uint8 USBFS_currentMute;
+  64:.\Application.c **** extern CYPDATA uint8 newRate;
+  65:.\Application.c **** 
+  66:.\Application.c **** 
+  67:.\Application.c **** /*******************************************************************************
+  68:.\Application.c **** * Function Name: InitApp
+  69:.\Application.c **** ********************************************************************************
+  70:.\Application.c **** * Summary:
+  71:.\Application.c **** *        This function configures the application layer hardware modules and
+  72:.\Application.c **** *        clocks to be in sync with the audio clock updates done in 
+  73:.\Application.c **** *        InitializeAudioPath API
+  74:.\Application.c **** *
+  75:.\Application.c **** * Parameters:
+  76:.\Application.c **** *  void
+  77:.\Application.c **** *
+  78:.\Application.c **** * Return:
+  79:.\Application.c **** *  void
+  80:.\Application.c **** *
+  81:.\Application.c **** *******************************************************************************/
+  82:.\Application.c **** void InitApp(void)
+  83:.\Application.c **** {
+  84:.\Application.c ****     /* Configure CPU/DMA to be in round robin mode while accessing memory */
+  85:.\Application.c **** 	CY_SET_REG32((void *) 0x40100038, CY_GET_REG32((void *) 0x40100038) | 0x22222222);     
+  86:.\Application.c **** 	
+  87:.\Application.c **** 	CyGlobalIntEnable;
+  88:.\Application.c **** 	
+  89:.\Application.c ****     #ifdef TXDEBUG
+  90:.\Application.c **** 		UART_Start();
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 3
+
+
+  91:.\Application.c **** 		if(CySysGetResetReason(CY_SYS_RESET_SW) != CY_SYS_RESET_SW)
+  92:.\Application.c **** 		{
+  93:.\Application.c **** 			PRINT("\r\nApp Started...\r\n");
+  94:.\Application.c **** 		}
+  95:.\Application.c **** 		else
+  96:.\Application.c **** 		{
+  97:.\Application.c **** 			PRINT("\r\nApp Restarted after SW reset...\r\n");
+  98:.\Application.c **** 		}
+  99:.\Application.c **** 	#endif /* #ifdef TXDEBUG */
+ 100:.\Application.c **** 
+ 101:.\Application.c ****     /* Start I2C Master */
+ 102:.\Application.c ****     CodecI2CM_Start();	
+ 103:.\Application.c **** 	
+ 104:.\Application.c **** 	if(Codec_Init() == 0)
+ 105:.\Application.c **** 	{
+ 106:.\Application.c **** 		PRINT("Codec comm works!... \r\n");
+ 107:.\Application.c **** 	}
+ 108:.\Application.c **** 	else
+ 109:.\Application.c **** 	{
+ 110:.\Application.c **** 		PRINT("Codec comm DOESN'T work!... \r\n");
+ 111:.\Application.c **** 	}
+ 112:.\Application.c **** 	
+ 113:.\Application.c **** 	Update_VolumeAudioOut();
+ 114:.\Application.c **** 	
+ 115:.\Application.c **** 	I2S_Start();	
+ 116:.\Application.c **** 	
+ 117:.\Application.c **** 	USBFS_Start(PC_MAC_AUDIO_WITH_VOLUME_DEVICE, USBFS_5V_OPERATION);
+ 118:.\Application.c ****     USBDeviceState = USB_INIT_AFTER_ENUMERATION_REQUIRED;
+ 119:.\Application.c **** 	
+ 120:.\Application.c **** 	/* Enables SOF interrupt source */
+ 121:.\Application.c ****     USBFS_INTR_SIE_MASK_REG |= USBFS_INTR_SIE_SOF_INTR;
+ 122:.\Application.c **** 
+ 123:.\Application.c **** 	while(USBFS_GetConfiguration());
+ 124:.\Application.c **** 	
+ 125:.\Application.c **** 	CyIntSetPriority(CYDMA_INTR_NUMBER, 0);
+ 126:.\Application.c **** 	
+ 127:.\Application.c **** 	USBFS_LoadInEP(MAC_PC_HID_CONTROL_ENDPOINT, &playlistControlReport, sizeof(playlistControlReport))
+ 128:.\Application.c **** 	USBFS_LoadInEP(MAC_PC_HID_CONTROL_ENDPOINT, USBFS_NULL, sizeof(playlistControlReport) );	
+ 129:.\Application.c **** 	
+ 130:.\Application.c **** 	Async_Feedback_Counter_Start();
+ 131:.\Application.c **** 	
+ 132:.\Application.c **** 	CapSense_Start();
+ 133:.\Application.c **** 	CapSense_InitializeAllBaselines();
+ 134:.\Application.c **** 	CapSense_ScanEnabledWidgets();
+ 135:.\Application.c **** }
+ 136:.\Application.c **** 
+ 137:.\Application.c **** 
+ 138:.\Application.c **** /*******************************************************************************
+ 139:.\Application.c **** * Function Name: RunApplication
+ 140:.\Application.c **** ********************************************************************************
+ 141:.\Application.c **** * Summary:
+ 142:.\Application.c **** *      This function runs the application layer firmware of handling CapSense and
+ 143:.\Application.c **** *       volume control.
+ 144:.\Application.c **** *   
+ 145:.\Application.c **** * Parameters:
+ 146:.\Application.c **** *  void
+ 147:.\Application.c **** *
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 4
+
+
+ 148:.\Application.c **** * Return:
+ 149:.\Application.c **** *  void
+ 150:.\Application.c **** *
+ 151:.\Application.c **** *******************************************************************************/
+ 152:.\Application.c **** void RunApplication(void)
+ 153:.\Application.c **** {
+ 154:.\Application.c ****     uint32 gesture = 0;
+ 155:.\Application.c **** 	           
+ 156:.\Application.c ****     if(!CapSense_IsBusy()) /* scan all CapSense buttons and sliders */
+ 157:.\Application.c ****     {
+ 158:.\Application.c ****         CapSense_UpdateEnabledBaselines(); /* update the baseline for the CapSense algorithm */
+ 159:.\Application.c **** 		gesture = DetectGesture(CapSense_CheckIsAnyWidgetActive());
+ 160:.\Application.c ****         CapSense_ScanEnabledWidgets();
+ 161:.\Application.c **** 		
+ 162:.\Application.c **** 		if(USBFS_GetConfiguration() == TRUE)
+ 163:.\Application.c **** 		{
+ 164:.\Application.c **** 			/* Handle CapSense button and slider user inputs */
+ 165:.\Application.c **** 	   	 	HandleUserInputs(gesture); 
+ 166:.\Application.c **** 		}
+ 167:.\Application.c ****     }
+ 168:.\Application.c ****     
+ 169:.\Application.c **** 	if(USBFS_GetConfiguration() == TRUE)
+ 170:.\Application.c **** 	{
+ 171:.\Application.c **** 		/* Update the volume data */
+ 172:.\Application.c **** 		Update_VolumeAudioOut();		
+ 173:.\Application.c **** 	}
+ 174:.\Application.c **** }
+ 175:.\Application.c **** 
+ 176:.\Application.c **** 
+ 177:.\Application.c **** /*******************************************************************************
+ 178:.\Application.c **** * Function Name: HandleUserInputs
+ 179:.\Application.c **** ********************************************************************************
+ 180:.\Application.c **** * Summary:  Handles CapSense button user inputs for next/previous/play track 
+ 181:.\Application.c **** *           functions.
+ 182:.\Application.c **** *
+ 183:.\Application.c **** * Parameters:
+ 184:.\Application.c **** *  void
+ 185:.\Application.c **** *
+ 186:.\Application.c **** * Return:
+ 187:.\Application.c **** *  void
+ 188:.\Application.c **** *
+ 189:.\Application.c **** *******************************************************************************/
+ 190:.\Application.c **** static void HandleUserInputs(uint32 gesture)
+ 191:.\Application.c **** {    
+  25              		.loc 1 191 0
+  26              		.cfi_startproc
+  27              	.LVL0:
+  28 0000 10B5     		push	{r4, lr}
+  29              		.cfi_def_cfa_offset 8
+  30              		.cfi_offset 4, -8
+  31              		.cfi_offset 14, -4
+  32 0002 041C     		mov	r4, r0
+ 192:.\Application.c **** 	static uint32 volUpdateThreshold = 0;
+ 193:.\Application.c **** 	static uint8 prevReport;	
+ 194:.\Application.c **** 	static bool volumeReport = false;
+ 195:.\Application.c **** 	#if (UP_BUTTON_FUNCTION == MIC_MUTE)
+ 196:.\Application.c **** 		static bool micMute;
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 5
+
+
+ 197:.\Application.c **** 	#endif
+ 198:.\Application.c **** 	#ifndef VOLUME_BTN_UPDATE
+ 199:.\Application.c **** 		int32 volume;
+ 200:.\Application.c **** 	#endif
+ 201:.\Application.c **** 	
+ 202:.\Application.c **** 	switch(capsenseButtonStatus)
+  33              		.loc 1 202 0
+  34 0004 644B     		ldr	r3, .L24
+  35 0006 1A68     		ldr	r2, [r3]
+  36 0008 102A     		cmp	r2, #16
+  37 000a 2FD8     		bhi	.L2
+  38 000c 9300     		lsl	r3, r2, #2
+  39 000e 634A     		ldr	r2, .L24+4
+  40 0010 D358     		ldr	r3, [r2, r3]
+  41 0012 9F46     		mov	pc, r3
+  42              		.section	.rodata
+  43              		.align	2
+  44              	.L4:
+  45 0000 6C000000 		.word	.L2
+  46 0004 14000000 		.word	.L3
+  47 0008 26000000 		.word	.L5
+  48 000c 6C000000 		.word	.L2
+  49 0010 38000000 		.word	.L6
+  50 0014 6C000000 		.word	.L2
+  51 0018 6C000000 		.word	.L2
+  52 001c 6C000000 		.word	.L2
+  53 0020 4A000000 		.word	.L7
+  54 0024 6C000000 		.word	.L2
+  55 0028 6C000000 		.word	.L2
+  56 002c 6C000000 		.word	.L2
+  57 0030 6C000000 		.word	.L2
+  58 0034 6C000000 		.word	.L2
+  59 0038 6C000000 		.word	.L2
+  60 003c 6C000000 		.word	.L2
+  61 0040 5C000000 		.word	.L8
+  62              		.section	.text.HandleUserInputs
+  63              	.L3:
+ 203:.\Application.c **** 	{
+ 204:.\Application.c **** 		case LEFT_BTN_MASK:		
+ 205:.\Application.c **** 			audioControlStatus |= MAC_PC_PREVIOUS_TRACK_MASK; 
+  64              		.loc 1 205 0
+  65 0014 624A     		ldr	r2, .L24+8
+  66 0016 1178     		ldrb	r1, [r2]
+  67 0018 0423     		mov	r3, #4
+  68 001a 0B43     		orr	r3, r1
+  69 001c 1370     		strb	r3, [r2]
+ 206:.\Application.c **** 			PRINT("Prev Track\n\r");
+  70              		.loc 1 206 0
+  71 001e 6148     		ldr	r0, .L24+12
+  72              	.LVL1:
+  73 0020 FFF7FEFF 		bl	UART_UartPutString
+  74              	.LVL2:
+ 207:.\Application.c **** 		break; 
+  75              		.loc 1 207 0
+  76 0024 22E0     		b	.L2
+  77              	.LVL3:
+  78              	.L5:
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 6
+
+
+ 208:.\Application.c **** 		
+ 209:.\Application.c **** 		case RIGHT_BTN_MASK:
+ 210:.\Application.c **** 			audioControlStatus |= MAC_PC_NEXT_TRACK_MASK; 
+  79              		.loc 1 210 0
+  80 0026 5E4A     		ldr	r2, .L24+8
+  81 0028 1178     		ldrb	r1, [r2]
+  82 002a 0223     		mov	r3, #2
+  83 002c 0B43     		orr	r3, r1
+  84 002e 1370     		strb	r3, [r2]
+ 211:.\Application.c **** 			PRINT("Next Track\n\r");
+  85              		.loc 1 211 0
+  86 0030 5D48     		ldr	r0, .L24+16
+  87              	.LVL4:
+  88 0032 FFF7FEFF 		bl	UART_UartPutString
+  89              	.LVL5:
+ 212:.\Application.c **** 			break;
+  90              		.loc 1 212 0
+  91 0036 19E0     		b	.L2
+  92              	.LVL6:
+  93              	.L6:
+ 213:.\Application.c **** 			
+ 214:.\Application.c **** 		case UP_BTN_MASK:
+ 215:.\Application.c **** 			
+ 216:.\Application.c **** 			#if (UP_BUTTON_FUNCTION == VOLUME_MUTE)
+ 217:.\Application.c **** 				audioControlStatus |= MAC_PC_MUTE_MASK; 
+  94              		.loc 1 217 0
+  95 0038 594A     		ldr	r2, .L24+8
+  96 003a 1178     		ldrb	r1, [r2]
+  97 003c 1023     		mov	r3, #16
+  98 003e 0B43     		orr	r3, r1
+  99 0040 1370     		strb	r3, [r2]
+ 218:.\Application.c **** 				PRINT("Mute\n\r");
+ 100              		.loc 1 218 0
+ 101 0042 5A48     		ldr	r0, .L24+20
+ 102              	.LVL7:
+ 103 0044 FFF7FEFF 		bl	UART_UartPutString
+ 104              	.LVL8:
+ 219:.\Application.c **** 			#else
+ 220:.\Application.c **** 				if(micMute == true)
+ 221:.\Application.c **** 				{
+ 222:.\Application.c **** 					Codec_MuteMic(false);
+ 223:.\Application.c **** 					micMute = false;
+ 224:.\Application.c **** 					PRINT("MIC Unmute \n\r");
+ 225:.\Application.c **** 				}
+ 226:.\Application.c **** 				else
+ 227:.\Application.c **** 				{
+ 228:.\Application.c **** 					Codec_MuteMic(true);
+ 229:.\Application.c **** 					micMute = true;
+ 230:.\Application.c **** 					PRINT("MIC Mute \n\r");
+ 231:.\Application.c **** 				}
+ 232:.\Application.c **** 			#endif
+ 233:.\Application.c **** 			break; 
+ 105              		.loc 1 233 0
+ 106 0048 10E0     		b	.L2
+ 107              	.LVL9:
+ 108              	.L7:
+ 234:.\Application.c **** 			
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 7
+
+
+ 235:.\Application.c **** 		case DOWN_BTN_MASK:
+ 236:.\Application.c **** 			audioControlStatus |= MAC_PC_STOP_MASK; 
+ 109              		.loc 1 236 0
+ 110 004a 554A     		ldr	r2, .L24+8
+ 111 004c 1178     		ldrb	r1, [r2]
+ 112 004e 0823     		mov	r3, #8
+ 113 0050 0B43     		orr	r3, r1
+ 114 0052 1370     		strb	r3, [r2]
+ 237:.\Application.c **** 			PRINT("Stop \n\r");
+ 115              		.loc 1 237 0
+ 116 0054 5648     		ldr	r0, .L24+24
+ 117              	.LVL10:
+ 118 0056 FFF7FEFF 		bl	UART_UartPutString
+ 119              	.LVL11:
+ 238:.\Application.c **** 			break;
+ 120              		.loc 1 238 0
+ 121 005a 07E0     		b	.L2
+ 122              	.LVL12:
+ 123              	.L8:
+ 239:.\Application.c **** 			
+ 240:.\Application.c **** 		case CENTRE_BTN_MASK:
+ 241:.\Application.c **** 			audioControlStatus |= MAC_PC_PLAY_PAUSE_MASK; 
+ 124              		.loc 1 241 0
+ 125 005c 504A     		ldr	r2, .L24+8
+ 126 005e 1178     		ldrb	r1, [r2]
+ 127 0060 0123     		mov	r3, #1
+ 128 0062 0B43     		orr	r3, r1
+ 129 0064 1370     		strb	r3, [r2]
+ 242:.\Application.c **** 			PRINT("Play/Pause\n\r");
+ 130              		.loc 1 242 0
+ 131 0066 5348     		ldr	r0, .L24+28
+ 132              	.LVL13:
+ 133 0068 FFF7FEFF 		bl	UART_UartPutString
+ 134              	.LVL14:
+ 135              	.L2:
+ 243:.\Application.c **** 			break;
+ 244:.\Application.c **** 			
+ 245:.\Application.c **** 		default:
+ 246:.\Application.c **** 			break;
+ 247:.\Application.c **** 	}
+ 248:.\Application.c **** 	
+ 249:.\Application.c **** 	switch(gesture)
+ 136              		.loc 1 249 0
+ 137 006c 601F     		sub	r0, r4, #5
+ 138 006e 0828     		cmp	r0, #8
+ 139 0070 4CD8     		bhi	.L9
+ 140 0072 8000     		lsl	r0, r0, #2
+ 141 0074 504B     		ldr	r3, .L24+32
+ 142 0076 1B58     		ldr	r3, [r3, r0]
+ 143 0078 9F46     		mov	pc, r3
+ 144              		.section	.rodata
+ 145              		.align	2
+ 146              	.L11:
+ 147 0044 7A000000 		.word	.L10
+ 148 0048 8C000000 		.word	.L12
+ 149 004c 9E000000 		.word	.L13
+ 150 0050 CA000000 		.word	.L14
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 8
+
+
+ 151 0054 0C010000 		.word	.L9
+ 152 0058 0C010000 		.word	.L9
+ 153 005c 0C010000 		.word	.L9
+ 154 0060 F6000000 		.word	.L15
+ 155 0064 F6000000 		.word	.L15
+ 156              		.section	.text.HandleUserInputs
+ 157              	.L10:
+ 250:.\Application.c **** 	{	
+ 251:.\Application.c **** 		case GESTURE_LEFT_SWIPE:
+ 252:.\Application.c **** 			/* Left swipe sends out Previous Track command to computer */
+ 253:.\Application.c **** 			PRINT("Left Swipe - Prev Track\n\r");
+ 158              		.loc 1 253 0
+ 159 007a 5048     		ldr	r0, .L24+36
+ 160 007c FFF7FEFF 		bl	UART_UartPutString
+ 161              	.LVL15:
+ 254:.\Application.c **** 			audioControlStatus |= MAC_PC_PREVIOUS_TRACK_MASK; 
+ 162              		.loc 1 254 0
+ 163 0080 474A     		ldr	r2, .L24+8
+ 164 0082 1178     		ldrb	r1, [r2]
+ 165 0084 0423     		mov	r3, #4
+ 166 0086 0B43     		orr	r3, r1
+ 167 0088 1370     		strb	r3, [r2]
+ 255:.\Application.c **** 			break;
+ 168              		.loc 1 255 0
+ 169 008a 42E0     		b	.L16
+ 170              	.L12:
+ 256:.\Application.c **** 			
+ 257:.\Application.c **** 		case GESTURE_RIGHT_SWIPE:
+ 258:.\Application.c **** 			/* Right swipe sends out Next Track command to computer */
+ 259:.\Application.c **** 			PRINT("Right Swipe - Next Track\n\r");
+ 171              		.loc 1 259 0
+ 172 008c 4C48     		ldr	r0, .L24+40
+ 173 008e FFF7FEFF 		bl	UART_UartPutString
+ 174              	.LVL16:
+ 260:.\Application.c **** 			audioControlStatus |= MAC_PC_NEXT_TRACK_MASK; 
+ 175              		.loc 1 260 0
+ 176 0092 434A     		ldr	r2, .L24+8
+ 177 0094 1178     		ldrb	r1, [r2]
+ 178 0096 0223     		mov	r3, #2
+ 179 0098 0B43     		orr	r3, r1
+ 180 009a 1370     		strb	r3, [r2]
+ 261:.\Application.c **** 			break;
+ 181              		.loc 1 261 0
+ 182 009c 39E0     		b	.L16
+ 183              	.L13:
+ 262:.\Application.c **** 			
+ 263:.\Application.c **** 		case GESTURE_UP_SWIPE:
+ 264:.\Application.c **** 			/* Up swipe sends out Volume up command to computer */
+ 265:.\Application.c **** 			if(volUpdateThreshold == 0)
+ 184              		.loc 1 265 0
+ 185 009e 494B     		ldr	r3, .L24+44
+ 186 00a0 1B68     		ldr	r3, [r3]
+ 187 00a2 002B     		cmp	r3, #0
+ 188 00a4 07D1     		bne	.L17
+ 266:.\Application.c **** 			{
+ 267:.\Application.c **** 				/* Send a Volume up command every time the volUpdateThreshold crosses threshold 
+ 268:.\Application.c **** 				- This is done to reduce sudden increase in volume because of the gesture */
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 9
+
+
+ 269:.\Application.c **** 				PRINT("Up Swipe - Vol Up\n\r");
+ 189              		.loc 1 269 0
+ 190 00a6 4848     		ldr	r0, .L24+48
+ 191 00a8 FFF7FEFF 		bl	UART_UartPutString
+ 192              	.LVL17:
+ 270:.\Application.c **** 				audioControlStatus |= MAC_PC_VOL_UP_MASK;
+ 193              		.loc 1 270 0
+ 194 00ac 3C4A     		ldr	r2, .L24+8
+ 195 00ae 1178     		ldrb	r1, [r2]
+ 196 00b0 2023     		mov	r3, #32
+ 197 00b2 0B43     		orr	r3, r1
+ 198 00b4 1370     		strb	r3, [r2]
+ 199              	.L17:
+ 271:.\Application.c **** 			}
+ 272:.\Application.c **** 			
+ 273:.\Application.c **** 			volUpdateThreshold++;
+ 200              		.loc 1 273 0
+ 201 00b6 434A     		ldr	r2, .L24+44
+ 202 00b8 1368     		ldr	r3, [r2]
+ 203 00ba 0133     		add	r3, r3, #1
+ 204 00bc 1360     		str	r3, [r2]
+ 274:.\Application.c **** 			
+ 275:.\Application.c **** 			if(volUpdateThreshold >= VOL_CHANGE_UPDATE_FREQ)
+ 205              		.loc 1 275 0
+ 206 00be 312B     		cmp	r3, #49
+ 207 00c0 27D9     		bls	.L16
+ 276:.\Application.c **** 			{				
+ 277:.\Application.c **** 				volUpdateThreshold = 0;				
+ 208              		.loc 1 277 0
+ 209 00c2 0022     		mov	r2, #0
+ 210 00c4 3F4B     		ldr	r3, .L24+44
+ 211 00c6 1A60     		str	r2, [r3]
+ 212 00c8 23E0     		b	.L16
+ 213              	.L14:
+ 278:.\Application.c **** 			}
+ 279:.\Application.c **** 			
+ 280:.\Application.c **** 			break;
+ 281:.\Application.c **** 			
+ 282:.\Application.c **** 		case GESTURE_DOWN_SWIPE:
+ 283:.\Application.c **** 			/* Down swipe sends out Volume down command to computer */
+ 284:.\Application.c **** 			if(volUpdateThreshold == 0)
+ 214              		.loc 1 284 0
+ 215 00ca 3E4B     		ldr	r3, .L24+44
+ 216 00cc 1B68     		ldr	r3, [r3]
+ 217 00ce 002B     		cmp	r3, #0
+ 218 00d0 07D1     		bne	.L18
+ 285:.\Application.c **** 			{
+ 286:.\Application.c **** 				/* Send a Volume down command every time the volUpdateThreshold crosses threshold 
+ 287:.\Application.c **** 				- This is done to reduce sudden decrease in volume because of the gesture */
+ 288:.\Application.c **** 				PRINT("Down Swipe - Vol Down\n\r");
+ 219              		.loc 1 288 0
+ 220 00d2 3E48     		ldr	r0, .L24+52
+ 221 00d4 FFF7FEFF 		bl	UART_UartPutString
+ 222              	.LVL18:
+ 289:.\Application.c **** 				audioControlStatus |= MAC_PC_VOL_DOWN_MASK;
+ 223              		.loc 1 289 0
+ 224 00d8 314A     		ldr	r2, .L24+8
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 10
+
+
+ 225 00da 1178     		ldrb	r1, [r2]
+ 226 00dc 4023     		mov	r3, #64
+ 227 00de 0B43     		orr	r3, r1
+ 228 00e0 1370     		strb	r3, [r2]
+ 229              	.L18:
+ 290:.\Application.c **** 			}
+ 291:.\Application.c **** 			
+ 292:.\Application.c **** 			volUpdateThreshold++;
+ 230              		.loc 1 292 0
+ 231 00e2 384A     		ldr	r2, .L24+44
+ 232 00e4 1368     		ldr	r3, [r2]
+ 233 00e6 0133     		add	r3, r3, #1
+ 234 00e8 1360     		str	r3, [r2]
+ 293:.\Application.c **** 			
+ 294:.\Application.c **** 			if(volUpdateThreshold >= VOL_CHANGE_UPDATE_FREQ)
+ 235              		.loc 1 294 0
+ 236 00ea 312B     		cmp	r3, #49
+ 237 00ec 11D9     		bls	.L16
+ 295:.\Application.c **** 			{				
+ 296:.\Application.c **** 				volUpdateThreshold = 0;				
+ 238              		.loc 1 296 0
+ 239 00ee 0022     		mov	r2, #0
+ 240 00f0 344B     		ldr	r3, .L24+44
+ 241 00f2 1A60     		str	r2, [r3]
+ 242 00f4 0DE0     		b	.L16
+ 243              	.L15:
+ 297:.\Application.c **** 			}
+ 298:.\Application.c **** 		break;			
+ 299:.\Application.c **** 		
+ 300:.\Application.c **** 		case GESTURE_OUTER_CLKWISE:
+ 301:.\Application.c **** 		case GESTURE_OUTER_COUNTER_CLKWISE:
+ 302:.\Application.c **** 			if(volumeReport == false)
+ 244              		.loc 1 302 0
+ 245 00f6 334B     		ldr	r3, .L24+44
+ 246 00f8 1B79     		ldrb	r3, [r3, #4]
+ 247 00fa 002B     		cmp	r3, #0
+ 248 00fc 09D1     		bne	.L16
+ 303:.\Application.c **** 			{
+ 304:.\Application.c **** 				volumeReport = true;
+ 249              		.loc 1 304 0
+ 250 00fe 0122     		mov	r2, #1
+ 251 0100 304B     		ldr	r3, .L24+44
+ 252 0102 1A71     		strb	r2, [r3, #4]
+ 305:.\Application.c **** 				accTheta = 0;
+ 253              		.loc 1 305 0
+ 254 0104 0022     		mov	r2, #0
+ 255 0106 324B     		ldr	r3, .L24+56
+ 256 0108 1A60     		str	r2, [r3]
+ 257 010a 02E0     		b	.L16
+ 258              	.L9:
+ 306:.\Application.c **** 			}
+ 307:.\Application.c **** 			
+ 308:.\Application.c **** 		break;
+ 309:.\Application.c **** 			
+ 310:.\Application.c **** 			
+ 311:.\Application.c **** 		default:
+ 312:.\Application.c **** 			volUpdateThreshold = 0;
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 11
+
+
+ 259              		.loc 1 312 0
+ 260 010c 0022     		mov	r2, #0
+ 261 010e 2D4B     		ldr	r3, .L24+44
+ 262 0110 1A60     		str	r2, [r3]
+ 263              	.L16:
+ 313:.\Application.c **** 			break;
+ 314:.\Application.c **** 	}	
+ 315:.\Application.c **** 	
+ 316:.\Application.c ****     /* Volume update for circular gestures - Outer clockwise and counter-clockwise */
+ 317:.\Application.c **** 	/* Check the volume report flag - this flag is set only when a circular gesture is detected on the
+ 318:.\Application.c **** 	if(volumeReport == true)
+ 264              		.loc 1 318 0
+ 265 0112 2C4B     		ldr	r3, .L24+44
+ 266 0114 1B79     		ldrb	r3, [r3, #4]
+ 267 0116 002B     		cmp	r3, #0
+ 268 0118 20D0     		beq	.L19
+ 319:.\Application.c **** 	{
+ 320:.\Application.c **** 		/* Process the gestures only if the slider is active ==> radius > 2 */
+ 321:.\Application.c **** 		if((radius != INVALID_RADIUS) && (radius > 2))
+ 269              		.loc 1 321 0
+ 270 011a 2E4B     		ldr	r3, .L24+60
+ 271 011c 1B68     		ldr	r3, [r3]
+ 272 011e FF2B     		cmp	r3, #255
+ 273 0120 19D0     		beq	.L20
+ 274              		.loc 1 321 0 is_stmt 0 discriminator 1
+ 275 0122 022B     		cmp	r3, #2
+ 276 0124 17D9     		bls	.L20
+ 322:.\Application.c **** 		{						
+ 323:.\Application.c **** 			/* Check accumulated theta value
+ 324:.\Application.c **** 				Accumulated theta is positive for counter-clockwise
+ 325:.\Application.c **** 				Once accumulated theta crosses a set threshold send a Volume down command */
+ 326:.\Application.c **** 			if(accTheta > VOL_CHANGE_THRESHOLD)
+ 277              		.loc 1 326 0 is_stmt 1
+ 278 0126 2A4B     		ldr	r3, .L24+56
+ 279 0128 1B68     		ldr	r3, [r3]
+ 280 012a 062B     		cmp	r3, #6
+ 281 012c 08DD     		ble	.L21
+ 327:.\Application.c **** 			{
+ 328:.\Application.c **** 				accTheta -= VOL_CHANGE_THRESHOLD;
+ 282              		.loc 1 328 0
+ 283 012e 063B     		sub	r3, r3, #6
+ 284 0130 274A     		ldr	r2, .L24+56
+ 285 0132 1360     		str	r3, [r2]
+ 329:.\Application.c **** 				audioControlStatus |= MAC_PC_VOL_DOWN_MASK;
+ 286              		.loc 1 329 0
+ 287 0134 1A4A     		ldr	r2, .L24+8
+ 288 0136 1178     		ldrb	r1, [r2]
+ 289 0138 4023     		mov	r3, #64
+ 290 013a 0B43     		orr	r3, r1
+ 291 013c 1370     		strb	r3, [r2]
+ 292 013e 0DE0     		b	.L19
+ 293              	.L21:
+ 330:.\Application.c **** 			}
+ 331:.\Application.c **** 			
+ 332:.\Application.c **** 			/* Accumulated theta is negative for clockwise
+ 333:.\Application.c **** 				Once accumulated theta crosses a set threshold send a Volume up command */
+ 334:.\Application.c **** 			else if(accTheta < -VOL_CHANGE_THRESHOLD)
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 12
+
+
+ 294              		.loc 1 334 0
+ 295 0140 9A1D     		add	r2, r3, #6
+ 296 0142 0BDA     		bge	.L19
+ 335:.\Application.c **** 			{
+ 336:.\Application.c **** 				accTheta += VOL_CHANGE_THRESHOLD;
+ 297              		.loc 1 336 0
+ 298 0144 0633     		add	r3, r3, #6
+ 299 0146 224A     		ldr	r2, .L24+56
+ 300 0148 1360     		str	r3, [r2]
+ 337:.\Application.c **** 				audioControlStatus |= MAC_PC_VOL_UP_MASK;
+ 301              		.loc 1 337 0
+ 302 014a 154A     		ldr	r2, .L24+8
+ 303 014c 1178     		ldrb	r1, [r2]
+ 304 014e 2023     		mov	r3, #32
+ 305 0150 0B43     		orr	r3, r1
+ 306 0152 1370     		strb	r3, [r2]
+ 307 0154 02E0     		b	.L19
+ 308              	.L20:
+ 338:.\Application.c **** 			}			
+ 339:.\Application.c **** 		}
+ 340:.\Application.c **** 		/* If slider is not active, then clear the volumeReport flag */
+ 341:.\Application.c **** 		else
+ 342:.\Application.c **** 		{
+ 343:.\Application.c **** 			volumeReport = false;
+ 309              		.loc 1 343 0
+ 310 0156 0022     		mov	r2, #0
+ 311 0158 1A4B     		ldr	r3, .L24+44
+ 312 015a 1A71     		strb	r2, [r3, #4]
+ 313              	.L19:
+ 344:.\Application.c **** 		}
+ 345:.\Application.c **** 	}
+ 346:.\Application.c **** 	
+ 347:.\Application.c **** 	
+ 348:.\Application.c **** 
+ 349:.\Application.c **** 	/* If USB is configured and there is an event pending on the HID endpoint, send the HID report */
+ 350:.\Application.c ****     if((IsUSBConfigured()) && (USBFS_GetEPState(MAC_PC_HID_CONTROL_ENDPOINT) == USBFS_EVENT_PENDING
+ 314              		.loc 1 350 0
+ 315 015c FFF7FEFF 		bl	USBFS_GetConfiguration
+ 316              	.LVL19:
+ 317 0160 0028     		cmp	r0, #0
+ 318 0162 18D0     		beq	.L1
+ 319              		.loc 1 350 0 is_stmt 0 discriminator 1
+ 320 0164 0420     		mov	r0, #4
+ 321 0166 FFF7FEFF 		bl	USBFS_GetEPState
+ 322              	.LVL20:
+ 323 016a 0128     		cmp	r0, #1
+ 324 016c 13D1     		bne	.L1
+ 351:.\Application.c ****     {
+ 352:.\Application.c ****         /* Send report only if there is a change in data or if data is available */
+ 353:.\Application.c **** 		if((prevReport != audioControlStatus) || (audioControlStatus != 0))
+ 325              		.loc 1 353 0 is_stmt 1
+ 326 016e 154B     		ldr	r3, .L24+44
+ 327 0170 5A79     		ldrb	r2, [r3, #5]
+ 328 0172 0B4B     		ldr	r3, .L24+8
+ 329 0174 1B78     		ldrb	r3, [r3]
+ 330 0176 9A42     		cmp	r2, r3
+ 331 0178 01D1     		bne	.L23
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 13
+
+
+ 332              		.loc 1 353 0 is_stmt 0 discriminator 1
+ 333 017a 002B     		cmp	r3, #0
+ 334 017c 0BD0     		beq	.L1
+ 335              	.L23:
+ 354:.\Application.c **** 		{			
+ 355:.\Application.c **** 			/* Update the report buffer with the data */
+ 356:.\Application.c **** 			playlistControlReport = audioControlStatus;
+ 336              		.loc 1 356 0 is_stmt 1
+ 337 017e 164A     		ldr	r2, .L24+64
+ 338 0180 1370     		strb	r3, [r2]
+ 357:.\Application.c **** 			
+ 358:.\Application.c **** 			/* Store the current data for next comparison */
+ 359:.\Application.c **** 			prevReport = audioControlStatus;				
+ 339              		.loc 1 359 0
+ 340 0182 104A     		ldr	r2, .L24+44
+ 341 0184 5371     		strb	r3, [r2, #5]
+ 360:.\Application.c **** 			
+ 361:.\Application.c **** 			/* Clear the report once sent */
+ 362:.\Application.c **** 			audioControlStatus = 0;
+ 342              		.loc 1 362 0
+ 343 0186 0022     		mov	r2, #0
+ 344 0188 054B     		ldr	r3, .L24+8
+ 345 018a 1A70     		strb	r2, [r3]
+ 363:.\Application.c **** 			
+ 364:.\Application.c **** 			/* Arm the endpoint */			
+ 365:.\Application.c **** 			USBFS_LoadInEP(MAC_PC_HID_CONTROL_ENDPOINT, USBFS_NULL, sizeof(playlistControlReport));
+ 346              		.loc 1 365 0
+ 347 018c 0420     		mov	r0, #4
+ 348 018e 0021     		mov	r1, #0
+ 349 0190 0132     		add	r2, r2, #1
+ 350 0192 FFF7FEFF 		bl	USBFS_LoadInEP
+ 351              	.LVL21:
+ 352              	.L1:
+ 366:.\Application.c **** 		}
+ 367:.\Application.c ****     }		
+ 368:.\Application.c **** 	
+ 369:.\Application.c **** }
+ 353              		.loc 1 369 0
+ 354              		@ sp needed
+ 355              	.LVL22:
+ 356 0196 10BD     		pop	{r4, pc}
+ 357              	.L25:
+ 358              		.align	2
+ 359              	.L24:
+ 360 0198 00000000 		.word	capsenseButtonStatus
+ 361 019c 00000000 		.word	.L4
+ 362 01a0 00000000 		.word	audioControlStatus
+ 363 01a4 00000000 		.word	.LC3
+ 364 01a8 10000000 		.word	.LC5
+ 365 01ac 20000000 		.word	.LC7
+ 366 01b0 28000000 		.word	.LC9
+ 367 01b4 30000000 		.word	.LC11
+ 368 01b8 44000000 		.word	.L11
+ 369 01bc 40000000 		.word	.LC14
+ 370 01c0 5C000000 		.word	.LC16
+ 371 01c4 00000000 		.word	.LANCHOR0
+ 372 01c8 78000000 		.word	.LC19
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 14
+
+
+ 373 01cc 8C000000 		.word	.LC21
+ 374 01d0 00000000 		.word	accTheta
+ 375 01d4 00000000 		.word	radius
+ 376 01d8 00000000 		.word	playlistControlReport
+ 377              		.cfi_endproc
+ 378              	.LFE327:
+ 379              		.size	HandleUserInputs, .-HandleUserInputs
+ 380              		.global	__aeabi_idiv
+ 381              		.section	.text.Update_VolumeAudioOut,"ax",%progbits
+ 382              		.align	2
+ 383              		.global	Update_VolumeAudioOut
+ 384              		.code	16
+ 385              		.thumb_func
+ 386              		.type	Update_VolumeAudioOut, %function
+ 387              	Update_VolumeAudioOut:
+ 388              	.LFB328:
+ 370:.\Application.c **** 
+ 371:.\Application.c **** /*******************************************************************************
+ 372:.\Application.c **** * Function Name: Update_VolumeAudioOut
+ 373:.\Application.c **** ********************************************************************************
+ 374:.\Application.c **** * Summary:  Updates the volume from PC to codec
+ 375:.\Application.c **** *
+ 376:.\Application.c **** * Parameters:
+ 377:.\Application.c **** *  void
+ 378:.\Application.c **** *
+ 379:.\Application.c **** * Return:
+ 380:.\Application.c **** *  uint8 - status of I2C operation between PSoC 4200L and codec
+ 381:.\Application.c **** *
+ 382:.\Application.c **** *******************************************************************************/
+ 383:.\Application.c **** uint8 Update_VolumeAudioOut(void)
+ 384:.\Application.c **** {
+ 389              		.loc 1 384 0
+ 390              		.cfi_startproc
+ 391 0000 30B5     		push	{r4, r5, lr}
+ 392              		.cfi_def_cfa_offset 12
+ 393              		.cfi_offset 4, -12
+ 394              		.cfi_offset 5, -8
+ 395              		.cfi_offset 14, -4
+ 396 0002 87B0     		sub	sp, sp, #28
+ 397              		.cfi_def_cfa_offset 40
+ 398              	.LVL23:
+ 385:.\Application.c **** 	uint8 ret = 0;
+ 386:.\Application.c **** 	static int32 prevVol = 0;
+ 387:.\Application.c **** 	static uint8 prevMute;
+ 388:.\Application.c **** 	#ifdef TXDEBUG
+ 389:.\Application.c **** 		char str[20];
+ 390:.\Application.c **** 	#endif
+ 391:.\Application.c **** 	
+ 392:.\Application.c **** 	/* Get the MSB of the current volume data */
+ 393:.\Application.c **** 	int32 volume = (((int8)USBFS_currentVolume[1])) + PC_VOLUME_MSB_CODEC_OFFSET;
+ 399              		.loc 1 393 0
+ 400 0004 324B     		ldr	r3, .L38
+ 401 0006 5C78     		ldrb	r4, [r3, #1]
+ 402 0008 64B2     		sxtb	r4, r4
+ 403              	.LVL24:
+ 394:.\Application.c **** 	
+ 395:.\Application.c **** 	if(volume > PC_VOLUME_MSB_MAX)
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 15
+
+
+ 396:.\Application.c **** 	{
+ 397:.\Application.c **** 		volume = PC_VOLUME_MSB_MAX;
+ 398:.\Application.c **** 	}
+ 399:.\Application.c **** 	else if(volume < PC_VOLUME_MSB_MIN)
+ 404              		.loc 1 399 0
+ 405 000a 312C     		cmp	r4, #49
+ 406 000c 00DC     		bgt	.L27
+ 400:.\Application.c **** 	{
+ 401:.\Application.c **** 		volume = PC_VOLUME_MSB_MIN;
+ 407              		.loc 1 401 0
+ 408 000e 3224     		mov	r4, #50
+ 409              	.LVL25:
+ 410              	.L27:
+ 402:.\Application.c **** 	}
+ 403:.\Application.c **** 	
+ 404:.\Application.c **** 	/* Process volume control only when USB bus is idle */
+ 405:.\Application.c **** 	if(USBFS_TRANS_STATE_IDLE == USBFS_transferState)
+ 411              		.loc 1 405 0
+ 412 0010 304B     		ldr	r3, .L38+4
+ 413 0012 1B78     		ldrb	r3, [r3]
+ 414 0014 002B     		cmp	r3, #0
+ 415 0016 56D1     		bne	.L34
+ 406:.\Application.c **** 	{
+ 407:.\Application.c **** 		/* If there is a change in volume, update codec */
+ 408:.\Application.c **** 		if(volume != prevVol)
+ 416              		.loc 1 408 0
+ 417 0018 2F4B     		ldr	r3, .L38+8
+ 418 001a 9B68     		ldr	r3, [r3, #8]
+ 419 001c 9C42     		cmp	r4, r3
+ 420 001e 1DD0     		beq	.L35
+ 409:.\Application.c **** 		{
+ 410:.\Application.c **** 			/* Store current volume for next comparison */
+ 411:.\Application.c **** 			prevVol = volume;
+ 421              		.loc 1 411 0
+ 422 0020 2D4B     		ldr	r3, .L38+8
+ 423 0022 9C60     		str	r4, [r3, #8]
+ 412:.\Application.c **** 			
+ 413:.\Application.c **** 			/* Filter volume to be in the expected range */
+ 414:.\Application.c **** 			if((volume > PC_VOLUME_MSB_MIN) && (volume <= PC_VOLUME_MSB_MAX))
+ 424              		.loc 1 414 0
+ 425 0024 231C     		mov	r3, r4
+ 426 0026 333B     		sub	r3, r3, #51
+ 427 0028 4C2B     		cmp	r3, #76
+ 428 002a 09D8     		bhi	.L36
+ 415:.\Application.c **** 			{
+ 416:.\Application.c **** 				volume = (uint8)(((volume - PC_VOLUME_MSB_MIN) * CODEC_HP_VOLUME_MAX) / (PC_VOLUME_MSB_MAX - PC
+ 429              		.loc 1 416 0
+ 430 002c 323C     		sub	r4, r4, #50
+ 431              	.LVL26:
+ 432 002e A000     		lsl	r0, r4, #2
+ 433 0030 0019     		add	r0, r0, r4
+ 434 0032 0001     		lsl	r0, r0, #4
+ 435 0034 4D21     		mov	r1, #77
+ 436 0036 FFF7FEFF 		bl	__aeabi_idiv
+ 437              	.LVL27:
+ 438 003a FF24     		mov	r4, #255
+ 439              	.LVL28:
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 16
+
+
+ 440 003c 0440     		and	r4, r0
+ 441              	.LVL29:
+ 442 003e 00E0     		b	.L30
+ 443              	.L36:
+ 417:.\Application.c **** 			}
+ 418:.\Application.c **** 			else
+ 419:.\Application.c **** 			{
+ 420:.\Application.c **** 				/* Set volume to 0 if the volume from PC is not in expected range */
+ 421:.\Application.c **** 				volume = 0;
+ 444              		.loc 1 421 0
+ 445 0040 0024     		mov	r4, #0
+ 446              	.LVL30:
+ 447              	.L30:
+ 422:.\Application.c **** 			}
+ 423:.\Application.c **** 							
+ 424:.\Application.c **** 			
+ 425:.\Application.c **** 			/* Update the codec volume */
+ 426:.\Application.c **** 			ret = Codec_AdjustBothHeadphoneVolume((uint8)volume);
+ 448              		.loc 1 426 0
+ 449 0042 E0B2     		uxtb	r0, r4
+ 450 0044 FFF7FEFF 		bl	Codec_AdjustBothHeadphoneVolume
+ 451              	.LVL31:
+ 452 0048 051C     		mov	r5, r0
+ 453              	.LVL32:
+ 427:.\Application.c **** 			
+ 428:.\Application.c **** 			#ifdef TXDEBUG
+ 429:.\Application.c **** 				sprintf(str, "Codec vol set to %d \r\n", (int)volume);
+ 454              		.loc 1 429 0
+ 455 004a 01A8     		add	r0, sp, #4
+ 456              	.LVL33:
+ 457 004c 2349     		ldr	r1, .L38+12
+ 458 004e 221C     		mov	r2, r4
+ 459 0050 FFF7FEFF 		bl	sprintf
+ 460              	.LVL34:
+ 430:.\Application.c **** 				PRINT(str);
+ 461              		.loc 1 430 0
+ 462 0054 01A8     		add	r0, sp, #4
+ 463 0056 FFF7FEFF 		bl	UART_UartPutString
+ 464              	.LVL35:
+ 465 005a 00E0     		b	.L29
+ 466              	.LVL36:
+ 467              	.L35:
+ 385:.\Application.c **** 	static int32 prevVol = 0;
+ 468              		.loc 1 385 0
+ 469 005c 0025     		mov	r5, #0
+ 470              	.LVL37:
+ 471              	.L29:
+ 431:.\Application.c **** 			#endif
+ 432:.\Application.c **** 		}
+ 433:.\Application.c **** 		
+ 434:.\Application.c **** 		/* Process mute data, if changed */
+ 435:.\Application.c **** 		if(USBFS_currentMute != prevMute)
+ 472              		.loc 1 435 0
+ 473 005e 204B     		ldr	r3, .L38+16
+ 474 0060 1B78     		ldrb	r3, [r3]
+ 475 0062 DBB2     		uxtb	r3, r3
+ 476 0064 1C4A     		ldr	r2, .L38+8
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 17
+
+
+ 477 0066 127B     		ldrb	r2, [r2, #12]
+ 478 0068 9342     		cmp	r3, r2
+ 479 006a 2DD0     		beq	.L28
+ 436:.\Application.c **** 		{
+ 437:.\Application.c **** 			/* Store current mute data for next comparison */
+ 438:.\Application.c **** 			prevMute = USBFS_currentMute;
+ 480              		.loc 1 438 0
+ 481 006c 1C4B     		ldr	r3, .L38+16
+ 482 006e 1B78     		ldrb	r3, [r3]
+ 483 0070 DBB2     		uxtb	r3, r3
+ 484 0072 194A     		ldr	r2, .L38+8
+ 485 0074 1373     		strb	r3, [r2, #12]
+ 439:.\Application.c **** 			
+ 440:.\Application.c **** 			/* If mute is non-zero, then mute is active and update codec volume to 0 */
+ 441:.\Application.c **** 			if(prevMute != 0)
+ 486              		.loc 1 441 0
+ 487 0076 002B     		cmp	r3, #0
+ 488 0078 07D0     		beq	.L31
+ 442:.\Application.c **** 			{
+ 443:.\Application.c **** 				ret = Codec_AdjustBothHeadphoneVolume(0);
+ 489              		.loc 1 443 0
+ 490 007a 0020     		mov	r0, #0
+ 491 007c FFF7FEFF 		bl	Codec_AdjustBothHeadphoneVolume
+ 492              	.LVL38:
+ 493 0080 051C     		mov	r5, r0
+ 494              	.LVL39:
+ 444:.\Application.c **** 				PRINT("Muted\r\n");
+ 495              		.loc 1 444 0
+ 496 0082 1848     		ldr	r0, .L38+20
+ 497              	.LVL40:
+ 498 0084 FFF7FEFF 		bl	UART_UartPutString
+ 499              	.LVL41:
+ 500 0088 1EE0     		b	.L28
+ 501              	.L31:
+ 445:.\Application.c **** 			}
+ 446:.\Application.c **** 			else
+ 447:.\Application.c **** 			{
+ 448:.\Application.c **** 				/* If mute is released, then process and update the current volume to codec */
+ 449:.\Application.c **** 				prevVol = volume;
+ 502              		.loc 1 449 0
+ 503 008a 134B     		ldr	r3, .L38+8
+ 504 008c 9C60     		str	r4, [r3, #8]
+ 450:.\Application.c **** 								
+ 451:.\Application.c **** 				/* Filter volume to be in the expected range */
+ 452:.\Application.c **** 				if((volume > PC_VOLUME_MSB_MIN) && (volume <= PC_VOLUME_MSB_MAX))
+ 505              		.loc 1 452 0
+ 506 008e 231C     		mov	r3, r4
+ 507 0090 333B     		sub	r3, r3, #51
+ 508 0092 4C2B     		cmp	r3, #76
+ 509 0094 09D8     		bhi	.L37
+ 453:.\Application.c **** 				{
+ 454:.\Application.c **** 					volume = (uint8)(((volume - PC_VOLUME_MSB_MIN) * CODEC_HP_VOLUME_MAX) / (PC_VOLUME_MSB_MAX - P
+ 510              		.loc 1 454 0
+ 511 0096 323C     		sub	r4, r4, #50
+ 512              	.LVL42:
+ 513 0098 A000     		lsl	r0, r4, #2
+ 514 009a 0019     		add	r0, r0, r4
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 18
+
+
+ 515 009c 0001     		lsl	r0, r0, #4
+ 516 009e 4D21     		mov	r1, #77
+ 517 00a0 FFF7FEFF 		bl	__aeabi_idiv
+ 518              	.LVL43:
+ 519 00a4 FF24     		mov	r4, #255
+ 520              	.LVL44:
+ 521 00a6 0440     		and	r4, r0
+ 522              	.LVL45:
+ 523 00a8 00E0     		b	.L32
+ 524              	.L37:
+ 455:.\Application.c **** 				}
+ 456:.\Application.c **** 				else
+ 457:.\Application.c **** 				{
+ 458:.\Application.c **** 					/* Set volume to 0 if the volume from PC is not in expected range */
+ 459:.\Application.c **** 					volume = 0;
+ 525              		.loc 1 459 0
+ 526 00aa 0024     		mov	r4, #0
+ 527              	.LVL46:
+ 528              	.L32:
+ 460:.\Application.c **** 				}
+ 461:.\Application.c **** 								
+ 462:.\Application.c **** 				/* Update the codec volume */
+ 463:.\Application.c **** 				ret = Codec_AdjustBothHeadphoneVolume((uint8)volume);
+ 529              		.loc 1 463 0
+ 530 00ac E0B2     		uxtb	r0, r4
+ 531 00ae FFF7FEFF 		bl	Codec_AdjustBothHeadphoneVolume
+ 532              	.LVL47:
+ 533 00b2 051C     		mov	r5, r0
+ 534              	.LVL48:
+ 464:.\Application.c **** 				
+ 465:.\Application.c **** 				#ifdef TXDEBUG
+ 466:.\Application.c **** 					sprintf(str, "Unmute - Codec vol set to %d \r\n", (int)volume);
+ 535              		.loc 1 466 0
+ 536 00b4 01A8     		add	r0, sp, #4
+ 537              	.LVL49:
+ 538 00b6 0C49     		ldr	r1, .L38+24
+ 539 00b8 221C     		mov	r2, r4
+ 540 00ba FFF7FEFF 		bl	sprintf
+ 541              	.LVL50:
+ 467:.\Application.c **** 					PRINT(str);
+ 542              		.loc 1 467 0
+ 543 00be 01A8     		add	r0, sp, #4
+ 544 00c0 FFF7FEFF 		bl	UART_UartPutString
+ 545              	.LVL51:
+ 546 00c4 00E0     		b	.L28
+ 547              	.LVL52:
+ 548              	.L34:
+ 385:.\Application.c **** 	static int32 prevVol = 0;
+ 549              		.loc 1 385 0
+ 550 00c6 0025     		mov	r5, #0
+ 551              	.LVL53:
+ 552              	.L28:
+ 468:.\Application.c **** 				#endif
+ 469:.\Application.c **** 			}
+ 470:.\Application.c **** 		}
+ 471:.\Application.c **** 	}
+ 472:.\Application.c **** 	
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 19
+
+
+ 473:.\Application.c **** 	
+ 474:.\Application.c **** 	return ret;
+ 475:.\Application.c **** }
+ 553              		.loc 1 475 0
+ 554 00c8 281C     		mov	r0, r5
+ 555 00ca 07B0     		add	sp, sp, #28
+ 556              		@ sp needed
+ 557              	.LVL54:
+ 558              	.LVL55:
+ 559 00cc 30BD     		pop	{r4, r5, pc}
+ 560              	.L39:
+ 561 00ce C046     		.align	2
+ 562              	.L38:
+ 563 00d0 00000000 		.word	USBFS_currentVolume
+ 564 00d4 00000000 		.word	USBFS_transferState
+ 565 00d8 00000000 		.word	.LANCHOR0
+ 566 00dc A4000000 		.word	.LC29
+ 567 00e0 00000000 		.word	USBFS_currentMute
+ 568 00e4 BC000000 		.word	.LC32
+ 569 00e8 C4000000 		.word	.LC34
+ 570              		.cfi_endproc
+ 571              	.LFE328:
+ 572              		.size	Update_VolumeAudioOut, .-Update_VolumeAudioOut
+ 573              		.section	.text.InitApp,"ax",%progbits
+ 574              		.align	2
+ 575              		.global	InitApp
+ 576              		.code	16
+ 577              		.thumb_func
+ 578              		.type	InitApp, %function
+ 579              	InitApp:
+ 580              	.LFB325:
+  83:.\Application.c ****     /* Configure CPU/DMA to be in round robin mode while accessing memory */
+ 581              		.loc 1 83 0
+ 582              		.cfi_startproc
+ 583 0000 08B5     		push	{r3, lr}
+ 584              		.cfi_def_cfa_offset 8
+ 585              		.cfi_offset 3, -8
+ 586              		.cfi_offset 14, -4
+  85:.\Application.c **** 	
+ 587              		.loc 1 85 0
+ 588 0002 254A     		ldr	r2, .L46
+ 589 0004 1368     		ldr	r3, [r2]
+ 590 0006 2549     		ldr	r1, .L46+4
+ 591 0008 0B43     		orr	r3, r1
+ 592 000a 1360     		str	r3, [r2]
+  87:.\Application.c **** 	
+ 593              		.loc 1 87 0
+ 594              	@ 87 ".\Application.c" 1
+ 595 000c 62B6     		CPSIE   i
+ 596              	@ 0 "" 2
+  90:.\Application.c **** 		if(CySysGetResetReason(CY_SYS_RESET_SW) != CY_SYS_RESET_SW)
+ 597              		.loc 1 90 0
+ 598              		.code	16
+ 599 000e FFF7FEFF 		bl	UART_Start
+ 600              	.LVL56:
+  91:.\Application.c **** 		{
+ 601              		.loc 1 91 0
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 20
+
+
+ 602 0012 1020     		mov	r0, #16
+ 603 0014 FFF7FEFF 		bl	CySysGetResetReason
+ 604              	.LVL57:
+ 605 0018 1028     		cmp	r0, #16
+ 606 001a 03D0     		beq	.L41
+  93:.\Application.c **** 		}
+ 607              		.loc 1 93 0
+ 608 001c 2048     		ldr	r0, .L46+8
+ 609 001e FFF7FEFF 		bl	UART_UartPutString
+ 610              	.LVL58:
+ 611 0022 02E0     		b	.L42
+ 612              	.L41:
+  97:.\Application.c **** 		}
+ 613              		.loc 1 97 0
+ 614 0024 1F48     		ldr	r0, .L46+12
+ 615 0026 FFF7FEFF 		bl	UART_UartPutString
+ 616              	.LVL59:
+ 617              	.L42:
+ 102:.\Application.c **** 	
+ 618              		.loc 1 102 0
+ 619 002a FFF7FEFF 		bl	CodecI2CM_Start
+ 620              	.LVL60:
+ 104:.\Application.c **** 	{
+ 621              		.loc 1 104 0
+ 622 002e FFF7FEFF 		bl	Codec_Init
+ 623              	.LVL61:
+ 624 0032 0028     		cmp	r0, #0
+ 625 0034 03D1     		bne	.L43
+ 106:.\Application.c **** 	}
+ 626              		.loc 1 106 0
+ 627 0036 1C48     		ldr	r0, .L46+16
+ 628 0038 FFF7FEFF 		bl	UART_UartPutString
+ 629              	.LVL62:
+ 630 003c 02E0     		b	.L44
+ 631              	.L43:
+ 110:.\Application.c **** 	}
+ 632              		.loc 1 110 0
+ 633 003e 1B48     		ldr	r0, .L46+20
+ 634 0040 FFF7FEFF 		bl	UART_UartPutString
+ 635              	.LVL63:
+ 636              	.L44:
+ 113:.\Application.c **** 	
+ 637              		.loc 1 113 0
+ 638 0044 FFF7FEFF 		bl	Update_VolumeAudioOut
+ 639              	.LVL64:
+ 115:.\Application.c **** 	
+ 640              		.loc 1 115 0
+ 641 0048 FFF7FEFF 		bl	I2S_Start
+ 642              	.LVL65:
+ 117:.\Application.c ****     USBDeviceState = USB_INIT_AFTER_ENUMERATION_REQUIRED;
+ 643              		.loc 1 117 0
+ 644 004c 0020     		mov	r0, #0
+ 645 004e 0121     		mov	r1, #1
+ 646 0050 FFF7FEFF 		bl	USBFS_Start
+ 647              	.LVL66:
+ 118:.\Application.c **** 	
+ 648              		.loc 1 118 0
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 21
+
+
+ 649 0054 0123     		mov	r3, #1
+ 650 0056 164A     		ldr	r2, .L46+24
+ 651 0058 1370     		strb	r3, [r2]
+ 121:.\Application.c **** 
+ 652              		.loc 1 121 0
+ 653 005a 164A     		ldr	r2, .L46+28
+ 654 005c 1168     		ldr	r1, [r2]
+ 655 005e 0B43     		orr	r3, r1
+ 656 0060 1360     		str	r3, [r2]
+ 657              	.L45:
+ 123:.\Application.c **** 	
+ 658              		.loc 1 123 0 discriminator 1
+ 659 0062 FFF7FEFF 		bl	USBFS_GetConfiguration
+ 660              	.LVL67:
+ 661 0066 0028     		cmp	r0, #0
+ 662 0068 FBD1     		bne	.L45
+ 125:.\Application.c **** 	
+ 663              		.loc 1 125 0
+ 664 006a 0E30     		add	r0, r0, #14
+ 665 006c 0021     		mov	r1, #0
+ 666 006e FFF7FEFF 		bl	CyIntSetPriority
+ 667              	.LVL68:
+ 127:.\Application.c **** 	USBFS_LoadInEP(MAC_PC_HID_CONTROL_ENDPOINT, USBFS_NULL, sizeof(playlistControlReport) );	
+ 668              		.loc 1 127 0
+ 669 0072 0420     		mov	r0, #4
+ 670 0074 1049     		ldr	r1, .L46+32
+ 671 0076 0122     		mov	r2, #1
+ 672 0078 FFF7FEFF 		bl	USBFS_LoadInEP
+ 673              	.LVL69:
+ 128:.\Application.c **** 	
+ 674              		.loc 1 128 0
+ 675 007c 0420     		mov	r0, #4
+ 676 007e 0021     		mov	r1, #0
+ 677 0080 0122     		mov	r2, #1
+ 678 0082 FFF7FEFF 		bl	USBFS_LoadInEP
+ 679              	.LVL70:
+ 130:.\Application.c **** 	
+ 680              		.loc 1 130 0
+ 681 0086 FFF7FEFF 		bl	Async_Feedback_Counter_Start
+ 682              	.LVL71:
+ 132:.\Application.c **** 	CapSense_InitializeAllBaselines();
+ 683              		.loc 1 132 0
+ 684 008a FFF7FEFF 		bl	CapSense_Start
+ 685              	.LVL72:
+ 133:.\Application.c **** 	CapSense_ScanEnabledWidgets();
+ 686              		.loc 1 133 0
+ 687 008e FFF7FEFF 		bl	CapSense_InitializeAllBaselines
+ 688              	.LVL73:
+ 134:.\Application.c **** }
+ 689              		.loc 1 134 0
+ 690 0092 FFF7FEFF 		bl	CapSense_ScanEnabledWidgets
+ 691              	.LVL74:
+ 135:.\Application.c **** 
+ 692              		.loc 1 135 0
+ 693              		@ sp needed
+ 694 0096 08BD     		pop	{r3, pc}
+ 695              	.L47:
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 22
+
+
+ 696              		.align	2
+ 697              	.L46:
+ 698 0098 38001040 		.word	1074790456
+ 699 009c 22222222 		.word	572662306
+ 700 00a0 E4000000 		.word	.LC36
+ 701 00a4 F8000000 		.word	.LC38
+ 702 00a8 1C010000 		.word	.LC40
+ 703 00ac 34010000 		.word	.LC42
+ 704 00b0 00000000 		.word	USBDeviceState
+ 705 00b4 28202C40 		.word	1076633640
+ 706 00b8 00000000 		.word	playlistControlReport
+ 707              		.cfi_endproc
+ 708              	.LFE325:
+ 709              		.size	InitApp, .-InitApp
+ 710              		.section	.text.RunApplication,"ax",%progbits
+ 711              		.align	2
+ 712              		.global	RunApplication
+ 713              		.code	16
+ 714              		.thumb_func
+ 715              		.type	RunApplication, %function
+ 716              	RunApplication:
+ 717              	.LFB326:
+ 153:.\Application.c ****     uint32 gesture = 0;
+ 718              		.loc 1 153 0
+ 719              		.cfi_startproc
+ 720 0000 10B5     		push	{r4, lr}
+ 721              		.cfi_def_cfa_offset 8
+ 722              		.cfi_offset 4, -8
+ 723              		.cfi_offset 14, -4
+ 724              	.LVL75:
+ 156:.\Application.c ****     {
+ 725              		.loc 1 156 0
+ 726 0002 FFF7FEFF 		bl	CapSense_IsBusy
+ 727              	.LVL76:
+ 728 0006 0028     		cmp	r0, #0
+ 729 0008 10D1     		bne	.L49
+ 158:.\Application.c **** 		gesture = DetectGesture(CapSense_CheckIsAnyWidgetActive());
+ 730              		.loc 1 158 0
+ 731 000a FFF7FEFF 		bl	CapSense_UpdateEnabledBaselines
+ 732              	.LVL77:
+ 159:.\Application.c ****         CapSense_ScanEnabledWidgets();
+ 733              		.loc 1 159 0
+ 734 000e FFF7FEFF 		bl	CapSense_CheckIsAnyWidgetActive
+ 735              	.LVL78:
+ 736 0012 C0B2     		uxtb	r0, r0
+ 737 0014 FFF7FEFF 		bl	DetectGesture
+ 738              	.LVL79:
+ 739 0018 041C     		mov	r4, r0
+ 740              	.LVL80:
+ 160:.\Application.c **** 		
+ 741              		.loc 1 160 0
+ 742 001a FFF7FEFF 		bl	CapSense_ScanEnabledWidgets
+ 743              	.LVL81:
+ 162:.\Application.c **** 		{
+ 744              		.loc 1 162 0
+ 745 001e FFF7FEFF 		bl	USBFS_GetConfiguration
+ 746              	.LVL82:
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 23
+
+
+ 747 0022 0128     		cmp	r0, #1
+ 748 0024 02D1     		bne	.L49
+ 165:.\Application.c **** 		}
+ 749              		.loc 1 165 0
+ 750 0026 201C     		mov	r0, r4
+ 751 0028 FFF7FEFF 		bl	HandleUserInputs
+ 752              	.LVL83:
+ 753              	.L49:
+ 169:.\Application.c **** 	{
+ 754              		.loc 1 169 0
+ 755 002c FFF7FEFF 		bl	USBFS_GetConfiguration
+ 756              	.LVL84:
+ 757 0030 0128     		cmp	r0, #1
+ 758 0032 01D1     		bne	.L48
+ 172:.\Application.c **** 	}
+ 759              		.loc 1 172 0
+ 760 0034 FFF7FEFF 		bl	Update_VolumeAudioOut
+ 761              	.LVL85:
+ 762              	.L48:
+ 174:.\Application.c **** 
+ 763              		.loc 1 174 0
+ 764              		@ sp needed
+ 765 0038 10BD     		pop	{r4, pc}
+ 766              		.cfi_endproc
+ 767              	.LFE326:
+ 768              		.size	RunApplication, .-RunApplication
+ 769              		.comm	reportClearFlag,1,1
+ 770              		.comm	audioControlStatus,1,1
+ 771              		.global	prevReport
+ 772              		.comm	playlistControlReport,1,1
+ 773 003a C046     		.section	.rodata.str1.4,"aMS",%progbits,1
+ 774              		.align	2
+ 775              	.LC3:
+ 776 0000 50726576 		.ascii	"Prev Track\012\015\000"
+ 776      20547261 
+ 776      636B0A0D 
+ 776      00
+ 777 000d 000000   		.space	3
+ 778              	.LC5:
+ 779 0010 4E657874 		.ascii	"Next Track\012\015\000"
+ 779      20547261 
+ 779      636B0A0D 
+ 779      00
+ 780 001d 000000   		.space	3
+ 781              	.LC7:
+ 782 0020 4D757465 		.ascii	"Mute\012\015\000"
+ 782      0A0D00
+ 783 0027 00       		.space	1
+ 784              	.LC9:
+ 785 0028 53746F70 		.ascii	"Stop \012\015\000"
+ 785      200A0D00 
+ 786              	.LC11:
+ 787 0030 506C6179 		.ascii	"Play/Pause\012\015\000"
+ 787      2F506175 
+ 787      73650A0D 
+ 787      00
+ 788 003d 000000   		.space	3
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 24
+
+
+ 789              	.LC14:
+ 790 0040 4C656674 		.ascii	"Left Swipe - Prev Track\012\015\000"
+ 790      20537769 
+ 790      7065202D 
+ 790      20507265 
+ 790      76205472 
+ 791 005a 0000     		.space	2
+ 792              	.LC16:
+ 793 005c 52696768 		.ascii	"Right Swipe - Next Track\012\015\000"
+ 793      74205377 
+ 793      69706520 
+ 793      2D204E65 
+ 793      78742054 
+ 794 0077 00       		.space	1
+ 795              	.LC19:
+ 796 0078 55702053 		.ascii	"Up Swipe - Vol Up\012\015\000"
+ 796      77697065 
+ 796      202D2056 
+ 796      6F6C2055 
+ 796      700A0D00 
+ 797              	.LC21:
+ 798 008c 446F776E 		.ascii	"Down Swipe - Vol Down\012\015\000"
+ 798      20537769 
+ 798      7065202D 
+ 798      20566F6C 
+ 798      20446F77 
+ 799              	.LC29:
+ 800 00a4 436F6465 		.ascii	"Codec vol set to %d \015\012\000"
+ 800      6320766F 
+ 800      6C207365 
+ 800      7420746F 
+ 800      20256420 
+ 801 00bb 00       		.space	1
+ 802              	.LC32:
+ 803 00bc 4D757465 		.ascii	"Muted\015\012\000"
+ 803      640D0A00 
+ 804              	.LC34:
+ 805 00c4 556E6D75 		.ascii	"Unmute - Codec vol set to %d \015\012\000"
+ 805      7465202D 
+ 805      20436F64 
+ 805      65632076 
+ 805      6F6C2073 
+ 806              	.LC36:
+ 807 00e4 0D0A4170 		.ascii	"\015\012App Started...\015\012\000"
+ 807      70205374 
+ 807      61727465 
+ 807      642E2E2E 
+ 807      0D0A00
+ 808 00f7 00       		.space	1
+ 809              	.LC38:
+ 810 00f8 0D0A4170 		.ascii	"\015\012App Restarted after SW reset...\015\012\000"
+ 810      70205265 
+ 810      73746172 
+ 810      74656420 
+ 810      61667465 
+ 811              	.LC40:
+ 812 011c 436F6465 		.ascii	"Codec comm works!... \015\012\000"
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 25
+
+
+ 812      6320636F 
+ 812      6D6D2077 
+ 812      6F726B73 
+ 812      212E2E2E 
+ 813              	.LC42:
+ 814 0134 436F6465 		.ascii	"Codec comm DOESN'T work!... \015\012\000"
+ 814      6320636F 
+ 814      6D6D2044 
+ 814      4F45534E 
+ 814      27542077 
+ 815 0153 00       		.bss
+ 816              		.align	2
+ 817              		.set	.LANCHOR0,. + 0
+ 818              		.type	volUpdateThreshold.9315, %object
+ 819              		.size	volUpdateThreshold.9315, 4
+ 820              	volUpdateThreshold.9315:
+ 821 0000 00000000 		.space	4
+ 822              		.type	volumeReport.9317, %object
+ 823              		.size	volumeReport.9317, 1
+ 824              	volumeReport.9317:
+ 825 0004 00       		.space	1
+ 826              		.type	prevReport.9316, %object
+ 827              		.size	prevReport.9316, 1
+ 828              	prevReport.9316:
+ 829 0005 00       		.space	1
+ 830 0006 0000     		.space	2
+ 831              		.type	prevVol.9337, %object
+ 832              		.size	prevVol.9337, 4
+ 833              	prevVol.9337:
+ 834 0008 00000000 		.space	4
+ 835              		.type	prevMute.9338, %object
+ 836              		.size	prevMute.9338, 1
+ 837              	prevMute.9338:
+ 838 000c 00       		.space	1
+ 839              		.type	prevReport, %object
+ 840              		.size	prevReport, 1
+ 841              	prevReport:
+ 842 000d 00       		.space	1
+ 843 000e 0000     		.text
+ 844              	.Letext0:
+ 845              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 846              		.file 3 "./Gesture.h"
+ 847              		.file 4 "Generated_Source\\PSoC4/USBFS.h"
+ 848              		.file 5 "./USBInterface.h"
+ 849              		.file 6 "Generated_Source\\PSoC4/UART_SPI_UART.h"
+ 850              		.file 7 "./Codec.h"
+ 851              		.file 8 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 852              		.file 9 "Generated_Source\\PSoC4/CyLib.h"
+ 853              		.file 10 "Generated_Source\\PSoC4/UART.h"
+ 854              		.file 11 "Generated_Source\\PSoC4/CodecI2CM.h"
+ 855              		.file 12 "Generated_Source\\PSoC4/I2S.h"
+ 856              		.file 13 "Generated_Source\\PSoC4/Async_Feedback_Counter.h"
+ 857              		.file 14 "Generated_Source\\PSoC4/CapSense.h"
+ 858              		.file 15 "Generated_Source\\PSoC4/CapSense_CSHL.h"
+ 859              		.section	.debug_info,"",%progbits
+ 860              	.Ldebug_info0:
+ 861 0000 BC070000 		.4byte	0x7bc
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 26
+
+
+ 862 0004 0400     		.2byte	0x4
+ 863 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 864 000a 04       		.byte	0x4
+ 865 000b 01       		.uleb128 0x1
+ 866 000c 9A020000 		.4byte	.LASF79
+ 867 0010 01       		.byte	0x1
+ 868 0011 09000000 		.4byte	.LASF80
+ 869 0015 79030000 		.4byte	.LASF81
+ 870 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 871 001d 00000000 		.4byte	0
+ 872 0021 00000000 		.4byte	.Ldebug_line0
+ 873 0025 02       		.uleb128 0x2
+ 874 0026 01       		.byte	0x1
+ 875 0027 06       		.byte	0x6
+ 876 0028 11040000 		.4byte	.LASF0
+ 877 002c 02       		.uleb128 0x2
+ 878 002d 01       		.byte	0x1
+ 879 002e 08       		.byte	0x8
+ 880 002f 4B030000 		.4byte	.LASF1
+ 881 0033 02       		.uleb128 0x2
+ 882 0034 02       		.byte	0x2
+ 883 0035 05       		.byte	0x5
+ 884 0036 77000000 		.4byte	.LASF2
+ 885 003a 02       		.uleb128 0x2
+ 886 003b 02       		.byte	0x2
+ 887 003c 07       		.byte	0x7
+ 888 003d 91040000 		.4byte	.LASF3
+ 889 0041 02       		.uleb128 0x2
+ 890 0042 04       		.byte	0x4
+ 891 0043 05       		.byte	0x5
+ 892 0044 06020000 		.4byte	.LASF4
+ 893 0048 02       		.uleb128 0x2
+ 894 0049 04       		.byte	0x4
+ 895 004a 07       		.byte	0x7
+ 896 004b 0E050000 		.4byte	.LASF5
+ 897 004f 02       		.uleb128 0x2
+ 898 0050 08       		.byte	0x8
+ 899 0051 05       		.byte	0x5
+ 900 0052 DF010000 		.4byte	.LASF6
+ 901 0056 02       		.uleb128 0x2
+ 902 0057 08       		.byte	0x8
+ 903 0058 07       		.byte	0x7
+ 904 0059 1D040000 		.4byte	.LASF7
+ 905 005d 03       		.uleb128 0x3
+ 906 005e 04       		.byte	0x4
+ 907 005f 05       		.byte	0x5
+ 908 0060 696E7400 		.ascii	"int\000"
+ 909 0064 02       		.uleb128 0x2
+ 910 0065 04       		.byte	0x4
+ 911 0066 07       		.byte	0x7
+ 912 0067 56040000 		.4byte	.LASF8
+ 913 006b 04       		.uleb128 0x4
+ 914 006c E5040000 		.4byte	.LASF9
+ 915 0070 02       		.byte	0x2
+ 916 0071 3801     		.2byte	0x138
+ 917 0073 2C000000 		.4byte	0x2c
+ 918 0077 04       		.uleb128 0x4
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 27
+
+
+ 919 0078 F5000000 		.4byte	.LASF10
+ 920 007c 02       		.byte	0x2
+ 921 007d 3901     		.2byte	0x139
+ 922 007f 3A000000 		.4byte	0x3a
+ 923 0083 04       		.uleb128 0x4
+ 924 0084 07050000 		.4byte	.LASF11
+ 925 0088 02       		.byte	0x2
+ 926 0089 3A01     		.2byte	0x13a
+ 927 008b 48000000 		.4byte	0x48
+ 928 008f 04       		.uleb128 0x4
+ 929 0090 ED010000 		.4byte	.LASF12
+ 930 0094 02       		.byte	0x2
+ 931 0095 3B01     		.2byte	0x13b
+ 932 0097 25000000 		.4byte	0x25
+ 933 009b 04       		.uleb128 0x4
+ 934 009c 20050000 		.4byte	.LASF13
+ 935 00a0 02       		.byte	0x2
+ 936 00a1 3D01     		.2byte	0x13d
+ 937 00a3 41000000 		.4byte	0x41
+ 938 00a7 02       		.uleb128 0x2
+ 939 00a8 04       		.byte	0x4
+ 940 00a9 04       		.byte	0x4
+ 941 00aa BB010000 		.4byte	.LASF14
+ 942 00ae 02       		.uleb128 0x2
+ 943 00af 08       		.byte	0x8
+ 944 00b0 04       		.byte	0x4
+ 945 00b1 26050000 		.4byte	.LASF15
+ 946 00b5 04       		.uleb128 0x4
+ 947 00b6 94000000 		.4byte	.LASF16
+ 948 00ba 02       		.byte	0x2
+ 949 00bb 4901     		.2byte	0x149
+ 950 00bd C1000000 		.4byte	0xc1
+ 951 00c1 02       		.uleb128 0x2
+ 952 00c2 01       		.byte	0x1
+ 953 00c3 08       		.byte	0x8
+ 954 00c4 C5040000 		.4byte	.LASF17
+ 955 00c8 05       		.uleb128 0x5
+ 956 00c9 6B000000 		.4byte	0x6b
+ 957 00cd 04       		.uleb128 0x4
+ 958 00ce 83040000 		.4byte	.LASF18
+ 959 00d2 02       		.byte	0x2
+ 960 00d3 E401     		.2byte	0x1e4
+ 961 00d5 D9000000 		.4byte	0xd9
+ 962 00d9 05       		.uleb128 0x5
+ 963 00da 83000000 		.4byte	0x83
+ 964 00de 02       		.uleb128 0x2
+ 965 00df 04       		.byte	0x4
+ 966 00e0 07       		.byte	0x7
+ 967 00e1 81000000 		.4byte	.LASF19
+ 968 00e5 06       		.uleb128 0x6
+ 969 00e6 04       		.byte	0x4
+ 970 00e7 C1000000 		.4byte	0xc1
+ 971 00eb 06       		.uleb128 0x6
+ 972 00ec 04       		.byte	0x4
+ 973 00ed F1000000 		.4byte	0xf1
+ 974 00f1 07       		.uleb128 0x7
+ 975 00f2 C1000000 		.4byte	0xc1
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 28
+
+
+ 976 00f6 06       		.uleb128 0x6
+ 977 00f7 04       		.byte	0x4
+ 978 00f8 FC000000 		.4byte	0xfc
+ 979 00fc 07       		.uleb128 0x7
+ 980 00fd 6B000000 		.4byte	0x6b
+ 981 0101 08       		.uleb128 0x8
+ 982 0102 01       		.byte	0x1
+ 983 0103 03       		.byte	0x3
+ 984 0104 9D       		.byte	0x9d
+ 985 0105 70010000 		.4byte	0x170
+ 986 0109 09       		.uleb128 0x9
+ 987 010a B8040000 		.4byte	.LASF20
+ 988 010e 00       		.sleb128 0
+ 989 010f 09       		.uleb128 0x9
+ 990 0110 D5040000 		.4byte	.LASF21
+ 991 0114 01       		.sleb128 1
+ 992 0115 09       		.uleb128 0x9
+ 993 0116 A8010000 		.4byte	.LASF22
+ 994 011a 02       		.sleb128 2
+ 995 011b 09       		.uleb128 0x9
+ 996 011c F2010000 		.4byte	.LASF23
+ 997 0120 03       		.sleb128 3
+ 998 0121 09       		.uleb128 0x9
+ 999 0122 9A000000 		.4byte	.LASF24
+ 1000 0126 04       		.sleb128 4
+ 1001 0127 09       		.uleb128 0x9
+ 1002 0128 CF000000 		.4byte	.LASF25
+ 1003 012c 05       		.sleb128 5
+ 1004 012d 09       		.uleb128 0x9
+ 1005 012e 69010000 		.4byte	.LASF26
+ 1006 0132 06       		.sleb128 6
+ 1007 0133 09       		.uleb128 0x9
+ 1008 0134 4F050000 		.4byte	.LASF27
+ 1009 0138 07       		.sleb128 7
+ 1010 0139 09       		.uleb128 0x9
+ 1011 013a 87020000 		.4byte	.LASF28
+ 1012 013e 08       		.sleb128 8
+ 1013 013f 09       		.uleb128 0x9
+ 1014 0140 F1040000 		.4byte	.LASF29
+ 1015 0144 09       		.sleb128 9
+ 1016 0145 09       		.uleb128 0x9
+ 1017 0146 93050000 		.4byte	.LASF30
+ 1018 014a 0A       		.sleb128 10
+ 1019 014b 09       		.uleb128 0x9
+ 1020 014c A9050000 		.4byte	.LASF31
+ 1021 0150 0B       		.sleb128 11
+ 1022 0151 09       		.uleb128 0x9
+ 1023 0152 41000000 		.4byte	.LASF32
+ 1024 0156 0C       		.sleb128 12
+ 1025 0157 09       		.uleb128 0x9
+ 1026 0158 C1010000 		.4byte	.LASF33
+ 1027 015c 0D       		.sleb128 13
+ 1028 015d 09       		.uleb128 0x9
+ 1029 015e DB050000 		.4byte	.LASF34
+ 1030 0162 0E       		.sleb128 14
+ 1031 0163 09       		.uleb128 0x9
+ 1032 0164 34040000 		.4byte	.LASF35
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 29
+
+
+ 1033 0168 0F       		.sleb128 15
+ 1034 0169 09       		.uleb128 0x9
+ 1035 016a 59010000 		.4byte	.LASF36
+ 1036 016e 10       		.sleb128 16
+ 1037 016f 00       		.byte	0
+ 1038 0170 0A       		.uleb128 0xa
+ 1039 0171 01060000 		.4byte	.LASF37
+ 1040 0175 03       		.byte	0x3
+ 1041 0176 AF       		.byte	0xaf
+ 1042 0177 01010000 		.4byte	0x101
+ 1043 017b 0B       		.uleb128 0xb
+ 1044 017c FC000000 		.4byte	.LASF82
+ 1045 0180 01       		.byte	0x1
+ 1046 0181 BE       		.byte	0xbe
+ 1047 0182 00000000 		.4byte	.LFB327
+ 1048 0186 DC010000 		.4byte	.LFE327-.LFB327
+ 1049 018a 01       		.uleb128 0x1
+ 1050 018b 9C       		.byte	0x9c
+ 1051 018c D7020000 		.4byte	0x2d7
+ 1052 0190 0C       		.uleb128 0xc
+ 1053 0191 D3050000 		.4byte	.LASF47
+ 1054 0195 01       		.byte	0x1
+ 1055 0196 BE       		.byte	0xbe
+ 1056 0197 83000000 		.4byte	0x83
+ 1057 019b 00000000 		.4byte	.LLST0
+ 1058 019f 0D       		.uleb128 0xd
+ 1059 01a0 2D050000 		.4byte	.LASF38
+ 1060 01a4 01       		.byte	0x1
+ 1061 01a5 C0       		.byte	0xc0
+ 1062 01a6 83000000 		.4byte	0x83
+ 1063 01aa 05       		.uleb128 0x5
+ 1064 01ab 03       		.byte	0x3
+ 1065 01ac 00000000 		.4byte	volUpdateThreshold.9315
+ 1066 01b0 0D       		.uleb128 0xd
+ 1067 01b1 30030000 		.4byte	.LASF39
+ 1068 01b5 01       		.byte	0x1
+ 1069 01b6 C1       		.byte	0xc1
+ 1070 01b7 6B000000 		.4byte	0x6b
+ 1071 01bb 05       		.uleb128 0x5
+ 1072 01bc 03       		.byte	0x3
+ 1073 01bd 05000000 		.4byte	prevReport.9316
+ 1074 01c1 0D       		.uleb128 0xd
+ 1075 01c2 86050000 		.4byte	.LASF40
+ 1076 01c6 01       		.byte	0x1
+ 1077 01c7 C2       		.byte	0xc2
+ 1078 01c8 D7020000 		.4byte	0x2d7
+ 1079 01cc 05       		.uleb128 0x5
+ 1080 01cd 03       		.byte	0x3
+ 1081 01ce 04000000 		.4byte	volumeReport.9317
+ 1082 01d2 0E       		.uleb128 0xe
+ 1083 01d3 24000000 		.4byte	.LVL2
+ 1084 01d7 88060000 		.4byte	0x688
+ 1085 01db E9010000 		.4byte	0x1e9
+ 1086 01df 0F       		.uleb128 0xf
+ 1087 01e0 01       		.uleb128 0x1
+ 1088 01e1 50       		.byte	0x50
+ 1089 01e2 05       		.uleb128 0x5
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 30
+
+
+ 1090 01e3 03       		.byte	0x3
+ 1091 01e4 00000000 		.4byte	.LC3
+ 1092 01e8 00       		.byte	0
+ 1093 01e9 0E       		.uleb128 0xe
+ 1094 01ea 36000000 		.4byte	.LVL5
+ 1095 01ee 88060000 		.4byte	0x688
+ 1096 01f2 00020000 		.4byte	0x200
+ 1097 01f6 0F       		.uleb128 0xf
+ 1098 01f7 01       		.uleb128 0x1
+ 1099 01f8 50       		.byte	0x50
+ 1100 01f9 05       		.uleb128 0x5
+ 1101 01fa 03       		.byte	0x3
+ 1102 01fb 10000000 		.4byte	.LC5
+ 1103 01ff 00       		.byte	0
+ 1104 0200 0E       		.uleb128 0xe
+ 1105 0201 48000000 		.4byte	.LVL8
+ 1106 0205 88060000 		.4byte	0x688
+ 1107 0209 17020000 		.4byte	0x217
+ 1108 020d 0F       		.uleb128 0xf
+ 1109 020e 01       		.uleb128 0x1
+ 1110 020f 50       		.byte	0x50
+ 1111 0210 05       		.uleb128 0x5
+ 1112 0211 03       		.byte	0x3
+ 1113 0212 20000000 		.4byte	.LC7
+ 1114 0216 00       		.byte	0
+ 1115 0217 0E       		.uleb128 0xe
+ 1116 0218 5A000000 		.4byte	.LVL11
+ 1117 021c 88060000 		.4byte	0x688
+ 1118 0220 2E020000 		.4byte	0x22e
+ 1119 0224 0F       		.uleb128 0xf
+ 1120 0225 01       		.uleb128 0x1
+ 1121 0226 50       		.byte	0x50
+ 1122 0227 05       		.uleb128 0x5
+ 1123 0228 03       		.byte	0x3
+ 1124 0229 28000000 		.4byte	.LC9
+ 1125 022d 00       		.byte	0
+ 1126 022e 0E       		.uleb128 0xe
+ 1127 022f 6C000000 		.4byte	.LVL14
+ 1128 0233 88060000 		.4byte	0x688
+ 1129 0237 45020000 		.4byte	0x245
+ 1130 023b 0F       		.uleb128 0xf
+ 1131 023c 01       		.uleb128 0x1
+ 1132 023d 50       		.byte	0x50
+ 1133 023e 05       		.uleb128 0x5
+ 1134 023f 03       		.byte	0x3
+ 1135 0240 30000000 		.4byte	.LC11
+ 1136 0244 00       		.byte	0
+ 1137 0245 0E       		.uleb128 0xe
+ 1138 0246 80000000 		.4byte	.LVL15
+ 1139 024a 88060000 		.4byte	0x688
+ 1140 024e 5C020000 		.4byte	0x25c
+ 1141 0252 0F       		.uleb128 0xf
+ 1142 0253 01       		.uleb128 0x1
+ 1143 0254 50       		.byte	0x50
+ 1144 0255 05       		.uleb128 0x5
+ 1145 0256 03       		.byte	0x3
+ 1146 0257 40000000 		.4byte	.LC14
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 31
+
+
+ 1147 025b 00       		.byte	0
+ 1148 025c 0E       		.uleb128 0xe
+ 1149 025d 92000000 		.4byte	.LVL16
+ 1150 0261 88060000 		.4byte	0x688
+ 1151 0265 73020000 		.4byte	0x273
+ 1152 0269 0F       		.uleb128 0xf
+ 1153 026a 01       		.uleb128 0x1
+ 1154 026b 50       		.byte	0x50
+ 1155 026c 05       		.uleb128 0x5
+ 1156 026d 03       		.byte	0x3
+ 1157 026e 5C000000 		.4byte	.LC16
+ 1158 0272 00       		.byte	0
+ 1159 0273 0E       		.uleb128 0xe
+ 1160 0274 AC000000 		.4byte	.LVL17
+ 1161 0278 88060000 		.4byte	0x688
+ 1162 027c 8A020000 		.4byte	0x28a
+ 1163 0280 0F       		.uleb128 0xf
+ 1164 0281 01       		.uleb128 0x1
+ 1165 0282 50       		.byte	0x50
+ 1166 0283 05       		.uleb128 0x5
+ 1167 0284 03       		.byte	0x3
+ 1168 0285 78000000 		.4byte	.LC19
+ 1169 0289 00       		.byte	0
+ 1170 028a 0E       		.uleb128 0xe
+ 1171 028b D8000000 		.4byte	.LVL18
+ 1172 028f 88060000 		.4byte	0x688
+ 1173 0293 A1020000 		.4byte	0x2a1
+ 1174 0297 0F       		.uleb128 0xf
+ 1175 0298 01       		.uleb128 0x1
+ 1176 0299 50       		.byte	0x50
+ 1177 029a 05       		.uleb128 0x5
+ 1178 029b 03       		.byte	0x3
+ 1179 029c 8C000000 		.4byte	.LC21
+ 1180 02a0 00       		.byte	0
+ 1181 02a1 10       		.uleb128 0x10
+ 1182 02a2 60010000 		.4byte	.LVL19
+ 1183 02a6 A5060000 		.4byte	0x6a5
+ 1184 02aa 0E       		.uleb128 0xe
+ 1185 02ab 6A010000 		.4byte	.LVL20
+ 1186 02af B1060000 		.4byte	0x6b1
+ 1187 02b3 BD020000 		.4byte	0x2bd
+ 1188 02b7 0F       		.uleb128 0xf
+ 1189 02b8 01       		.uleb128 0x1
+ 1190 02b9 50       		.byte	0x50
+ 1191 02ba 01       		.uleb128 0x1
+ 1192 02bb 34       		.byte	0x34
+ 1193 02bc 00       		.byte	0
+ 1194 02bd 11       		.uleb128 0x11
+ 1195 02be 96010000 		.4byte	.LVL21
+ 1196 02c2 C7060000 		.4byte	0x6c7
+ 1197 02c6 0F       		.uleb128 0xf
+ 1198 02c7 01       		.uleb128 0x1
+ 1199 02c8 52       		.byte	0x52
+ 1200 02c9 01       		.uleb128 0x1
+ 1201 02ca 31       		.byte	0x31
+ 1202 02cb 0F       		.uleb128 0xf
+ 1203 02cc 01       		.uleb128 0x1
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 32
+
+
+ 1204 02cd 51       		.byte	0x51
+ 1205 02ce 01       		.uleb128 0x1
+ 1206 02cf 30       		.byte	0x30
+ 1207 02d0 0F       		.uleb128 0xf
+ 1208 02d1 01       		.uleb128 0x1
+ 1209 02d2 50       		.byte	0x50
+ 1210 02d3 01       		.uleb128 0x1
+ 1211 02d4 34       		.byte	0x34
+ 1212 02d5 00       		.byte	0
+ 1213 02d6 00       		.byte	0
+ 1214 02d7 02       		.uleb128 0x2
+ 1215 02d8 01       		.byte	0x1
+ 1216 02d9 02       		.byte	0x2
+ 1217 02da EB040000 		.4byte	.LASF41
+ 1218 02de 12       		.uleb128 0x12
+ 1219 02df 70050000 		.4byte	.LASF83
+ 1220 02e3 01       		.byte	0x1
+ 1221 02e4 7F01     		.2byte	0x17f
+ 1222 02e6 6B000000 		.4byte	0x6b
+ 1223 02ea 00000000 		.4byte	.LFB328
+ 1224 02ee EC000000 		.4byte	.LFE328-.LFB328
+ 1225 02f2 01       		.uleb128 0x1
+ 1226 02f3 9C       		.byte	0x9c
+ 1227 02f4 08040000 		.4byte	0x408
+ 1228 02f8 13       		.uleb128 0x13
+ 1229 02f9 72657400 		.ascii	"ret\000"
+ 1230 02fd 01       		.byte	0x1
+ 1231 02fe 8101     		.2byte	0x181
+ 1232 0300 6B000000 		.4byte	0x6b
+ 1233 0304 84000000 		.4byte	.LLST1
+ 1234 0308 14       		.uleb128 0x14
+ 1235 0309 89040000 		.4byte	.LASF42
+ 1236 030d 01       		.byte	0x1
+ 1237 030e 8201     		.2byte	0x182
+ 1238 0310 9B000000 		.4byte	0x9b
+ 1239 0314 05       		.uleb128 0x5
+ 1240 0315 03       		.byte	0x3
+ 1241 0316 08000000 		.4byte	prevVol.9337
+ 1242 031a 14       		.uleb128 0x14
+ 1243 031b 00000000 		.4byte	.LASF43
+ 1244 031f 01       		.byte	0x1
+ 1245 0320 8301     		.2byte	0x183
+ 1246 0322 6B000000 		.4byte	0x6b
+ 1247 0326 05       		.uleb128 0x5
+ 1248 0327 03       		.byte	0x3
+ 1249 0328 0C000000 		.4byte	prevMute.9338
+ 1250 032c 15       		.uleb128 0x15
+ 1251 032d 73747200 		.ascii	"str\000"
+ 1252 0331 01       		.byte	0x1
+ 1253 0332 8501     		.2byte	0x185
+ 1254 0334 08040000 		.4byte	0x408
+ 1255 0338 02       		.uleb128 0x2
+ 1256 0339 91       		.byte	0x91
+ 1257 033a 5C       		.sleb128 -36
+ 1258 033b 16       		.uleb128 0x16
+ 1259 033c 30020000 		.4byte	.LASF44
+ 1260 0340 01       		.byte	0x1
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 33
+
+
+ 1261 0341 8901     		.2byte	0x189
+ 1262 0343 9B000000 		.4byte	0x9b
+ 1263 0347 08010000 		.4byte	.LLST2
+ 1264 034b 0E       		.uleb128 0xe
+ 1265 034c 48000000 		.4byte	.LVL31
+ 1266 0350 E3060000 		.4byte	0x6e3
+ 1267 0354 5F030000 		.4byte	0x35f
+ 1268 0358 0F       		.uleb128 0xf
+ 1269 0359 01       		.uleb128 0x1
+ 1270 035a 50       		.byte	0x50
+ 1271 035b 02       		.uleb128 0x2
+ 1272 035c 74       		.byte	0x74
+ 1273 035d 00       		.sleb128 0
+ 1274 035e 00       		.byte	0
+ 1275 035f 0E       		.uleb128 0xe
+ 1276 0360 54000000 		.4byte	.LVL34
+ 1277 0364 F8060000 		.4byte	0x6f8
+ 1278 0368 82030000 		.4byte	0x382
+ 1279 036c 0F       		.uleb128 0xf
+ 1280 036d 01       		.uleb128 0x1
+ 1281 036e 52       		.byte	0x52
+ 1282 036f 02       		.uleb128 0x2
+ 1283 0370 74       		.byte	0x74
+ 1284 0371 00       		.sleb128 0
+ 1285 0372 0F       		.uleb128 0xf
+ 1286 0373 01       		.uleb128 0x1
+ 1287 0374 51       		.byte	0x51
+ 1288 0375 05       		.uleb128 0x5
+ 1289 0376 03       		.byte	0x3
+ 1290 0377 A4000000 		.4byte	.LC29
+ 1291 037b 0F       		.uleb128 0xf
+ 1292 037c 01       		.uleb128 0x1
+ 1293 037d 50       		.byte	0x50
+ 1294 037e 02       		.uleb128 0x2
+ 1295 037f 91       		.byte	0x91
+ 1296 0380 5C       		.sleb128 -36
+ 1297 0381 00       		.byte	0
+ 1298 0382 0E       		.uleb128 0xe
+ 1299 0383 5A000000 		.4byte	.LVL35
+ 1300 0387 88060000 		.4byte	0x688
+ 1301 038b 96030000 		.4byte	0x396
+ 1302 038f 0F       		.uleb128 0xf
+ 1303 0390 01       		.uleb128 0x1
+ 1304 0391 50       		.byte	0x50
+ 1305 0392 02       		.uleb128 0x2
+ 1306 0393 91       		.byte	0x91
+ 1307 0394 5C       		.sleb128 -36
+ 1308 0395 00       		.byte	0
+ 1309 0396 0E       		.uleb128 0xe
+ 1310 0397 80000000 		.4byte	.LVL38
+ 1311 039b E3060000 		.4byte	0x6e3
+ 1312 039f A9030000 		.4byte	0x3a9
+ 1313 03a3 0F       		.uleb128 0xf
+ 1314 03a4 01       		.uleb128 0x1
+ 1315 03a5 50       		.byte	0x50
+ 1316 03a6 01       		.uleb128 0x1
+ 1317 03a7 30       		.byte	0x30
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 34
+
+
+ 1318 03a8 00       		.byte	0
+ 1319 03a9 0E       		.uleb128 0xe
+ 1320 03aa 88000000 		.4byte	.LVL41
+ 1321 03ae 88060000 		.4byte	0x688
+ 1322 03b2 C0030000 		.4byte	0x3c0
+ 1323 03b6 0F       		.uleb128 0xf
+ 1324 03b7 01       		.uleb128 0x1
+ 1325 03b8 50       		.byte	0x50
+ 1326 03b9 05       		.uleb128 0x5
+ 1327 03ba 03       		.byte	0x3
+ 1328 03bb BC000000 		.4byte	.LC32
+ 1329 03bf 00       		.byte	0
+ 1330 03c0 0E       		.uleb128 0xe
+ 1331 03c1 B2000000 		.4byte	.LVL47
+ 1332 03c5 E3060000 		.4byte	0x6e3
+ 1333 03c9 D4030000 		.4byte	0x3d4
+ 1334 03cd 0F       		.uleb128 0xf
+ 1335 03ce 01       		.uleb128 0x1
+ 1336 03cf 50       		.byte	0x50
+ 1337 03d0 02       		.uleb128 0x2
+ 1338 03d1 74       		.byte	0x74
+ 1339 03d2 00       		.sleb128 0
+ 1340 03d3 00       		.byte	0
+ 1341 03d4 0E       		.uleb128 0xe
+ 1342 03d5 BE000000 		.4byte	.LVL50
+ 1343 03d9 F8060000 		.4byte	0x6f8
+ 1344 03dd F7030000 		.4byte	0x3f7
+ 1345 03e1 0F       		.uleb128 0xf
+ 1346 03e2 01       		.uleb128 0x1
+ 1347 03e3 52       		.byte	0x52
+ 1348 03e4 02       		.uleb128 0x2
+ 1349 03e5 74       		.byte	0x74
+ 1350 03e6 00       		.sleb128 0
+ 1351 03e7 0F       		.uleb128 0xf
+ 1352 03e8 01       		.uleb128 0x1
+ 1353 03e9 51       		.byte	0x51
+ 1354 03ea 05       		.uleb128 0x5
+ 1355 03eb 03       		.byte	0x3
+ 1356 03ec C4000000 		.4byte	.LC34
+ 1357 03f0 0F       		.uleb128 0xf
+ 1358 03f1 01       		.uleb128 0x1
+ 1359 03f2 50       		.byte	0x50
+ 1360 03f3 02       		.uleb128 0x2
+ 1361 03f4 91       		.byte	0x91
+ 1362 03f5 5C       		.sleb128 -36
+ 1363 03f6 00       		.byte	0
+ 1364 03f7 11       		.uleb128 0x11
+ 1365 03f8 C4000000 		.4byte	.LVL51
+ 1366 03fc 88060000 		.4byte	0x688
+ 1367 0400 0F       		.uleb128 0xf
+ 1368 0401 01       		.uleb128 0x1
+ 1369 0402 50       		.byte	0x50
+ 1370 0403 02       		.uleb128 0x2
+ 1371 0404 91       		.byte	0x91
+ 1372 0405 5C       		.sleb128 -36
+ 1373 0406 00       		.byte	0
+ 1374 0407 00       		.byte	0
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 35
+
+
+ 1375 0408 17       		.uleb128 0x17
+ 1376 0409 C1000000 		.4byte	0xc1
+ 1377 040d 18040000 		.4byte	0x418
+ 1378 0411 18       		.uleb128 0x18
+ 1379 0412 DE000000 		.4byte	0xde
+ 1380 0416 13       		.byte	0x13
+ 1381 0417 00       		.byte	0
+ 1382 0418 19       		.uleb128 0x19
+ 1383 0419 39000000 		.4byte	.LASF45
+ 1384 041d 01       		.byte	0x1
+ 1385 041e 52       		.byte	0x52
+ 1386 041f 00000000 		.4byte	.LFB325
+ 1387 0423 BC000000 		.4byte	.LFE325-.LFB325
+ 1388 0427 01       		.uleb128 0x1
+ 1389 0428 9C       		.byte	0x9c
+ 1390 0429 60050000 		.4byte	0x560
+ 1391 042d 10       		.uleb128 0x10
+ 1392 042e 12000000 		.4byte	.LVL56
+ 1393 0432 13070000 		.4byte	0x713
+ 1394 0436 0E       		.uleb128 0xe
+ 1395 0437 18000000 		.4byte	.LVL57
+ 1396 043b 1A070000 		.4byte	0x71a
+ 1397 043f 49040000 		.4byte	0x449
+ 1398 0443 0F       		.uleb128 0xf
+ 1399 0444 01       		.uleb128 0x1
+ 1400 0445 50       		.byte	0x50
+ 1401 0446 01       		.uleb128 0x1
+ 1402 0447 40       		.byte	0x40
+ 1403 0448 00       		.byte	0
+ 1404 0449 0E       		.uleb128 0xe
+ 1405 044a 22000000 		.4byte	.LVL58
+ 1406 044e 88060000 		.4byte	0x688
+ 1407 0452 60040000 		.4byte	0x460
+ 1408 0456 0F       		.uleb128 0xf
+ 1409 0457 01       		.uleb128 0x1
+ 1410 0458 50       		.byte	0x50
+ 1411 0459 05       		.uleb128 0x5
+ 1412 045a 03       		.byte	0x3
+ 1413 045b E4000000 		.4byte	.LC36
+ 1414 045f 00       		.byte	0
+ 1415 0460 0E       		.uleb128 0xe
+ 1416 0461 2A000000 		.4byte	.LVL59
+ 1417 0465 88060000 		.4byte	0x688
+ 1418 0469 77040000 		.4byte	0x477
+ 1419 046d 0F       		.uleb128 0xf
+ 1420 046e 01       		.uleb128 0x1
+ 1421 046f 50       		.byte	0x50
+ 1422 0470 05       		.uleb128 0x5
+ 1423 0471 03       		.byte	0x3
+ 1424 0472 F8000000 		.4byte	.LC38
+ 1425 0476 00       		.byte	0
+ 1426 0477 10       		.uleb128 0x10
+ 1427 0478 2E000000 		.4byte	.LVL60
+ 1428 047c 2F070000 		.4byte	0x72f
+ 1429 0480 10       		.uleb128 0x10
+ 1430 0481 32000000 		.4byte	.LVL61
+ 1431 0485 36070000 		.4byte	0x736
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 36
+
+
+ 1432 0489 0E       		.uleb128 0xe
+ 1433 048a 3C000000 		.4byte	.LVL62
+ 1434 048e 88060000 		.4byte	0x688
+ 1435 0492 A0040000 		.4byte	0x4a0
+ 1436 0496 0F       		.uleb128 0xf
+ 1437 0497 01       		.uleb128 0x1
+ 1438 0498 50       		.byte	0x50
+ 1439 0499 05       		.uleb128 0x5
+ 1440 049a 03       		.byte	0x3
+ 1441 049b 1C010000 		.4byte	.LC40
+ 1442 049f 00       		.byte	0
+ 1443 04a0 0E       		.uleb128 0xe
+ 1444 04a1 44000000 		.4byte	.LVL63
+ 1445 04a5 88060000 		.4byte	0x688
+ 1446 04a9 B7040000 		.4byte	0x4b7
+ 1447 04ad 0F       		.uleb128 0xf
+ 1448 04ae 01       		.uleb128 0x1
+ 1449 04af 50       		.byte	0x50
+ 1450 04b0 05       		.uleb128 0x5
+ 1451 04b1 03       		.byte	0x3
+ 1452 04b2 34010000 		.4byte	.LC42
+ 1453 04b6 00       		.byte	0
+ 1454 04b7 10       		.uleb128 0x10
+ 1455 04b8 48000000 		.4byte	.LVL64
+ 1456 04bc DE020000 		.4byte	0x2de
+ 1457 04c0 10       		.uleb128 0x10
+ 1458 04c1 4C000000 		.4byte	.LVL65
+ 1459 04c5 41070000 		.4byte	0x741
+ 1460 04c9 0E       		.uleb128 0xe
+ 1461 04ca 54000000 		.4byte	.LVL66
+ 1462 04ce 48070000 		.4byte	0x748
+ 1463 04d2 E1040000 		.4byte	0x4e1
+ 1464 04d6 0F       		.uleb128 0xf
+ 1465 04d7 01       		.uleb128 0x1
+ 1466 04d8 51       		.byte	0x51
+ 1467 04d9 01       		.uleb128 0x1
+ 1468 04da 31       		.byte	0x31
+ 1469 04db 0F       		.uleb128 0xf
+ 1470 04dc 01       		.uleb128 0x1
+ 1471 04dd 50       		.byte	0x50
+ 1472 04de 01       		.uleb128 0x1
+ 1473 04df 30       		.byte	0x30
+ 1474 04e0 00       		.byte	0
+ 1475 04e1 10       		.uleb128 0x10
+ 1476 04e2 66000000 		.4byte	.LVL67
+ 1477 04e6 A5060000 		.4byte	0x6a5
+ 1478 04ea 0E       		.uleb128 0xe
+ 1479 04eb 72000000 		.4byte	.LVL68
+ 1480 04ef 5F070000 		.4byte	0x75f
+ 1481 04f3 FD040000 		.4byte	0x4fd
+ 1482 04f7 0F       		.uleb128 0xf
+ 1483 04f8 01       		.uleb128 0x1
+ 1484 04f9 51       		.byte	0x51
+ 1485 04fa 01       		.uleb128 0x1
+ 1486 04fb 30       		.byte	0x30
+ 1487 04fc 00       		.byte	0
+ 1488 04fd 0E       		.uleb128 0xe
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 37
+
+
+ 1489 04fe 7C000000 		.4byte	.LVL69
+ 1490 0502 C7060000 		.4byte	0x6c7
+ 1491 0506 1E050000 		.4byte	0x51e
+ 1492 050a 0F       		.uleb128 0xf
+ 1493 050b 01       		.uleb128 0x1
+ 1494 050c 52       		.byte	0x52
+ 1495 050d 01       		.uleb128 0x1
+ 1496 050e 31       		.byte	0x31
+ 1497 050f 0F       		.uleb128 0xf
+ 1498 0510 01       		.uleb128 0x1
+ 1499 0511 51       		.byte	0x51
+ 1500 0512 05       		.uleb128 0x5
+ 1501 0513 03       		.byte	0x3
+ 1502 0514 00000000 		.4byte	playlistControlReport
+ 1503 0518 0F       		.uleb128 0xf
+ 1504 0519 01       		.uleb128 0x1
+ 1505 051a 50       		.byte	0x50
+ 1506 051b 01       		.uleb128 0x1
+ 1507 051c 34       		.byte	0x34
+ 1508 051d 00       		.byte	0
+ 1509 051e 0E       		.uleb128 0xe
+ 1510 051f 86000000 		.4byte	.LVL70
+ 1511 0523 C7060000 		.4byte	0x6c7
+ 1512 0527 3B050000 		.4byte	0x53b
+ 1513 052b 0F       		.uleb128 0xf
+ 1514 052c 01       		.uleb128 0x1
+ 1515 052d 52       		.byte	0x52
+ 1516 052e 01       		.uleb128 0x1
+ 1517 052f 31       		.byte	0x31
+ 1518 0530 0F       		.uleb128 0xf
+ 1519 0531 01       		.uleb128 0x1
+ 1520 0532 51       		.byte	0x51
+ 1521 0533 01       		.uleb128 0x1
+ 1522 0534 30       		.byte	0x30
+ 1523 0535 0F       		.uleb128 0xf
+ 1524 0536 01       		.uleb128 0x1
+ 1525 0537 50       		.byte	0x50
+ 1526 0538 01       		.uleb128 0x1
+ 1527 0539 34       		.byte	0x34
+ 1528 053a 00       		.byte	0
+ 1529 053b 10       		.uleb128 0x10
+ 1530 053c 8A000000 		.4byte	.LVL71
+ 1531 0540 75070000 		.4byte	0x775
+ 1532 0544 10       		.uleb128 0x10
+ 1533 0545 8E000000 		.4byte	.LVL72
+ 1534 0549 7C070000 		.4byte	0x77c
+ 1535 054d 10       		.uleb128 0x10
+ 1536 054e 92000000 		.4byte	.LVL73
+ 1537 0552 83070000 		.4byte	0x783
+ 1538 0556 10       		.uleb128 0x10
+ 1539 0557 96000000 		.4byte	.LVL74
+ 1540 055b 8A070000 		.4byte	0x78a
+ 1541 055f 00       		.byte	0
+ 1542 0560 19       		.uleb128 0x19
+ 1543 0561 62020000 		.4byte	.LASF46
+ 1544 0565 01       		.byte	0x1
+ 1545 0566 98       		.byte	0x98
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 38
+
+
+ 1546 0567 00000000 		.4byte	.LFB326
+ 1547 056b 3A000000 		.4byte	.LFE326-.LFB326
+ 1548 056f 01       		.uleb128 0x1
+ 1549 0570 9C       		.byte	0x9c
+ 1550 0571 E1050000 		.4byte	0x5e1
+ 1551 0575 1A       		.uleb128 0x1a
+ 1552 0576 D3050000 		.4byte	.LASF47
+ 1553 057a 01       		.byte	0x1
+ 1554 057b 9A       		.byte	0x9a
+ 1555 057c 83000000 		.4byte	0x83
+ 1556 0580 69010000 		.4byte	.LLST3
+ 1557 0584 10       		.uleb128 0x10
+ 1558 0585 06000000 		.4byte	.LVL76
+ 1559 0589 91070000 		.4byte	0x791
+ 1560 058d 10       		.uleb128 0x10
+ 1561 058e 0E000000 		.4byte	.LVL77
+ 1562 0592 9C070000 		.4byte	0x79c
+ 1563 0596 10       		.uleb128 0x10
+ 1564 0597 12000000 		.4byte	.LVL78
+ 1565 059b A3070000 		.4byte	0x7a3
+ 1566 059f 10       		.uleb128 0x10
+ 1567 05a0 18000000 		.4byte	.LVL79
+ 1568 05a4 AE070000 		.4byte	0x7ae
+ 1569 05a8 10       		.uleb128 0x10
+ 1570 05a9 1E000000 		.4byte	.LVL81
+ 1571 05ad 8A070000 		.4byte	0x78a
+ 1572 05b1 10       		.uleb128 0x10
+ 1573 05b2 22000000 		.4byte	.LVL82
+ 1574 05b6 A5060000 		.4byte	0x6a5
+ 1575 05ba 0E       		.uleb128 0xe
+ 1576 05bb 2C000000 		.4byte	.LVL83
+ 1577 05bf 7B010000 		.4byte	0x17b
+ 1578 05c3 CE050000 		.4byte	0x5ce
+ 1579 05c7 0F       		.uleb128 0xf
+ 1580 05c8 01       		.uleb128 0x1
+ 1581 05c9 50       		.byte	0x50
+ 1582 05ca 02       		.uleb128 0x2
+ 1583 05cb 74       		.byte	0x74
+ 1584 05cc 00       		.sleb128 0
+ 1585 05cd 00       		.byte	0
+ 1586 05ce 10       		.uleb128 0x10
+ 1587 05cf 30000000 		.4byte	.LVL84
+ 1588 05d3 A5060000 		.4byte	0x6a5
+ 1589 05d7 10       		.uleb128 0x10
+ 1590 05d8 38000000 		.4byte	.LVL85
+ 1591 05dc DE020000 		.4byte	0x2de
+ 1592 05e0 00       		.byte	0
+ 1593 05e1 1B       		.uleb128 0x1b
+ 1594 05e2 0D010000 		.4byte	.LASF48
+ 1595 05e6 04       		.byte	0x4
+ 1596 05e7 DB02     		.2byte	0x2db
+ 1597 05e9 C8000000 		.4byte	0xc8
+ 1598 05ed 1C       		.uleb128 0x1c
+ 1599 05ee 71040000 		.4byte	.LASF49
+ 1600 05f2 01       		.byte	0x1
+ 1601 05f3 3F       		.byte	0x3f
+ 1602 05f4 C8000000 		.4byte	0xc8
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 39
+
+
+ 1603 05f8 17       		.uleb128 0x17
+ 1604 05f9 6B000000 		.4byte	0x6b
+ 1605 05fd 08060000 		.4byte	0x608
+ 1606 0601 18       		.uleb128 0x18
+ 1607 0602 DE000000 		.4byte	0xde
+ 1608 0606 01       		.byte	0x1
+ 1609 0607 00       		.byte	0
+ 1610 0608 1C       		.uleb128 0x1c
+ 1611 0609 37020000 		.4byte	.LASF50
+ 1612 060d 01       		.byte	0x1
+ 1613 060e 3E       		.byte	0x3e
+ 1614 060f 13060000 		.4byte	0x613
+ 1615 0613 05       		.uleb128 0x5
+ 1616 0614 F8050000 		.4byte	0x5f8
+ 1617 0618 1C       		.uleb128 0x1c
+ 1618 0619 99010000 		.4byte	.LASF51
+ 1619 061d 05       		.byte	0x5
+ 1620 061e 47       		.byte	0x47
+ 1621 061f 6B000000 		.4byte	0x6b
+ 1622 0623 1C       		.uleb128 0x1c
+ 1623 0624 EC050000 		.4byte	.LASF52
+ 1624 0628 03       		.byte	0x3
+ 1625 0629 B7       		.byte	0xb7
+ 1626 062a 83000000 		.4byte	0x83
+ 1627 062e 1C       		.uleb128 0x1c
+ 1628 062f A4040000 		.4byte	.LASF53
+ 1629 0633 03       		.byte	0x3
+ 1630 0634 BD       		.byte	0xbd
+ 1631 0635 9B000000 		.4byte	0x9b
+ 1632 0639 1C       		.uleb128 0x1c
+ 1633 063a 0A040000 		.4byte	.LASF54
+ 1634 063e 03       		.byte	0x3
+ 1635 063f BF       		.byte	0xbf
+ 1636 0640 83000000 		.4byte	0x83
+ 1637 0644 1D       		.uleb128 0x1d
+ 1638 0645 71020000 		.4byte	.LASF55
+ 1639 0649 01       		.byte	0x1
+ 1640 064a 39       		.byte	0x39
+ 1641 064b 6B000000 		.4byte	0x6b
+ 1642 064f 05       		.uleb128 0x5
+ 1643 0650 03       		.byte	0x3
+ 1644 0651 00000000 		.4byte	playlistControlReport
+ 1645 0655 1D       		.uleb128 0x1d
+ 1646 0656 30030000 		.4byte	.LASF39
+ 1647 065a 01       		.byte	0x1
+ 1648 065b 3A       		.byte	0x3a
+ 1649 065c 6B000000 		.4byte	0x6b
+ 1650 0660 05       		.uleb128 0x5
+ 1651 0661 03       		.byte	0x3
+ 1652 0662 00000000 		.4byte	prevReport
+ 1653 0666 1D       		.uleb128 0x1d
+ 1654 0667 E2000000 		.4byte	.LASF56
+ 1655 066b 01       		.byte	0x1
+ 1656 066c 3B       		.byte	0x3b
+ 1657 066d 6B000000 		.4byte	0x6b
+ 1658 0671 05       		.uleb128 0x5
+ 1659 0672 03       		.byte	0x3
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 40
+
+
+ 1660 0673 00000000 		.4byte	audioControlStatus
+ 1661 0677 1D       		.uleb128 0x1d
+ 1662 0678 3B030000 		.4byte	.LASF57
+ 1663 067c 01       		.byte	0x1
+ 1664 067d 3C       		.byte	0x3c
+ 1665 067e 6B000000 		.4byte	0x6b
+ 1666 0682 05       		.uleb128 0x5
+ 1667 0683 03       		.byte	0x3
+ 1668 0684 00000000 		.4byte	reportClearFlag
+ 1669 0688 1E       		.uleb128 0x1e
+ 1670 0689 21010000 		.4byte	.LASF58
+ 1671 068d 06       		.byte	0x6
+ 1672 068e 7701     		.2byte	0x177
+ 1673 0690 9A060000 		.4byte	0x69a
+ 1674 0694 1F       		.uleb128 0x1f
+ 1675 0695 9A060000 		.4byte	0x69a
+ 1676 0699 00       		.byte	0
+ 1677 069a 06       		.uleb128 0x6
+ 1678 069b 04       		.byte	0x4
+ 1679 069c A0060000 		.4byte	0x6a0
+ 1680 06a0 07       		.uleb128 0x7
+ 1681 06a1 B5000000 		.4byte	0xb5
+ 1682 06a5 20       		.uleb128 0x20
+ 1683 06a6 4B020000 		.4byte	.LASF66
+ 1684 06aa 04       		.byte	0x4
+ 1685 06ab 3501     		.2byte	0x135
+ 1686 06ad 6B000000 		.4byte	0x6b
+ 1687 06b1 21       		.uleb128 0x21
+ 1688 06b2 0F020000 		.4byte	.LASF60
+ 1689 06b6 04       		.byte	0x4
+ 1690 06b7 3801     		.2byte	0x138
+ 1691 06b9 6B000000 		.4byte	0x6b
+ 1692 06bd C7060000 		.4byte	0x6c7
+ 1693 06c1 1F       		.uleb128 0x1f
+ 1694 06c2 6B000000 		.4byte	0x6b
+ 1695 06c6 00       		.byte	0
+ 1696 06c7 1E       		.uleb128 0x1e
+ 1697 06c8 40050000 		.4byte	.LASF59
+ 1698 06cc 04       		.byte	0x4
+ 1699 06cd 3A01     		.2byte	0x13a
+ 1700 06cf E3060000 		.4byte	0x6e3
+ 1701 06d3 1F       		.uleb128 0x1f
+ 1702 06d4 6B000000 		.4byte	0x6b
+ 1703 06d8 1F       		.uleb128 0x1f
+ 1704 06d9 F6000000 		.4byte	0xf6
+ 1705 06dd 1F       		.uleb128 0x1f
+ 1706 06de 77000000 		.4byte	0x77
+ 1707 06e2 00       		.byte	0
+ 1708 06e3 22       		.uleb128 0x22
+ 1709 06e4 59030000 		.4byte	.LASF61
+ 1710 06e8 07       		.byte	0x7
+ 1711 06e9 A9       		.byte	0xa9
+ 1712 06ea 6B000000 		.4byte	0x6b
+ 1713 06ee F8060000 		.4byte	0x6f8
+ 1714 06f2 1F       		.uleb128 0x1f
+ 1715 06f3 6B000000 		.4byte	0x6b
+ 1716 06f7 00       		.byte	0
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 41
+
+
+ 1717 06f8 22       		.uleb128 0x22
+ 1718 06f9 28030000 		.4byte	.LASF62
+ 1719 06fd 08       		.byte	0x8
+ 1720 06fe DE       		.byte	0xde
+ 1721 06ff 5D000000 		.4byte	0x5d
+ 1722 0703 13070000 		.4byte	0x713
+ 1723 0707 1F       		.uleb128 0x1f
+ 1724 0708 E5000000 		.4byte	0xe5
+ 1725 070c 1F       		.uleb128 0x1f
+ 1726 070d EB000000 		.4byte	0xeb
+ 1727 0711 23       		.uleb128 0x23
+ 1728 0712 00       		.byte	0
+ 1729 0713 24       		.uleb128 0x24
+ 1730 0714 CA040000 		.4byte	.LASF64
+ 1731 0718 0A       		.byte	0xa
+ 1732 0719 68       		.byte	0x68
+ 1733 071a 22       		.uleb128 0x22
+ 1734 071b 34010000 		.4byte	.LASF63
+ 1735 071f 09       		.byte	0x9
+ 1736 0720 64       		.byte	0x64
+ 1737 0721 83000000 		.4byte	0x83
+ 1738 0725 2F070000 		.4byte	0x72f
+ 1739 0729 1F       		.uleb128 0x1f
+ 1740 072a 83000000 		.4byte	0x83
+ 1741 072e 00       		.byte	0
+ 1742 072f 24       		.uleb128 0x24
+ 1743 0730 20020000 		.4byte	.LASF65
+ 1744 0734 0B       		.byte	0xb
+ 1745 0735 68       		.byte	0x68
+ 1746 0736 25       		.uleb128 0x25
+ 1747 0737 AD040000 		.4byte	.LASF67
+ 1748 073b 07       		.byte	0x7
+ 1749 073c A7       		.byte	0xa7
+ 1750 073d 6B000000 		.4byte	0x6b
+ 1751 0741 24       		.uleb128 0x24
+ 1752 0742 8A000000 		.4byte	.LASF68
+ 1753 0746 0C       		.byte	0xc
+ 1754 0747 28       		.byte	0x28
+ 1755 0748 1E       		.uleb128 0x1e
+ 1756 0749 C7050000 		.4byte	.LASF69
+ 1757 074d 04       		.byte	0x4
+ 1758 074e 3201     		.2byte	0x132
+ 1759 0750 5F070000 		.4byte	0x75f
+ 1760 0754 1F       		.uleb128 0x1f
+ 1761 0755 6B000000 		.4byte	0x6b
+ 1762 0759 1F       		.uleb128 0x1f
+ 1763 075a 6B000000 		.4byte	0x6b
+ 1764 075e 00       		.byte	0
+ 1765 075f 26       		.uleb128 0x26
+ 1766 0760 48010000 		.4byte	.LASF70
+ 1767 0764 09       		.byte	0x9
+ 1768 0765 4C       		.byte	0x4c
+ 1769 0766 75070000 		.4byte	0x775
+ 1770 076a 1F       		.uleb128 0x1f
+ 1771 076b 6B000000 		.4byte	0x6b
+ 1772 076f 1F       		.uleb128 0x1f
+ 1773 0770 6B000000 		.4byte	0x6b
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 42
+
+
+ 1774 0774 00       		.byte	0
+ 1775 0775 24       		.uleb128 0x24
+ 1776 0776 0C060000 		.4byte	.LASF71
+ 1777 077a 0D       		.byte	0xd
+ 1778 077b 5A       		.byte	0x5a
+ 1779 077c 24       		.uleb128 0x24
+ 1780 077d 47040000 		.4byte	.LASF72
+ 1781 0781 0E       		.byte	0xe
+ 1782 0782 A1       		.byte	0xa1
+ 1783 0783 24       		.uleb128 0x24
+ 1784 0784 57000000 		.4byte	.LASF73
+ 1785 0788 0F       		.byte	0xf
+ 1786 0789 B0       		.byte	0xb0
+ 1787 078a 24       		.uleb128 0x24
+ 1788 078b 7D010000 		.4byte	.LASF74
+ 1789 078f 0E       		.byte	0xe
+ 1790 0790 AA       		.byte	0xaa
+ 1791 0791 25       		.uleb128 0x25
+ 1792 0792 60050000 		.4byte	.LASF75
+ 1793 0796 0E       		.byte	0xe
+ 1794 0797 A7       		.byte	0xa7
+ 1795 0798 83000000 		.4byte	0x83
+ 1796 079c 24       		.uleb128 0x24
+ 1797 079d AF000000 		.4byte	.LASF76
+ 1798 07a1 0F       		.byte	0xf
+ 1799 07a2 B4       		.byte	0xb4
+ 1800 07a3 25       		.uleb128 0x25
+ 1801 07a4 19000000 		.4byte	.LASF77
+ 1802 07a8 0F       		.byte	0xf
+ 1803 07a9 DC       		.byte	0xdc
+ 1804 07aa 83000000 		.4byte	0x83
+ 1805 07ae 27       		.uleb128 0x27
+ 1806 07af 63040000 		.4byte	.LASF78
+ 1807 07b3 03       		.byte	0x3
+ 1808 07b4 B5       		.byte	0xb5
+ 1809 07b5 70010000 		.4byte	0x170
+ 1810 07b9 1F       		.uleb128 0x1f
+ 1811 07ba 6B000000 		.4byte	0x6b
+ 1812 07be 00       		.byte	0
+ 1813 07bf 00       		.byte	0
+ 1814              		.section	.debug_abbrev,"",%progbits
+ 1815              	.Ldebug_abbrev0:
+ 1816 0000 01       		.uleb128 0x1
+ 1817 0001 11       		.uleb128 0x11
+ 1818 0002 01       		.byte	0x1
+ 1819 0003 25       		.uleb128 0x25
+ 1820 0004 0E       		.uleb128 0xe
+ 1821 0005 13       		.uleb128 0x13
+ 1822 0006 0B       		.uleb128 0xb
+ 1823 0007 03       		.uleb128 0x3
+ 1824 0008 0E       		.uleb128 0xe
+ 1825 0009 1B       		.uleb128 0x1b
+ 1826 000a 0E       		.uleb128 0xe
+ 1827 000b 55       		.uleb128 0x55
+ 1828 000c 17       		.uleb128 0x17
+ 1829 000d 11       		.uleb128 0x11
+ 1830 000e 01       		.uleb128 0x1
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 43
+
+
+ 1831 000f 10       		.uleb128 0x10
+ 1832 0010 17       		.uleb128 0x17
+ 1833 0011 00       		.byte	0
+ 1834 0012 00       		.byte	0
+ 1835 0013 02       		.uleb128 0x2
+ 1836 0014 24       		.uleb128 0x24
+ 1837 0015 00       		.byte	0
+ 1838 0016 0B       		.uleb128 0xb
+ 1839 0017 0B       		.uleb128 0xb
+ 1840 0018 3E       		.uleb128 0x3e
+ 1841 0019 0B       		.uleb128 0xb
+ 1842 001a 03       		.uleb128 0x3
+ 1843 001b 0E       		.uleb128 0xe
+ 1844 001c 00       		.byte	0
+ 1845 001d 00       		.byte	0
+ 1846 001e 03       		.uleb128 0x3
+ 1847 001f 24       		.uleb128 0x24
+ 1848 0020 00       		.byte	0
+ 1849 0021 0B       		.uleb128 0xb
+ 1850 0022 0B       		.uleb128 0xb
+ 1851 0023 3E       		.uleb128 0x3e
+ 1852 0024 0B       		.uleb128 0xb
+ 1853 0025 03       		.uleb128 0x3
+ 1854 0026 08       		.uleb128 0x8
+ 1855 0027 00       		.byte	0
+ 1856 0028 00       		.byte	0
+ 1857 0029 04       		.uleb128 0x4
+ 1858 002a 16       		.uleb128 0x16
+ 1859 002b 00       		.byte	0
+ 1860 002c 03       		.uleb128 0x3
+ 1861 002d 0E       		.uleb128 0xe
+ 1862 002e 3A       		.uleb128 0x3a
+ 1863 002f 0B       		.uleb128 0xb
+ 1864 0030 3B       		.uleb128 0x3b
+ 1865 0031 05       		.uleb128 0x5
+ 1866 0032 49       		.uleb128 0x49
+ 1867 0033 13       		.uleb128 0x13
+ 1868 0034 00       		.byte	0
+ 1869 0035 00       		.byte	0
+ 1870 0036 05       		.uleb128 0x5
+ 1871 0037 35       		.uleb128 0x35
+ 1872 0038 00       		.byte	0
+ 1873 0039 49       		.uleb128 0x49
+ 1874 003a 13       		.uleb128 0x13
+ 1875 003b 00       		.byte	0
+ 1876 003c 00       		.byte	0
+ 1877 003d 06       		.uleb128 0x6
+ 1878 003e 0F       		.uleb128 0xf
+ 1879 003f 00       		.byte	0
+ 1880 0040 0B       		.uleb128 0xb
+ 1881 0041 0B       		.uleb128 0xb
+ 1882 0042 49       		.uleb128 0x49
+ 1883 0043 13       		.uleb128 0x13
+ 1884 0044 00       		.byte	0
+ 1885 0045 00       		.byte	0
+ 1886 0046 07       		.uleb128 0x7
+ 1887 0047 26       		.uleb128 0x26
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 44
+
+
+ 1888 0048 00       		.byte	0
+ 1889 0049 49       		.uleb128 0x49
+ 1890 004a 13       		.uleb128 0x13
+ 1891 004b 00       		.byte	0
+ 1892 004c 00       		.byte	0
+ 1893 004d 08       		.uleb128 0x8
+ 1894 004e 04       		.uleb128 0x4
+ 1895 004f 01       		.byte	0x1
+ 1896 0050 0B       		.uleb128 0xb
+ 1897 0051 0B       		.uleb128 0xb
+ 1898 0052 3A       		.uleb128 0x3a
+ 1899 0053 0B       		.uleb128 0xb
+ 1900 0054 3B       		.uleb128 0x3b
+ 1901 0055 0B       		.uleb128 0xb
+ 1902 0056 01       		.uleb128 0x1
+ 1903 0057 13       		.uleb128 0x13
+ 1904 0058 00       		.byte	0
+ 1905 0059 00       		.byte	0
+ 1906 005a 09       		.uleb128 0x9
+ 1907 005b 28       		.uleb128 0x28
+ 1908 005c 00       		.byte	0
+ 1909 005d 03       		.uleb128 0x3
+ 1910 005e 0E       		.uleb128 0xe
+ 1911 005f 1C       		.uleb128 0x1c
+ 1912 0060 0D       		.uleb128 0xd
+ 1913 0061 00       		.byte	0
+ 1914 0062 00       		.byte	0
+ 1915 0063 0A       		.uleb128 0xa
+ 1916 0064 16       		.uleb128 0x16
+ 1917 0065 00       		.byte	0
+ 1918 0066 03       		.uleb128 0x3
+ 1919 0067 0E       		.uleb128 0xe
+ 1920 0068 3A       		.uleb128 0x3a
+ 1921 0069 0B       		.uleb128 0xb
+ 1922 006a 3B       		.uleb128 0x3b
+ 1923 006b 0B       		.uleb128 0xb
+ 1924 006c 49       		.uleb128 0x49
+ 1925 006d 13       		.uleb128 0x13
+ 1926 006e 00       		.byte	0
+ 1927 006f 00       		.byte	0
+ 1928 0070 0B       		.uleb128 0xb
+ 1929 0071 2E       		.uleb128 0x2e
+ 1930 0072 01       		.byte	0x1
+ 1931 0073 03       		.uleb128 0x3
+ 1932 0074 0E       		.uleb128 0xe
+ 1933 0075 3A       		.uleb128 0x3a
+ 1934 0076 0B       		.uleb128 0xb
+ 1935 0077 3B       		.uleb128 0x3b
+ 1936 0078 0B       		.uleb128 0xb
+ 1937 0079 27       		.uleb128 0x27
+ 1938 007a 19       		.uleb128 0x19
+ 1939 007b 11       		.uleb128 0x11
+ 1940 007c 01       		.uleb128 0x1
+ 1941 007d 12       		.uleb128 0x12
+ 1942 007e 06       		.uleb128 0x6
+ 1943 007f 40       		.uleb128 0x40
+ 1944 0080 18       		.uleb128 0x18
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 45
+
+
+ 1945 0081 9742     		.uleb128 0x2117
+ 1946 0083 19       		.uleb128 0x19
+ 1947 0084 01       		.uleb128 0x1
+ 1948 0085 13       		.uleb128 0x13
+ 1949 0086 00       		.byte	0
+ 1950 0087 00       		.byte	0
+ 1951 0088 0C       		.uleb128 0xc
+ 1952 0089 05       		.uleb128 0x5
+ 1953 008a 00       		.byte	0
+ 1954 008b 03       		.uleb128 0x3
+ 1955 008c 0E       		.uleb128 0xe
+ 1956 008d 3A       		.uleb128 0x3a
+ 1957 008e 0B       		.uleb128 0xb
+ 1958 008f 3B       		.uleb128 0x3b
+ 1959 0090 0B       		.uleb128 0xb
+ 1960 0091 49       		.uleb128 0x49
+ 1961 0092 13       		.uleb128 0x13
+ 1962 0093 02       		.uleb128 0x2
+ 1963 0094 17       		.uleb128 0x17
+ 1964 0095 00       		.byte	0
+ 1965 0096 00       		.byte	0
+ 1966 0097 0D       		.uleb128 0xd
+ 1967 0098 34       		.uleb128 0x34
+ 1968 0099 00       		.byte	0
+ 1969 009a 03       		.uleb128 0x3
+ 1970 009b 0E       		.uleb128 0xe
+ 1971 009c 3A       		.uleb128 0x3a
+ 1972 009d 0B       		.uleb128 0xb
+ 1973 009e 3B       		.uleb128 0x3b
+ 1974 009f 0B       		.uleb128 0xb
+ 1975 00a0 49       		.uleb128 0x49
+ 1976 00a1 13       		.uleb128 0x13
+ 1977 00a2 02       		.uleb128 0x2
+ 1978 00a3 18       		.uleb128 0x18
+ 1979 00a4 00       		.byte	0
+ 1980 00a5 00       		.byte	0
+ 1981 00a6 0E       		.uleb128 0xe
+ 1982 00a7 898201   		.uleb128 0x4109
+ 1983 00aa 01       		.byte	0x1
+ 1984 00ab 11       		.uleb128 0x11
+ 1985 00ac 01       		.uleb128 0x1
+ 1986 00ad 31       		.uleb128 0x31
+ 1987 00ae 13       		.uleb128 0x13
+ 1988 00af 01       		.uleb128 0x1
+ 1989 00b0 13       		.uleb128 0x13
+ 1990 00b1 00       		.byte	0
+ 1991 00b2 00       		.byte	0
+ 1992 00b3 0F       		.uleb128 0xf
+ 1993 00b4 8A8201   		.uleb128 0x410a
+ 1994 00b7 00       		.byte	0
+ 1995 00b8 02       		.uleb128 0x2
+ 1996 00b9 18       		.uleb128 0x18
+ 1997 00ba 9142     		.uleb128 0x2111
+ 1998 00bc 18       		.uleb128 0x18
+ 1999 00bd 00       		.byte	0
+ 2000 00be 00       		.byte	0
+ 2001 00bf 10       		.uleb128 0x10
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 46
+
+
+ 2002 00c0 898201   		.uleb128 0x4109
+ 2003 00c3 00       		.byte	0
+ 2004 00c4 11       		.uleb128 0x11
+ 2005 00c5 01       		.uleb128 0x1
+ 2006 00c6 31       		.uleb128 0x31
+ 2007 00c7 13       		.uleb128 0x13
+ 2008 00c8 00       		.byte	0
+ 2009 00c9 00       		.byte	0
+ 2010 00ca 11       		.uleb128 0x11
+ 2011 00cb 898201   		.uleb128 0x4109
+ 2012 00ce 01       		.byte	0x1
+ 2013 00cf 11       		.uleb128 0x11
+ 2014 00d0 01       		.uleb128 0x1
+ 2015 00d1 31       		.uleb128 0x31
+ 2016 00d2 13       		.uleb128 0x13
+ 2017 00d3 00       		.byte	0
+ 2018 00d4 00       		.byte	0
+ 2019 00d5 12       		.uleb128 0x12
+ 2020 00d6 2E       		.uleb128 0x2e
+ 2021 00d7 01       		.byte	0x1
+ 2022 00d8 3F       		.uleb128 0x3f
+ 2023 00d9 19       		.uleb128 0x19
+ 2024 00da 03       		.uleb128 0x3
+ 2025 00db 0E       		.uleb128 0xe
+ 2026 00dc 3A       		.uleb128 0x3a
+ 2027 00dd 0B       		.uleb128 0xb
+ 2028 00de 3B       		.uleb128 0x3b
+ 2029 00df 05       		.uleb128 0x5
+ 2030 00e0 27       		.uleb128 0x27
+ 2031 00e1 19       		.uleb128 0x19
+ 2032 00e2 49       		.uleb128 0x49
+ 2033 00e3 13       		.uleb128 0x13
+ 2034 00e4 11       		.uleb128 0x11
+ 2035 00e5 01       		.uleb128 0x1
+ 2036 00e6 12       		.uleb128 0x12
+ 2037 00e7 06       		.uleb128 0x6
+ 2038 00e8 40       		.uleb128 0x40
+ 2039 00e9 18       		.uleb128 0x18
+ 2040 00ea 9642     		.uleb128 0x2116
+ 2041 00ec 19       		.uleb128 0x19
+ 2042 00ed 01       		.uleb128 0x1
+ 2043 00ee 13       		.uleb128 0x13
+ 2044 00ef 00       		.byte	0
+ 2045 00f0 00       		.byte	0
+ 2046 00f1 13       		.uleb128 0x13
+ 2047 00f2 34       		.uleb128 0x34
+ 2048 00f3 00       		.byte	0
+ 2049 00f4 03       		.uleb128 0x3
+ 2050 00f5 08       		.uleb128 0x8
+ 2051 00f6 3A       		.uleb128 0x3a
+ 2052 00f7 0B       		.uleb128 0xb
+ 2053 00f8 3B       		.uleb128 0x3b
+ 2054 00f9 05       		.uleb128 0x5
+ 2055 00fa 49       		.uleb128 0x49
+ 2056 00fb 13       		.uleb128 0x13
+ 2057 00fc 02       		.uleb128 0x2
+ 2058 00fd 17       		.uleb128 0x17
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 47
+
+
+ 2059 00fe 00       		.byte	0
+ 2060 00ff 00       		.byte	0
+ 2061 0100 14       		.uleb128 0x14
+ 2062 0101 34       		.uleb128 0x34
+ 2063 0102 00       		.byte	0
+ 2064 0103 03       		.uleb128 0x3
+ 2065 0104 0E       		.uleb128 0xe
+ 2066 0105 3A       		.uleb128 0x3a
+ 2067 0106 0B       		.uleb128 0xb
+ 2068 0107 3B       		.uleb128 0x3b
+ 2069 0108 05       		.uleb128 0x5
+ 2070 0109 49       		.uleb128 0x49
+ 2071 010a 13       		.uleb128 0x13
+ 2072 010b 02       		.uleb128 0x2
+ 2073 010c 18       		.uleb128 0x18
+ 2074 010d 00       		.byte	0
+ 2075 010e 00       		.byte	0
+ 2076 010f 15       		.uleb128 0x15
+ 2077 0110 34       		.uleb128 0x34
+ 2078 0111 00       		.byte	0
+ 2079 0112 03       		.uleb128 0x3
+ 2080 0113 08       		.uleb128 0x8
+ 2081 0114 3A       		.uleb128 0x3a
+ 2082 0115 0B       		.uleb128 0xb
+ 2083 0116 3B       		.uleb128 0x3b
+ 2084 0117 05       		.uleb128 0x5
+ 2085 0118 49       		.uleb128 0x49
+ 2086 0119 13       		.uleb128 0x13
+ 2087 011a 02       		.uleb128 0x2
+ 2088 011b 18       		.uleb128 0x18
+ 2089 011c 00       		.byte	0
+ 2090 011d 00       		.byte	0
+ 2091 011e 16       		.uleb128 0x16
+ 2092 011f 34       		.uleb128 0x34
+ 2093 0120 00       		.byte	0
+ 2094 0121 03       		.uleb128 0x3
+ 2095 0122 0E       		.uleb128 0xe
+ 2096 0123 3A       		.uleb128 0x3a
+ 2097 0124 0B       		.uleb128 0xb
+ 2098 0125 3B       		.uleb128 0x3b
+ 2099 0126 05       		.uleb128 0x5
+ 2100 0127 49       		.uleb128 0x49
+ 2101 0128 13       		.uleb128 0x13
+ 2102 0129 02       		.uleb128 0x2
+ 2103 012a 17       		.uleb128 0x17
+ 2104 012b 00       		.byte	0
+ 2105 012c 00       		.byte	0
+ 2106 012d 17       		.uleb128 0x17
+ 2107 012e 01       		.uleb128 0x1
+ 2108 012f 01       		.byte	0x1
+ 2109 0130 49       		.uleb128 0x49
+ 2110 0131 13       		.uleb128 0x13
+ 2111 0132 01       		.uleb128 0x1
+ 2112 0133 13       		.uleb128 0x13
+ 2113 0134 00       		.byte	0
+ 2114 0135 00       		.byte	0
+ 2115 0136 18       		.uleb128 0x18
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 48
+
+
+ 2116 0137 21       		.uleb128 0x21
+ 2117 0138 00       		.byte	0
+ 2118 0139 49       		.uleb128 0x49
+ 2119 013a 13       		.uleb128 0x13
+ 2120 013b 2F       		.uleb128 0x2f
+ 2121 013c 0B       		.uleb128 0xb
+ 2122 013d 00       		.byte	0
+ 2123 013e 00       		.byte	0
+ 2124 013f 19       		.uleb128 0x19
+ 2125 0140 2E       		.uleb128 0x2e
+ 2126 0141 01       		.byte	0x1
+ 2127 0142 3F       		.uleb128 0x3f
+ 2128 0143 19       		.uleb128 0x19
+ 2129 0144 03       		.uleb128 0x3
+ 2130 0145 0E       		.uleb128 0xe
+ 2131 0146 3A       		.uleb128 0x3a
+ 2132 0147 0B       		.uleb128 0xb
+ 2133 0148 3B       		.uleb128 0x3b
+ 2134 0149 0B       		.uleb128 0xb
+ 2135 014a 27       		.uleb128 0x27
+ 2136 014b 19       		.uleb128 0x19
+ 2137 014c 11       		.uleb128 0x11
+ 2138 014d 01       		.uleb128 0x1
+ 2139 014e 12       		.uleb128 0x12
+ 2140 014f 06       		.uleb128 0x6
+ 2141 0150 40       		.uleb128 0x40
+ 2142 0151 18       		.uleb128 0x18
+ 2143 0152 9742     		.uleb128 0x2117
+ 2144 0154 19       		.uleb128 0x19
+ 2145 0155 01       		.uleb128 0x1
+ 2146 0156 13       		.uleb128 0x13
+ 2147 0157 00       		.byte	0
+ 2148 0158 00       		.byte	0
+ 2149 0159 1A       		.uleb128 0x1a
+ 2150 015a 34       		.uleb128 0x34
+ 2151 015b 00       		.byte	0
+ 2152 015c 03       		.uleb128 0x3
+ 2153 015d 0E       		.uleb128 0xe
+ 2154 015e 3A       		.uleb128 0x3a
+ 2155 015f 0B       		.uleb128 0xb
+ 2156 0160 3B       		.uleb128 0x3b
+ 2157 0161 0B       		.uleb128 0xb
+ 2158 0162 49       		.uleb128 0x49
+ 2159 0163 13       		.uleb128 0x13
+ 2160 0164 02       		.uleb128 0x2
+ 2161 0165 17       		.uleb128 0x17
+ 2162 0166 00       		.byte	0
+ 2163 0167 00       		.byte	0
+ 2164 0168 1B       		.uleb128 0x1b
+ 2165 0169 34       		.uleb128 0x34
+ 2166 016a 00       		.byte	0
+ 2167 016b 03       		.uleb128 0x3
+ 2168 016c 0E       		.uleb128 0xe
+ 2169 016d 3A       		.uleb128 0x3a
+ 2170 016e 0B       		.uleb128 0xb
+ 2171 016f 3B       		.uleb128 0x3b
+ 2172 0170 05       		.uleb128 0x5
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 49
+
+
+ 2173 0171 49       		.uleb128 0x49
+ 2174 0172 13       		.uleb128 0x13
+ 2175 0173 3F       		.uleb128 0x3f
+ 2176 0174 19       		.uleb128 0x19
+ 2177 0175 3C       		.uleb128 0x3c
+ 2178 0176 19       		.uleb128 0x19
+ 2179 0177 00       		.byte	0
+ 2180 0178 00       		.byte	0
+ 2181 0179 1C       		.uleb128 0x1c
+ 2182 017a 34       		.uleb128 0x34
+ 2183 017b 00       		.byte	0
+ 2184 017c 03       		.uleb128 0x3
+ 2185 017d 0E       		.uleb128 0xe
+ 2186 017e 3A       		.uleb128 0x3a
+ 2187 017f 0B       		.uleb128 0xb
+ 2188 0180 3B       		.uleb128 0x3b
+ 2189 0181 0B       		.uleb128 0xb
+ 2190 0182 49       		.uleb128 0x49
+ 2191 0183 13       		.uleb128 0x13
+ 2192 0184 3F       		.uleb128 0x3f
+ 2193 0185 19       		.uleb128 0x19
+ 2194 0186 3C       		.uleb128 0x3c
+ 2195 0187 19       		.uleb128 0x19
+ 2196 0188 00       		.byte	0
+ 2197 0189 00       		.byte	0
+ 2198 018a 1D       		.uleb128 0x1d
+ 2199 018b 34       		.uleb128 0x34
+ 2200 018c 00       		.byte	0
+ 2201 018d 03       		.uleb128 0x3
+ 2202 018e 0E       		.uleb128 0xe
+ 2203 018f 3A       		.uleb128 0x3a
+ 2204 0190 0B       		.uleb128 0xb
+ 2205 0191 3B       		.uleb128 0x3b
+ 2206 0192 0B       		.uleb128 0xb
+ 2207 0193 49       		.uleb128 0x49
+ 2208 0194 13       		.uleb128 0x13
+ 2209 0195 3F       		.uleb128 0x3f
+ 2210 0196 19       		.uleb128 0x19
+ 2211 0197 02       		.uleb128 0x2
+ 2212 0198 18       		.uleb128 0x18
+ 2213 0199 00       		.byte	0
+ 2214 019a 00       		.byte	0
+ 2215 019b 1E       		.uleb128 0x1e
+ 2216 019c 2E       		.uleb128 0x2e
+ 2217 019d 01       		.byte	0x1
+ 2218 019e 3F       		.uleb128 0x3f
+ 2219 019f 19       		.uleb128 0x19
+ 2220 01a0 03       		.uleb128 0x3
+ 2221 01a1 0E       		.uleb128 0xe
+ 2222 01a2 3A       		.uleb128 0x3a
+ 2223 01a3 0B       		.uleb128 0xb
+ 2224 01a4 3B       		.uleb128 0x3b
+ 2225 01a5 05       		.uleb128 0x5
+ 2226 01a6 27       		.uleb128 0x27
+ 2227 01a7 19       		.uleb128 0x19
+ 2228 01a8 3C       		.uleb128 0x3c
+ 2229 01a9 19       		.uleb128 0x19
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 50
+
+
+ 2230 01aa 01       		.uleb128 0x1
+ 2231 01ab 13       		.uleb128 0x13
+ 2232 01ac 00       		.byte	0
+ 2233 01ad 00       		.byte	0
+ 2234 01ae 1F       		.uleb128 0x1f
+ 2235 01af 05       		.uleb128 0x5
+ 2236 01b0 00       		.byte	0
+ 2237 01b1 49       		.uleb128 0x49
+ 2238 01b2 13       		.uleb128 0x13
+ 2239 01b3 00       		.byte	0
+ 2240 01b4 00       		.byte	0
+ 2241 01b5 20       		.uleb128 0x20
+ 2242 01b6 2E       		.uleb128 0x2e
+ 2243 01b7 00       		.byte	0
+ 2244 01b8 3F       		.uleb128 0x3f
+ 2245 01b9 19       		.uleb128 0x19
+ 2246 01ba 03       		.uleb128 0x3
+ 2247 01bb 0E       		.uleb128 0xe
+ 2248 01bc 3A       		.uleb128 0x3a
+ 2249 01bd 0B       		.uleb128 0xb
+ 2250 01be 3B       		.uleb128 0x3b
+ 2251 01bf 05       		.uleb128 0x5
+ 2252 01c0 27       		.uleb128 0x27
+ 2253 01c1 19       		.uleb128 0x19
+ 2254 01c2 49       		.uleb128 0x49
+ 2255 01c3 13       		.uleb128 0x13
+ 2256 01c4 3C       		.uleb128 0x3c
+ 2257 01c5 19       		.uleb128 0x19
+ 2258 01c6 00       		.byte	0
+ 2259 01c7 00       		.byte	0
+ 2260 01c8 21       		.uleb128 0x21
+ 2261 01c9 2E       		.uleb128 0x2e
+ 2262 01ca 01       		.byte	0x1
+ 2263 01cb 3F       		.uleb128 0x3f
+ 2264 01cc 19       		.uleb128 0x19
+ 2265 01cd 03       		.uleb128 0x3
+ 2266 01ce 0E       		.uleb128 0xe
+ 2267 01cf 3A       		.uleb128 0x3a
+ 2268 01d0 0B       		.uleb128 0xb
+ 2269 01d1 3B       		.uleb128 0x3b
+ 2270 01d2 05       		.uleb128 0x5
+ 2271 01d3 27       		.uleb128 0x27
+ 2272 01d4 19       		.uleb128 0x19
+ 2273 01d5 49       		.uleb128 0x49
+ 2274 01d6 13       		.uleb128 0x13
+ 2275 01d7 3C       		.uleb128 0x3c
+ 2276 01d8 19       		.uleb128 0x19
+ 2277 01d9 01       		.uleb128 0x1
+ 2278 01da 13       		.uleb128 0x13
+ 2279 01db 00       		.byte	0
+ 2280 01dc 00       		.byte	0
+ 2281 01dd 22       		.uleb128 0x22
+ 2282 01de 2E       		.uleb128 0x2e
+ 2283 01df 01       		.byte	0x1
+ 2284 01e0 3F       		.uleb128 0x3f
+ 2285 01e1 19       		.uleb128 0x19
+ 2286 01e2 03       		.uleb128 0x3
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 51
+
+
+ 2287 01e3 0E       		.uleb128 0xe
+ 2288 01e4 3A       		.uleb128 0x3a
+ 2289 01e5 0B       		.uleb128 0xb
+ 2290 01e6 3B       		.uleb128 0x3b
+ 2291 01e7 0B       		.uleb128 0xb
+ 2292 01e8 27       		.uleb128 0x27
+ 2293 01e9 19       		.uleb128 0x19
+ 2294 01ea 49       		.uleb128 0x49
+ 2295 01eb 13       		.uleb128 0x13
+ 2296 01ec 3C       		.uleb128 0x3c
+ 2297 01ed 19       		.uleb128 0x19
+ 2298 01ee 01       		.uleb128 0x1
+ 2299 01ef 13       		.uleb128 0x13
+ 2300 01f0 00       		.byte	0
+ 2301 01f1 00       		.byte	0
+ 2302 01f2 23       		.uleb128 0x23
+ 2303 01f3 18       		.uleb128 0x18
+ 2304 01f4 00       		.byte	0
+ 2305 01f5 00       		.byte	0
+ 2306 01f6 00       		.byte	0
+ 2307 01f7 24       		.uleb128 0x24
+ 2308 01f8 2E       		.uleb128 0x2e
+ 2309 01f9 00       		.byte	0
+ 2310 01fa 3F       		.uleb128 0x3f
+ 2311 01fb 19       		.uleb128 0x19
+ 2312 01fc 03       		.uleb128 0x3
+ 2313 01fd 0E       		.uleb128 0xe
+ 2314 01fe 3A       		.uleb128 0x3a
+ 2315 01ff 0B       		.uleb128 0xb
+ 2316 0200 3B       		.uleb128 0x3b
+ 2317 0201 0B       		.uleb128 0xb
+ 2318 0202 27       		.uleb128 0x27
+ 2319 0203 19       		.uleb128 0x19
+ 2320 0204 3C       		.uleb128 0x3c
+ 2321 0205 19       		.uleb128 0x19
+ 2322 0206 00       		.byte	0
+ 2323 0207 00       		.byte	0
+ 2324 0208 25       		.uleb128 0x25
+ 2325 0209 2E       		.uleb128 0x2e
+ 2326 020a 00       		.byte	0
+ 2327 020b 3F       		.uleb128 0x3f
+ 2328 020c 19       		.uleb128 0x19
+ 2329 020d 03       		.uleb128 0x3
+ 2330 020e 0E       		.uleb128 0xe
+ 2331 020f 3A       		.uleb128 0x3a
+ 2332 0210 0B       		.uleb128 0xb
+ 2333 0211 3B       		.uleb128 0x3b
+ 2334 0212 0B       		.uleb128 0xb
+ 2335 0213 27       		.uleb128 0x27
+ 2336 0214 19       		.uleb128 0x19
+ 2337 0215 49       		.uleb128 0x49
+ 2338 0216 13       		.uleb128 0x13
+ 2339 0217 3C       		.uleb128 0x3c
+ 2340 0218 19       		.uleb128 0x19
+ 2341 0219 00       		.byte	0
+ 2342 021a 00       		.byte	0
+ 2343 021b 26       		.uleb128 0x26
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 52
+
+
+ 2344 021c 2E       		.uleb128 0x2e
+ 2345 021d 01       		.byte	0x1
+ 2346 021e 3F       		.uleb128 0x3f
+ 2347 021f 19       		.uleb128 0x19
+ 2348 0220 03       		.uleb128 0x3
+ 2349 0221 0E       		.uleb128 0xe
+ 2350 0222 3A       		.uleb128 0x3a
+ 2351 0223 0B       		.uleb128 0xb
+ 2352 0224 3B       		.uleb128 0x3b
+ 2353 0225 0B       		.uleb128 0xb
+ 2354 0226 27       		.uleb128 0x27
+ 2355 0227 19       		.uleb128 0x19
+ 2356 0228 3C       		.uleb128 0x3c
+ 2357 0229 19       		.uleb128 0x19
+ 2358 022a 01       		.uleb128 0x1
+ 2359 022b 13       		.uleb128 0x13
+ 2360 022c 00       		.byte	0
+ 2361 022d 00       		.byte	0
+ 2362 022e 27       		.uleb128 0x27
+ 2363 022f 2E       		.uleb128 0x2e
+ 2364 0230 01       		.byte	0x1
+ 2365 0231 3F       		.uleb128 0x3f
+ 2366 0232 19       		.uleb128 0x19
+ 2367 0233 03       		.uleb128 0x3
+ 2368 0234 0E       		.uleb128 0xe
+ 2369 0235 3A       		.uleb128 0x3a
+ 2370 0236 0B       		.uleb128 0xb
+ 2371 0237 3B       		.uleb128 0x3b
+ 2372 0238 0B       		.uleb128 0xb
+ 2373 0239 27       		.uleb128 0x27
+ 2374 023a 19       		.uleb128 0x19
+ 2375 023b 49       		.uleb128 0x49
+ 2376 023c 13       		.uleb128 0x13
+ 2377 023d 3C       		.uleb128 0x3c
+ 2378 023e 19       		.uleb128 0x19
+ 2379 023f 00       		.byte	0
+ 2380 0240 00       		.byte	0
+ 2381 0241 00       		.byte	0
+ 2382              		.section	.debug_loc,"",%progbits
+ 2383              	.Ldebug_loc0:
+ 2384              	.LLST0:
+ 2385 0000 00000000 		.4byte	.LVL0
+ 2386 0004 20000000 		.4byte	.LVL1
+ 2387 0008 0100     		.2byte	0x1
+ 2388 000a 50       		.byte	0x50
+ 2389 000b 20000000 		.4byte	.LVL1
+ 2390 000f 26000000 		.4byte	.LVL3
+ 2391 0013 0100     		.2byte	0x1
+ 2392 0015 54       		.byte	0x54
+ 2393 0016 26000000 		.4byte	.LVL3
+ 2394 001a 32000000 		.4byte	.LVL4
+ 2395 001e 0100     		.2byte	0x1
+ 2396 0020 50       		.byte	0x50
+ 2397 0021 32000000 		.4byte	.LVL4
+ 2398 0025 38000000 		.4byte	.LVL6
+ 2399 0029 0100     		.2byte	0x1
+ 2400 002b 54       		.byte	0x54
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 53
+
+
+ 2401 002c 38000000 		.4byte	.LVL6
+ 2402 0030 44000000 		.4byte	.LVL7
+ 2403 0034 0100     		.2byte	0x1
+ 2404 0036 50       		.byte	0x50
+ 2405 0037 44000000 		.4byte	.LVL7
+ 2406 003b 4A000000 		.4byte	.LVL9
+ 2407 003f 0100     		.2byte	0x1
+ 2408 0041 54       		.byte	0x54
+ 2409 0042 4A000000 		.4byte	.LVL9
+ 2410 0046 56000000 		.4byte	.LVL10
+ 2411 004a 0100     		.2byte	0x1
+ 2412 004c 50       		.byte	0x50
+ 2413 004d 56000000 		.4byte	.LVL10
+ 2414 0051 5C000000 		.4byte	.LVL12
+ 2415 0055 0100     		.2byte	0x1
+ 2416 0057 54       		.byte	0x54
+ 2417 0058 5C000000 		.4byte	.LVL12
+ 2418 005c 68000000 		.4byte	.LVL13
+ 2419 0060 0100     		.2byte	0x1
+ 2420 0062 50       		.byte	0x50
+ 2421 0063 68000000 		.4byte	.LVL13
+ 2422 0067 96010000 		.4byte	.LVL22
+ 2423 006b 0100     		.2byte	0x1
+ 2424 006d 54       		.byte	0x54
+ 2425 006e 96010000 		.4byte	.LVL22
+ 2426 0072 DC010000 		.4byte	.LFE327
+ 2427 0076 0400     		.2byte	0x4
+ 2428 0078 F3       		.byte	0xf3
+ 2429 0079 01       		.uleb128 0x1
+ 2430 007a 50       		.byte	0x50
+ 2431 007b 9F       		.byte	0x9f
+ 2432 007c 00000000 		.4byte	0
+ 2433 0080 00000000 		.4byte	0
+ 2434              	.LLST1:
+ 2435 0084 04000000 		.4byte	.LVL23
+ 2436 0088 4A000000 		.4byte	.LVL32
+ 2437 008c 0200     		.2byte	0x2
+ 2438 008e 30       		.byte	0x30
+ 2439 008f 9F       		.byte	0x9f
+ 2440 0090 4A000000 		.4byte	.LVL32
+ 2441 0094 4C000000 		.4byte	.LVL33
+ 2442 0098 0100     		.2byte	0x1
+ 2443 009a 50       		.byte	0x50
+ 2444 009b 4C000000 		.4byte	.LVL33
+ 2445 009f 5C000000 		.4byte	.LVL36
+ 2446 00a3 0100     		.2byte	0x1
+ 2447 00a5 55       		.byte	0x55
+ 2448 00a6 5C000000 		.4byte	.LVL36
+ 2449 00aa 5E000000 		.4byte	.LVL37
+ 2450 00ae 0200     		.2byte	0x2
+ 2451 00b0 30       		.byte	0x30
+ 2452 00b1 9F       		.byte	0x9f
+ 2453 00b2 5E000000 		.4byte	.LVL37
+ 2454 00b6 82000000 		.4byte	.LVL39
+ 2455 00ba 0100     		.2byte	0x1
+ 2456 00bc 55       		.byte	0x55
+ 2457 00bd 82000000 		.4byte	.LVL39
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 54
+
+
+ 2458 00c1 84000000 		.4byte	.LVL40
+ 2459 00c5 0100     		.2byte	0x1
+ 2460 00c7 50       		.byte	0x50
+ 2461 00c8 84000000 		.4byte	.LVL40
+ 2462 00cc B4000000 		.4byte	.LVL48
+ 2463 00d0 0100     		.2byte	0x1
+ 2464 00d2 55       		.byte	0x55
+ 2465 00d3 B4000000 		.4byte	.LVL48
+ 2466 00d7 B6000000 		.4byte	.LVL49
+ 2467 00db 0100     		.2byte	0x1
+ 2468 00dd 50       		.byte	0x50
+ 2469 00de B6000000 		.4byte	.LVL49
+ 2470 00e2 C6000000 		.4byte	.LVL52
+ 2471 00e6 0100     		.2byte	0x1
+ 2472 00e8 55       		.byte	0x55
+ 2473 00e9 C6000000 		.4byte	.LVL52
+ 2474 00ed C8000000 		.4byte	.LVL53
+ 2475 00f1 0200     		.2byte	0x2
+ 2476 00f3 30       		.byte	0x30
+ 2477 00f4 9F       		.byte	0x9f
+ 2478 00f5 C8000000 		.4byte	.LVL53
+ 2479 00f9 CC000000 		.4byte	.LVL55
+ 2480 00fd 0100     		.2byte	0x1
+ 2481 00ff 55       		.byte	0x55
+ 2482 0100 00000000 		.4byte	0
+ 2483 0104 00000000 		.4byte	0
+ 2484              	.LLST2:
+ 2485 0108 0A000000 		.4byte	.LVL24
+ 2486 010c 2E000000 		.4byte	.LVL26
+ 2487 0110 0100     		.2byte	0x1
+ 2488 0112 54       		.byte	0x54
+ 2489 0113 2E000000 		.4byte	.LVL26
+ 2490 0117 39000000 		.4byte	.LVL27-1
+ 2491 011b 0500     		.2byte	0x5
+ 2492 011d 03       		.byte	0x3
+ 2493 011e 08000000 		.4byte	prevVol.9337
+ 2494 0122 39000000 		.4byte	.LVL27-1
+ 2495 0126 3C000000 		.4byte	.LVL28
+ 2496 012a 0300     		.2byte	0x3
+ 2497 012c 74       		.byte	0x74
+ 2498 012d 32       		.sleb128 50
+ 2499 012e 9F       		.byte	0x9f
+ 2500 012f 3E000000 		.4byte	.LVL29
+ 2501 0133 98000000 		.4byte	.LVL42
+ 2502 0137 0100     		.2byte	0x1
+ 2503 0139 54       		.byte	0x54
+ 2504 013a 98000000 		.4byte	.LVL42
+ 2505 013e A3000000 		.4byte	.LVL43-1
+ 2506 0142 0500     		.2byte	0x5
+ 2507 0144 03       		.byte	0x3
+ 2508 0145 08000000 		.4byte	prevVol.9337
+ 2509 0149 A3000000 		.4byte	.LVL43-1
+ 2510 014d A6000000 		.4byte	.LVL44
+ 2511 0151 0300     		.2byte	0x3
+ 2512 0153 74       		.byte	0x74
+ 2513 0154 32       		.sleb128 50
+ 2514 0155 9F       		.byte	0x9f
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 55
+
+
+ 2515 0156 A8000000 		.4byte	.LVL45
+ 2516 015a CC000000 		.4byte	.LVL54
+ 2517 015e 0100     		.2byte	0x1
+ 2518 0160 54       		.byte	0x54
+ 2519 0161 00000000 		.4byte	0
+ 2520 0165 00000000 		.4byte	0
+ 2521              	.LLST3:
+ 2522 0169 02000000 		.4byte	.LVL75
+ 2523 016d 1A000000 		.4byte	.LVL80
+ 2524 0171 0200     		.2byte	0x2
+ 2525 0173 30       		.byte	0x30
+ 2526 0174 9F       		.byte	0x9f
+ 2527 0175 1A000000 		.4byte	.LVL80
+ 2528 0179 1D000000 		.4byte	.LVL81-1
+ 2529 017d 0100     		.2byte	0x1
+ 2530 017f 50       		.byte	0x50
+ 2531 0180 1D000000 		.4byte	.LVL81-1
+ 2532 0184 2C000000 		.4byte	.LVL83
+ 2533 0188 0100     		.2byte	0x1
+ 2534 018a 54       		.byte	0x54
+ 2535 018b 00000000 		.4byte	0
+ 2536 018f 00000000 		.4byte	0
+ 2537              		.section	.debug_aranges,"",%progbits
+ 2538 0000 34000000 		.4byte	0x34
+ 2539 0004 0200     		.2byte	0x2
+ 2540 0006 00000000 		.4byte	.Ldebug_info0
+ 2541 000a 04       		.byte	0x4
+ 2542 000b 00       		.byte	0
+ 2543 000c 0000     		.2byte	0
+ 2544 000e 0000     		.2byte	0
+ 2545 0010 00000000 		.4byte	.LFB327
+ 2546 0014 DC010000 		.4byte	.LFE327-.LFB327
+ 2547 0018 00000000 		.4byte	.LFB328
+ 2548 001c EC000000 		.4byte	.LFE328-.LFB328
+ 2549 0020 00000000 		.4byte	.LFB325
+ 2550 0024 BC000000 		.4byte	.LFE325-.LFB325
+ 2551 0028 00000000 		.4byte	.LFB326
+ 2552 002c 3A000000 		.4byte	.LFE326-.LFB326
+ 2553 0030 00000000 		.4byte	0
+ 2554 0034 00000000 		.4byte	0
+ 2555              		.section	.debug_ranges,"",%progbits
+ 2556              	.Ldebug_ranges0:
+ 2557 0000 00000000 		.4byte	.LFB327
+ 2558 0004 DC010000 		.4byte	.LFE327
+ 2559 0008 00000000 		.4byte	.LFB328
+ 2560 000c EC000000 		.4byte	.LFE328
+ 2561 0010 00000000 		.4byte	.LFB325
+ 2562 0014 BC000000 		.4byte	.LFE325
+ 2563 0018 00000000 		.4byte	.LFB326
+ 2564 001c 3A000000 		.4byte	.LFE326
+ 2565 0020 00000000 		.4byte	0
+ 2566 0024 00000000 		.4byte	0
+ 2567              		.section	.debug_line,"",%progbits
+ 2568              	.Ldebug_line0:
+ 2569 0000 56020000 		.section	.debug_str,"MS",%progbits,1
+ 2569      02007501 
+ 2569      00000201 
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 56
+
+
+ 2569      FB0E0D00 
+ 2569      01010101 
+ 2570              	.LASF43:
+ 2571 0000 70726576 		.ascii	"prevMute\000"
+ 2571      4D757465 
+ 2571      00
+ 2572              	.LASF80:
+ 2573 0009 2E5C4170 		.ascii	".\\Application.c\000"
+ 2573      706C6963 
+ 2573      6174696F 
+ 2573      6E2E6300 
+ 2574              	.LASF77:
+ 2575 0019 43617053 		.ascii	"CapSense_CheckIsAnyWidgetActive\000"
+ 2575      656E7365 
+ 2575      5F436865 
+ 2575      636B4973 
+ 2575      416E7957 
+ 2576              	.LASF45:
+ 2577 0039 496E6974 		.ascii	"InitApp\000"
+ 2577      41707000 
+ 2578              	.LASF32:
+ 2579 0041 47455354 		.ascii	"GESTURE_OUTER_CLKWISE\000"
+ 2579      5552455F 
+ 2579      4F555445 
+ 2579      525F434C 
+ 2579      4B574953 
+ 2580              	.LASF73:
+ 2581 0057 43617053 		.ascii	"CapSense_InitializeAllBaselines\000"
+ 2581      656E7365 
+ 2581      5F496E69 
+ 2581      7469616C 
+ 2581      697A6541 
+ 2582              	.LASF2:
+ 2583 0077 73686F72 		.ascii	"short int\000"
+ 2583      7420696E 
+ 2583      7400
+ 2584              	.LASF19:
+ 2585 0081 73697A65 		.ascii	"sizetype\000"
+ 2585      74797065 
+ 2585      00
+ 2586              	.LASF68:
+ 2587 008a 4932535F 		.ascii	"I2S_Start\000"
+ 2587      53746172 
+ 2587      7400
+ 2588              	.LASF16:
+ 2589 0094 63686172 		.ascii	"char8\000"
+ 2589      3800
+ 2590              	.LASF24:
+ 2591 009a 47455354 		.ascii	"GESTURE_MIDDLE_CLICK\000"
+ 2591      5552455F 
+ 2591      4D494444 
+ 2591      4C455F43 
+ 2591      4C49434B 
+ 2592              	.LASF76:
+ 2593 00af 43617053 		.ascii	"CapSense_UpdateEnabledBaselines\000"
+ 2593      656E7365 
+ 2593      5F557064 
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 57
+
+
+ 2593      61746545 
+ 2593      6E61626C 
+ 2594              	.LASF25:
+ 2595 00cf 47455354 		.ascii	"GESTURE_LEFT_SWIPE\000"
+ 2595      5552455F 
+ 2595      4C454654 
+ 2595      5F535749 
+ 2595      504500
+ 2596              	.LASF56:
+ 2597 00e2 61756469 		.ascii	"audioControlStatus\000"
+ 2597      6F436F6E 
+ 2597      74726F6C 
+ 2597      53746174 
+ 2597      757300
+ 2598              	.LASF10:
+ 2599 00f5 75696E74 		.ascii	"uint16\000"
+ 2599      313600
+ 2600              	.LASF82:
+ 2601 00fc 48616E64 		.ascii	"HandleUserInputs\000"
+ 2601      6C655573 
+ 2601      6572496E 
+ 2601      70757473 
+ 2601      00
+ 2602              	.LASF48:
+ 2603 010d 55534246 		.ascii	"USBFS_transferState\000"
+ 2603      535F7472 
+ 2603      616E7366 
+ 2603      65725374 
+ 2603      61746500 
+ 2604              	.LASF58:
+ 2605 0121 55415254 		.ascii	"UART_UartPutString\000"
+ 2605      5F556172 
+ 2605      74507574 
+ 2605      53747269 
+ 2605      6E6700
+ 2606              	.LASF63:
+ 2607 0134 43795379 		.ascii	"CySysGetResetReason\000"
+ 2607      73476574 
+ 2607      52657365 
+ 2607      74526561 
+ 2607      736F6E00 
+ 2608              	.LASF70:
+ 2609 0148 4379496E 		.ascii	"CyIntSetPriority\000"
+ 2609      74536574 
+ 2609      5072696F 
+ 2609      72697479 
+ 2609      00
+ 2610              	.LASF36:
+ 2611 0159 47455354 		.ascii	"GESTURE_INVALID\000"
+ 2611      5552455F 
+ 2611      494E5641 
+ 2611      4C494400 
+ 2612              	.LASF26:
+ 2613 0169 47455354 		.ascii	"GESTURE_RIGHT_SWIPE\000"
+ 2613      5552455F 
+ 2613      52494748 
+ 2613      545F5357 
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 58
+
+
+ 2613      49504500 
+ 2614              	.LASF74:
+ 2615 017d 43617053 		.ascii	"CapSense_ScanEnabledWidgets\000"
+ 2615      656E7365 
+ 2615      5F536361 
+ 2615      6E456E61 
+ 2615      626C6564 
+ 2616              	.LASF51:
+ 2617 0199 55534244 		.ascii	"USBDeviceState\000"
+ 2617      65766963 
+ 2617      65537461 
+ 2617      746500
+ 2618              	.LASF22:
+ 2619 01a8 47455354 		.ascii	"GESTURE_LEFT_CLICK\000"
+ 2619      5552455F 
+ 2619      4C454654 
+ 2619      5F434C49 
+ 2619      434B00
+ 2620              	.LASF14:
+ 2621 01bb 666C6F61 		.ascii	"float\000"
+ 2621      7400
+ 2622              	.LASF33:
+ 2623 01c1 47455354 		.ascii	"GESTURE_OUTER_COUNTER_CLKWISE\000"
+ 2623      5552455F 
+ 2623      4F555445 
+ 2623      525F434F 
+ 2623      554E5445 
+ 2624              	.LASF6:
+ 2625 01df 6C6F6E67 		.ascii	"long long int\000"
+ 2625      206C6F6E 
+ 2625      6720696E 
+ 2625      7400
+ 2626              	.LASF12:
+ 2627 01ed 696E7438 		.ascii	"int8\000"
+ 2627      00
+ 2628              	.LASF23:
+ 2629 01f2 47455354 		.ascii	"GESTURE_RIGHT_CLICK\000"
+ 2629      5552455F 
+ 2629      52494748 
+ 2629      545F434C 
+ 2629      49434B00 
+ 2630              	.LASF4:
+ 2631 0206 6C6F6E67 		.ascii	"long int\000"
+ 2631      20696E74 
+ 2631      00
+ 2632              	.LASF60:
+ 2633 020f 55534246 		.ascii	"USBFS_GetEPState\000"
+ 2633      535F4765 
+ 2633      74455053 
+ 2633      74617465 
+ 2633      00
+ 2634              	.LASF65:
+ 2635 0220 436F6465 		.ascii	"CodecI2CM_Start\000"
+ 2635      63493243 
+ 2635      4D5F5374 
+ 2635      61727400 
+ 2636              	.LASF44:
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 59
+
+
+ 2637 0230 766F6C75 		.ascii	"volume\000"
+ 2637      6D6500
+ 2638              	.LASF50:
+ 2639 0237 55534246 		.ascii	"USBFS_currentVolume\000"
+ 2639      535F6375 
+ 2639      7272656E 
+ 2639      74566F6C 
+ 2639      756D6500 
+ 2640              	.LASF66:
+ 2641 024b 55534246 		.ascii	"USBFS_GetConfiguration\000"
+ 2641      535F4765 
+ 2641      74436F6E 
+ 2641      66696775 
+ 2641      72617469 
+ 2642              	.LASF46:
+ 2643 0262 52756E41 		.ascii	"RunApplication\000"
+ 2643      70706C69 
+ 2643      63617469 
+ 2643      6F6E00
+ 2644              	.LASF55:
+ 2645 0271 706C6179 		.ascii	"playlistControlReport\000"
+ 2645      6C697374 
+ 2645      436F6E74 
+ 2645      726F6C52 
+ 2645      65706F72 
+ 2646              	.LASF28:
+ 2647 0287 47455354 		.ascii	"GESTURE_DOWN_SWIPE\000"
+ 2647      5552455F 
+ 2647      444F574E 
+ 2647      5F535749 
+ 2647      504500
+ 2648              	.LASF79:
+ 2649 029a 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 2649      4320342E 
+ 2649      392E3320 
+ 2649      32303135 
+ 2649      30333033 
+ 2650 02cd 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m0 -mthumb -g -O"
+ 2650      20726576 
+ 2650      6973696F 
+ 2650      6E203232 
+ 2650      31323230 
+ 2651 0300 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 2651      66756E63 
+ 2651      74696F6E 
+ 2651      2D736563 
+ 2651      74696F6E 
+ 2652              	.LASF62:
+ 2653 0328 73707269 		.ascii	"sprintf\000"
+ 2653      6E746600 
+ 2654              	.LASF39:
+ 2655 0330 70726576 		.ascii	"prevReport\000"
+ 2655      5265706F 
+ 2655      727400
+ 2656              	.LASF57:
+ 2657 033b 7265706F 		.ascii	"reportClearFlag\000"
+ 2657      7274436C 
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 60
+
+
+ 2657      65617246 
+ 2657      6C616700 
+ 2658              	.LASF1:
+ 2659 034b 756E7369 		.ascii	"unsigned char\000"
+ 2659      676E6564 
+ 2659      20636861 
+ 2659      7200
+ 2660              	.LASF61:
+ 2661 0359 436F6465 		.ascii	"Codec_AdjustBothHeadphoneVolume\000"
+ 2661      635F4164 
+ 2661      6A757374 
+ 2661      426F7468 
+ 2661      48656164 
+ 2662              	.LASF81:
+ 2663 0379 433A5C50 		.ascii	"C:\\Program Files (x86)\\Cypress\\CY8CKIT-046 PSoC "
+ 2663      726F6772 
+ 2663      616D2046 
+ 2663      696C6573 
+ 2663      20287838 
+ 2664 03a9 34204C2D 		.ascii	"4 L-Series Pioneer Kit\\1.0\\Firmware\\PSoC 4200L\\"
+ 2664      53657269 
+ 2664      65732050 
+ 2664      696F6E65 
+ 2664      6572204B 
+ 2665 03d8 43593843 		.ascii	"CY8CKIT_046_USB_Audio\\CY8CKIT_046_USB_Audio.cydsn\000"
+ 2665      4B49545F 
+ 2665      3034365F 
+ 2665      5553425F 
+ 2665      41756469 
+ 2666              	.LASF54:
+ 2667 040a 72616469 		.ascii	"radius\000"
+ 2667      757300
+ 2668              	.LASF0:
+ 2669 0411 7369676E 		.ascii	"signed char\000"
+ 2669      65642063 
+ 2669      68617200 
+ 2670              	.LASF7:
+ 2671 041d 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2671      206C6F6E 
+ 2671      6720756E 
+ 2671      7369676E 
+ 2671      65642069 
+ 2672              	.LASF35:
+ 2673 0434 47455354 		.ascii	"GESTURE_DOWN_CLICK\000"
+ 2673      5552455F 
+ 2673      444F574E 
+ 2673      5F434C49 
+ 2673      434B00
+ 2674              	.LASF72:
+ 2675 0447 43617053 		.ascii	"CapSense_Start\000"
+ 2675      656E7365 
+ 2675      5F537461 
+ 2675      727400
+ 2676              	.LASF8:
+ 2677 0456 756E7369 		.ascii	"unsigned int\000"
+ 2677      676E6564 
+ 2677      20696E74 
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 61
+
+
+ 2677      00
+ 2678              	.LASF78:
+ 2679 0463 44657465 		.ascii	"DetectGesture\000"
+ 2679      63744765 
+ 2679      73747572 
+ 2679      6500
+ 2680              	.LASF49:
+ 2681 0471 55534246 		.ascii	"USBFS_currentMute\000"
+ 2681      535F6375 
+ 2681      7272656E 
+ 2681      744D7574 
+ 2681      6500
+ 2682              	.LASF18:
+ 2683 0483 72656733 		.ascii	"reg32\000"
+ 2683      3200
+ 2684              	.LASF42:
+ 2685 0489 70726576 		.ascii	"prevVol\000"
+ 2685      566F6C00 
+ 2686              	.LASF3:
+ 2687 0491 73686F72 		.ascii	"short unsigned int\000"
+ 2687      7420756E 
+ 2687      7369676E 
+ 2687      65642069 
+ 2687      6E7400
+ 2688              	.LASF53:
+ 2689 04a4 61636354 		.ascii	"accTheta\000"
+ 2689      68657461 
+ 2689      00
+ 2690              	.LASF67:
+ 2691 04ad 436F6465 		.ascii	"Codec_Init\000"
+ 2691      635F496E 
+ 2691      697400
+ 2692              	.LASF20:
+ 2693 04b8 47455354 		.ascii	"GESTURE_NONE\000"
+ 2693      5552455F 
+ 2693      4E4F4E45 
+ 2693      00
+ 2694              	.LASF17:
+ 2695 04c5 63686172 		.ascii	"char\000"
+ 2695      00
+ 2696              	.LASF64:
+ 2697 04ca 55415254 		.ascii	"UART_Start\000"
+ 2697      5F537461 
+ 2697      727400
+ 2698              	.LASF21:
+ 2699 04d5 47455354 		.ascii	"GESTURE_RELEASE\000"
+ 2699      5552455F 
+ 2699      52454C45 
+ 2699      41534500 
+ 2700              	.LASF9:
+ 2701 04e5 75696E74 		.ascii	"uint8\000"
+ 2701      3800
+ 2702              	.LASF41:
+ 2703 04eb 5F426F6F 		.ascii	"_Bool\000"
+ 2703      6C00
+ 2704              	.LASF29:
+ 2705 04f1 47455354 		.ascii	"GESTURE_OUTWARD_SWIPE\000"
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 62
+
+
+ 2705      5552455F 
+ 2705      4F555457 
+ 2705      4152445F 
+ 2705      53574950 
+ 2706              	.LASF11:
+ 2707 0507 75696E74 		.ascii	"uint32\000"
+ 2707      333200
+ 2708              	.LASF5:
+ 2709 050e 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2709      20756E73 
+ 2709      69676E65 
+ 2709      6420696E 
+ 2709      7400
+ 2710              	.LASF13:
+ 2711 0520 696E7433 		.ascii	"int32\000"
+ 2711      3200
+ 2712              	.LASF15:
+ 2713 0526 646F7562 		.ascii	"double\000"
+ 2713      6C6500
+ 2714              	.LASF38:
+ 2715 052d 766F6C55 		.ascii	"volUpdateThreshold\000"
+ 2715      70646174 
+ 2715      65546872 
+ 2715      6573686F 
+ 2715      6C6400
+ 2716              	.LASF59:
+ 2717 0540 55534246 		.ascii	"USBFS_LoadInEP\000"
+ 2717      535F4C6F 
+ 2717      6164496E 
+ 2717      455000
+ 2718              	.LASF27:
+ 2719 054f 47455354 		.ascii	"GESTURE_UP_SWIPE\000"
+ 2719      5552455F 
+ 2719      55505F53 
+ 2719      57495045 
+ 2719      00
+ 2720              	.LASF75:
+ 2721 0560 43617053 		.ascii	"CapSense_IsBusy\000"
+ 2721      656E7365 
+ 2721      5F497342 
+ 2721      75737900 
+ 2722              	.LASF83:
+ 2723 0570 55706461 		.ascii	"Update_VolumeAudioOut\000"
+ 2723      74655F56 
+ 2723      6F6C756D 
+ 2723      65417564 
+ 2723      696F4F75 
+ 2724              	.LASF40:
+ 2725 0586 766F6C75 		.ascii	"volumeReport\000"
+ 2725      6D655265 
+ 2725      706F7274 
+ 2725      00
+ 2726              	.LASF30:
+ 2727 0593 47455354 		.ascii	"GESTURE_INNER_CLKWISE\000"
+ 2727      5552455F 
+ 2727      494E4E45 
+ 2727      525F434C 
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccK5mKQ3.s 			page 63
+
+
+ 2727      4B574953 
+ 2728              	.LASF31:
+ 2729 05a9 47455354 		.ascii	"GESTURE_INNER_COUNTER_CLKWISE\000"
+ 2729      5552455F 
+ 2729      494E4E45 
+ 2729      525F434F 
+ 2729      554E5445 
+ 2730              	.LASF69:
+ 2731 05c7 55534246 		.ascii	"USBFS_Start\000"
+ 2731      535F5374 
+ 2731      61727400 
+ 2732              	.LASF47:
+ 2733 05d3 67657374 		.ascii	"gesture\000"
+ 2733      75726500 
+ 2734              	.LASF34:
+ 2735 05db 47455354 		.ascii	"GESTURE_UP_CLICK\000"
+ 2735      5552455F 
+ 2735      55505F43 
+ 2735      4C49434B 
+ 2735      00
+ 2736              	.LASF52:
+ 2737 05ec 63617073 		.ascii	"capsenseButtonStatus\000"
+ 2737      656E7365 
+ 2737      42757474 
+ 2737      6F6E5374 
+ 2737      61747573 
+ 2738              	.LASF37:
+ 2739 0601 74476573 		.ascii	"tGestureId\000"
+ 2739      74757265 
+ 2739      496400
+ 2740              	.LASF71:
+ 2741 060c 4173796E 		.ascii	"Async_Feedback_Counter_Start\000"
+ 2741      635F4665 
+ 2741      65646261 
+ 2741      636B5F43 
+ 2741      6F756E74 
+ 2742              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

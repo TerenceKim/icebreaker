@@ -1,0 +1,1016 @@
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"USBFS_cls.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.USBFS_DispatchClassRqst,"ax",%progbits
+  18              		.align	2
+  19              		.global	USBFS_DispatchClassRqst
+  20              		.code	16
+  21              		.thumb_func
+  22              		.type	USBFS_DispatchClassRqst, %function
+  23              	USBFS_DispatchClassRqst:
+  24              	.LFB162:
+  25              		.file 1 ".\\Generated_Source\\PSoC4\\USBFS_cls.c"
+   1:.\Generated_Source\PSoC4/USBFS_cls.c **** /***************************************************************************//**
+   2:.\Generated_Source\PSoC4/USBFS_cls.c **** * \file USBFS_cls.c
+   3:.\Generated_Source\PSoC4/USBFS_cls.c **** * \version 3.0
+   4:.\Generated_Source\PSoC4/USBFS_cls.c **** *
+   5:.\Generated_Source\PSoC4/USBFS_cls.c **** * \brief
+   6:.\Generated_Source\PSoC4/USBFS_cls.c **** *  This file contains the USB Class request handler.
+   7:.\Generated_Source\PSoC4/USBFS_cls.c **** *
+   8:.\Generated_Source\PSoC4/USBFS_cls.c **** ********************************************************************************
+   9:.\Generated_Source\PSoC4/USBFS_cls.c **** * \copyright
+  10:.\Generated_Source\PSoC4/USBFS_cls.c **** * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  11:.\Generated_Source\PSoC4/USBFS_cls.c **** * You may use this file only in accordance with the license, terms, conditions,
+  12:.\Generated_Source\PSoC4/USBFS_cls.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  13:.\Generated_Source\PSoC4/USBFS_cls.c **** * the software package with which this file was provided.
+  14:.\Generated_Source\PSoC4/USBFS_cls.c **** *******************************************************************************/
+  15:.\Generated_Source\PSoC4/USBFS_cls.c **** 
+  16:.\Generated_Source\PSoC4/USBFS_cls.c **** #include "USBFS_pvt.h"
+  17:.\Generated_Source\PSoC4/USBFS_cls.c **** #include "cyapicallbacks.h"
+  18:.\Generated_Source\PSoC4/USBFS_cls.c **** 
+  19:.\Generated_Source\PSoC4/USBFS_cls.c **** #if(USBFS_EXTERN_CLS == USBFS_FALSE)
+  20:.\Generated_Source\PSoC4/USBFS_cls.c **** 
+  21:.\Generated_Source\PSoC4/USBFS_cls.c **** /***************************************
+  22:.\Generated_Source\PSoC4/USBFS_cls.c **** * User Implemented Class Driver Declarations.
+  23:.\Generated_Source\PSoC4/USBFS_cls.c **** ***************************************/
+  24:.\Generated_Source\PSoC4/USBFS_cls.c **** /* `#START USER_DEFINED_CLASS_DECLARATIONS` Place your declaration here */
+  25:.\Generated_Source\PSoC4/USBFS_cls.c **** 
+  26:.\Generated_Source\PSoC4/USBFS_cls.c **** /* `#END` */
+  27:.\Generated_Source\PSoC4/USBFS_cls.c **** 
+  28:.\Generated_Source\PSoC4/USBFS_cls.c **** 
+  29:.\Generated_Source\PSoC4/USBFS_cls.c **** /*******************************************************************************
+  30:.\Generated_Source\PSoC4/USBFS_cls.c **** * Function Name: USBFS_DispatchClassRqst
+  31:.\Generated_Source\PSoC4/USBFS_cls.c **** ****************************************************************************//**
+  32:.\Generated_Source\PSoC4/USBFS_cls.c **** *  This routine dispatches class specific requests depend on interface class.
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 2
+
+
+  33:.\Generated_Source\PSoC4/USBFS_cls.c **** *
+  34:.\Generated_Source\PSoC4/USBFS_cls.c **** * \return
+  35:.\Generated_Source\PSoC4/USBFS_cls.c **** *  requestHandled.
+  36:.\Generated_Source\PSoC4/USBFS_cls.c **** *
+  37:.\Generated_Source\PSoC4/USBFS_cls.c **** * \reentrant
+  38:.\Generated_Source\PSoC4/USBFS_cls.c **** *  No.
+  39:.\Generated_Source\PSoC4/USBFS_cls.c **** *
+  40:.\Generated_Source\PSoC4/USBFS_cls.c **** *******************************************************************************/
+  41:.\Generated_Source\PSoC4/USBFS_cls.c **** uint8 USBFS_DispatchClassRqst(void) 
+  42:.\Generated_Source\PSoC4/USBFS_cls.c **** {
+  26              		.loc 1 42 0
+  27              		.cfi_startproc
+  28 0000 08B5     		push	{r3, lr}
+  29              		.cfi_def_cfa_offset 8
+  30              		.cfi_offset 3, -8
+  31              		.cfi_offset 14, -4
+  43:.\Generated_Source\PSoC4/USBFS_cls.c ****     uint8 requestHandled;
+  44:.\Generated_Source\PSoC4/USBFS_cls.c ****     uint8 interfaceNumber;
+  45:.\Generated_Source\PSoC4/USBFS_cls.c **** 
+  46:.\Generated_Source\PSoC4/USBFS_cls.c ****     /* Get interface to which request is intended. */
+  47:.\Generated_Source\PSoC4/USBFS_cls.c ****     switch (USBFS_bmRequestTypeReg & USBFS_RQST_RCPT_MASK)
+  32              		.loc 1 47 0
+  33 0002 154B     		ldr	r3, .L12
+  34 0004 1B68     		ldr	r3, [r3]
+  35 0006 0322     		mov	r2, #3
+  36 0008 1340     		and	r3, r2
+  37 000a 012B     		cmp	r3, #1
+  38 000c 02D0     		beq	.L3
+  39 000e 022B     		cmp	r3, #2
+  40 0010 04D0     		beq	.L4
+  41 0012 10E0     		b	.L10
+  42              	.L3:
+  48:.\Generated_Source\PSoC4/USBFS_cls.c ****     {
+  49:.\Generated_Source\PSoC4/USBFS_cls.c ****         case USBFS_RQST_RCPT_IFC:
+  50:.\Generated_Source\PSoC4/USBFS_cls.c ****             /* Class-specific request directed to interface: wIndexLoReg 
+  51:.\Generated_Source\PSoC4/USBFS_cls.c ****             * contains interface number.
+  52:.\Generated_Source\PSoC4/USBFS_cls.c ****             */
+  53:.\Generated_Source\PSoC4/USBFS_cls.c ****             interfaceNumber = (uint8) USBFS_wIndexLoReg;
+  43              		.loc 1 53 0
+  44 0014 104B     		ldr	r3, .L12
+  45 0016 1B69     		ldr	r3, [r3, #16]
+  46 0018 DBB2     		uxtb	r3, r3
+  47              	.LVL0:
+  54:.\Generated_Source\PSoC4/USBFS_cls.c ****             break;
+  48              		.loc 1 54 0
+  49 001a 0DE0     		b	.L2
+  50              	.LVL1:
+  51              	.L4:
+  55:.\Generated_Source\PSoC4/USBFS_cls.c ****         
+  56:.\Generated_Source\PSoC4/USBFS_cls.c ****         case USBFS_RQST_RCPT_EP:
+  57:.\Generated_Source\PSoC4/USBFS_cls.c ****             /* Class-specific request directed to endpoint: wIndexLoReg contains 
+  58:.\Generated_Source\PSoC4/USBFS_cls.c ****             * endpoint number. Find interface related to endpoint, 
+  59:.\Generated_Source\PSoC4/USBFS_cls.c ****             */
+  60:.\Generated_Source\PSoC4/USBFS_cls.c ****             interfaceNumber = USBFS_EP[USBFS_wIndexLoReg & USBFS_DIR_UNUSED].interface;
+  52              		.loc 1 60 0
+  53 001c 0E4B     		ldr	r3, .L12
+  54 001e 1B69     		ldr	r3, [r3, #16]
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 3
+
+
+  55 0020 7F22     		mov	r2, #127
+  56 0022 1340     		and	r3, r2
+  57 0024 5A00     		lsl	r2, r3, #1
+  58 0026 D318     		add	r3, r2, r3
+  59 0028 9B00     		lsl	r3, r3, #2
+  60 002a 0C4A     		ldr	r2, .L12+4
+  61 002c D318     		add	r3, r2, r3
+  62 002e 0833     		add	r3, r3, #8
+  63 0030 9B78     		ldrb	r3, [r3, #2]
+  64 0032 DBB2     		uxtb	r3, r3
+  65              	.LVL2:
+  61:.\Generated_Source\PSoC4/USBFS_cls.c ****             break;
+  66              		.loc 1 61 0
+  67 0034 00E0     		b	.L2
+  68              	.LVL3:
+  69              	.L10:
+  62:.\Generated_Source\PSoC4/USBFS_cls.c ****             
+  63:.\Generated_Source\PSoC4/USBFS_cls.c ****         default:
+  64:.\Generated_Source\PSoC4/USBFS_cls.c ****             /* Default interface is zero. */
+  65:.\Generated_Source\PSoC4/USBFS_cls.c ****             interfaceNumber = 0u;
+  70              		.loc 1 65 0
+  71 0036 0023     		mov	r3, #0
+  72              	.L2:
+  73              	.LVL4:
+  66:.\Generated_Source\PSoC4/USBFS_cls.c ****             break;
+  67:.\Generated_Source\PSoC4/USBFS_cls.c ****     }
+  68:.\Generated_Source\PSoC4/USBFS_cls.c **** 
+  69:.\Generated_Source\PSoC4/USBFS_cls.c **** #if (defined(USBFS_ENABLE_HID_CLASS) ||\
+  70:.\Generated_Source\PSoC4/USBFS_cls.c ****             defined(USBFS_ENABLE_AUDIO_CLASS) ||\
+  71:.\Generated_Source\PSoC4/USBFS_cls.c ****             defined(USBFS_ENABLE_CDC_CLASS) ||\
+  72:.\Generated_Source\PSoC4/USBFS_cls.c ****             USBFS_ENABLE_MSC_CLASS)
+  73:.\Generated_Source\PSoC4/USBFS_cls.c **** 
+  74:.\Generated_Source\PSoC4/USBFS_cls.c ****     /* Handle class request depends on interface type. */
+  75:.\Generated_Source\PSoC4/USBFS_cls.c ****     switch (USBFS_interfaceClass[interfaceNumber])
+  74              		.loc 1 75 0
+  75 0038 094A     		ldr	r2, .L12+8
+  76 003a 1268     		ldr	r2, [r2]
+  77 003c D35C     		ldrb	r3, [r2, r3]
+  78              	.LVL5:
+  79 003e 012B     		cmp	r3, #1
+  80 0040 04D0     		beq	.L6
+  81 0042 032B     		cmp	r3, #3
+  82 0044 05D1     		bne	.L11
+  76:.\Generated_Source\PSoC4/USBFS_cls.c ****     {
+  77:.\Generated_Source\PSoC4/USBFS_cls.c ****     #if defined(USBFS_ENABLE_HID_CLASS)
+  78:.\Generated_Source\PSoC4/USBFS_cls.c ****         case USBFS_CLASS_HID:
+  79:.\Generated_Source\PSoC4/USBFS_cls.c ****             requestHandled = USBFS_DispatchHIDClassRqst();
+  83              		.loc 1 79 0
+  84 0046 FFF7FEFF 		bl	USBFS_DispatchHIDClassRqst
+  85              	.LVL6:
+  80:.\Generated_Source\PSoC4/USBFS_cls.c ****             break;
+  86              		.loc 1 80 0
+  87 004a 03E0     		b	.L5
+  88              	.LVL7:
+  89              	.L6:
+  81:.\Generated_Source\PSoC4/USBFS_cls.c ****     #endif /* (USBFS_ENABLE_HID_CLASS) */
+  82:.\Generated_Source\PSoC4/USBFS_cls.c ****             
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 4
+
+
+  83:.\Generated_Source\PSoC4/USBFS_cls.c ****     #if defined(USBFS_ENABLE_AUDIO_CLASS)
+  84:.\Generated_Source\PSoC4/USBFS_cls.c ****         case USBFS_CLASS_AUDIO:
+  85:.\Generated_Source\PSoC4/USBFS_cls.c ****             requestHandled = USBFS_DispatchAUDIOClassRqst();
+  90              		.loc 1 85 0
+  91 004c FFF7FEFF 		bl	USBFS_DispatchAUDIOClassRqst
+  92              	.LVL8:
+  86:.\Generated_Source\PSoC4/USBFS_cls.c ****             break;
+  93              		.loc 1 86 0
+  94 0050 00E0     		b	.L5
+  95              	.LVL9:
+  96              	.L11:
+  87:.\Generated_Source\PSoC4/USBFS_cls.c ****     #endif /* (USBFS_CLASS_AUDIO) */
+  88:.\Generated_Source\PSoC4/USBFS_cls.c ****             
+  89:.\Generated_Source\PSoC4/USBFS_cls.c ****     #if defined(USBFS_ENABLE_CDC_CLASS)
+  90:.\Generated_Source\PSoC4/USBFS_cls.c ****         case USBFS_CLASS_CDC:
+  91:.\Generated_Source\PSoC4/USBFS_cls.c ****             requestHandled = USBFS_DispatchCDCClassRqst();
+  92:.\Generated_Source\PSoC4/USBFS_cls.c ****             break;
+  93:.\Generated_Source\PSoC4/USBFS_cls.c ****     #endif /* (USBFS_ENABLE_CDC_CLASS) */
+  94:.\Generated_Source\PSoC4/USBFS_cls.c ****         
+  95:.\Generated_Source\PSoC4/USBFS_cls.c ****     #if (USBFS_ENABLE_MSC_CLASS)
+  96:.\Generated_Source\PSoC4/USBFS_cls.c ****         case USBFS_CLASS_MSD:
+  97:.\Generated_Source\PSoC4/USBFS_cls.c ****         #if (USBFS_HANDLE_MSC_REQUESTS)
+  98:.\Generated_Source\PSoC4/USBFS_cls.c ****             /* MSC requests are handled by the component. */
+  99:.\Generated_Source\PSoC4/USBFS_cls.c ****             requestHandled = USBFS_DispatchMSCClassRqst();
+ 100:.\Generated_Source\PSoC4/USBFS_cls.c ****         #elif defined(USBFS_DISPATCH_MSC_CLASS_RQST_CALLBACK)
+ 101:.\Generated_Source\PSoC4/USBFS_cls.c ****             /* MSC requests are handled by user defined callbcak. */
+ 102:.\Generated_Source\PSoC4/USBFS_cls.c ****             requestHandled = USBFS_DispatchMSCClassRqst_Callback();
+ 103:.\Generated_Source\PSoC4/USBFS_cls.c ****         #else
+ 104:.\Generated_Source\PSoC4/USBFS_cls.c ****             /* MSC requests are not handled. */
+ 105:.\Generated_Source\PSoC4/USBFS_cls.c ****             requestHandled = USBFS_FALSE;
+ 106:.\Generated_Source\PSoC4/USBFS_cls.c ****         #endif /* (USBFS_HANDLE_MSC_REQUESTS) */
+ 107:.\Generated_Source\PSoC4/USBFS_cls.c ****             break;
+ 108:.\Generated_Source\PSoC4/USBFS_cls.c ****     #endif /* (USBFS_ENABLE_MSC_CLASS) */
+ 109:.\Generated_Source\PSoC4/USBFS_cls.c ****         
+ 110:.\Generated_Source\PSoC4/USBFS_cls.c ****         default:
+ 111:.\Generated_Source\PSoC4/USBFS_cls.c ****             /* Request is not handled: unknown class request type. */
+ 112:.\Generated_Source\PSoC4/USBFS_cls.c ****             requestHandled = USBFS_FALSE;
+  97              		.loc 1 112 0
+  98 0052 0020     		mov	r0, #0
+  99              	.L5:
+ 100              	.LVL10:
+ 113:.\Generated_Source\PSoC4/USBFS_cls.c ****             break;
+ 114:.\Generated_Source\PSoC4/USBFS_cls.c ****     }
+ 115:.\Generated_Source\PSoC4/USBFS_cls.c **** #else /*No class is defined*/
+ 116:.\Generated_Source\PSoC4/USBFS_cls.c ****     if (0u != interfaceNumber)
+ 117:.\Generated_Source\PSoC4/USBFS_cls.c ****     {
+ 118:.\Generated_Source\PSoC4/USBFS_cls.c ****         /* Suppress warning message */
+ 119:.\Generated_Source\PSoC4/USBFS_cls.c ****     }
+ 120:.\Generated_Source\PSoC4/USBFS_cls.c ****     requestHandled = USBFS_FALSE;
+ 121:.\Generated_Source\PSoC4/USBFS_cls.c **** #endif /*HID or AUDIO or MSC or CDC class enabled*/
+ 122:.\Generated_Source\PSoC4/USBFS_cls.c **** 
+ 123:.\Generated_Source\PSoC4/USBFS_cls.c ****     /* `#START USER_DEFINED_CLASS_CODE` Place your Class request here */
+ 124:.\Generated_Source\PSoC4/USBFS_cls.c **** 
+ 125:.\Generated_Source\PSoC4/USBFS_cls.c ****     /* `#END` */
+ 126:.\Generated_Source\PSoC4/USBFS_cls.c **** 
+ 127:.\Generated_Source\PSoC4/USBFS_cls.c **** #ifdef USBFS_DISPATCH_CLASS_RQST_CALLBACK
+ 128:.\Generated_Source\PSoC4/USBFS_cls.c ****     if (USBFS_FALSE == requestHandled)
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 5
+
+
+ 129:.\Generated_Source\PSoC4/USBFS_cls.c ****     {
+ 130:.\Generated_Source\PSoC4/USBFS_cls.c ****         requestHandled = USBFS_DispatchClassRqst_Callback(interfaceNumber);
+ 131:.\Generated_Source\PSoC4/USBFS_cls.c ****     }
+ 132:.\Generated_Source\PSoC4/USBFS_cls.c **** #endif /* (USBFS_DISPATCH_CLASS_RQST_CALLBACK) */
+ 133:.\Generated_Source\PSoC4/USBFS_cls.c **** 
+ 134:.\Generated_Source\PSoC4/USBFS_cls.c ****     return (requestHandled);
+ 135:.\Generated_Source\PSoC4/USBFS_cls.c **** }
+ 101              		.loc 1 135 0
+ 102              		@ sp needed
+ 103 0054 08BD     		pop	{r3, pc}
+ 104              	.L13:
+ 105 0056 C046     		.align	2
+ 106              	.L12:
+ 107 0058 00002C40 		.word	1076625408
+ 108 005c 00000000 		.word	USBFS_EP
+ 109 0060 00000000 		.word	USBFS_interfaceClass
+ 110              		.cfi_endproc
+ 111              	.LFE162:
+ 112              		.size	USBFS_DispatchClassRqst, .-USBFS_DispatchClassRqst
+ 113              		.text
+ 114              	.Letext0:
+ 115              		.file 2 ".\\Generated_Source\\PSoC4\\cytypes.h"
+ 116              		.file 3 ".\\Generated_Source\\PSoC4\\USBFS.h"
+ 117              		.file 4 ".\\Generated_Source\\PSoC4\\USBFS_pvt.h"
+ 118              		.section	.debug_info,"",%progbits
+ 119              	.Ldebug_info0:
+ 120 0000 EE010000 		.4byte	0x1ee
+ 121 0004 0400     		.2byte	0x4
+ 122 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 123 000a 04       		.byte	0x4
+ 124 000b 01       		.uleb128 0x1
+ 125 000c 3F020000 		.4byte	.LASF34
+ 126 0010 01       		.byte	0x1
+ 127 0011 67000000 		.4byte	.LASF35
+ 128 0015 7C010000 		.4byte	.LASF36
+ 129 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 130 001d 00000000 		.4byte	0
+ 131 0021 00000000 		.4byte	.Ldebug_line0
+ 132 0025 02       		.uleb128 0x2
+ 133 0026 01       		.byte	0x1
+ 134 0027 06       		.byte	0x6
+ 135 0028 FB020000 		.4byte	.LASF0
+ 136 002c 02       		.uleb128 0x2
+ 137 002d 01       		.byte	0x1
+ 138 002e 08       		.byte	0x8
+ 139 002f F8000000 		.4byte	.LASF1
+ 140 0033 02       		.uleb128 0x2
+ 141 0034 02       		.byte	0x2
+ 142 0035 05       		.byte	0x5
+ 143 0036 D8020000 		.4byte	.LASF2
+ 144 003a 02       		.uleb128 0x2
+ 145 003b 02       		.byte	0x2
+ 146 003c 07       		.byte	0x7
+ 147 003d 00000000 		.4byte	.LASF3
+ 148 0041 02       		.uleb128 0x2
+ 149 0042 04       		.byte	0x4
+ 150 0043 05       		.byte	0x5
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 6
+
+
+ 151 0044 F2020000 		.4byte	.LASF4
+ 152 0048 02       		.uleb128 0x2
+ 153 0049 04       		.byte	0x4
+ 154 004a 07       		.byte	0x7
+ 155 004b C8000000 		.4byte	.LASF5
+ 156 004f 02       		.uleb128 0x2
+ 157 0050 08       		.byte	0x8
+ 158 0051 05       		.byte	0x5
+ 159 0052 2C020000 		.4byte	.LASF6
+ 160 0056 02       		.uleb128 0x2
+ 161 0057 08       		.byte	0x8
+ 162 0058 07       		.byte	0x7
+ 163 0059 5B010000 		.4byte	.LASF7
+ 164 005d 03       		.uleb128 0x3
+ 165 005e 04       		.byte	0x4
+ 166 005f 05       		.byte	0x5
+ 167 0060 696E7400 		.ascii	"int\000"
+ 168 0064 02       		.uleb128 0x2
+ 169 0065 04       		.byte	0x4
+ 170 0066 07       		.byte	0x7
+ 171 0067 4E010000 		.4byte	.LASF8
+ 172 006b 04       		.uleb128 0x4
+ 173 006c E2020000 		.4byte	.LASF9
+ 174 0070 02       		.byte	0x2
+ 175 0071 3801     		.2byte	0x138
+ 176 0073 2C000000 		.4byte	0x2c
+ 177 0077 04       		.uleb128 0x4
+ 178 0078 35010000 		.4byte	.LASF10
+ 179 007c 02       		.byte	0x2
+ 180 007d 3901     		.2byte	0x139
+ 181 007f 3A000000 		.4byte	0x3a
+ 182 0083 04       		.uleb128 0x4
+ 183 0084 47010000 		.4byte	.LASF11
+ 184 0088 02       		.byte	0x2
+ 185 0089 3A01     		.2byte	0x13a
+ 186 008b 48000000 		.4byte	0x48
+ 187 008f 02       		.uleb128 0x2
+ 188 0090 04       		.byte	0x4
+ 189 0091 04       		.byte	0x4
+ 190 0092 8C000000 		.4byte	.LASF12
+ 191 0096 02       		.uleb128 0x2
+ 192 0097 08       		.byte	0x8
+ 193 0098 04       		.byte	0x4
+ 194 0099 1C010000 		.4byte	.LASF13
+ 195 009d 02       		.uleb128 0x2
+ 196 009e 01       		.byte	0x1
+ 197 009f 08       		.byte	0x8
+ 198 00a0 3A020000 		.4byte	.LASF14
+ 199 00a4 02       		.uleb128 0x2
+ 200 00a5 04       		.byte	0x4
+ 201 00a6 07       		.byte	0x7
+ 202 00a7 1C020000 		.4byte	.LASF15
+ 203 00ab 05       		.uleb128 0x5
+ 204 00ac 0C       		.byte	0xc
+ 205 00ad 03       		.byte	0x3
+ 206 00ae 95       		.byte	0x95
+ 207 00af 20010000 		.4byte	0x120
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 7
+
+
+ 208 00b3 06       		.uleb128 0x6
+ 209 00b4 23010000 		.4byte	.LASF16
+ 210 00b8 03       		.byte	0x3
+ 211 00b9 97       		.byte	0x97
+ 212 00ba 6B000000 		.4byte	0x6b
+ 213 00be 00       		.byte	0
+ 214 00bf 06       		.uleb128 0x6
+ 215 00c0 3C010000 		.4byte	.LASF17
+ 216 00c4 03       		.byte	0x3
+ 217 00c5 98       		.byte	0x98
+ 218 00c6 6B000000 		.4byte	0x6b
+ 219 00ca 01       		.byte	0x1
+ 220 00cb 06       		.uleb128 0x6
+ 221 00cc 72010000 		.4byte	.LASF18
+ 222 00d0 03       		.byte	0x3
+ 223 00d1 99       		.byte	0x99
+ 224 00d2 6B000000 		.4byte	0x6b
+ 225 00d6 02       		.byte	0x2
+ 226 00d7 06       		.uleb128 0x6
+ 227 00d8 92000000 		.4byte	.LASF19
+ 228 00dc 03       		.byte	0x3
+ 229 00dd 9A       		.byte	0x9a
+ 230 00de 6B000000 		.4byte	0x6b
+ 231 00e2 03       		.byte	0x3
+ 232 00e3 06       		.uleb128 0x6
+ 233 00e4 DA000000 		.4byte	.LASF20
+ 234 00e8 03       		.byte	0x3
+ 235 00e9 9B       		.byte	0x9b
+ 236 00ea 6B000000 		.4byte	0x6b
+ 237 00ee 04       		.byte	0x4
+ 238 00ef 06       		.uleb128 0x6
+ 239 00f0 25020000 		.4byte	.LASF21
+ 240 00f4 03       		.byte	0x3
+ 241 00f5 9C       		.byte	0x9c
+ 242 00f6 6B000000 		.4byte	0x6b
+ 243 00fa 05       		.byte	0x5
+ 244 00fb 06       		.uleb128 0x6
+ 245 00fc 2A010000 		.4byte	.LASF22
+ 246 0100 03       		.byte	0x3
+ 247 0101 9D       		.byte	0x9d
+ 248 0102 77000000 		.4byte	0x77
+ 249 0106 06       		.byte	0x6
+ 250 0107 06       		.uleb128 0x6
+ 251 0108 CD020000 		.4byte	.LASF23
+ 252 010c 03       		.byte	0x3
+ 253 010d 9E       		.byte	0x9e
+ 254 010e 77000000 		.4byte	0x77
+ 255 0112 08       		.byte	0x8
+ 256 0113 06       		.uleb128 0x6
+ 257 0114 E8020000 		.4byte	.LASF24
+ 258 0118 03       		.byte	0x3
+ 259 0119 9F       		.byte	0x9f
+ 260 011a 6B000000 		.4byte	0x6b
+ 261 011e 0A       		.byte	0xa
+ 262 011f 00       		.byte	0
+ 263 0120 07       		.uleb128 0x7
+ 264 0121 30000000 		.4byte	.LASF25
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 8
+
+
+ 265 0125 03       		.byte	0x3
+ 266 0126 A0       		.byte	0xa0
+ 267 0127 AB000000 		.4byte	0xab
+ 268 012b 05       		.uleb128 0x5
+ 269 012c 20       		.byte	0x20
+ 270 012d 03       		.byte	0x3
+ 271 012e CD       		.byte	0xcd
+ 272 012f 40010000 		.4byte	0x140
+ 273 0133 06       		.uleb128 0x6
+ 274 0134 45000000 		.4byte	.LASF26
+ 275 0138 03       		.byte	0x3
+ 276 0139 CF       		.byte	0xcf
+ 277 013a 40010000 		.4byte	0x140
+ 278 013e 00       		.byte	0
+ 279 013f 00       		.byte	0
+ 280 0140 08       		.uleb128 0x8
+ 281 0141 83000000 		.4byte	0x83
+ 282 0145 50010000 		.4byte	0x150
+ 283 0149 09       		.uleb128 0x9
+ 284 014a A4000000 		.4byte	0xa4
+ 285 014e 07       		.byte	0x7
+ 286 014f 00       		.byte	0
+ 287 0150 07       		.uleb128 0x7
+ 288 0151 06010000 		.4byte	.LASF27
+ 289 0155 03       		.byte	0x3
+ 290 0156 D0       		.byte	0xd0
+ 291 0157 2B010000 		.4byte	0x12b
+ 292 015b 0A       		.uleb128 0xa
+ 293 015c B0000000 		.4byte	.LASF37
+ 294 0160 01       		.byte	0x1
+ 295 0161 29       		.byte	0x29
+ 296 0162 6B000000 		.4byte	0x6b
+ 297 0166 00000000 		.4byte	.LFB162
+ 298 016a 64000000 		.4byte	.LFE162-.LFB162
+ 299 016e 01       		.uleb128 0x1
+ 300 016f 9C       		.byte	0x9c
+ 301 0170 A5010000 		.4byte	0x1a5
+ 302 0174 0B       		.uleb128 0xb
+ 303 0175 0D020000 		.4byte	.LASF28
+ 304 0179 01       		.byte	0x1
+ 305 017a 2B       		.byte	0x2b
+ 306 017b 6B000000 		.4byte	0x6b
+ 307 017f 00000000 		.4byte	.LLST0
+ 308 0183 0B       		.uleb128 0xb
+ 309 0184 DF000000 		.4byte	.LASF29
+ 310 0188 01       		.byte	0x1
+ 311 0189 2C       		.byte	0x2c
+ 312 018a 6B000000 		.4byte	0x6b
+ 313 018e 29000000 		.4byte	.LLST1
+ 314 0192 0C       		.uleb128 0xc
+ 315 0193 4A000000 		.4byte	.LVL6
+ 316 0197 DB010000 		.4byte	0x1db
+ 317 019b 0C       		.uleb128 0xc
+ 318 019c 50000000 		.4byte	.LVL8
+ 319 01a0 E6010000 		.4byte	0x1e6
+ 320 01a4 00       		.byte	0
+ 321 01a5 0D       		.uleb128 0xd
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 9
+
+
+ 322 01a6 9B000000 		.4byte	.LASF30
+ 323 01aa 04       		.byte	0x4
+ 324 01ab 7E       		.byte	0x7e
+ 325 01ac B0010000 		.4byte	0x1b0
+ 326 01b0 0E       		.uleb128 0xe
+ 327 01b1 04       		.byte	0x4
+ 328 01b2 B6010000 		.4byte	0x1b6
+ 329 01b6 0F       		.uleb128 0xf
+ 330 01b7 6B000000 		.4byte	0x6b
+ 331 01bb 08       		.uleb128 0x8
+ 332 01bc 20010000 		.4byte	0x120
+ 333 01c0 CB010000 		.4byte	0x1cb
+ 334 01c4 09       		.uleb128 0x9
+ 335 01c5 A4000000 		.4byte	0xa4
+ 336 01c9 08       		.byte	0x8
+ 337 01ca 00       		.byte	0
+ 338 01cb 0D       		.uleb128 0xd
+ 339 01cc EF000000 		.4byte	.LASF31
+ 340 01d0 04       		.byte	0x4
+ 341 01d1 80       		.byte	0x80
+ 342 01d2 D6010000 		.4byte	0x1d6
+ 343 01d6 10       		.uleb128 0x10
+ 344 01d7 BB010000 		.4byte	0x1bb
+ 345 01db 11       		.uleb128 0x11
+ 346 01dc 4C000000 		.4byte	.LASF32
+ 347 01e0 04       		.byte	0x4
+ 348 01e1 DD       		.byte	0xdd
+ 349 01e2 6B000000 		.4byte	0x6b
+ 350 01e6 11       		.uleb128 0x11
+ 351 01e7 13000000 		.4byte	.LASF33
+ 352 01eb 04       		.byte	0x4
+ 353 01ec E1       		.byte	0xe1
+ 354 01ed 6B000000 		.4byte	0x6b
+ 355 01f1 00       		.byte	0
+ 356              		.section	.debug_abbrev,"",%progbits
+ 357              	.Ldebug_abbrev0:
+ 358 0000 01       		.uleb128 0x1
+ 359 0001 11       		.uleb128 0x11
+ 360 0002 01       		.byte	0x1
+ 361 0003 25       		.uleb128 0x25
+ 362 0004 0E       		.uleb128 0xe
+ 363 0005 13       		.uleb128 0x13
+ 364 0006 0B       		.uleb128 0xb
+ 365 0007 03       		.uleb128 0x3
+ 366 0008 0E       		.uleb128 0xe
+ 367 0009 1B       		.uleb128 0x1b
+ 368 000a 0E       		.uleb128 0xe
+ 369 000b 55       		.uleb128 0x55
+ 370 000c 17       		.uleb128 0x17
+ 371 000d 11       		.uleb128 0x11
+ 372 000e 01       		.uleb128 0x1
+ 373 000f 10       		.uleb128 0x10
+ 374 0010 17       		.uleb128 0x17
+ 375 0011 00       		.byte	0
+ 376 0012 00       		.byte	0
+ 377 0013 02       		.uleb128 0x2
+ 378 0014 24       		.uleb128 0x24
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 10
+
+
+ 379 0015 00       		.byte	0
+ 380 0016 0B       		.uleb128 0xb
+ 381 0017 0B       		.uleb128 0xb
+ 382 0018 3E       		.uleb128 0x3e
+ 383 0019 0B       		.uleb128 0xb
+ 384 001a 03       		.uleb128 0x3
+ 385 001b 0E       		.uleb128 0xe
+ 386 001c 00       		.byte	0
+ 387 001d 00       		.byte	0
+ 388 001e 03       		.uleb128 0x3
+ 389 001f 24       		.uleb128 0x24
+ 390 0020 00       		.byte	0
+ 391 0021 0B       		.uleb128 0xb
+ 392 0022 0B       		.uleb128 0xb
+ 393 0023 3E       		.uleb128 0x3e
+ 394 0024 0B       		.uleb128 0xb
+ 395 0025 03       		.uleb128 0x3
+ 396 0026 08       		.uleb128 0x8
+ 397 0027 00       		.byte	0
+ 398 0028 00       		.byte	0
+ 399 0029 04       		.uleb128 0x4
+ 400 002a 16       		.uleb128 0x16
+ 401 002b 00       		.byte	0
+ 402 002c 03       		.uleb128 0x3
+ 403 002d 0E       		.uleb128 0xe
+ 404 002e 3A       		.uleb128 0x3a
+ 405 002f 0B       		.uleb128 0xb
+ 406 0030 3B       		.uleb128 0x3b
+ 407 0031 05       		.uleb128 0x5
+ 408 0032 49       		.uleb128 0x49
+ 409 0033 13       		.uleb128 0x13
+ 410 0034 00       		.byte	0
+ 411 0035 00       		.byte	0
+ 412 0036 05       		.uleb128 0x5
+ 413 0037 13       		.uleb128 0x13
+ 414 0038 01       		.byte	0x1
+ 415 0039 0B       		.uleb128 0xb
+ 416 003a 0B       		.uleb128 0xb
+ 417 003b 3A       		.uleb128 0x3a
+ 418 003c 0B       		.uleb128 0xb
+ 419 003d 3B       		.uleb128 0x3b
+ 420 003e 0B       		.uleb128 0xb
+ 421 003f 01       		.uleb128 0x1
+ 422 0040 13       		.uleb128 0x13
+ 423 0041 00       		.byte	0
+ 424 0042 00       		.byte	0
+ 425 0043 06       		.uleb128 0x6
+ 426 0044 0D       		.uleb128 0xd
+ 427 0045 00       		.byte	0
+ 428 0046 03       		.uleb128 0x3
+ 429 0047 0E       		.uleb128 0xe
+ 430 0048 3A       		.uleb128 0x3a
+ 431 0049 0B       		.uleb128 0xb
+ 432 004a 3B       		.uleb128 0x3b
+ 433 004b 0B       		.uleb128 0xb
+ 434 004c 49       		.uleb128 0x49
+ 435 004d 13       		.uleb128 0x13
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 11
+
+
+ 436 004e 38       		.uleb128 0x38
+ 437 004f 0B       		.uleb128 0xb
+ 438 0050 00       		.byte	0
+ 439 0051 00       		.byte	0
+ 440 0052 07       		.uleb128 0x7
+ 441 0053 16       		.uleb128 0x16
+ 442 0054 00       		.byte	0
+ 443 0055 03       		.uleb128 0x3
+ 444 0056 0E       		.uleb128 0xe
+ 445 0057 3A       		.uleb128 0x3a
+ 446 0058 0B       		.uleb128 0xb
+ 447 0059 3B       		.uleb128 0x3b
+ 448 005a 0B       		.uleb128 0xb
+ 449 005b 49       		.uleb128 0x49
+ 450 005c 13       		.uleb128 0x13
+ 451 005d 00       		.byte	0
+ 452 005e 00       		.byte	0
+ 453 005f 08       		.uleb128 0x8
+ 454 0060 01       		.uleb128 0x1
+ 455 0061 01       		.byte	0x1
+ 456 0062 49       		.uleb128 0x49
+ 457 0063 13       		.uleb128 0x13
+ 458 0064 01       		.uleb128 0x1
+ 459 0065 13       		.uleb128 0x13
+ 460 0066 00       		.byte	0
+ 461 0067 00       		.byte	0
+ 462 0068 09       		.uleb128 0x9
+ 463 0069 21       		.uleb128 0x21
+ 464 006a 00       		.byte	0
+ 465 006b 49       		.uleb128 0x49
+ 466 006c 13       		.uleb128 0x13
+ 467 006d 2F       		.uleb128 0x2f
+ 468 006e 0B       		.uleb128 0xb
+ 469 006f 00       		.byte	0
+ 470 0070 00       		.byte	0
+ 471 0071 0A       		.uleb128 0xa
+ 472 0072 2E       		.uleb128 0x2e
+ 473 0073 01       		.byte	0x1
+ 474 0074 3F       		.uleb128 0x3f
+ 475 0075 19       		.uleb128 0x19
+ 476 0076 03       		.uleb128 0x3
+ 477 0077 0E       		.uleb128 0xe
+ 478 0078 3A       		.uleb128 0x3a
+ 479 0079 0B       		.uleb128 0xb
+ 480 007a 3B       		.uleb128 0x3b
+ 481 007b 0B       		.uleb128 0xb
+ 482 007c 27       		.uleb128 0x27
+ 483 007d 19       		.uleb128 0x19
+ 484 007e 49       		.uleb128 0x49
+ 485 007f 13       		.uleb128 0x13
+ 486 0080 11       		.uleb128 0x11
+ 487 0081 01       		.uleb128 0x1
+ 488 0082 12       		.uleb128 0x12
+ 489 0083 06       		.uleb128 0x6
+ 490 0084 40       		.uleb128 0x40
+ 491 0085 18       		.uleb128 0x18
+ 492 0086 9742     		.uleb128 0x2117
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 12
+
+
+ 493 0088 19       		.uleb128 0x19
+ 494 0089 01       		.uleb128 0x1
+ 495 008a 13       		.uleb128 0x13
+ 496 008b 00       		.byte	0
+ 497 008c 00       		.byte	0
+ 498 008d 0B       		.uleb128 0xb
+ 499 008e 34       		.uleb128 0x34
+ 500 008f 00       		.byte	0
+ 501 0090 03       		.uleb128 0x3
+ 502 0091 0E       		.uleb128 0xe
+ 503 0092 3A       		.uleb128 0x3a
+ 504 0093 0B       		.uleb128 0xb
+ 505 0094 3B       		.uleb128 0x3b
+ 506 0095 0B       		.uleb128 0xb
+ 507 0096 49       		.uleb128 0x49
+ 508 0097 13       		.uleb128 0x13
+ 509 0098 02       		.uleb128 0x2
+ 510 0099 17       		.uleb128 0x17
+ 511 009a 00       		.byte	0
+ 512 009b 00       		.byte	0
+ 513 009c 0C       		.uleb128 0xc
+ 514 009d 898201   		.uleb128 0x4109
+ 515 00a0 00       		.byte	0
+ 516 00a1 11       		.uleb128 0x11
+ 517 00a2 01       		.uleb128 0x1
+ 518 00a3 31       		.uleb128 0x31
+ 519 00a4 13       		.uleb128 0x13
+ 520 00a5 00       		.byte	0
+ 521 00a6 00       		.byte	0
+ 522 00a7 0D       		.uleb128 0xd
+ 523 00a8 34       		.uleb128 0x34
+ 524 00a9 00       		.byte	0
+ 525 00aa 03       		.uleb128 0x3
+ 526 00ab 0E       		.uleb128 0xe
+ 527 00ac 3A       		.uleb128 0x3a
+ 528 00ad 0B       		.uleb128 0xb
+ 529 00ae 3B       		.uleb128 0x3b
+ 530 00af 0B       		.uleb128 0xb
+ 531 00b0 49       		.uleb128 0x49
+ 532 00b1 13       		.uleb128 0x13
+ 533 00b2 3F       		.uleb128 0x3f
+ 534 00b3 19       		.uleb128 0x19
+ 535 00b4 3C       		.uleb128 0x3c
+ 536 00b5 19       		.uleb128 0x19
+ 537 00b6 00       		.byte	0
+ 538 00b7 00       		.byte	0
+ 539 00b8 0E       		.uleb128 0xe
+ 540 00b9 0F       		.uleb128 0xf
+ 541 00ba 00       		.byte	0
+ 542 00bb 0B       		.uleb128 0xb
+ 543 00bc 0B       		.uleb128 0xb
+ 544 00bd 49       		.uleb128 0x49
+ 545 00be 13       		.uleb128 0x13
+ 546 00bf 00       		.byte	0
+ 547 00c0 00       		.byte	0
+ 548 00c1 0F       		.uleb128 0xf
+ 549 00c2 26       		.uleb128 0x26
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 13
+
+
+ 550 00c3 00       		.byte	0
+ 551 00c4 49       		.uleb128 0x49
+ 552 00c5 13       		.uleb128 0x13
+ 553 00c6 00       		.byte	0
+ 554 00c7 00       		.byte	0
+ 555 00c8 10       		.uleb128 0x10
+ 556 00c9 35       		.uleb128 0x35
+ 557 00ca 00       		.byte	0
+ 558 00cb 49       		.uleb128 0x49
+ 559 00cc 13       		.uleb128 0x13
+ 560 00cd 00       		.byte	0
+ 561 00ce 00       		.byte	0
+ 562 00cf 11       		.uleb128 0x11
+ 563 00d0 2E       		.uleb128 0x2e
+ 564 00d1 00       		.byte	0
+ 565 00d2 3F       		.uleb128 0x3f
+ 566 00d3 19       		.uleb128 0x19
+ 567 00d4 03       		.uleb128 0x3
+ 568 00d5 0E       		.uleb128 0xe
+ 569 00d6 3A       		.uleb128 0x3a
+ 570 00d7 0B       		.uleb128 0xb
+ 571 00d8 3B       		.uleb128 0x3b
+ 572 00d9 0B       		.uleb128 0xb
+ 573 00da 27       		.uleb128 0x27
+ 574 00db 19       		.uleb128 0x19
+ 575 00dc 49       		.uleb128 0x49
+ 576 00dd 13       		.uleb128 0x13
+ 577 00de 3C       		.uleb128 0x3c
+ 578 00df 19       		.uleb128 0x19
+ 579 00e0 00       		.byte	0
+ 580 00e1 00       		.byte	0
+ 581 00e2 00       		.byte	0
+ 582              		.section	.debug_loc,"",%progbits
+ 583              	.Ldebug_loc0:
+ 584              	.LLST0:
+ 585 0000 4A000000 		.4byte	.LVL6
+ 586 0004 4C000000 		.4byte	.LVL7
+ 587 0008 0100     		.2byte	0x1
+ 588 000a 50       		.byte	0x50
+ 589 000b 50000000 		.4byte	.LVL8
+ 590 000f 52000000 		.4byte	.LVL9
+ 591 0013 0100     		.2byte	0x1
+ 592 0015 50       		.byte	0x50
+ 593 0016 54000000 		.4byte	.LVL10
+ 594 001a 64000000 		.4byte	.LFE162
+ 595 001e 0100     		.2byte	0x1
+ 596 0020 50       		.byte	0x50
+ 597 0021 00000000 		.4byte	0
+ 598 0025 00000000 		.4byte	0
+ 599              	.LLST1:
+ 600 0029 1A000000 		.4byte	.LVL0
+ 601 002d 1C000000 		.4byte	.LVL1
+ 602 0031 0100     		.2byte	0x1
+ 603 0033 53       		.byte	0x53
+ 604 0034 34000000 		.4byte	.LVL2
+ 605 0038 36000000 		.4byte	.LVL3
+ 606 003c 0100     		.2byte	0x1
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 14
+
+
+ 607 003e 53       		.byte	0x53
+ 608 003f 38000000 		.4byte	.LVL4
+ 609 0043 3E000000 		.4byte	.LVL5
+ 610 0047 0100     		.2byte	0x1
+ 611 0049 53       		.byte	0x53
+ 612 004a 00000000 		.4byte	0
+ 613 004e 00000000 		.4byte	0
+ 614              		.section	.debug_aranges,"",%progbits
+ 615 0000 1C000000 		.4byte	0x1c
+ 616 0004 0200     		.2byte	0x2
+ 617 0006 00000000 		.4byte	.Ldebug_info0
+ 618 000a 04       		.byte	0x4
+ 619 000b 00       		.byte	0
+ 620 000c 0000     		.2byte	0
+ 621 000e 0000     		.2byte	0
+ 622 0010 00000000 		.4byte	.LFB162
+ 623 0014 64000000 		.4byte	.LFE162-.LFB162
+ 624 0018 00000000 		.4byte	0
+ 625 001c 00000000 		.4byte	0
+ 626              		.section	.debug_ranges,"",%progbits
+ 627              	.Ldebug_ranges0:
+ 628 0000 00000000 		.4byte	.LFB162
+ 629 0004 64000000 		.4byte	.LFE162
+ 630 0008 00000000 		.4byte	0
+ 631 000c 00000000 		.4byte	0
+ 632              		.section	.debug_line,"",%progbits
+ 633              	.Ldebug_line0:
+ 634 0000 8A000000 		.section	.debug_str,"MS",%progbits,1
+ 634      02006200 
+ 634      00000201 
+ 634      FB0E0D00 
+ 634      01010101 
+ 635              	.LASF3:
+ 636 0000 73686F72 		.ascii	"short unsigned int\000"
+ 636      7420756E 
+ 636      7369676E 
+ 636      65642069 
+ 636      6E7400
+ 637              	.LASF33:
+ 638 0013 55534246 		.ascii	"USBFS_DispatchAUDIOClassRqst\000"
+ 638      535F4469 
+ 638      73706174 
+ 638      63684155 
+ 638      44494F43 
+ 639              	.LASF25:
+ 640 0030 545F5553 		.ascii	"T_USBFS_EP_CTL_BLOCK\000"
+ 640      4246535F 
+ 640      45505F43 
+ 640      544C5F42 
+ 640      4C4F434B 
+ 641              	.LASF26:
+ 642 0045 65704461 		.ascii	"epData\000"
+ 642      746100
+ 643              	.LASF32:
+ 644 004c 55534246 		.ascii	"USBFS_DispatchHIDClassRqst\000"
+ 644      535F4469 
+ 644      73706174 
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 15
+
+
+ 644      63684849 
+ 644      44436C61 
+ 645              	.LASF35:
+ 646 0067 2E5C4765 		.ascii	".\\Generated_Source\\PSoC4\\USBFS_cls.c\000"
+ 646      6E657261 
+ 646      7465645F 
+ 646      536F7572 
+ 646      63655C50 
+ 647              	.LASF12:
+ 648 008c 666C6F61 		.ascii	"float\000"
+ 648      7400
+ 649              	.LASF19:
+ 650 0092 6570546F 		.ascii	"epToggle\000"
+ 650      67676C65 
+ 650      00
+ 651              	.LASF30:
+ 652 009b 55534246 		.ascii	"USBFS_interfaceClass\000"
+ 652      535F696E 
+ 652      74657266 
+ 652      61636543 
+ 652      6C617373 
+ 653              	.LASF37:
+ 654 00b0 55534246 		.ascii	"USBFS_DispatchClassRqst\000"
+ 654      535F4469 
+ 654      73706174 
+ 654      6368436C 
+ 654      61737352 
+ 655              	.LASF5:
+ 656 00c8 6C6F6E67 		.ascii	"long unsigned int\000"
+ 656      20756E73 
+ 656      69676E65 
+ 656      6420696E 
+ 656      7400
+ 657              	.LASF20:
+ 658 00da 61646472 		.ascii	"addr\000"
+ 658      00
+ 659              	.LASF29:
+ 660 00df 696E7465 		.ascii	"interfaceNumber\000"
+ 660      72666163 
+ 660      654E756D 
+ 660      62657200 
+ 661              	.LASF31:
+ 662 00ef 55534246 		.ascii	"USBFS_EP\000"
+ 662      535F4550 
+ 662      00
+ 663              	.LASF1:
+ 664 00f8 756E7369 		.ascii	"unsigned char\000"
+ 664      676E6564 
+ 664      20636861 
+ 664      7200
+ 665              	.LASF27:
+ 666 0106 55534246 		.ascii	"USBFS_ep0_data_struct\000"
+ 666      535F6570 
+ 666      305F6461 
+ 666      74615F73 
+ 666      74727563 
+ 667              	.LASF13:
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 16
+
+
+ 668 011c 646F7562 		.ascii	"double\000"
+ 668      6C6500
+ 669              	.LASF16:
+ 670 0123 61747472 		.ascii	"attrib\000"
+ 670      696200
+ 671              	.LASF22:
+ 672 012a 62756666 		.ascii	"buffOffset\000"
+ 672      4F666673 
+ 672      657400
+ 673              	.LASF10:
+ 674 0135 75696E74 		.ascii	"uint16\000"
+ 674      313600
+ 675              	.LASF17:
+ 676 013c 61706945 		.ascii	"apiEpState\000"
+ 676      70537461 
+ 676      746500
+ 677              	.LASF11:
+ 678 0147 75696E74 		.ascii	"uint32\000"
+ 678      333200
+ 679              	.LASF8:
+ 680 014e 756E7369 		.ascii	"unsigned int\000"
+ 680      676E6564 
+ 680      20696E74 
+ 680      00
+ 681              	.LASF7:
+ 682 015b 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 682      206C6F6E 
+ 682      6720756E 
+ 682      7369676E 
+ 682      65642069 
+ 683              	.LASF18:
+ 684 0172 68774570 		.ascii	"hwEpState\000"
+ 684      53746174 
+ 684      6500
+ 685              	.LASF36:
+ 686 017c 433A5C50 		.ascii	"C:\\Program Files (x86)\\Cypress\\CY8CKIT-046 PSoC "
+ 686      726F6772 
+ 686      616D2046 
+ 686      696C6573 
+ 686      20287838 
+ 687 01ac 34204C2D 		.ascii	"4 L-Series Pioneer Kit\\1.0\\Firmware\\PSoC 4200L\\"
+ 687      53657269 
+ 687      65732050 
+ 687      696F6E65 
+ 687      6572204B 
+ 688 01db 43593843 		.ascii	"CY8CKIT_046_USB_Audio\\CY8CKIT_046_USB_Audio.cydsn\000"
+ 688      4B49545F 
+ 688      3034365F 
+ 688      5553425F 
+ 688      41756469 
+ 689              	.LASF28:
+ 690 020d 72657175 		.ascii	"requestHandled\000"
+ 690      65737448 
+ 690      616E646C 
+ 690      656400
+ 691              	.LASF15:
+ 692 021c 73697A65 		.ascii	"sizetype\000"
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\cci8dZ9S.s 			page 17
+
+
+ 692      74797065 
+ 692      00
+ 693              	.LASF21:
+ 694 0225 65704D6F 		.ascii	"epMode\000"
+ 694      646500
+ 695              	.LASF6:
+ 696 022c 6C6F6E67 		.ascii	"long long int\000"
+ 696      206C6F6E 
+ 696      6720696E 
+ 696      7400
+ 697              	.LASF14:
+ 698 023a 63686172 		.ascii	"char\000"
+ 698      00
+ 699              	.LASF34:
+ 700 023f 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 700      4320342E 
+ 700      392E3320 
+ 700      32303135 
+ 700      30333033 
+ 701 0272 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m0 -mthumb -g -O"
+ 701      20726576 
+ 701      6973696F 
+ 701      6E203232 
+ 701      31323230 
+ 702 02a5 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 702      66756E63 
+ 702      74696F6E 
+ 702      2D736563 
+ 702      74696F6E 
+ 703              	.LASF23:
+ 704 02cd 62756666 		.ascii	"bufferSize\000"
+ 704      65725369 
+ 704      7A6500
+ 705              	.LASF2:
+ 706 02d8 73686F72 		.ascii	"short int\000"
+ 706      7420696E 
+ 706      7400
+ 707              	.LASF9:
+ 708 02e2 75696E74 		.ascii	"uint8\000"
+ 708      3800
+ 709              	.LASF24:
+ 710 02e8 696E7465 		.ascii	"interface\000"
+ 710      72666163 
+ 710      6500
+ 711              	.LASF4:
+ 712 02f2 6C6F6E67 		.ascii	"long int\000"
+ 712      20696E74 
+ 712      00
+ 713              	.LASF0:
+ 714 02fb 7369676E 		.ascii	"signed char\000"
+ 714      65642063 
+ 714      68617200 
+ 715              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

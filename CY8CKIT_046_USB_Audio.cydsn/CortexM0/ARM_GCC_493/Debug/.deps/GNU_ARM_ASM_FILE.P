@@ -1,0 +1,8 @@
+C:/Program\ Files\ (x86)/Cypress/CY8CKIT-046\ PSoC\ 4\ L-Series\ Pioneer\ Kit/1.0/Firmware/PSoC\ 4200L/CY8CKIT_046_USB_Audio/CY8CKIT_046_USB_Audio.cydsn/CortexM0/ARM_GCC_493/Debug/CyBootAsmGnu.o : C:/Program\ Files\ (x86)/Cypress/CY8CKIT-046\ PSoC\ 4\ L-Series\ Pioneer\ Kit/1.0/Firmware/PSoC\ 4200L/CY8CKIT_046_USB_Audio/CY8CKIT_046_USB_Audio.cydsn/Generated_Source/PSoC4/CyBootAsmGnu.s C:/Program\ Files\ (x86)/Cypress/CY8CKIT-046\ PSoC\ 4\ L-Series\ Pioneer\ Kit/1.0/Firmware/PSoC\ 4200L/CY8CKIT_046_USB_Audio/CY8CKIT_046_USB_Audio.cydsn/Generated_Source/PSoC4/cydevicegnu_trm.inc C:/Program\ Files\ (x86)/Cypress/CY8CKIT-046\ PSoC\ 4\ L-Series\ Pioneer\ Kit/1.0/Firmware/PSoC\ 4200L/CY8CKIT_046_USB_Audio/CY8CKIT_046_USB_Audio.cydsn/Generated_Source/PSoC4/cyfittergnu.inc 
+
+C:/Program\ Files\ (x86)/Cypress/CY8CKIT-046\ PSoC\ 4\ L-Series\ Pioneer\ Kit/1.0/Firmware/PSoC\ 4200L/CY8CKIT_046_USB_Audio/CY8CKIT_046_USB_Audio.cydsn/Generated_Source/PSoC4/CyBootAsmGnu.s : 
+
+C:/Program\ Files\ (x86)/Cypress/CY8CKIT-046\ PSoC\ 4\ L-Series\ Pioneer\ Kit/1.0/Firmware/PSoC\ 4200L/CY8CKIT_046_USB_Audio/CY8CKIT_046_USB_Audio.cydsn/Generated_Source/PSoC4/cydevicegnu_trm.inc : 
+
+C:/Program\ Files\ (x86)/Cypress/CY8CKIT-046\ PSoC\ 4\ L-Series\ Pioneer\ Kit/1.0/Firmware/PSoC\ 4200L/CY8CKIT_046_USB_Audio/CY8CKIT_046_USB_Audio.cydsn/Generated_Source/PSoC4/cyfittergnu.inc : 
+

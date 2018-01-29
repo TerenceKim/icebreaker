@@ -1,0 +1,1858 @@
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"USBFS_audio.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.USBFS_DispatchAUDIOClassRqst,"ax",%progbits
+  18              		.align	2
+  19              		.global	USBFS_DispatchAUDIOClassRqst
+  20              		.code	16
+  21              		.thumb_func
+  22              		.type	USBFS_DispatchAUDIOClassRqst, %function
+  23              	USBFS_DispatchAUDIOClassRqst:
+  24              	.LFB162:
+  25              		.file 1 ".\\Generated_Source\\PSoC4\\USBFS_audio.c"
+   1:.\Generated_Source\PSoC4/USBFS_audio.c **** /***************************************************************************//**
+   2:.\Generated_Source\PSoC4/USBFS_audio.c **** * \file USBFS_audio.c
+   3:.\Generated_Source\PSoC4/USBFS_audio.c **** * \version 3.0
+   4:.\Generated_Source\PSoC4/USBFS_audio.c **** *
+   5:.\Generated_Source\PSoC4/USBFS_audio.c **** * \brief
+   6:.\Generated_Source\PSoC4/USBFS_audio.c **** *  This file contains the USB AUDIO Class request handler.
+   7:.\Generated_Source\PSoC4/USBFS_audio.c **** *
+   8:.\Generated_Source\PSoC4/USBFS_audio.c **** * Related Document:
+   9:.\Generated_Source\PSoC4/USBFS_audio.c **** *  Universal Serial Bus Device Class Definition for Audio Devices Release 1.0
+  10:.\Generated_Source\PSoC4/USBFS_audio.c **** *
+  11:.\Generated_Source\PSoC4/USBFS_audio.c **** ********************************************************************************
+  12:.\Generated_Source\PSoC4/USBFS_audio.c **** * \copyright
+  13:.\Generated_Source\PSoC4/USBFS_audio.c **** * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  14:.\Generated_Source\PSoC4/USBFS_audio.c **** * You may use this file only in accordance with the license, terms, conditions,
+  15:.\Generated_Source\PSoC4/USBFS_audio.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  16:.\Generated_Source\PSoC4/USBFS_audio.c **** * the software package with which this file was provided.
+  17:.\Generated_Source\PSoC4/USBFS_audio.c **** *******************************************************************************/
+  18:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+  19:.\Generated_Source\PSoC4/USBFS_audio.c **** #include "USBFS_audio.h"
+  20:.\Generated_Source\PSoC4/USBFS_audio.c **** #include "USBFS_pvt.h"
+  21:.\Generated_Source\PSoC4/USBFS_audio.c **** #include "cyapicallbacks.h"
+  22:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+  23:.\Generated_Source\PSoC4/USBFS_audio.c **** #if defined(USBFS_ENABLE_AUDIO_CLASS)
+  24:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+  25:.\Generated_Source\PSoC4/USBFS_audio.c **** /***************************************
+  26:.\Generated_Source\PSoC4/USBFS_audio.c **** * Custom Declarations
+  27:.\Generated_Source\PSoC4/USBFS_audio.c **** ***************************************/
+  28:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+  29:.\Generated_Source\PSoC4/USBFS_audio.c **** /* `#START CUSTOM_DECLARATIONS` Place your declaration here */
+  30:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+  31:.\Generated_Source\PSoC4/USBFS_audio.c **** /* `#END` */
+  32:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 2
+
+
+  33:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+  34:.\Generated_Source\PSoC4/USBFS_audio.c **** #if !defined(USER_SUPPLIED_AUDIO_HANDLER)
+  35:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+  36:.\Generated_Source\PSoC4/USBFS_audio.c **** /***************************************
+  37:.\Generated_Source\PSoC4/USBFS_audio.c **** *    AUDIO Variables
+  38:.\Generated_Source\PSoC4/USBFS_audio.c **** ***************************************/
+  39:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+  40:.\Generated_Source\PSoC4/USBFS_audio.c **** #if defined(USBFS_ENABLE_AUDIO_STREAMING)
+  41:.\Generated_Source\PSoC4/USBFS_audio.c ****     /** Contains the current audio sample frequency. It is set by the host using a SET_CUR request 
+  42:.\Generated_Source\PSoC4/USBFS_audio.c ****     volatile uint8 USBFS_currentSampleFrequency[USBFS_MAX_EP][USBFS_SAMPLE_FREQ_LEN];
+  43:.\Generated_Source\PSoC4/USBFS_audio.c ****     /** Used as a flag for the user code, to inform it that the host has been sent a request 
+  44:.\Generated_Source\PSoC4/USBFS_audio.c ****      * to change the sample frequency. The sample frequency will be sent on the next OUT transactio
+  45:.\Generated_Source\PSoC4/USBFS_audio.c ****      * It contains the endpoint address when set. The following code is recommended for 
+  46:.\Generated_Source\PSoC4/USBFS_audio.c ****      * detecting new sample frequency in main code:
+  47:.\Generated_Source\PSoC4/USBFS_audio.c ****      * \snippet  /USBFS_sut_02.cydsn/main.c Detecting new Sample Frequency
+  48:.\Generated_Source\PSoC4/USBFS_audio.c ****      *     
+  49:.\Generated_Source\PSoC4/USBFS_audio.c ****      * The USBFS_transferState variable is checked to make sure that the transfer completes. */
+  50:.\Generated_Source\PSoC4/USBFS_audio.c ****     volatile uint8 USBFS_frequencyChanged;
+  51:.\Generated_Source\PSoC4/USBFS_audio.c ****     /** Contains the mute configuration set by the host.*/
+  52:.\Generated_Source\PSoC4/USBFS_audio.c ****     volatile uint8 USBFS_currentMute;
+  53:.\Generated_Source\PSoC4/USBFS_audio.c ****     /** Contains the volume level set by the host.*/
+  54:.\Generated_Source\PSoC4/USBFS_audio.c ****     volatile uint8 USBFS_currentVolume[USBFS_VOLUME_LEN];
+  55:.\Generated_Source\PSoC4/USBFS_audio.c ****     volatile uint8 USBFS_minimumVolume[USBFS_VOLUME_LEN] = {USBFS_VOL_MIN_LSB,
+  56:.\Generated_Source\PSoC4/USBFS_audio.c ****                                                                                   USBFS_VOL_MIN_MSB
+  57:.\Generated_Source\PSoC4/USBFS_audio.c ****     volatile uint8 USBFS_maximumVolume[USBFS_VOLUME_LEN] = {USBFS_VOL_MAX_LSB,
+  58:.\Generated_Source\PSoC4/USBFS_audio.c ****                                                                                   USBFS_VOL_MAX_MSB
+  59:.\Generated_Source\PSoC4/USBFS_audio.c ****     volatile uint8 USBFS_resolutionVolume[USBFS_VOLUME_LEN] = {USBFS_VOL_RES_LSB,
+  60:.\Generated_Source\PSoC4/USBFS_audio.c ****                                                                                      USBFS_VOL_RES_
+  61:.\Generated_Source\PSoC4/USBFS_audio.c **** #endif /*  USBFS_ENABLE_AUDIO_STREAMING */
+  62:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+  63:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+  64:.\Generated_Source\PSoC4/USBFS_audio.c **** /*******************************************************************************
+  65:.\Generated_Source\PSoC4/USBFS_audio.c **** * Function Name: USBFS_DispatchAUDIOClassRqst
+  66:.\Generated_Source\PSoC4/USBFS_audio.c **** ****************************************************************************//**
+  67:.\Generated_Source\PSoC4/USBFS_audio.c **** *
+  68:.\Generated_Source\PSoC4/USBFS_audio.c **** *  This routine dispatches class requests
+  69:.\Generated_Source\PSoC4/USBFS_audio.c **** *
+  70:.\Generated_Source\PSoC4/USBFS_audio.c **** * \return
+  71:.\Generated_Source\PSoC4/USBFS_audio.c **** *  Results of Audio Class request handling: 
+  72:.\Generated_Source\PSoC4/USBFS_audio.c **** *  - USBFS_TRUE  - request was handled without errors
+  73:.\Generated_Source\PSoC4/USBFS_audio.c **** *  - USBFS_FALSE - error occurs during handling of request     
+  74:.\Generated_Source\PSoC4/USBFS_audio.c **** *
+  75:.\Generated_Source\PSoC4/USBFS_audio.c **** * \globalvars
+  76:.\Generated_Source\PSoC4/USBFS_audio.c **** *   USBFS_currentSampleFrequency: Contains the current audio Sample
+  77:.\Generated_Source\PSoC4/USBFS_audio.c **** *       Frequency. It is set by the Host using SET_CUR request to the endpoint.
+  78:.\Generated_Source\PSoC4/USBFS_audio.c **** *   USBFS_frequencyChanged: This variable is used as a flag for the
+  79:.\Generated_Source\PSoC4/USBFS_audio.c **** *       user code, to be aware that Host has been sent request for changing
+  80:.\Generated_Source\PSoC4/USBFS_audio.c **** *       Sample Frequency. Sample frequency will be sent on the next OUT
+  81:.\Generated_Source\PSoC4/USBFS_audio.c **** *       transaction. It is contains endpoint address when set. The following
+  82:.\Generated_Source\PSoC4/USBFS_audio.c **** *       code is recommended for detecting new Sample Frequency in main code:
+  83:.\Generated_Source\PSoC4/USBFS_audio.c **** *       
+  84:.\Generated_Source\PSoC4/USBFS_audio.c **** *  \snippet  /USBFS_sut_02.cydsn/main.c Detecting new Sample Frequency
+  85:.\Generated_Source\PSoC4/USBFS_audio.c **** *      
+  86:.\Generated_Source\PSoC4/USBFS_audio.c **** *   USBFS_transferState variable is checked to be sure that transfer
+  87:.\Generated_Source\PSoC4/USBFS_audio.c **** *              completes.
+  88:.\Generated_Source\PSoC4/USBFS_audio.c **** *   USBFS_currentMute: Contains mute configuration set by Host.
+  89:.\Generated_Source\PSoC4/USBFS_audio.c **** *   USBFS_currentVolume: Contains volume level set by Host.
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 3
+
+
+  90:.\Generated_Source\PSoC4/USBFS_audio.c **** *
+  91:.\Generated_Source\PSoC4/USBFS_audio.c **** * \reentrant
+  92:.\Generated_Source\PSoC4/USBFS_audio.c **** *  No.
+  93:.\Generated_Source\PSoC4/USBFS_audio.c **** *
+  94:.\Generated_Source\PSoC4/USBFS_audio.c **** *******************************************************************************/
+  95:.\Generated_Source\PSoC4/USBFS_audio.c **** uint8 USBFS_DispatchAUDIOClassRqst(void) 
+  96:.\Generated_Source\PSoC4/USBFS_audio.c **** {
+  26              		.loc 1 96 0
+  27              		.cfi_startproc
+  28 0000 10B5     		push	{r4, lr}
+  29              		.cfi_def_cfa_offset 8
+  30              		.cfi_offset 4, -8
+  31              		.cfi_offset 14, -4
+  32              	.LVL0:
+  97:.\Generated_Source\PSoC4/USBFS_audio.c ****     uint8 requestHandled = USBFS_FALSE;
+  98:.\Generated_Source\PSoC4/USBFS_audio.c ****     
+  99:.\Generated_Source\PSoC4/USBFS_audio.c ****     uint8 RqstRcpt = (uint8)(USBFS_bmRequestTypeReg & USBFS_RQST_RCPT_MASK);
+  33              		.loc 1 99 0
+  34 0002 5A4B     		ldr	r3, .L33
+  35 0004 1968     		ldr	r1, [r3]
+  36 0006 0322     		mov	r2, #3
+  37 0008 0A40     		and	r2, r1
+  38              	.LVL1:
+ 100:.\Generated_Source\PSoC4/USBFS_audio.c **** #if defined(USBFS_ENABLE_AUDIO_STREAMING)
+ 101:.\Generated_Source\PSoC4/USBFS_audio.c ****     uint8 wValueHi = (uint8) USBFS_wValueHiReg;
+  39              		.loc 1 101 0
+  40 000a D968     		ldr	r1, [r3, #12]
+  41 000c CCB2     		uxtb	r4, r1
+  42              	.LVL2:
+ 102:.\Generated_Source\PSoC4/USBFS_audio.c ****     uint8 epNumber = (uint8) USBFS_wIndexLoReg & USBFS_DIR_UNUSED;
+  43              		.loc 1 102 0
+  44 000e 1869     		ldr	r0, [r3, #16]
+  45 0010 7F21     		mov	r1, #127
+  46 0012 0140     		and	r1, r0
+  47              	.LVL3:
+ 103:.\Generated_Source\PSoC4/USBFS_audio.c **** #endif /* (USBFS_ENABLE_AUDIO_STREAMING) */
+ 104:.\Generated_Source\PSoC4/USBFS_audio.c ****     
+ 105:.\Generated_Source\PSoC4/USBFS_audio.c ****     /* Check request direction: D2H or H2D. */
+ 106:.\Generated_Source\PSoC4/USBFS_audio.c ****     if (0u != (USBFS_bmRequestTypeReg & USBFS_RQST_DIR_D2H))
+  48              		.loc 1 106 0
+  49 0014 1B68     		ldr	r3, [r3]
+  50 0016 1B06     		lsl	r3, r3, #24
+  51 0018 5FD5     		bpl	.L2
+ 107:.\Generated_Source\PSoC4/USBFS_audio.c ****     {
+ 108:.\Generated_Source\PSoC4/USBFS_audio.c ****         /* Handle direction from device to host. */
+ 109:.\Generated_Source\PSoC4/USBFS_audio.c ****         
+ 110:.\Generated_Source\PSoC4/USBFS_audio.c ****         if (USBFS_RQST_RCPT_EP == RqstRcpt)
+  52              		.loc 1 110 0
+  53 001a 022A     		cmp	r2, #2
+  54 001c 12D1     		bne	.L3
+ 111:.\Generated_Source\PSoC4/USBFS_audio.c ****         {
+ 112:.\Generated_Source\PSoC4/USBFS_audio.c ****             /* Request recipient is to endpoint. */
+ 113:.\Generated_Source\PSoC4/USBFS_audio.c ****             switch (USBFS_bRequestReg)
+  55              		.loc 1 113 0
+  56 001e 534B     		ldr	r3, .L33
+  57 0020 5B68     		ldr	r3, [r3, #4]
+  58 0022 812B     		cmp	r3, #129
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 4
+
+
+  59 0024 00D0     		beq	.LCB35
+  60 0026 86E0     		b	.L30	@long jump
+  61              	.LCB35:
+ 114:.\Generated_Source\PSoC4/USBFS_audio.c ****             {
+ 115:.\Generated_Source\PSoC4/USBFS_audio.c ****                 case USBFS_GET_CUR:
+ 116:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #if defined(USBFS_ENABLE_AUDIO_STREAMING)
+ 117:.\Generated_Source\PSoC4/USBFS_audio.c ****                     if (wValueHi == USBFS_SAMPLING_FREQ_CONTROL)
+  62              		.loc 1 117 0
+  63 0028 012C     		cmp	r4, #1
+  64 002a 00D0     		beq	.LCB37
+  65 002c 85E0     		b	.L18	@long jump
+  66              	.LCB37:
+ 118:.\Generated_Source\PSoC4/USBFS_audio.c ****                     {
+ 119:.\Generated_Source\PSoC4/USBFS_audio.c ****                          /* point Control Selector is Sampling Frequency */
+ 120:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.wCount = USBFS_SAMPLE_FREQ_LEN;
+  67              		.loc 1 120 0
+  68 002e 504A     		ldr	r2, .L33+4
+  69              	.LVL4:
+  70 0030 7E3B     		sub	r3, r3, #126
+  71 0032 1380     		strh	r3, [r2]
+ 121:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.pData  = USBFS_currentSampleFrequency[epNumber];
+  72              		.loc 1 121 0
+  73 0034 4B00     		lsl	r3, r1, #1
+  74 0036 5918     		add	r1, r3, r1
+  75              	.LVL5:
+  76 0038 4E4B     		ldr	r3, .L33+8
+  77 003a C918     		add	r1, r1, r3
+  78 003c 5160     		str	r1, [r2, #4]
+ 122:.\Generated_Source\PSoC4/USBFS_audio.c ****                         
+ 123:.\Generated_Source\PSoC4/USBFS_audio.c ****                         requestHandled   = USBFS_InitControlRead();
+  79              		.loc 1 123 0
+  80 003e FFF7FEFF 		bl	USBFS_InitControlRead
+  81              	.LVL6:
+  82 0042 91E0     		b	.L4
+  83              	.LVL7:
+  84              	.L3:
+ 124:.\Generated_Source\PSoC4/USBFS_audio.c ****                     }
+ 125:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #endif /* (USBFS_ENABLE_AUDIO_STREAMING) */
+ 126:.\Generated_Source\PSoC4/USBFS_audio.c ****                 
+ 127:.\Generated_Source\PSoC4/USBFS_audio.c ****                     /* `#START AUDIO_READ_REQUESTS` Place other request handler here */
+ 128:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 129:.\Generated_Source\PSoC4/USBFS_audio.c ****                     /* `#END` */
+ 130:.\Generated_Source\PSoC4/USBFS_audio.c ****                 
+ 131:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #ifdef USBFS_DISPATCH_AUDIO_CLASS_AUDIO_READ_REQUESTS_CALLBACK    
+ 132:.\Generated_Source\PSoC4/USBFS_audio.c ****                     USBFS_DispatchAUDIOClass_AUDIO_READ_REQUESTS_Callback();
+ 133:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #endif /* (USBFS_DISPATCH_AUDIO_CLASS_AUDIO_READ_REQUESTS_CALLBACK) */             
+ 134:.\Generated_Source\PSoC4/USBFS_audio.c ****                 break;
+ 135:.\Generated_Source\PSoC4/USBFS_audio.c ****                 
+ 136:.\Generated_Source\PSoC4/USBFS_audio.c ****                 default:
+ 137:.\Generated_Source\PSoC4/USBFS_audio.c ****                     /* Do not handle this request unless callback is defined. */
+ 138:.\Generated_Source\PSoC4/USBFS_audio.c ****                     break;
+ 139:.\Generated_Source\PSoC4/USBFS_audio.c ****             }
+ 140:.\Generated_Source\PSoC4/USBFS_audio.c ****         
+ 141:.\Generated_Source\PSoC4/USBFS_audio.c ****         }
+ 142:.\Generated_Source\PSoC4/USBFS_audio.c ****         else if (USBFS_RQST_RCPT_IFC == RqstRcpt)
+  85              		.loc 1 142 0
+  86 0044 012A     		cmp	r2, #1
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 5
+
+
+  87 0046 7AD1     		bne	.L19
+ 143:.\Generated_Source\PSoC4/USBFS_audio.c ****         {
+ 144:.\Generated_Source\PSoC4/USBFS_audio.c ****             /* Request recipient is interface or entity ID. */
+ 145:.\Generated_Source\PSoC4/USBFS_audio.c ****             switch (USBFS_bRequestReg)
+  88              		.loc 1 145 0
+  89 0048 484B     		ldr	r3, .L33
+  90 004a 5B68     		ldr	r3, [r3, #4]
+  91 004c 832B     		cmp	r3, #131
+  92 004e 28D0     		beq	.L6
+  93 0050 04D8     		bhi	.L7
+  94 0052 812B     		cmp	r3, #129
+  95 0054 07D0     		beq	.L8
+  96 0056 822B     		cmp	r3, #130
+  97 0058 19D0     		beq	.L9
+  98 005a 72E0     		b	.L20
+  99              	.L7:
+ 100 005c 842B     		cmp	r3, #132
+ 101 005e 2BD0     		beq	.L10
+ 102 0060 FF2B     		cmp	r3, #255
+ 103 0062 34D0     		beq	.L11
+ 104 0064 6DE0     		b	.L20
+ 105              	.L8:
+ 146:.\Generated_Source\PSoC4/USBFS_audio.c ****             {
+ 147:.\Generated_Source\PSoC4/USBFS_audio.c ****                 case USBFS_GET_CUR:
+ 148:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #if defined(USBFS_ENABLE_AUDIO_STREAMING)
+ 149:.\Generated_Source\PSoC4/USBFS_audio.c ****                     if (wValueHi == USBFS_MUTE_CONTROL)
+ 106              		.loc 1 149 0
+ 107 0066 012C     		cmp	r4, #1
+ 108 0068 07D1     		bne	.L12
+ 150:.\Generated_Source\PSoC4/USBFS_audio.c ****                     {
+ 151:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* `#START MUTE_CONTROL_GET_REQUEST` Place multi-channel handler here */
+ 152:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 153:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* `#END` */
+ 154:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 155:.\Generated_Source\PSoC4/USBFS_audio.c ****                     #ifdef USBFS_DISPATCH_AUDIO_CLASS_MUTE_CONTROL_GET_REQUEST_CALLBACK
+ 156:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_DispatchAUDIOClass_MUTE_CONTROL_GET_REQUEST_Callback();
+ 157:.\Generated_Source\PSoC4/USBFS_audio.c ****                     #endif /* (USBFS_DISPATCH_AUDIO_CLASS_MUTE_CONTROL_GET_REQUEST_CALLBACK) */
+ 158:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 159:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* Entity ID Control Selector is MUTE */
+ 160:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.wCount = 1u;
+ 109              		.loc 1 160 0
+ 110 006a 414B     		ldr	r3, .L33+4
+ 111 006c 0122     		mov	r2, #1
+ 112              	.LVL8:
+ 113 006e 1A80     		strh	r2, [r3]
+ 161:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.pData  = &USBFS_currentMute;
+ 114              		.loc 1 161 0
+ 115 0070 414A     		ldr	r2, .L33+12
+ 116 0072 5A60     		str	r2, [r3, #4]
+ 162:.\Generated_Source\PSoC4/USBFS_audio.c ****                         
+ 163:.\Generated_Source\PSoC4/USBFS_audio.c ****                         requestHandled = USBFS_InitControlRead();
+ 117              		.loc 1 163 0
+ 118 0074 FFF7FEFF 		bl	USBFS_InitControlRead
+ 119              	.LVL9:
+ 120 0078 76E0     		b	.L4
+ 121              	.LVL10:
+ 122              	.L12:
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 6
+
+
+ 164:.\Generated_Source\PSoC4/USBFS_audio.c ****                     }
+ 165:.\Generated_Source\PSoC4/USBFS_audio.c ****                     else if (wValueHi == USBFS_VOLUME_CONTROL)
+ 123              		.loc 1 165 0
+ 124 007a 022C     		cmp	r4, #2
+ 125 007c 63D1     		bne	.L21
+ 166:.\Generated_Source\PSoC4/USBFS_audio.c ****                     {
+ 167:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* `#START VOLUME_CONTROL_GET_REQUEST` Place multi-channel handler here */
+ 168:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 169:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* `#END` */
+ 170:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 171:.\Generated_Source\PSoC4/USBFS_audio.c ****                     #ifdef USBFS_DISPATCH_AUDIO_CLASS_VOLUME_CONTROL_GET_REQUEST_CALLBACK
+ 172:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_DispatchAUDIOClass_VOLUME_CONTROL_GET_REQUEST_Callback();
+ 173:.\Generated_Source\PSoC4/USBFS_audio.c ****                     #endif /* (USBFS_DISPATCH_AUDIO_CLASS_VOLUME_CONTROL_GET_REQUEST_CALLBACK) */
+ 174:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 175:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* Entity ID Control Selector is VOLUME, */
+ 176:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.wCount = USBFS_VOLUME_LEN;
+ 126              		.loc 1 176 0
+ 127 007e 3C4B     		ldr	r3, .L33+4
+ 128 0080 0222     		mov	r2, #2
+ 129              	.LVL11:
+ 130 0082 1A80     		strh	r2, [r3]
+ 177:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.pData  = USBFS_currentVolume;
+ 131              		.loc 1 177 0
+ 132 0084 3D4A     		ldr	r2, .L33+16
+ 133 0086 5A60     		str	r2, [r3, #4]
+ 178:.\Generated_Source\PSoC4/USBFS_audio.c ****                         
+ 179:.\Generated_Source\PSoC4/USBFS_audio.c ****                         requestHandled = USBFS_InitControlRead();
+ 134              		.loc 1 179 0
+ 135 0088 FFF7FEFF 		bl	USBFS_InitControlRead
+ 136              	.LVL12:
+ 137 008c 6CE0     		b	.L4
+ 138              	.LVL13:
+ 139              	.L9:
+ 180:.\Generated_Source\PSoC4/USBFS_audio.c ****                     }
+ 181:.\Generated_Source\PSoC4/USBFS_audio.c ****                     else
+ 182:.\Generated_Source\PSoC4/USBFS_audio.c ****                     {
+ 183:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* `#START OTHER_GET_CUR_REQUESTS` Place other request handler here */
+ 184:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 185:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* `#END` */
+ 186:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 187:.\Generated_Source\PSoC4/USBFS_audio.c ****                     #ifdef USBFS_DISPATCH_AUDIO_CLASS_OTHER_GET_CUR_REQUESTS_CALLBACK
+ 188:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_DispatchAUDIOClass_OTHER_GET_CUR_REQUESTS_Callback();
+ 189:.\Generated_Source\PSoC4/USBFS_audio.c ****                     #endif /* (USBFS_DISPATCH_AUDIO_CLASS_OTHER_GET_CUR_REQUESTS_CALLBACK) */
+ 190:.\Generated_Source\PSoC4/USBFS_audio.c ****                     }
+ 191:.\Generated_Source\PSoC4/USBFS_audio.c ****                     break;
+ 192:.\Generated_Source\PSoC4/USBFS_audio.c ****                     
+ 193:.\Generated_Source\PSoC4/USBFS_audio.c ****                 case USBFS_GET_MIN:
+ 194:.\Generated_Source\PSoC4/USBFS_audio.c ****                     if (wValueHi == USBFS_VOLUME_CONTROL)
+ 140              		.loc 1 194 0
+ 141 008e 022C     		cmp	r4, #2
+ 142 0090 5BD1     		bne	.L22
+ 195:.\Generated_Source\PSoC4/USBFS_audio.c ****                     {
+ 196:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* Entity ID Control Selector is VOLUME, */
+ 197:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.wCount = USBFS_VOLUME_LEN;
+ 143              		.loc 1 197 0
+ 144 0092 374B     		ldr	r3, .L33+4
+ 145 0094 0222     		mov	r2, #2
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 7
+
+
+ 146              	.LVL14:
+ 147 0096 1A80     		strh	r2, [r3]
+ 198:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.pData  = &USBFS_minimumVolume[0];
+ 148              		.loc 1 198 0
+ 149 0098 394A     		ldr	r2, .L33+20
+ 150 009a 5A60     		str	r2, [r3, #4]
+ 199:.\Generated_Source\PSoC4/USBFS_audio.c ****                         
+ 200:.\Generated_Source\PSoC4/USBFS_audio.c ****                         requestHandled = USBFS_InitControlRead();
+ 151              		.loc 1 200 0
+ 152 009c FFF7FEFF 		bl	USBFS_InitControlRead
+ 153              	.LVL15:
+ 154 00a0 62E0     		b	.L4
+ 155              	.LVL16:
+ 156              	.L6:
+ 201:.\Generated_Source\PSoC4/USBFS_audio.c ****                     }
+ 202:.\Generated_Source\PSoC4/USBFS_audio.c ****                     break;
+ 203:.\Generated_Source\PSoC4/USBFS_audio.c ****                     
+ 204:.\Generated_Source\PSoC4/USBFS_audio.c ****                 case USBFS_GET_MAX:
+ 205:.\Generated_Source\PSoC4/USBFS_audio.c ****                     if (wValueHi == USBFS_VOLUME_CONTROL)
+ 157              		.loc 1 205 0
+ 158 00a2 022C     		cmp	r4, #2
+ 159 00a4 53D1     		bne	.L23
+ 206:.\Generated_Source\PSoC4/USBFS_audio.c ****                     {
+ 207:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* Entity ID Control Selector is VOLUME, */
+ 208:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.wCount = USBFS_VOLUME_LEN;
+ 160              		.loc 1 208 0
+ 161 00a6 324A     		ldr	r2, .L33+4
+ 162              	.LVL17:
+ 163 00a8 0223     		mov	r3, #2
+ 164 00aa 1380     		strh	r3, [r2]
+ 209:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.pData  = &USBFS_maximumVolume[0];
+ 165              		.loc 1 209 0
+ 166 00ac 344B     		ldr	r3, .L33+20
+ 167 00ae 0433     		add	r3, r3, #4
+ 168 00b0 5360     		str	r3, [r2, #4]
+ 210:.\Generated_Source\PSoC4/USBFS_audio.c ****                         
+ 211:.\Generated_Source\PSoC4/USBFS_audio.c ****                         requestHandled = USBFS_InitControlRead();
+ 169              		.loc 1 211 0
+ 170 00b2 FFF7FEFF 		bl	USBFS_InitControlRead
+ 171              	.LVL18:
+ 172 00b6 57E0     		b	.L4
+ 173              	.LVL19:
+ 174              	.L10:
+ 212:.\Generated_Source\PSoC4/USBFS_audio.c ****                     }
+ 213:.\Generated_Source\PSoC4/USBFS_audio.c ****                     break;
+ 214:.\Generated_Source\PSoC4/USBFS_audio.c ****                     
+ 215:.\Generated_Source\PSoC4/USBFS_audio.c ****                 case USBFS_GET_RES:
+ 216:.\Generated_Source\PSoC4/USBFS_audio.c ****                     if (wValueHi == USBFS_VOLUME_CONTROL)
+ 175              		.loc 1 216 0
+ 176 00b8 022C     		cmp	r4, #2
+ 177 00ba 4AD1     		bne	.L24
+ 217:.\Generated_Source\PSoC4/USBFS_audio.c ****                     {
+ 218:.\Generated_Source\PSoC4/USBFS_audio.c ****                          /* Entity ID Control Selector is VOLUME, */
+ 219:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.wCount = USBFS_VOLUME_LEN;
+ 178              		.loc 1 219 0
+ 179 00bc 2C4A     		ldr	r2, .L33+4
+ 180              	.LVL20:
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 8
+
+
+ 181 00be 0223     		mov	r3, #2
+ 182 00c0 1380     		strh	r3, [r2]
+ 220:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.pData  = &USBFS_resolutionVolume[0];
+ 183              		.loc 1 220 0
+ 184 00c2 2F4B     		ldr	r3, .L33+20
+ 185 00c4 0833     		add	r3, r3, #8
+ 186 00c6 5360     		str	r3, [r2, #4]
+ 221:.\Generated_Source\PSoC4/USBFS_audio.c ****                         
+ 222:.\Generated_Source\PSoC4/USBFS_audio.c ****                         requestHandled   = USBFS_InitControlRead();
+ 187              		.loc 1 222 0
+ 188 00c8 FFF7FEFF 		bl	USBFS_InitControlRead
+ 189              	.LVL21:
+ 190 00cc 4CE0     		b	.L4
+ 191              	.LVL22:
+ 192              	.L11:
+ 223:.\Generated_Source\PSoC4/USBFS_audio.c ****                     }
+ 224:.\Generated_Source\PSoC4/USBFS_audio.c ****                     break;
+ 225:.\Generated_Source\PSoC4/USBFS_audio.c ****                     
+ 226:.\Generated_Source\PSoC4/USBFS_audio.c ****                 /* The contents of the status message is reserved for future use.
+ 227:.\Generated_Source\PSoC4/USBFS_audio.c ****                 * For the time being, a null packet should be returned in the data stage of the
+ 228:.\Generated_Source\PSoC4/USBFS_audio.c ****                 * control transfer, and the received null packet should be ACKed.
+ 229:.\Generated_Source\PSoC4/USBFS_audio.c ****                 */
+ 230:.\Generated_Source\PSoC4/USBFS_audio.c ****                 case USBFS_GET_STAT:
+ 231:.\Generated_Source\PSoC4/USBFS_audio.c ****                     USBFS_currentTD.wCount = 0u;    
+ 193              		.loc 1 231 0
+ 194 00ce 0022     		mov	r2, #0
+ 195              	.LVL23:
+ 196 00d0 274B     		ldr	r3, .L33+4
+ 197 00d2 1A80     		strh	r2, [r3]
+ 232:.\Generated_Source\PSoC4/USBFS_audio.c ****                     
+ 233:.\Generated_Source\PSoC4/USBFS_audio.c ****                     requestHandled = USBFS_InitControlWrite();
+ 198              		.loc 1 233 0
+ 199 00d4 FFF7FEFF 		bl	USBFS_InitControlWrite
+ 200              	.LVL24:
+ 234:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 235:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #endif /* (USBFS_ENABLE_AUDIO_STREAMING) */
+ 236:.\Generated_Source\PSoC4/USBFS_audio.c ****                 
+ 237:.\Generated_Source\PSoC4/USBFS_audio.c ****                     /* `#START AUDIO_WRITE_REQUESTS` Place other request handler here */
+ 238:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 239:.\Generated_Source\PSoC4/USBFS_audio.c ****                     /* `#END` */
+ 240:.\Generated_Source\PSoC4/USBFS_audio.c ****                 
+ 241:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #ifdef USBFS_DISPATCH_AUDIO_CLASS_AUDIO_WRITE_REQUESTS_CALLBACK
+ 242:.\Generated_Source\PSoC4/USBFS_audio.c ****                     USBFS_DispatchAUDIOClass_AUDIO_WRITE_REQUESTS_Callback();
+ 243:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #endif /* (USBFS_DISPATCH_AUDIO_CLASS_AUDIO_WRITE_REQUESTS_CALLBACK) */
+ 244:.\Generated_Source\PSoC4/USBFS_audio.c ****                     break;
+ 201              		.loc 1 244 0
+ 202 00d8 46E0     		b	.L4
+ 203              	.LVL25:
+ 204              	.L2:
+ 245:.\Generated_Source\PSoC4/USBFS_audio.c ****                 
+ 246:.\Generated_Source\PSoC4/USBFS_audio.c ****                 default:
+ 247:.\Generated_Source\PSoC4/USBFS_audio.c ****                     /* Do not handle this request. */
+ 248:.\Generated_Source\PSoC4/USBFS_audio.c ****                     break;
+ 249:.\Generated_Source\PSoC4/USBFS_audio.c ****             }
+ 250:.\Generated_Source\PSoC4/USBFS_audio.c ****         }
+ 251:.\Generated_Source\PSoC4/USBFS_audio.c ****         else
+ 252:.\Generated_Source\PSoC4/USBFS_audio.c ****         {   
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 9
+
+
+ 253:.\Generated_Source\PSoC4/USBFS_audio.c ****             /* Do not handle other requests recipients. */
+ 254:.\Generated_Source\PSoC4/USBFS_audio.c ****         }
+ 255:.\Generated_Source\PSoC4/USBFS_audio.c ****     }
+ 256:.\Generated_Source\PSoC4/USBFS_audio.c ****     else
+ 257:.\Generated_Source\PSoC4/USBFS_audio.c ****     {
+ 258:.\Generated_Source\PSoC4/USBFS_audio.c ****         /* Handle direction from host to device. */
+ 259:.\Generated_Source\PSoC4/USBFS_audio.c ****         
+ 260:.\Generated_Source\PSoC4/USBFS_audio.c ****         if (USBFS_RQST_RCPT_EP == RqstRcpt)
+ 205              		.loc 1 260 0
+ 206 00da 022A     		cmp	r2, #2
+ 207 00dc 12D1     		bne	.L13
+ 261:.\Generated_Source\PSoC4/USBFS_audio.c ****         {
+ 262:.\Generated_Source\PSoC4/USBFS_audio.c ****             /* Request recipient is endpoint. */
+ 263:.\Generated_Source\PSoC4/USBFS_audio.c ****             switch (USBFS_bRequestReg)
+ 208              		.loc 1 263 0
+ 209 00de 234B     		ldr	r3, .L33
+ 210 00e0 5B68     		ldr	r3, [r3, #4]
+ 211 00e2 012B     		cmp	r3, #1
+ 212 00e4 37D1     		bne	.L31
+ 264:.\Generated_Source\PSoC4/USBFS_audio.c ****             {
+ 265:.\Generated_Source\PSoC4/USBFS_audio.c ****                 case USBFS_SET_CUR:
+ 266:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #if defined(USBFS_ENABLE_AUDIO_STREAMING)
+ 267:.\Generated_Source\PSoC4/USBFS_audio.c ****                     if (wValueHi == USBFS_SAMPLING_FREQ_CONTROL)
+ 213              		.loc 1 267 0
+ 214 00e6 012C     		cmp	r4, #1
+ 215 00e8 37D1     		bne	.L26
+ 268:.\Generated_Source\PSoC4/USBFS_audio.c ****                     {
+ 269:.\Generated_Source\PSoC4/USBFS_audio.c ****                          /* point Control Selector is Sampling Frequency */
+ 270:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.wCount = USBFS_SAMPLE_FREQ_LEN;
+ 216              		.loc 1 270 0
+ 217 00ea 2148     		ldr	r0, .L33+4
+ 218 00ec 0233     		add	r3, r3, #2
+ 219 00ee 0380     		strh	r3, [r0]
+ 271:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.pData  = USBFS_currentSampleFrequency[epNumber];
+ 220              		.loc 1 271 0
+ 221 00f0 4B00     		lsl	r3, r1, #1
+ 222 00f2 5A18     		add	r2, r3, r1
+ 223              	.LVL26:
+ 224 00f4 1F4B     		ldr	r3, .L33+8
+ 225 00f6 D318     		add	r3, r2, r3
+ 226 00f8 4360     		str	r3, [r0, #4]
+ 272:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_frequencyChanged = (uint8) epNumber;
+ 227              		.loc 1 272 0
+ 228 00fa 224B     		ldr	r3, .L33+24
+ 229 00fc 1970     		strb	r1, [r3]
+ 273:.\Generated_Source\PSoC4/USBFS_audio.c ****                         
+ 274:.\Generated_Source\PSoC4/USBFS_audio.c ****                         requestHandled   = USBFS_InitControlWrite();
+ 230              		.loc 1 274 0
+ 231 00fe FFF7FEFF 		bl	USBFS_InitControlWrite
+ 232              	.LVL27:
+ 233 0102 31E0     		b	.L4
+ 234              	.LVL28:
+ 235              	.L13:
+ 275:.\Generated_Source\PSoC4/USBFS_audio.c ****                     }
+ 276:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #endif /* (USBFS_ENABLE_AUDIO_STREAMING) */
+ 277:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 278:.\Generated_Source\PSoC4/USBFS_audio.c ****                     /* `#START AUDIO_SAMPLING_FREQ_REQUESTS` Place other request handler here */
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 10
+
+
+ 279:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 280:.\Generated_Source\PSoC4/USBFS_audio.c ****                     /* `#END` */
+ 281:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 282:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #ifdef USBFS_DISPATCH_AUDIO_CLASS_AUDIO_SAMPLING_FREQ_REQUESTS_CALLBACK
+ 283:.\Generated_Source\PSoC4/USBFS_audio.c ****                     USBFS_DispatchAUDIOClass_AUDIO_SAMPLING_FREQ_REQUESTS_Callback();
+ 284:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #endif /* (USBFS_DISPATCH_AUDIO_CLASS_AUDIO_SAMPLING_FREQ_REQUESTS_CALLBACK) */
+ 285:.\Generated_Source\PSoC4/USBFS_audio.c ****                     break;
+ 286:.\Generated_Source\PSoC4/USBFS_audio.c ****                 
+ 287:.\Generated_Source\PSoC4/USBFS_audio.c ****                 default:
+ 288:.\Generated_Source\PSoC4/USBFS_audio.c ****                     /* Do not handle this request. */
+ 289:.\Generated_Source\PSoC4/USBFS_audio.c ****                     break;
+ 290:.\Generated_Source\PSoC4/USBFS_audio.c ****             }
+ 291:.\Generated_Source\PSoC4/USBFS_audio.c ****         }
+ 292:.\Generated_Source\PSoC4/USBFS_audio.c ****         else if(USBFS_RQST_RCPT_IFC == RqstRcpt)
+ 236              		.loc 1 292 0
+ 237 0104 012A     		cmp	r2, #1
+ 238 0106 2AD1     		bne	.L27
+ 293:.\Generated_Source\PSoC4/USBFS_audio.c ****         {
+ 294:.\Generated_Source\PSoC4/USBFS_audio.c ****             /* Request recipient is interface or entity ID. */
+ 295:.\Generated_Source\PSoC4/USBFS_audio.c ****             switch (USBFS_bRequestReg)
+ 239              		.loc 1 295 0
+ 240 0108 184B     		ldr	r3, .L33
+ 241 010a 5B68     		ldr	r3, [r3, #4]
+ 242 010c 012B     		cmp	r3, #1
+ 243 010e 28D1     		bne	.L32
+ 296:.\Generated_Source\PSoC4/USBFS_audio.c ****             {
+ 297:.\Generated_Source\PSoC4/USBFS_audio.c ****                 case USBFS_SET_CUR:
+ 298:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #if defined(USBFS_ENABLE_AUDIO_STREAMING)
+ 299:.\Generated_Source\PSoC4/USBFS_audio.c ****                     if (wValueHi == USBFS_MUTE_CONTROL)
+ 244              		.loc 1 299 0
+ 245 0110 012C     		cmp	r4, #1
+ 246 0112 06D1     		bne	.L16
+ 300:.\Generated_Source\PSoC4/USBFS_audio.c ****                     {
+ 301:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* `#START MUTE_SET_REQUEST` Place multi-channel handler here */
+ 302:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 303:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* `#END` */
+ 304:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 305:.\Generated_Source\PSoC4/USBFS_audio.c ****                     #ifdef USBFS_DISPATCH_AUDIO_CLASS_MUTE_SET_REQUEST_CALLBACK
+ 306:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_DispatchAUDIOClass_MUTE_SET_REQUEST_Callback();
+ 307:.\Generated_Source\PSoC4/USBFS_audio.c ****                     #endif /* (USBFS_DISPATCH_AUDIO_CLASS_MUTE_SET_REQUEST_CALLBACK) */
+ 308:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 309:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* Entity ID Control Selector is MUTE */
+ 310:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.wCount = 1u;
+ 247              		.loc 1 310 0
+ 248 0114 164B     		ldr	r3, .L33+4
+ 249 0116 1A80     		strh	r2, [r3]
+ 311:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.pData  = &USBFS_currentMute;
+ 250              		.loc 1 311 0
+ 251 0118 174A     		ldr	r2, .L33+12
+ 252              	.LVL29:
+ 253 011a 5A60     		str	r2, [r3, #4]
+ 312:.\Generated_Source\PSoC4/USBFS_audio.c ****                         
+ 313:.\Generated_Source\PSoC4/USBFS_audio.c ****                         requestHandled = USBFS_InitControlWrite();
+ 254              		.loc 1 313 0
+ 255 011c FFF7FEFF 		bl	USBFS_InitControlWrite
+ 256              	.LVL30:
+ 257 0120 22E0     		b	.L4
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 11
+
+
+ 258              	.LVL31:
+ 259              	.L16:
+ 314:.\Generated_Source\PSoC4/USBFS_audio.c ****                     }
+ 315:.\Generated_Source\PSoC4/USBFS_audio.c ****                     else if (wValueHi == USBFS_VOLUME_CONTROL)
+ 260              		.loc 1 315 0
+ 261 0122 022C     		cmp	r4, #2
+ 262 0124 1FD1     		bne	.L29
+ 316:.\Generated_Source\PSoC4/USBFS_audio.c ****                     {
+ 317:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* `#START VOLUME_CONTROL_SET_REQUEST` Place multi-channel handler here */
+ 318:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 319:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* `#END` */
+ 320:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 321:.\Generated_Source\PSoC4/USBFS_audio.c ****                     #ifdef USBFS_DISPATCH_AUDIO_CLASS_VOLUME_CONTROL_SET_REQUEST_CALLBACK
+ 322:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_DispatchAUDIOClass_VOLUME_CONTROL_SET_REQUEST_Callback();
+ 323:.\Generated_Source\PSoC4/USBFS_audio.c ****                     #endif /* (USBFS_DISPATCH_AUDIO_CLASS_VOLUME_CONTROL_SET_REQUEST_CALLBACK) */
+ 324:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 325:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* Entity ID Control Selector is VOLUME */
+ 326:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.wCount = USBFS_VOLUME_LEN;
+ 263              		.loc 1 326 0
+ 264 0126 124B     		ldr	r3, .L33+4
+ 265 0128 0222     		mov	r2, #2
+ 266              	.LVL32:
+ 267 012a 1A80     		strh	r2, [r3]
+ 327:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_currentTD.pData  = USBFS_currentVolume;
+ 268              		.loc 1 327 0
+ 269 012c 134A     		ldr	r2, .L33+16
+ 270 012e 5A60     		str	r2, [r3, #4]
+ 328:.\Generated_Source\PSoC4/USBFS_audio.c ****                         
+ 329:.\Generated_Source\PSoC4/USBFS_audio.c ****                         requestHandled = USBFS_InitControlWrite();
+ 271              		.loc 1 329 0
+ 272 0130 FFF7FEFF 		bl	USBFS_InitControlWrite
+ 273              	.LVL33:
+ 274 0134 18E0     		b	.L4
+ 275              	.LVL34:
+ 276              	.L30:
+  97:.\Generated_Source\PSoC4/USBFS_audio.c ****     
+ 277              		.loc 1 97 0
+ 278 0136 0020     		mov	r0, #0
+ 279 0138 16E0     		b	.L4
+ 280              	.L18:
+ 281 013a 0020     		mov	r0, #0
+ 282 013c 14E0     		b	.L4
+ 283              	.L19:
+ 284 013e 0020     		mov	r0, #0
+ 285 0140 12E0     		b	.L4
+ 286              	.L20:
+ 287 0142 0020     		mov	r0, #0
+ 288 0144 10E0     		b	.L4
+ 289              	.L21:
+ 290 0146 0020     		mov	r0, #0
+ 291 0148 0EE0     		b	.L4
+ 292              	.L22:
+ 293 014a 0020     		mov	r0, #0
+ 294 014c 0CE0     		b	.L4
+ 295              	.L23:
+ 296 014e 0020     		mov	r0, #0
+ 297 0150 0AE0     		b	.L4
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 12
+
+
+ 298              	.L24:
+ 299 0152 0020     		mov	r0, #0
+ 300 0154 08E0     		b	.L4
+ 301              	.L31:
+ 302 0156 0020     		mov	r0, #0
+ 303 0158 06E0     		b	.L4
+ 304              	.L26:
+ 305 015a 0020     		mov	r0, #0
+ 306 015c 04E0     		b	.L4
+ 307              	.L27:
+ 308 015e 0020     		mov	r0, #0
+ 309 0160 02E0     		b	.L4
+ 310              	.L32:
+ 311 0162 0020     		mov	r0, #0
+ 312 0164 00E0     		b	.L4
+ 313              	.L29:
+ 314 0166 0020     		mov	r0, #0
+ 315              	.LVL35:
+ 316              	.L4:
+ 330:.\Generated_Source\PSoC4/USBFS_audio.c ****                     }
+ 331:.\Generated_Source\PSoC4/USBFS_audio.c ****                     else
+ 332:.\Generated_Source\PSoC4/USBFS_audio.c ****                     {
+ 333:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* `#START OTHER_SET_CUR_REQUESTS` Place other request handler here */
+ 334:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 335:.\Generated_Source\PSoC4/USBFS_audio.c ****                         /* `#END` */
+ 336:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 337:.\Generated_Source\PSoC4/USBFS_audio.c ****                     #ifdef USBFS_DISPATCH_AUDIO_CLASS_OTHER_SET_CUR_REQUESTS_CALLBACK
+ 338:.\Generated_Source\PSoC4/USBFS_audio.c ****                         USBFS_DispatchAUDIOClass_OTHER_SET_CUR_REQUESTS_Callback();
+ 339:.\Generated_Source\PSoC4/USBFS_audio.c ****                     #endif /* (USBFS_DISPATCH_AUDIO_CLASS_OTHER_SET_CUR_REQUESTS_CALLBACK) */
+ 340:.\Generated_Source\PSoC4/USBFS_audio.c ****                     }
+ 341:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #endif /*  USBFS_ENABLE_AUDIO_STREAMING */
+ 342:.\Generated_Source\PSoC4/USBFS_audio.c ****                 
+ 343:.\Generated_Source\PSoC4/USBFS_audio.c ****                 
+ 344:.\Generated_Source\PSoC4/USBFS_audio.c ****                     /* `#START AUDIO_CONTROL_SEL_REQUESTS` Place other request handler here */
+ 345:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 346:.\Generated_Source\PSoC4/USBFS_audio.c ****                     /* `#END` */
+ 347:.\Generated_Source\PSoC4/USBFS_audio.c ****                     
+ 348:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #ifdef USBFS_DISPATCH_AUDIO_CLASS_AUDIO_CONTROL_SEL_REQUESTS_CALLBACK
+ 349:.\Generated_Source\PSoC4/USBFS_audio.c ****                     USBFS_DispatchAUDIOClass_AUDIO_CONTROL_SEL_REQUESTS_Callback();
+ 350:.\Generated_Source\PSoC4/USBFS_audio.c ****                 #endif /* (USBFS_DISPATCH_AUDIO_CLASS_AUDIO_CONTROL_SEL_REQUESTS_CALLBACK) */
+ 351:.\Generated_Source\PSoC4/USBFS_audio.c ****                 break;
+ 352:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 353:.\Generated_Source\PSoC4/USBFS_audio.c ****                 default:
+ 354:.\Generated_Source\PSoC4/USBFS_audio.c ****                     /* Do not handle this request. */
+ 355:.\Generated_Source\PSoC4/USBFS_audio.c ****                 break;
+ 356:.\Generated_Source\PSoC4/USBFS_audio.c ****             }
+ 357:.\Generated_Source\PSoC4/USBFS_audio.c ****         }
+ 358:.\Generated_Source\PSoC4/USBFS_audio.c ****         else
+ 359:.\Generated_Source\PSoC4/USBFS_audio.c ****         {
+ 360:.\Generated_Source\PSoC4/USBFS_audio.c ****             /* Do not handle other requests recipients. */
+ 361:.\Generated_Source\PSoC4/USBFS_audio.c ****         }
+ 362:.\Generated_Source\PSoC4/USBFS_audio.c ****     }
+ 363:.\Generated_Source\PSoC4/USBFS_audio.c **** 
+ 364:.\Generated_Source\PSoC4/USBFS_audio.c ****     return (requestHandled);
+ 365:.\Generated_Source\PSoC4/USBFS_audio.c **** }
+ 317              		.loc 1 365 0
+ 318              		@ sp needed
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 13
+
+
+ 319              	.LVL36:
+ 320 0168 10BD     		pop	{r4, pc}
+ 321              	.L34:
+ 322 016a C046     		.align	2
+ 323              	.L33:
+ 324 016c 00002C40 		.word	1076625408
+ 325 0170 00000000 		.word	USBFS_currentTD
+ 326 0174 00000000 		.word	USBFS_currentSampleFrequency
+ 327 0178 00000000 		.word	USBFS_currentMute
+ 328 017c 00000000 		.word	USBFS_currentVolume
+ 329 0180 00000000 		.word	.LANCHOR0
+ 330 0184 00000000 		.word	USBFS_frequencyChanged
+ 331              		.cfi_endproc
+ 332              	.LFE162:
+ 333              		.size	USBFS_DispatchAUDIOClassRqst, .-USBFS_DispatchAUDIOClassRqst
+ 334              		.global	USBFS_resolutionVolume
+ 335              		.global	USBFS_maximumVolume
+ 336              		.global	USBFS_minimumVolume
+ 337              		.comm	USBFS_currentVolume,2,4
+ 338              		.comm	USBFS_currentMute,1,1
+ 339              		.comm	USBFS_frequencyChanged,1,1
+ 340              		.comm	USBFS_currentSampleFrequency,27,4
+ 341              		.data
+ 342              		.align	2
+ 343              		.set	.LANCHOR0,. + 0
+ 344              		.type	USBFS_minimumVolume, %object
+ 345              		.size	USBFS_minimumVolume, 2
+ 346              	USBFS_minimumVolume:
+ 347 0000 01       		.byte	1
+ 348 0001 80       		.byte	-128
+ 349 0002 0000     		.space	2
+ 350              		.type	USBFS_maximumVolume, %object
+ 351              		.size	USBFS_maximumVolume, 2
+ 352              	USBFS_maximumVolume:
+ 353 0004 FF       		.byte	-1
+ 354 0005 7F       		.byte	127
+ 355 0006 0000     		.space	2
+ 356              		.type	USBFS_resolutionVolume, %object
+ 357              		.size	USBFS_resolutionVolume, 2
+ 358              	USBFS_resolutionVolume:
+ 359 0008 01       		.byte	1
+ 360 0009 00       		.byte	0
+ 361 000a 0000     		.text
+ 362              	.Letext0:
+ 363              		.file 2 ".\\Generated_Source\\PSoC4\\cytypes.h"
+ 364              		.file 3 ".\\Generated_Source\\PSoC4\\USBFS.h"
+ 365              		.file 4 ".\\Generated_Source\\PSoC4\\USBFS_pvt.h"
+ 366              		.section	.debug_info,"",%progbits
+ 367              	.Ldebug_info0:
+ 368 0000 D9020000 		.4byte	0x2d9
+ 369 0004 0400     		.2byte	0x4
+ 370 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 371 000a 04       		.byte	0x4
+ 372 000b 01       		.uleb128 0x1
+ 373 000c 80020000 		.4byte	.LASF39
+ 374 0010 01       		.byte	0x1
+ 375 0011 4E000000 		.4byte	.LASF40
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 14
+
+
+ 376 0015 B6010000 		.4byte	.LASF41
+ 377 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 378 001d 00000000 		.4byte	0
+ 379 0021 00000000 		.4byte	.Ldebug_line0
+ 380 0025 02       		.uleb128 0x2
+ 381 0026 01       		.byte	0x1
+ 382 0027 06       		.byte	0x6
+ 383 0028 55030000 		.4byte	.LASF0
+ 384 002c 02       		.uleb128 0x2
+ 385 002d 01       		.byte	0x1
+ 386 002e 08       		.byte	0x8
+ 387 002f C6000000 		.4byte	.LASF1
+ 388 0033 02       		.uleb128 0x2
+ 389 0034 02       		.byte	0x2
+ 390 0035 05       		.byte	0x5
+ 391 0036 0E030000 		.4byte	.LASF2
+ 392 003a 02       		.uleb128 0x2
+ 393 003b 02       		.byte	0x2
+ 394 003c 07       		.byte	0x7
+ 395 003d 3B000000 		.4byte	.LASF3
+ 396 0041 02       		.uleb128 0x2
+ 397 0042 04       		.byte	0x4
+ 398 0043 05       		.byte	0x5
+ 399 0044 47030000 		.4byte	.LASF4
+ 400 0048 02       		.uleb128 0x2
+ 401 0049 04       		.byte	0x4
+ 402 004a 07       		.byte	0x7
+ 403 004b 63010000 		.4byte	.LASF5
+ 404 004f 02       		.uleb128 0x2
+ 405 0050 08       		.byte	0x8
+ 406 0051 05       		.byte	0x5
+ 407 0052 60020000 		.4byte	.LASF6
+ 408 0056 02       		.uleb128 0x2
+ 409 0057 08       		.byte	0x8
+ 410 0058 07       		.byte	0x7
+ 411 0059 9F010000 		.4byte	.LASF7
+ 412 005d 03       		.uleb128 0x3
+ 413 005e 04       		.byte	0x4
+ 414 005f 05       		.byte	0x5
+ 415 0060 696E7400 		.ascii	"int\000"
+ 416 0064 02       		.uleb128 0x2
+ 417 0065 04       		.byte	0x4
+ 418 0066 07       		.byte	0x7
+ 419 0067 75010000 		.4byte	.LASF8
+ 420 006b 04       		.uleb128 0x4
+ 421 006c C0000000 		.4byte	.LASF9
+ 422 0070 02       		.byte	0x2
+ 423 0071 3801     		.2byte	0x138
+ 424 0073 2C000000 		.4byte	0x2c
+ 425 0077 04       		.uleb128 0x4
+ 426 0078 55010000 		.4byte	.LASF10
+ 427 007c 02       		.byte	0x2
+ 428 007d 3901     		.2byte	0x139
+ 429 007f 3A000000 		.4byte	0x3a
+ 430 0083 04       		.uleb128 0x4
+ 431 0084 5C010000 		.4byte	.LASF11
+ 432 0088 02       		.byte	0x2
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 15
+
+
+ 433 0089 3A01     		.2byte	0x13a
+ 434 008b 48000000 		.4byte	0x48
+ 435 008f 02       		.uleb128 0x2
+ 436 0090 04       		.byte	0x4
+ 437 0091 04       		.byte	0x4
+ 438 0092 B1000000 		.4byte	.LASF12
+ 439 0096 02       		.uleb128 0x2
+ 440 0097 08       		.byte	0x8
+ 441 0098 04       		.byte	0x4
+ 442 0099 24010000 		.4byte	.LASF13
+ 443 009d 02       		.uleb128 0x2
+ 444 009e 01       		.byte	0x1
+ 445 009f 08       		.byte	0x8
+ 446 00a0 50030000 		.4byte	.LASF14
+ 447 00a4 05       		.uleb128 0x5
+ 448 00a5 6B000000 		.4byte	0x6b
+ 449 00a9 02       		.uleb128 0x2
+ 450 00aa 04       		.byte	0x4
+ 451 00ab 07       		.byte	0x7
+ 452 00ac 57020000 		.4byte	.LASF15
+ 453 00b0 06       		.uleb128 0x6
+ 454 00b1 04       		.byte	0x4
+ 455 00b2 03       		.byte	0x3
+ 456 00b3 AC       		.byte	0xac
+ 457 00b4 D1000000 		.4byte	0xd1
+ 458 00b8 07       		.uleb128 0x7
+ 459 00b9 92000000 		.4byte	.LASF16
+ 460 00bd 03       		.byte	0x3
+ 461 00be AE       		.byte	0xae
+ 462 00bf 6B000000 		.4byte	0x6b
+ 463 00c3 00       		.byte	0
+ 464 00c4 07       		.uleb128 0x7
+ 465 00c5 61030000 		.4byte	.LASF17
+ 466 00c9 03       		.byte	0x3
+ 467 00ca AF       		.byte	0xaf
+ 468 00cb 77000000 		.4byte	0x77
+ 469 00cf 02       		.byte	0x2
+ 470 00d0 00       		.byte	0
+ 471 00d1 08       		.uleb128 0x8
+ 472 00d2 D4000000 		.4byte	.LASF18
+ 473 00d6 03       		.byte	0x3
+ 474 00d7 B0       		.byte	0xb0
+ 475 00d8 B0000000 		.4byte	0xb0
+ 476 00dc 06       		.uleb128 0x6
+ 477 00dd 0C       		.byte	0xc
+ 478 00de 03       		.byte	0x3
+ 479 00df B2       		.byte	0xb2
+ 480 00e0 09010000 		.4byte	0x109
+ 481 00e4 07       		.uleb128 0x7
+ 482 00e5 35000000 		.4byte	.LASF19
+ 483 00e9 03       		.byte	0x3
+ 484 00ea B4       		.byte	0xb4
+ 485 00eb 77000000 		.4byte	0x77
+ 486 00ef 00       		.byte	0
+ 487 00f0 07       		.uleb128 0x7
+ 488 00f1 99000000 		.4byte	.LASF20
+ 489 00f5 03       		.byte	0x3
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 16
+
+
+ 490 00f6 B5       		.byte	0xb5
+ 491 00f7 09010000 		.4byte	0x109
+ 492 00fb 04       		.byte	0x4
+ 493 00fc 07       		.uleb128 0x7
+ 494 00fd 00000000 		.4byte	.LASF21
+ 495 0101 03       		.byte	0x3
+ 496 0102 B6       		.byte	0xb6
+ 497 0103 0F010000 		.4byte	0x10f
+ 498 0107 08       		.byte	0x8
+ 499 0108 00       		.byte	0
+ 500 0109 09       		.uleb128 0x9
+ 501 010a 04       		.byte	0x4
+ 502 010b A4000000 		.4byte	0xa4
+ 503 010f 09       		.uleb128 0x9
+ 504 0110 04       		.byte	0x4
+ 505 0111 D1000000 		.4byte	0xd1
+ 506 0115 08       		.uleb128 0x8
+ 507 0116 A6000000 		.4byte	.LASF22
+ 508 011a 03       		.byte	0x3
+ 509 011b B7       		.byte	0xb7
+ 510 011c DC000000 		.4byte	0xdc
+ 511 0120 06       		.uleb128 0x6
+ 512 0121 20       		.byte	0x20
+ 513 0122 03       		.byte	0x3
+ 514 0123 CD       		.byte	0xcd
+ 515 0124 35010000 		.4byte	0x135
+ 516 0128 07       		.uleb128 0x7
+ 517 0129 9F000000 		.4byte	.LASF23
+ 518 012d 03       		.byte	0x3
+ 519 012e CF       		.byte	0xcf
+ 520 012f 35010000 		.4byte	0x135
+ 521 0133 00       		.byte	0
+ 522 0134 00       		.byte	0
+ 523 0135 0A       		.uleb128 0xa
+ 524 0136 83000000 		.4byte	0x83
+ 525 013a 45010000 		.4byte	0x145
+ 526 013e 0B       		.uleb128 0xb
+ 527 013f A9000000 		.4byte	0xa9
+ 528 0143 07       		.byte	0x7
+ 529 0144 00       		.byte	0
+ 530 0145 08       		.uleb128 0x8
+ 531 0146 0E010000 		.4byte	.LASF24
+ 532 014a 03       		.byte	0x3
+ 533 014b D0       		.byte	0xd0
+ 534 014c 20010000 		.4byte	0x120
+ 535 0150 0C       		.uleb128 0xc
+ 536 0151 75000000 		.4byte	.LASF42
+ 537 0155 01       		.byte	0x1
+ 538 0156 5F       		.byte	0x5f
+ 539 0157 6B000000 		.4byte	0x6b
+ 540 015b 00000000 		.4byte	.LFB162
+ 541 015f 88010000 		.4byte	.LFE162-.LFB162
+ 542 0163 01       		.uleb128 0x1
+ 543 0164 9C       		.byte	0x9c
+ 544 0165 00020000 		.4byte	0x200
+ 545 0169 0D       		.uleb128 0xd
+ 546 016a 21030000 		.4byte	.LASF25
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 17
+
+
+ 547 016e 01       		.byte	0x1
+ 548 016f 61       		.byte	0x61
+ 549 0170 6B000000 		.4byte	0x6b
+ 550 0174 00000000 		.4byte	.LLST0
+ 551 0178 0D       		.uleb128 0xd
+ 552 0179 05010000 		.4byte	.LASF26
+ 553 017d 01       		.byte	0x1
+ 554 017e 63       		.byte	0x63
+ 555 017f 6B000000 		.4byte	0x6b
+ 556 0183 05010000 		.4byte	.LLST1
+ 557 0187 0D       		.uleb128 0xd
+ 558 0188 B7000000 		.4byte	.LASF27
+ 559 018c 01       		.byte	0x1
+ 560 018d 65       		.byte	0x65
+ 561 018e 6B000000 		.4byte	0x6b
+ 562 0192 86010000 		.4byte	.LLST2
+ 563 0196 0D       		.uleb128 0xd
+ 564 0197 18030000 		.4byte	.LASF28
+ 565 019b 01       		.byte	0x1
+ 566 019c 66       		.byte	0x66
+ 567 019d 6B000000 		.4byte	0x6b
+ 568 01a1 99010000 		.4byte	.LLST3
+ 569 01a5 0E       		.uleb128 0xe
+ 570 01a6 42000000 		.4byte	.LVL6
+ 571 01aa C6020000 		.4byte	0x2c6
+ 572 01ae 0E       		.uleb128 0xe
+ 573 01af 78000000 		.4byte	.LVL9
+ 574 01b3 C6020000 		.4byte	0x2c6
+ 575 01b7 0E       		.uleb128 0xe
+ 576 01b8 8C000000 		.4byte	.LVL12
+ 577 01bc C6020000 		.4byte	0x2c6
+ 578 01c0 0E       		.uleb128 0xe
+ 579 01c1 A0000000 		.4byte	.LVL15
+ 580 01c5 C6020000 		.4byte	0x2c6
+ 581 01c9 0E       		.uleb128 0xe
+ 582 01ca B6000000 		.4byte	.LVL18
+ 583 01ce C6020000 		.4byte	0x2c6
+ 584 01d2 0E       		.uleb128 0xe
+ 585 01d3 CC000000 		.4byte	.LVL21
+ 586 01d7 C6020000 		.4byte	0x2c6
+ 587 01db 0E       		.uleb128 0xe
+ 588 01dc D8000000 		.4byte	.LVL24
+ 589 01e0 D1020000 		.4byte	0x2d1
+ 590 01e4 0E       		.uleb128 0xe
+ 591 01e5 02010000 		.4byte	.LVL27
+ 592 01e9 D1020000 		.4byte	0x2d1
+ 593 01ed 0E       		.uleb128 0xe
+ 594 01ee 20010000 		.4byte	.LVL30
+ 595 01f2 D1020000 		.4byte	0x2d1
+ 596 01f6 0E       		.uleb128 0xe
+ 597 01f7 34010000 		.4byte	.LVL33
+ 598 01fb D1020000 		.4byte	0x2d1
+ 599 01ff 00       		.byte	0
+ 600 0200 0A       		.uleb128 0xa
+ 601 0201 6B000000 		.4byte	0x6b
+ 602 0205 16020000 		.4byte	0x216
+ 603 0209 0B       		.uleb128 0xb
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 18
+
+
+ 604 020a A9000000 		.4byte	0xa9
+ 605 020e 08       		.byte	0x8
+ 606 020f 0B       		.uleb128 0xb
+ 607 0210 A9000000 		.4byte	0xa9
+ 608 0214 02       		.byte	0x2
+ 609 0215 00       		.byte	0
+ 610 0216 0F       		.uleb128 0xf
+ 611 0217 82010000 		.4byte	.LASF29
+ 612 021b 01       		.byte	0x1
+ 613 021c 2A       		.byte	0x2a
+ 614 021d 27020000 		.4byte	0x227
+ 615 0221 05       		.uleb128 0x5
+ 616 0222 03       		.byte	0x3
+ 617 0223 00000000 		.4byte	USBFS_currentSampleFrequency
+ 618 0227 05       		.uleb128 0x5
+ 619 0228 00020000 		.4byte	0x200
+ 620 022c 0F       		.uleb128 0xf
+ 621 022d 30030000 		.4byte	.LASF30
+ 622 0231 01       		.byte	0x1
+ 623 0232 32       		.byte	0x32
+ 624 0233 A4000000 		.4byte	0xa4
+ 625 0237 05       		.uleb128 0x5
+ 626 0238 03       		.byte	0x3
+ 627 0239 00000000 		.4byte	USBFS_frequencyChanged
+ 628 023d 0F       		.uleb128 0xf
+ 629 023e 6E020000 		.4byte	.LASF31
+ 630 0242 01       		.byte	0x1
+ 631 0243 34       		.byte	0x34
+ 632 0244 A4000000 		.4byte	0xa4
+ 633 0248 05       		.uleb128 0x5
+ 634 0249 03       		.byte	0x3
+ 635 024a 00000000 		.4byte	USBFS_currentMute
+ 636 024e 0A       		.uleb128 0xa
+ 637 024f 6B000000 		.4byte	0x6b
+ 638 0253 5E020000 		.4byte	0x25e
+ 639 0257 0B       		.uleb128 0xb
+ 640 0258 A9000000 		.4byte	0xa9
+ 641 025c 01       		.byte	0x1
+ 642 025d 00       		.byte	0
+ 643 025e 0F       		.uleb128 0xf
+ 644 025f 0D000000 		.4byte	.LASF32
+ 645 0263 01       		.byte	0x1
+ 646 0264 36       		.byte	0x36
+ 647 0265 6F020000 		.4byte	0x26f
+ 648 0269 05       		.uleb128 0x5
+ 649 026a 03       		.byte	0x3
+ 650 026b 00000000 		.4byte	USBFS_currentVolume
+ 651 026f 05       		.uleb128 0x5
+ 652 0270 4E020000 		.4byte	0x24e
+ 653 0274 0F       		.uleb128 0xf
+ 654 0275 21000000 		.4byte	.LASF33
+ 655 0279 01       		.byte	0x1
+ 656 027a 37       		.byte	0x37
+ 657 027b 85020000 		.4byte	0x285
+ 658 027f 05       		.uleb128 0x5
+ 659 0280 03       		.byte	0x3
+ 660 0281 00000000 		.4byte	USBFS_minimumVolume
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 19
+
+
+ 661 0285 05       		.uleb128 0x5
+ 662 0286 4E020000 		.4byte	0x24e
+ 663 028a 0F       		.uleb128 0xf
+ 664 028b 41010000 		.4byte	.LASF34
+ 665 028f 01       		.byte	0x1
+ 666 0290 39       		.byte	0x39
+ 667 0291 9B020000 		.4byte	0x29b
+ 668 0295 05       		.uleb128 0x5
+ 669 0296 03       		.byte	0x3
+ 670 0297 00000000 		.4byte	USBFS_maximumVolume
+ 671 029b 05       		.uleb128 0x5
+ 672 029c 4E020000 		.4byte	0x24e
+ 673 02a0 0F       		.uleb128 0xf
+ 674 02a1 EE000000 		.4byte	.LASF35
+ 675 02a5 01       		.byte	0x1
+ 676 02a6 3B       		.byte	0x3b
+ 677 02a7 B1020000 		.4byte	0x2b1
+ 678 02ab 05       		.uleb128 0x5
+ 679 02ac 03       		.byte	0x3
+ 680 02ad 00000000 		.4byte	USBFS_resolutionVolume
+ 681 02b1 05       		.uleb128 0x5
+ 682 02b2 4E020000 		.4byte	0x24e
+ 683 02b6 10       		.uleb128 0x10
+ 684 02b7 47020000 		.4byte	.LASF36
+ 685 02bb 04       		.byte	0x4
+ 686 02bc 81       		.byte	0x81
+ 687 02bd C1020000 		.4byte	0x2c1
+ 688 02c1 05       		.uleb128 0x5
+ 689 02c2 15010000 		.4byte	0x115
+ 690 02c6 11       		.uleb128 0x11
+ 691 02c7 2B010000 		.4byte	.LASF37
+ 692 02cb 04       		.byte	0x4
+ 693 02cc B0       		.byte	0xb0
+ 694 02cd 6B000000 		.4byte	0x6b
+ 695 02d1 11       		.uleb128 0x11
+ 696 02d2 68030000 		.4byte	.LASF38
+ 697 02d6 04       		.byte	0x4
+ 698 02d7 B5       		.byte	0xb5
+ 699 02d8 6B000000 		.4byte	0x6b
+ 700 02dc 00       		.byte	0
+ 701              		.section	.debug_abbrev,"",%progbits
+ 702              	.Ldebug_abbrev0:
+ 703 0000 01       		.uleb128 0x1
+ 704 0001 11       		.uleb128 0x11
+ 705 0002 01       		.byte	0x1
+ 706 0003 25       		.uleb128 0x25
+ 707 0004 0E       		.uleb128 0xe
+ 708 0005 13       		.uleb128 0x13
+ 709 0006 0B       		.uleb128 0xb
+ 710 0007 03       		.uleb128 0x3
+ 711 0008 0E       		.uleb128 0xe
+ 712 0009 1B       		.uleb128 0x1b
+ 713 000a 0E       		.uleb128 0xe
+ 714 000b 55       		.uleb128 0x55
+ 715 000c 17       		.uleb128 0x17
+ 716 000d 11       		.uleb128 0x11
+ 717 000e 01       		.uleb128 0x1
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 20
+
+
+ 718 000f 10       		.uleb128 0x10
+ 719 0010 17       		.uleb128 0x17
+ 720 0011 00       		.byte	0
+ 721 0012 00       		.byte	0
+ 722 0013 02       		.uleb128 0x2
+ 723 0014 24       		.uleb128 0x24
+ 724 0015 00       		.byte	0
+ 725 0016 0B       		.uleb128 0xb
+ 726 0017 0B       		.uleb128 0xb
+ 727 0018 3E       		.uleb128 0x3e
+ 728 0019 0B       		.uleb128 0xb
+ 729 001a 03       		.uleb128 0x3
+ 730 001b 0E       		.uleb128 0xe
+ 731 001c 00       		.byte	0
+ 732 001d 00       		.byte	0
+ 733 001e 03       		.uleb128 0x3
+ 734 001f 24       		.uleb128 0x24
+ 735 0020 00       		.byte	0
+ 736 0021 0B       		.uleb128 0xb
+ 737 0022 0B       		.uleb128 0xb
+ 738 0023 3E       		.uleb128 0x3e
+ 739 0024 0B       		.uleb128 0xb
+ 740 0025 03       		.uleb128 0x3
+ 741 0026 08       		.uleb128 0x8
+ 742 0027 00       		.byte	0
+ 743 0028 00       		.byte	0
+ 744 0029 04       		.uleb128 0x4
+ 745 002a 16       		.uleb128 0x16
+ 746 002b 00       		.byte	0
+ 747 002c 03       		.uleb128 0x3
+ 748 002d 0E       		.uleb128 0xe
+ 749 002e 3A       		.uleb128 0x3a
+ 750 002f 0B       		.uleb128 0xb
+ 751 0030 3B       		.uleb128 0x3b
+ 752 0031 05       		.uleb128 0x5
+ 753 0032 49       		.uleb128 0x49
+ 754 0033 13       		.uleb128 0x13
+ 755 0034 00       		.byte	0
+ 756 0035 00       		.byte	0
+ 757 0036 05       		.uleb128 0x5
+ 758 0037 35       		.uleb128 0x35
+ 759 0038 00       		.byte	0
+ 760 0039 49       		.uleb128 0x49
+ 761 003a 13       		.uleb128 0x13
+ 762 003b 00       		.byte	0
+ 763 003c 00       		.byte	0
+ 764 003d 06       		.uleb128 0x6
+ 765 003e 13       		.uleb128 0x13
+ 766 003f 01       		.byte	0x1
+ 767 0040 0B       		.uleb128 0xb
+ 768 0041 0B       		.uleb128 0xb
+ 769 0042 3A       		.uleb128 0x3a
+ 770 0043 0B       		.uleb128 0xb
+ 771 0044 3B       		.uleb128 0x3b
+ 772 0045 0B       		.uleb128 0xb
+ 773 0046 01       		.uleb128 0x1
+ 774 0047 13       		.uleb128 0x13
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 21
+
+
+ 775 0048 00       		.byte	0
+ 776 0049 00       		.byte	0
+ 777 004a 07       		.uleb128 0x7
+ 778 004b 0D       		.uleb128 0xd
+ 779 004c 00       		.byte	0
+ 780 004d 03       		.uleb128 0x3
+ 781 004e 0E       		.uleb128 0xe
+ 782 004f 3A       		.uleb128 0x3a
+ 783 0050 0B       		.uleb128 0xb
+ 784 0051 3B       		.uleb128 0x3b
+ 785 0052 0B       		.uleb128 0xb
+ 786 0053 49       		.uleb128 0x49
+ 787 0054 13       		.uleb128 0x13
+ 788 0055 38       		.uleb128 0x38
+ 789 0056 0B       		.uleb128 0xb
+ 790 0057 00       		.byte	0
+ 791 0058 00       		.byte	0
+ 792 0059 08       		.uleb128 0x8
+ 793 005a 16       		.uleb128 0x16
+ 794 005b 00       		.byte	0
+ 795 005c 03       		.uleb128 0x3
+ 796 005d 0E       		.uleb128 0xe
+ 797 005e 3A       		.uleb128 0x3a
+ 798 005f 0B       		.uleb128 0xb
+ 799 0060 3B       		.uleb128 0x3b
+ 800 0061 0B       		.uleb128 0xb
+ 801 0062 49       		.uleb128 0x49
+ 802 0063 13       		.uleb128 0x13
+ 803 0064 00       		.byte	0
+ 804 0065 00       		.byte	0
+ 805 0066 09       		.uleb128 0x9
+ 806 0067 0F       		.uleb128 0xf
+ 807 0068 00       		.byte	0
+ 808 0069 0B       		.uleb128 0xb
+ 809 006a 0B       		.uleb128 0xb
+ 810 006b 49       		.uleb128 0x49
+ 811 006c 13       		.uleb128 0x13
+ 812 006d 00       		.byte	0
+ 813 006e 00       		.byte	0
+ 814 006f 0A       		.uleb128 0xa
+ 815 0070 01       		.uleb128 0x1
+ 816 0071 01       		.byte	0x1
+ 817 0072 49       		.uleb128 0x49
+ 818 0073 13       		.uleb128 0x13
+ 819 0074 01       		.uleb128 0x1
+ 820 0075 13       		.uleb128 0x13
+ 821 0076 00       		.byte	0
+ 822 0077 00       		.byte	0
+ 823 0078 0B       		.uleb128 0xb
+ 824 0079 21       		.uleb128 0x21
+ 825 007a 00       		.byte	0
+ 826 007b 49       		.uleb128 0x49
+ 827 007c 13       		.uleb128 0x13
+ 828 007d 2F       		.uleb128 0x2f
+ 829 007e 0B       		.uleb128 0xb
+ 830 007f 00       		.byte	0
+ 831 0080 00       		.byte	0
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 22
+
+
+ 832 0081 0C       		.uleb128 0xc
+ 833 0082 2E       		.uleb128 0x2e
+ 834 0083 01       		.byte	0x1
+ 835 0084 3F       		.uleb128 0x3f
+ 836 0085 19       		.uleb128 0x19
+ 837 0086 03       		.uleb128 0x3
+ 838 0087 0E       		.uleb128 0xe
+ 839 0088 3A       		.uleb128 0x3a
+ 840 0089 0B       		.uleb128 0xb
+ 841 008a 3B       		.uleb128 0x3b
+ 842 008b 0B       		.uleb128 0xb
+ 843 008c 27       		.uleb128 0x27
+ 844 008d 19       		.uleb128 0x19
+ 845 008e 49       		.uleb128 0x49
+ 846 008f 13       		.uleb128 0x13
+ 847 0090 11       		.uleb128 0x11
+ 848 0091 01       		.uleb128 0x1
+ 849 0092 12       		.uleb128 0x12
+ 850 0093 06       		.uleb128 0x6
+ 851 0094 40       		.uleb128 0x40
+ 852 0095 18       		.uleb128 0x18
+ 853 0096 9742     		.uleb128 0x2117
+ 854 0098 19       		.uleb128 0x19
+ 855 0099 01       		.uleb128 0x1
+ 856 009a 13       		.uleb128 0x13
+ 857 009b 00       		.byte	0
+ 858 009c 00       		.byte	0
+ 859 009d 0D       		.uleb128 0xd
+ 860 009e 34       		.uleb128 0x34
+ 861 009f 00       		.byte	0
+ 862 00a0 03       		.uleb128 0x3
+ 863 00a1 0E       		.uleb128 0xe
+ 864 00a2 3A       		.uleb128 0x3a
+ 865 00a3 0B       		.uleb128 0xb
+ 866 00a4 3B       		.uleb128 0x3b
+ 867 00a5 0B       		.uleb128 0xb
+ 868 00a6 49       		.uleb128 0x49
+ 869 00a7 13       		.uleb128 0x13
+ 870 00a8 02       		.uleb128 0x2
+ 871 00a9 17       		.uleb128 0x17
+ 872 00aa 00       		.byte	0
+ 873 00ab 00       		.byte	0
+ 874 00ac 0E       		.uleb128 0xe
+ 875 00ad 898201   		.uleb128 0x4109
+ 876 00b0 00       		.byte	0
+ 877 00b1 11       		.uleb128 0x11
+ 878 00b2 01       		.uleb128 0x1
+ 879 00b3 31       		.uleb128 0x31
+ 880 00b4 13       		.uleb128 0x13
+ 881 00b5 00       		.byte	0
+ 882 00b6 00       		.byte	0
+ 883 00b7 0F       		.uleb128 0xf
+ 884 00b8 34       		.uleb128 0x34
+ 885 00b9 00       		.byte	0
+ 886 00ba 03       		.uleb128 0x3
+ 887 00bb 0E       		.uleb128 0xe
+ 888 00bc 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 23
+
+
+ 889 00bd 0B       		.uleb128 0xb
+ 890 00be 3B       		.uleb128 0x3b
+ 891 00bf 0B       		.uleb128 0xb
+ 892 00c0 49       		.uleb128 0x49
+ 893 00c1 13       		.uleb128 0x13
+ 894 00c2 3F       		.uleb128 0x3f
+ 895 00c3 19       		.uleb128 0x19
+ 896 00c4 02       		.uleb128 0x2
+ 897 00c5 18       		.uleb128 0x18
+ 898 00c6 00       		.byte	0
+ 899 00c7 00       		.byte	0
+ 900 00c8 10       		.uleb128 0x10
+ 901 00c9 34       		.uleb128 0x34
+ 902 00ca 00       		.byte	0
+ 903 00cb 03       		.uleb128 0x3
+ 904 00cc 0E       		.uleb128 0xe
+ 905 00cd 3A       		.uleb128 0x3a
+ 906 00ce 0B       		.uleb128 0xb
+ 907 00cf 3B       		.uleb128 0x3b
+ 908 00d0 0B       		.uleb128 0xb
+ 909 00d1 49       		.uleb128 0x49
+ 910 00d2 13       		.uleb128 0x13
+ 911 00d3 3F       		.uleb128 0x3f
+ 912 00d4 19       		.uleb128 0x19
+ 913 00d5 3C       		.uleb128 0x3c
+ 914 00d6 19       		.uleb128 0x19
+ 915 00d7 00       		.byte	0
+ 916 00d8 00       		.byte	0
+ 917 00d9 11       		.uleb128 0x11
+ 918 00da 2E       		.uleb128 0x2e
+ 919 00db 00       		.byte	0
+ 920 00dc 3F       		.uleb128 0x3f
+ 921 00dd 19       		.uleb128 0x19
+ 922 00de 03       		.uleb128 0x3
+ 923 00df 0E       		.uleb128 0xe
+ 924 00e0 3A       		.uleb128 0x3a
+ 925 00e1 0B       		.uleb128 0xb
+ 926 00e2 3B       		.uleb128 0x3b
+ 927 00e3 0B       		.uleb128 0xb
+ 928 00e4 27       		.uleb128 0x27
+ 929 00e5 19       		.uleb128 0x19
+ 930 00e6 49       		.uleb128 0x49
+ 931 00e7 13       		.uleb128 0x13
+ 932 00e8 3C       		.uleb128 0x3c
+ 933 00e9 19       		.uleb128 0x19
+ 934 00ea 00       		.byte	0
+ 935 00eb 00       		.byte	0
+ 936 00ec 00       		.byte	0
+ 937              		.section	.debug_loc,"",%progbits
+ 938              	.Ldebug_loc0:
+ 939              	.LLST0:
+ 940 0000 02000000 		.4byte	.LVL0
+ 941 0004 42000000 		.4byte	.LVL6
+ 942 0008 0200     		.2byte	0x2
+ 943 000a 30       		.byte	0x30
+ 944 000b 9F       		.byte	0x9f
+ 945 000c 42000000 		.4byte	.LVL6
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 24
+
+
+ 946 0010 44000000 		.4byte	.LVL7
+ 947 0014 0100     		.2byte	0x1
+ 948 0016 50       		.byte	0x50
+ 949 0017 44000000 		.4byte	.LVL7
+ 950 001b 78000000 		.4byte	.LVL9
+ 951 001f 0200     		.2byte	0x2
+ 952 0021 30       		.byte	0x30
+ 953 0022 9F       		.byte	0x9f
+ 954 0023 78000000 		.4byte	.LVL9
+ 955 0027 7A000000 		.4byte	.LVL10
+ 956 002b 0100     		.2byte	0x1
+ 957 002d 50       		.byte	0x50
+ 958 002e 7A000000 		.4byte	.LVL10
+ 959 0032 8C000000 		.4byte	.LVL12
+ 960 0036 0200     		.2byte	0x2
+ 961 0038 30       		.byte	0x30
+ 962 0039 9F       		.byte	0x9f
+ 963 003a 8C000000 		.4byte	.LVL12
+ 964 003e 8E000000 		.4byte	.LVL13
+ 965 0042 0100     		.2byte	0x1
+ 966 0044 50       		.byte	0x50
+ 967 0045 8E000000 		.4byte	.LVL13
+ 968 0049 A0000000 		.4byte	.LVL15
+ 969 004d 0200     		.2byte	0x2
+ 970 004f 30       		.byte	0x30
+ 971 0050 9F       		.byte	0x9f
+ 972 0051 A0000000 		.4byte	.LVL15
+ 973 0055 A2000000 		.4byte	.LVL16
+ 974 0059 0100     		.2byte	0x1
+ 975 005b 50       		.byte	0x50
+ 976 005c A2000000 		.4byte	.LVL16
+ 977 0060 B6000000 		.4byte	.LVL18
+ 978 0064 0200     		.2byte	0x2
+ 979 0066 30       		.byte	0x30
+ 980 0067 9F       		.byte	0x9f
+ 981 0068 B6000000 		.4byte	.LVL18
+ 982 006c B8000000 		.4byte	.LVL19
+ 983 0070 0100     		.2byte	0x1
+ 984 0072 50       		.byte	0x50
+ 985 0073 B8000000 		.4byte	.LVL19
+ 986 0077 CC000000 		.4byte	.LVL21
+ 987 007b 0200     		.2byte	0x2
+ 988 007d 30       		.byte	0x30
+ 989 007e 9F       		.byte	0x9f
+ 990 007f CC000000 		.4byte	.LVL21
+ 991 0083 CE000000 		.4byte	.LVL22
+ 992 0087 0100     		.2byte	0x1
+ 993 0089 50       		.byte	0x50
+ 994 008a CE000000 		.4byte	.LVL22
+ 995 008e D8000000 		.4byte	.LVL24
+ 996 0092 0200     		.2byte	0x2
+ 997 0094 30       		.byte	0x30
+ 998 0095 9F       		.byte	0x9f
+ 999 0096 D8000000 		.4byte	.LVL24
+ 1000 009a DA000000 		.4byte	.LVL25
+ 1001 009e 0100     		.2byte	0x1
+ 1002 00a0 50       		.byte	0x50
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 25
+
+
+ 1003 00a1 DA000000 		.4byte	.LVL25
+ 1004 00a5 02010000 		.4byte	.LVL27
+ 1005 00a9 0200     		.2byte	0x2
+ 1006 00ab 30       		.byte	0x30
+ 1007 00ac 9F       		.byte	0x9f
+ 1008 00ad 02010000 		.4byte	.LVL27
+ 1009 00b1 04010000 		.4byte	.LVL28
+ 1010 00b5 0100     		.2byte	0x1
+ 1011 00b7 50       		.byte	0x50
+ 1012 00b8 04010000 		.4byte	.LVL28
+ 1013 00bc 20010000 		.4byte	.LVL30
+ 1014 00c0 0200     		.2byte	0x2
+ 1015 00c2 30       		.byte	0x30
+ 1016 00c3 9F       		.byte	0x9f
+ 1017 00c4 20010000 		.4byte	.LVL30
+ 1018 00c8 22010000 		.4byte	.LVL31
+ 1019 00cc 0100     		.2byte	0x1
+ 1020 00ce 50       		.byte	0x50
+ 1021 00cf 22010000 		.4byte	.LVL31
+ 1022 00d3 34010000 		.4byte	.LVL33
+ 1023 00d7 0200     		.2byte	0x2
+ 1024 00d9 30       		.byte	0x30
+ 1025 00da 9F       		.byte	0x9f
+ 1026 00db 34010000 		.4byte	.LVL33
+ 1027 00df 36010000 		.4byte	.LVL34
+ 1028 00e3 0100     		.2byte	0x1
+ 1029 00e5 50       		.byte	0x50
+ 1030 00e6 36010000 		.4byte	.LVL34
+ 1031 00ea 68010000 		.4byte	.LVL35
+ 1032 00ee 0200     		.2byte	0x2
+ 1033 00f0 30       		.byte	0x30
+ 1034 00f1 9F       		.byte	0x9f
+ 1035 00f2 68010000 		.4byte	.LVL35
+ 1036 00f6 88010000 		.4byte	.LFE162
+ 1037 00fa 0100     		.2byte	0x1
+ 1038 00fc 50       		.byte	0x50
+ 1039 00fd 00000000 		.4byte	0
+ 1040 0101 00000000 		.4byte	0
+ 1041              	.LLST1:
+ 1042 0105 0A000000 		.4byte	.LVL1
+ 1043 0109 30000000 		.4byte	.LVL4
+ 1044 010d 0100     		.2byte	0x1
+ 1045 010f 52       		.byte	0x52
+ 1046 0110 44000000 		.4byte	.LVL7
+ 1047 0114 6E000000 		.4byte	.LVL8
+ 1048 0118 0100     		.2byte	0x1
+ 1049 011a 52       		.byte	0x52
+ 1050 011b 7A000000 		.4byte	.LVL10
+ 1051 011f 82000000 		.4byte	.LVL11
+ 1052 0123 0100     		.2byte	0x1
+ 1053 0125 52       		.byte	0x52
+ 1054 0126 8E000000 		.4byte	.LVL13
+ 1055 012a 96000000 		.4byte	.LVL14
+ 1056 012e 0100     		.2byte	0x1
+ 1057 0130 52       		.byte	0x52
+ 1058 0131 A2000000 		.4byte	.LVL16
+ 1059 0135 A8000000 		.4byte	.LVL17
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 26
+
+
+ 1060 0139 0100     		.2byte	0x1
+ 1061 013b 52       		.byte	0x52
+ 1062 013c B8000000 		.4byte	.LVL19
+ 1063 0140 BE000000 		.4byte	.LVL20
+ 1064 0144 0100     		.2byte	0x1
+ 1065 0146 52       		.byte	0x52
+ 1066 0147 CE000000 		.4byte	.LVL22
+ 1067 014b D0000000 		.4byte	.LVL23
+ 1068 014f 0100     		.2byte	0x1
+ 1069 0151 52       		.byte	0x52
+ 1070 0152 DA000000 		.4byte	.LVL25
+ 1071 0156 F4000000 		.4byte	.LVL26
+ 1072 015a 0100     		.2byte	0x1
+ 1073 015c 52       		.byte	0x52
+ 1074 015d 04010000 		.4byte	.LVL28
+ 1075 0161 1A010000 		.4byte	.LVL29
+ 1076 0165 0100     		.2byte	0x1
+ 1077 0167 52       		.byte	0x52
+ 1078 0168 22010000 		.4byte	.LVL31
+ 1079 016c 2A010000 		.4byte	.LVL32
+ 1080 0170 0100     		.2byte	0x1
+ 1081 0172 52       		.byte	0x52
+ 1082 0173 36010000 		.4byte	.LVL34
+ 1083 0177 68010000 		.4byte	.LVL35
+ 1084 017b 0100     		.2byte	0x1
+ 1085 017d 52       		.byte	0x52
+ 1086 017e 00000000 		.4byte	0
+ 1087 0182 00000000 		.4byte	0
+ 1088              	.LLST2:
+ 1089 0186 0E000000 		.4byte	.LVL2
+ 1090 018a 68010000 		.4byte	.LVL36
+ 1091 018e 0100     		.2byte	0x1
+ 1092 0190 54       		.byte	0x54
+ 1093 0191 00000000 		.4byte	0
+ 1094 0195 00000000 		.4byte	0
+ 1095              	.LLST3:
+ 1096 0199 14000000 		.4byte	.LVL3
+ 1097 019d 38000000 		.4byte	.LVL5
+ 1098 01a1 0100     		.2byte	0x1
+ 1099 01a3 51       		.byte	0x51
+ 1100 01a4 38000000 		.4byte	.LVL5
+ 1101 01a8 41000000 		.4byte	.LVL6-1
+ 1102 01ac 0600     		.2byte	0x6
+ 1103 01ae 70       		.byte	0x70
+ 1104 01af 00       		.sleb128 0
+ 1105 01b0 08       		.byte	0x8
+ 1106 01b1 7F       		.byte	0x7f
+ 1107 01b2 1A       		.byte	0x1a
+ 1108 01b3 9F       		.byte	0x9f
+ 1109 01b4 44000000 		.4byte	.LVL7
+ 1110 01b8 77000000 		.4byte	.LVL9-1
+ 1111 01bc 0100     		.2byte	0x1
+ 1112 01be 51       		.byte	0x51
+ 1113 01bf 7A000000 		.4byte	.LVL10
+ 1114 01c3 8B000000 		.4byte	.LVL12-1
+ 1115 01c7 0100     		.2byte	0x1
+ 1116 01c9 51       		.byte	0x51
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 27
+
+
+ 1117 01ca 8E000000 		.4byte	.LVL13
+ 1118 01ce 9F000000 		.4byte	.LVL15-1
+ 1119 01d2 0100     		.2byte	0x1
+ 1120 01d4 51       		.byte	0x51
+ 1121 01d5 A2000000 		.4byte	.LVL16
+ 1122 01d9 B5000000 		.4byte	.LVL18-1
+ 1123 01dd 0100     		.2byte	0x1
+ 1124 01df 51       		.byte	0x51
+ 1125 01e0 B8000000 		.4byte	.LVL19
+ 1126 01e4 CB000000 		.4byte	.LVL21-1
+ 1127 01e8 0100     		.2byte	0x1
+ 1128 01ea 51       		.byte	0x51
+ 1129 01eb CE000000 		.4byte	.LVL22
+ 1130 01ef D7000000 		.4byte	.LVL24-1
+ 1131 01f3 0100     		.2byte	0x1
+ 1132 01f5 51       		.byte	0x51
+ 1133 01f6 DA000000 		.4byte	.LVL25
+ 1134 01fa 01010000 		.4byte	.LVL27-1
+ 1135 01fe 0100     		.2byte	0x1
+ 1136 0200 51       		.byte	0x51
+ 1137 0201 04010000 		.4byte	.LVL28
+ 1138 0205 1F010000 		.4byte	.LVL30-1
+ 1139 0209 0100     		.2byte	0x1
+ 1140 020b 51       		.byte	0x51
+ 1141 020c 22010000 		.4byte	.LVL31
+ 1142 0210 33010000 		.4byte	.LVL33-1
+ 1143 0214 0100     		.2byte	0x1
+ 1144 0216 51       		.byte	0x51
+ 1145 0217 36010000 		.4byte	.LVL34
+ 1146 021b 68010000 		.4byte	.LVL35
+ 1147 021f 0100     		.2byte	0x1
+ 1148 0221 51       		.byte	0x51
+ 1149 0222 00000000 		.4byte	0
+ 1150 0226 00000000 		.4byte	0
+ 1151              		.section	.debug_aranges,"",%progbits
+ 1152 0000 1C000000 		.4byte	0x1c
+ 1153 0004 0200     		.2byte	0x2
+ 1154 0006 00000000 		.4byte	.Ldebug_info0
+ 1155 000a 04       		.byte	0x4
+ 1156 000b 00       		.byte	0
+ 1157 000c 0000     		.2byte	0
+ 1158 000e 0000     		.2byte	0
+ 1159 0010 00000000 		.4byte	.LFB162
+ 1160 0014 88010000 		.4byte	.LFE162-.LFB162
+ 1161 0018 00000000 		.4byte	0
+ 1162 001c 00000000 		.4byte	0
+ 1163              		.section	.debug_ranges,"",%progbits
+ 1164              	.Ldebug_ranges0:
+ 1165 0000 00000000 		.4byte	.LFB162
+ 1166 0004 88010000 		.4byte	.LFE162
+ 1167 0008 00000000 		.4byte	0
+ 1168 000c 00000000 		.4byte	0
+ 1169              		.section	.debug_line,"",%progbits
+ 1170              	.Ldebug_line0:
+ 1171 0000 CB000000 		.section	.debug_str,"MS",%progbits,1
+ 1171      02006400 
+ 1171      00000201 
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 28
+
+
+ 1171      FB0E0D00 
+ 1171      01010101 
+ 1172              	.LASF21:
+ 1173 0000 70537461 		.ascii	"pStatusBlock\000"
+ 1173      74757342 
+ 1173      6C6F636B 
+ 1173      00
+ 1174              	.LASF32:
+ 1175 000d 55534246 		.ascii	"USBFS_currentVolume\000"
+ 1175      535F6375 
+ 1175      7272656E 
+ 1175      74566F6C 
+ 1175      756D6500 
+ 1176              	.LASF33:
+ 1177 0021 55534246 		.ascii	"USBFS_minimumVolume\000"
+ 1177      535F6D69 
+ 1177      6E696D75 
+ 1177      6D566F6C 
+ 1177      756D6500 
+ 1178              	.LASF19:
+ 1179 0035 636F756E 		.ascii	"count\000"
+ 1179      7400
+ 1180              	.LASF3:
+ 1181 003b 73686F72 		.ascii	"short unsigned int\000"
+ 1181      7420756E 
+ 1181      7369676E 
+ 1181      65642069 
+ 1181      6E7400
+ 1182              	.LASF40:
+ 1183 004e 2E5C4765 		.ascii	".\\Generated_Source\\PSoC4\\USBFS_audio.c\000"
+ 1183      6E657261 
+ 1183      7465645F 
+ 1183      536F7572 
+ 1183      63655C50 
+ 1184              	.LASF42:
+ 1185 0075 55534246 		.ascii	"USBFS_DispatchAUDIOClassRqst\000"
+ 1185      535F4469 
+ 1185      73706174 
+ 1185      63684155 
+ 1185      44494F43 
+ 1186              	.LASF16:
+ 1187 0092 73746174 		.ascii	"status\000"
+ 1187      757300
+ 1188              	.LASF20:
+ 1189 0099 70446174 		.ascii	"pData\000"
+ 1189      6100
+ 1190              	.LASF23:
+ 1191 009f 65704461 		.ascii	"epData\000"
+ 1191      746100
+ 1192              	.LASF22:
+ 1193 00a6 545F5553 		.ascii	"T_USBFS_TD\000"
+ 1193      4246535F 
+ 1193      544400
+ 1194              	.LASF12:
+ 1195 00b1 666C6F61 		.ascii	"float\000"
+ 1195      7400
+ 1196              	.LASF27:
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 29
+
+
+ 1197 00b7 7756616C 		.ascii	"wValueHi\000"
+ 1197      75654869 
+ 1197      00
+ 1198              	.LASF9:
+ 1199 00c0 75696E74 		.ascii	"uint8\000"
+ 1199      3800
+ 1200              	.LASF1:
+ 1201 00c6 756E7369 		.ascii	"unsigned char\000"
+ 1201      676E6564 
+ 1201      20636861 
+ 1201      7200
+ 1202              	.LASF18:
+ 1203 00d4 545F5553 		.ascii	"T_USBFS_XFER_STATUS_BLOCK\000"
+ 1203      4246535F 
+ 1203      58464552 
+ 1203      5F535441 
+ 1203      5455535F 
+ 1204              	.LASF35:
+ 1205 00ee 55534246 		.ascii	"USBFS_resolutionVolume\000"
+ 1205      535F7265 
+ 1205      736F6C75 
+ 1205      74696F6E 
+ 1205      566F6C75 
+ 1206              	.LASF26:
+ 1207 0105 52717374 		.ascii	"RqstRcpt\000"
+ 1207      52637074 
+ 1207      00
+ 1208              	.LASF24:
+ 1209 010e 55534246 		.ascii	"USBFS_ep0_data_struct\000"
+ 1209      535F6570 
+ 1209      305F6461 
+ 1209      74615F73 
+ 1209      74727563 
+ 1210              	.LASF13:
+ 1211 0124 646F7562 		.ascii	"double\000"
+ 1211      6C6500
+ 1212              	.LASF37:
+ 1213 012b 55534246 		.ascii	"USBFS_InitControlRead\000"
+ 1213      535F496E 
+ 1213      6974436F 
+ 1213      6E74726F 
+ 1213      6C526561 
+ 1214              	.LASF34:
+ 1215 0141 55534246 		.ascii	"USBFS_maximumVolume\000"
+ 1215      535F6D61 
+ 1215      78696D75 
+ 1215      6D566F6C 
+ 1215      756D6500 
+ 1216              	.LASF10:
+ 1217 0155 75696E74 		.ascii	"uint16\000"
+ 1217      313600
+ 1218              	.LASF11:
+ 1219 015c 75696E74 		.ascii	"uint32\000"
+ 1219      333200
+ 1220              	.LASF5:
+ 1221 0163 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1221      20756E73 
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 30
+
+
+ 1221      69676E65 
+ 1221      6420696E 
+ 1221      7400
+ 1222              	.LASF8:
+ 1223 0175 756E7369 		.ascii	"unsigned int\000"
+ 1223      676E6564 
+ 1223      20696E74 
+ 1223      00
+ 1224              	.LASF29:
+ 1225 0182 55534246 		.ascii	"USBFS_currentSampleFrequency\000"
+ 1225      535F6375 
+ 1225      7272656E 
+ 1225      7453616D 
+ 1225      706C6546 
+ 1226              	.LASF7:
+ 1227 019f 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1227      206C6F6E 
+ 1227      6720756E 
+ 1227      7369676E 
+ 1227      65642069 
+ 1228              	.LASF41:
+ 1229 01b6 433A5C50 		.ascii	"C:\\Program Files (x86)\\Cypress\\CY8CKIT-046 PSoC "
+ 1229      726F6772 
+ 1229      616D2046 
+ 1229      696C6573 
+ 1229      20287838 
+ 1230 01e6 34204C2D 		.ascii	"4 L-Series Pioneer Kit\\1.0\\Firmware\\PSoC 4200L\\"
+ 1230      53657269 
+ 1230      65732050 
+ 1230      696F6E65 
+ 1230      6572204B 
+ 1231 0215 43593843 		.ascii	"CY8CKIT_046_USB_Audio\\CY8CKIT_046_USB_Audio.cydsn\000"
+ 1231      4B49545F 
+ 1231      3034365F 
+ 1231      5553425F 
+ 1231      41756469 
+ 1232              	.LASF36:
+ 1233 0247 55534246 		.ascii	"USBFS_currentTD\000"
+ 1233      535F6375 
+ 1233      7272656E 
+ 1233      74544400 
+ 1234              	.LASF15:
+ 1235 0257 73697A65 		.ascii	"sizetype\000"
+ 1235      74797065 
+ 1235      00
+ 1236              	.LASF6:
+ 1237 0260 6C6F6E67 		.ascii	"long long int\000"
+ 1237      206C6F6E 
+ 1237      6720696E 
+ 1237      7400
+ 1238              	.LASF31:
+ 1239 026e 55534246 		.ascii	"USBFS_currentMute\000"
+ 1239      535F6375 
+ 1239      7272656E 
+ 1239      744D7574 
+ 1239      6500
+ 1240              	.LASF39:
+ARM GAS  C:\Users\Terence\AppData\Local\Temp\ccgxYmgE.s 			page 31
+
+
+ 1241 0280 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 1241      4320342E 
+ 1241      392E3320 
+ 1241      32303135 
+ 1241      30333033 
+ 1242 02b3 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m0 -mthumb -g -O"
+ 1242      20726576 
+ 1242      6973696F 
+ 1242      6E203232 
+ 1242      31323230 
+ 1243 02e6 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1243      66756E63 
+ 1243      74696F6E 
+ 1243      2D736563 
+ 1243      74696F6E 
+ 1244              	.LASF2:
+ 1245 030e 73686F72 		.ascii	"short int\000"
+ 1245      7420696E 
+ 1245      7400
+ 1246              	.LASF28:
+ 1247 0318 65704E75 		.ascii	"epNumber\000"
+ 1247      6D626572 
+ 1247      00
+ 1248              	.LASF25:
+ 1249 0321 72657175 		.ascii	"requestHandled\000"
+ 1249      65737448 
+ 1249      616E646C 
+ 1249      656400
+ 1250              	.LASF30:
+ 1251 0330 55534246 		.ascii	"USBFS_frequencyChanged\000"
+ 1251      535F6672 
+ 1251      65717565 
+ 1251      6E637943 
+ 1251      68616E67 
+ 1252              	.LASF4:
+ 1253 0347 6C6F6E67 		.ascii	"long int\000"
+ 1253      20696E74 
+ 1253      00
+ 1254              	.LASF14:
+ 1255 0350 63686172 		.ascii	"char\000"
+ 1255      00
+ 1256              	.LASF0:
+ 1257 0355 7369676E 		.ascii	"signed char\000"
+ 1257      65642063 
+ 1257      68617200 
+ 1258              	.LASF17:
+ 1259 0361 6C656E67 		.ascii	"length\000"
+ 1259      746800
+ 1260              	.LASF38:
+ 1261 0368 55534246 		.ascii	"USBFS_InitControlWrite\000"
+ 1261      535F496E 
+ 1261      6974436F 
+ 1261      6E74726F 
+ 1261      6C577269 
+ 1262              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br
