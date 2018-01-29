@@ -56,36 +56,36 @@ int main()
 	int32 usbEnumFlag = 0; 
 	
 	/* Setup the Audio pipe from USB to I2S.*/	
-    InitAudioPath();
+  InitAudioPath();
 	
 	/* Setup the Application part of the firmware */
-    InitApp();
+  InitApp();
 	
 	PRINT("InitApp Complete\r\n");
 	
-    for(;;)
+  for(;;)
+  {
+    /* Check for USB enumeration with USB host */
+    if(USBFS_VBusPresent() == TRUE)
     {
-        /* Check for USB enumeration with USB host */
-        if(USBFS_VBusPresent() == TRUE)
-		{
-			if( USBFS_GetConfiguration() != FALSE)
-	        {				
-	            /* Accessory initialization routine after USB enumeration completion 
-				 * Also loads the EP's when audio playback/recording starts */
-				ServiceUSB();               
-	            
-	            /* USB audio sampling frequency change handler. */
-	            HandleSamplingFrequencyChangeRequest(); 
-				
+	    if( USBFS_GetConfiguration() != FALSE)
+      {				
+        /* Accessory initialization routine after USB enumeration completion 
+		     * Also loads the EP's when audio playback/recording starts */
+		    ServiceUSB();               
+          
+        /* USB audio sampling frequency change handler. */
+        HandleSamplingFrequencyChangeRequest(); 
+		
 				if(usbEnumFlag == FALSE)
 				{
 					usbEnumFlag = TRUE; 
 					PRINT("USB Enumeration Done\r\n");
 				}
-	        }	
-		}
-		else
-		{		
+      }	
+    }
+    else
+    {		
 			/* Do not operate the device when VBUS is absent */			
 			PRINT("USB Disconnected \r\n");	
 			
@@ -94,20 +94,20 @@ int main()
 			
 			/* Do a software reset once VBUS is connected to properly reinitialize USB, DMA and I2S components */
 			PRINT("USB Reconnected - SW reset \r\n");
-            #ifdef TXDEBUG
-			    while(UART_SpiUartGetTxBufferSize() != 0);
-            #endif
+#ifdef TXDEBUG
+	    while(UART_SpiUartGetTxBufferSize() != 0);
+#endif
             
-            /* Do a software reset once data is sent over UART */
+      /* Do a software reset once data is sent over UART */
 			CySoftwareReset();		
 		}
-        
+      
 		/* Clear audio IN buffer when IN stream is stopped */
 		HandleAudioInBuffer();             
         
 		/* Runs application layer code for CapSense */
 		RunApplication(); 
-    }
+  }
 }
 
 /* [] END OF FILE */
