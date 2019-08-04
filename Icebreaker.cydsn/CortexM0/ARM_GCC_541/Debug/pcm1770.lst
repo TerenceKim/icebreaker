@@ -1,0 +1,2559 @@
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"pcm1770.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.pcm1770_send_halfword,"ax",%progbits
+  20              		.align	2
+  21              		.code	16
+  22              		.thumb_func
+  23              		.type	pcm1770_send_halfword, %function
+  24              	pcm1770_send_halfword:
+  25              	.LFB3:
+  26              		.file 1 "pcm1770.c"
+   1:pcm1770.c     **** /* ========================================
+   2:pcm1770.c     ****  *
+   3:pcm1770.c     ****  * Copyright YOUR COMPANY, THE YEAR
+   4:pcm1770.c     ****  * All Rights Reserved
+   5:pcm1770.c     ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:pcm1770.c     ****  *
+   7:pcm1770.c     ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:pcm1770.c     ****  * WHICH IS THE PROPERTY OF your company.
+   9:pcm1770.c     ****  *
+  10:pcm1770.c     ****  * ========================================
+  11:pcm1770.c     **** */
+  12:pcm1770.c     **** #include "pcm1770.h"
+  13:pcm1770.c     **** #include <cypins.h>
+  14:pcm1770.c     **** #include <Application.h>
+  15:pcm1770.c     **** #include <Codec.h>
+  16:pcm1770.c     **** #include <SPI_CLK.h>
+  17:pcm1770.c     **** #include <SPI_CS.h>
+  18:pcm1770.c     **** #include <SPI_MOSI.h>
+  19:pcm1770.c     **** #include <PD.h>
+  20:pcm1770.c     **** 
+  21:pcm1770.c     **** #define SPI_CS_PIN      3
+  22:pcm1770.c     **** #define SPI_CLK_PIN     2
+  23:pcm1770.c     **** #define SPI_MOSI_PIN    0
+  24:pcm1770.c     **** 
+  25:pcm1770.c     **** #define NUM_OF_STEPS    63
+  26:pcm1770.c     **** 
+  27:pcm1770.c     **** #define PCM1770_VOL_MIN -63
+  28:pcm1770.c     **** #define PCM1770_VOL_MAX 0
+  29:pcm1770.c     **** 
+  30:pcm1770.c     **** #define WritePin(pp, s) pp ## _Write(s)
+  31:pcm1770.c     **** 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 2
+
+
+  32:pcm1770.c     **** #define ConfigPin(pp, m)  CY_SYS_PINS_SET_DRIVE_MODE(CYREG_PRT2_DR, pp ## _PIN, m)
+  33:pcm1770.c     **** 
+  34:pcm1770.c     **** #define SPI_CS_Config(m)   ConfigPin(SPI_CS, m)
+  35:pcm1770.c     **** #define SPI_CLK_Config(m)  ConfigPin(SPI_CLK, m)
+  36:pcm1770.c     **** #define SPI_MOSI_Config(m) ConfigPin(SPI_MOSI, m)
+  37:pcm1770.c     **** //#define SPI_CS_Write(s)    WritePin(SPI_CS, s)
+  38:pcm1770.c     **** //#define SPI_CLK_Write(s)   WritePin(SPI_CLK, s)
+  39:pcm1770.c     **** //#define SPI_MOSI_Write(s)  WritePin(SPI_MOSI, s)
+  40:pcm1770.c     **** 
+  41:pcm1770.c     **** static uint8 pcm1770_regs[] =
+  42:pcm1770.c     **** {
+  43:pcm1770.c     ****     0,  // Reserved
+  44:pcm1770.c     ****     63, // PCM1770_REG_HPOUT_L
+  45:pcm1770.c     ****     63, // PCM1770_REG_HPOUT_R
+  46:pcm1770.c     ****     0,  // PCM1770_REG_OVERSAMPLING_CONTROL 3
+  47:pcm1770.c     ****     0,  // PCM1770_REG_ZCAT_PWRD 4
+  48:pcm1770.c     **** };
+  49:pcm1770.c     **** 
+  50:pcm1770.c     **** void pcm1770_init(void)
+  51:pcm1770.c     **** {
+  52:pcm1770.c     ****     //CY_SYS_PINS_SET_DRIVE_MODE(CYREG_PRT2_DR, 3, CY_SYS_PINS_DM_STRONG);
+  53:pcm1770.c     ****     //CY_SYS_PINS_SET_DRIVE_MODE(CYREG_PRT2_DR, 2, CY_SYS_PINS_DM_STRONG);
+  54:pcm1770.c     ****     //CY_SYS_PINS_SET_DRIVE_MODE(CYREG_PRT2_DR, 0, CY_SYS_PINS_DM_STRONG);
+  55:pcm1770.c     ****     //SPI_CS_Config(CY_SYS_PINS_DM_STRONG);
+  56:pcm1770.c     ****     //SPI_CLK_Config(CY_SYS_PINS_DM_STRONG);
+  57:pcm1770.c     ****     //SPI_MOSI_Config(CY_SYS_PINS_DM_STRONG);
+  58:pcm1770.c     ****     
+  59:pcm1770.c     ****     //SPI_CS_Write(1);
+  60:pcm1770.c     ****     //SPI_CLK_Write(1);
+  61:pcm1770.c     ****     //SPI_MOSI_Write(1);
+  62:pcm1770.c     **** 
+  63:pcm1770.c     ****     CyDelay(5);
+  64:pcm1770.c     **** 
+  65:pcm1770.c     ****     // Power on
+  66:pcm1770.c     ****     PD_Write(1);
+  67:pcm1770.c     ****     
+  68:pcm1770.c     ****     CyDelay(5);
+  69:pcm1770.c     ****     
+  70:pcm1770.c     ****     pcm1770_reg_write(PCM1770_REG_OVERSAMPLING_CONTROL, 0x01);
+  71:pcm1770.c     ****     pcm1770_reg_write(PCM1770_REG_ZCAT_PWRD, 0x10);
+  72:pcm1770.c     **** }
+  73:pcm1770.c     **** 
+  74:pcm1770.c     **** static void pcm1770_send_halfword(uint16 data, bool toggle_cs)
+  75:pcm1770.c     **** {
+  27              		.loc 1 75 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              	.LVL0:
+  32 0000 70B5     		push	{r4, r5, r6, lr}
+  33              		.cfi_def_cfa_offset 16
+  34              		.cfi_offset 4, -16
+  35              		.cfi_offset 5, -12
+  36              		.cfi_offset 6, -8
+  37              		.cfi_offset 14, -4
+  38 0002 0400     		movs	r4, r0
+  39 0004 0E1E     		subs	r6, r1, #0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 3
+
+
+  76:pcm1770.c     ****     int i;
+  77:pcm1770.c     **** 
+  78:pcm1770.c     ****     if (toggle_cs)
+  40              		.loc 1 78 0
+  41 0006 02D0     		beq	.L2
+  79:pcm1770.c     ****     {
+  80:pcm1770.c     ****         SPI_CS_Write(0);
+  42              		.loc 1 80 0
+  43 0008 0020     		movs	r0, #0
+  44              	.LVL1:
+  45 000a FFF7FEFF 		bl	SPI_CS_Write
+  46              	.LVL2:
+  47              	.L2:
+  75:pcm1770.c     ****     int i;
+  48              		.loc 1 75 0 discriminator 1
+  49 000e 0025     		movs	r5, #0
+  50 0010 0BE0     		b	.L3
+  51              	.LVL3:
+  52              	.L4:
+  81:pcm1770.c     ****     }
+  82:pcm1770.c     **** 
+  83:pcm1770.c     ****     for (i = 0; i < 16; i++)
+  84:pcm1770.c     ****     {
+  85:pcm1770.c     ****         SPI_CLK_Write(0);
+  53              		.loc 1 85 0 discriminator 3
+  54 0012 0020     		movs	r0, #0
+  55 0014 FFF7FEFF 		bl	SPI_CLK_Write
+  56              	.LVL4:
+  86:pcm1770.c     ****         SPI_MOSI_Write((data & 0x8000) != 0);
+  57              		.loc 1 86 0 discriminator 3
+  58 0018 E00B     		lsrs	r0, r4, #15
+  59 001a FFF7FEFF 		bl	SPI_MOSI_Write
+  60              	.LVL5:
+  87:pcm1770.c     ****         data <<= 1;
+  61              		.loc 1 87 0 discriminator 3
+  62 001e 6400     		lsls	r4, r4, #1
+  63              	.LVL6:
+  64 0020 A4B2     		uxth	r4, r4
+  65              	.LVL7:
+  88:pcm1770.c     ****         SPI_CLK_Write(1);
+  66              		.loc 1 88 0 discriminator 3
+  67 0022 0120     		movs	r0, #1
+  68 0024 FFF7FEFF 		bl	SPI_CLK_Write
+  69              	.LVL8:
+  83:pcm1770.c     ****     {
+  70              		.loc 1 83 0 discriminator 3
+  71 0028 0135     		adds	r5, r5, #1
+  72              	.LVL9:
+  73              	.L3:
+  83:pcm1770.c     ****     {
+  74              		.loc 1 83 0 is_stmt 0 discriminator 1
+  75 002a 0F2D     		cmp	r5, #15
+  76 002c F1DD     		ble	.L4
+  89:pcm1770.c     ****     }
+  90:pcm1770.c     **** 
+  91:pcm1770.c     ****     if (toggle_cs)
+  77              		.loc 1 91 0 is_stmt 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 4
+
+
+  78 002e 002E     		cmp	r6, #0
+  79 0030 02D0     		beq	.L1
+  92:pcm1770.c     ****     {
+  93:pcm1770.c     ****         SPI_CS_Write(1);
+  80              		.loc 1 93 0
+  81 0032 0120     		movs	r0, #1
+  82 0034 FFF7FEFF 		bl	SPI_CS_Write
+  83              	.LVL10:
+  84              	.L1:
+  94:pcm1770.c     ****     }
+  95:pcm1770.c     **** }
+  85              		.loc 1 95 0
+  86              		@ sp needed
+  87              	.LVL11:
+  88              	.LVL12:
+  89 0038 70BD     		pop	{r4, r5, r6, pc}
+  90              		.cfi_endproc
+  91              	.LFE3:
+  92              		.size	pcm1770_send_halfword, .-pcm1770_send_halfword
+  93              		.section	.text.pcm1770_send_data,"ax",%progbits
+  94              		.align	2
+  95              		.global	pcm1770_send_data
+  96              		.code	16
+  97              		.thumb_func
+  98              		.type	pcm1770_send_data, %function
+  99              	pcm1770_send_data:
+ 100              	.LFB4:
+  96:pcm1770.c     **** 
+  97:pcm1770.c     **** void pcm1770_send_data(uint16 *pData, uint16 len)
+  98:pcm1770.c     **** {
+ 101              		.loc 1 98 0
+ 102              		.cfi_startproc
+ 103              		@ args = 0, pretend = 0, frame = 0
+ 104              		@ frame_needed = 0, uses_anonymous_args = 0
+ 105              	.LVL13:
+ 106 0000 70B5     		push	{r4, r5, r6, lr}
+ 107              		.cfi_def_cfa_offset 16
+ 108              		.cfi_offset 4, -16
+ 109              		.cfi_offset 5, -12
+ 110              		.cfi_offset 6, -8
+ 111              		.cfi_offset 14, -4
+ 112 0002 0600     		movs	r6, r0
+ 113 0004 0D00     		movs	r5, r1
+  99:pcm1770.c     ****     int i;
+ 100:pcm1770.c     ****     
+ 101:pcm1770.c     ****     SPI_CS_Write(0);
+ 114              		.loc 1 101 0
+ 115 0006 0020     		movs	r0, #0
+ 116              	.LVL14:
+ 117 0008 FFF7FEFF 		bl	SPI_CS_Write
+ 118              	.LVL15:
+ 102:pcm1770.c     ****     
+ 103:pcm1770.c     ****     for (i = 0; i < len; i++)
+ 119              		.loc 1 103 0
+ 120 000c 0024     		movs	r4, #0
+ 121 000e 05E0     		b	.L7
+ 122              	.LVL16:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 5
+
+
+ 123              	.L8:
+ 104:pcm1770.c     ****     {
+ 105:pcm1770.c     ****         pcm1770_send_halfword(pData[i], false);
+ 124              		.loc 1 105 0 discriminator 3
+ 125 0010 6300     		lsls	r3, r4, #1
+ 126 0012 F05A     		ldrh	r0, [r6, r3]
+ 127 0014 0021     		movs	r1, #0
+ 128 0016 FFF7FEFF 		bl	pcm1770_send_halfword
+ 129              	.LVL17:
+ 103:pcm1770.c     ****     {
+ 130              		.loc 1 103 0 discriminator 3
+ 131 001a 0134     		adds	r4, r4, #1
+ 132              	.LVL18:
+ 133              	.L7:
+ 103:pcm1770.c     ****     {
+ 134              		.loc 1 103 0 is_stmt 0 discriminator 1
+ 135 001c AC42     		cmp	r4, r5
+ 136 001e F7DB     		blt	.L8
+ 106:pcm1770.c     ****     }
+ 107:pcm1770.c     **** }
+ 137              		.loc 1 107 0 is_stmt 1
+ 138              		@ sp needed
+ 139              	.LVL19:
+ 140              	.LVL20:
+ 141 0020 70BD     		pop	{r4, r5, r6, pc}
+ 142              		.cfi_endproc
+ 143              	.LFE4:
+ 144              		.size	pcm1770_send_data, .-pcm1770_send_data
+ 145 0022 C046     		.section	.text.pcm1770_reg_write,"ax",%progbits
+ 146              		.align	2
+ 147              		.global	pcm1770_reg_write
+ 148              		.code	16
+ 149              		.thumb_func
+ 150              		.type	pcm1770_reg_write, %function
+ 151              	pcm1770_reg_write:
+ 152              	.LFB5:
+ 108:pcm1770.c     **** 
+ 109:pcm1770.c     **** void pcm1770_reg_write(uint8 reg, uint8 data)
+ 110:pcm1770.c     **** {
+ 153              		.loc 1 110 0
+ 154              		.cfi_startproc
+ 155              		@ args = 0, pretend = 0, frame = 0
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157              	.LVL21:
+ 158 0000 10B5     		push	{r4, lr}
+ 159              		.cfi_def_cfa_offset 8
+ 160              		.cfi_offset 4, -8
+ 161              		.cfi_offset 14, -4
+ 162              	.LVL22:
+ 111:pcm1770.c     ****     uint16 tmp = reg;
+ 112:pcm1770.c     ****     
+ 113:pcm1770.c     ****     pcm1770_regs[reg] = data;
+ 163              		.loc 1 113 0
+ 164 0002 044B     		ldr	r3, .L10
+ 165 0004 1954     		strb	r1, [r3, r0]
+ 114:pcm1770.c     ****     
+ 115:pcm1770.c     ****     tmp = (tmp << 8) | data;
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 6
+
+
+ 166              		.loc 1 115 0
+ 167 0006 0002     		lsls	r0, r0, #8
+ 168              	.LVL23:
+ 169 0008 0843     		orrs	r0, r1
+ 170              	.LVL24:
+ 116:pcm1770.c     ****     pcm1770_send_halfword(tmp, true);
+ 171              		.loc 1 116 0
+ 172 000a 0121     		movs	r1, #1
+ 173              	.LVL25:
+ 174 000c FFF7FEFF 		bl	pcm1770_send_halfword
+ 175              	.LVL26:
+ 117:pcm1770.c     **** }
+ 176              		.loc 1 117 0
+ 177              		@ sp needed
+ 178 0010 10BD     		pop	{r4, pc}
+ 179              	.L11:
+ 180 0012 C046     		.align	2
+ 181              	.L10:
+ 182 0014 00000000 		.word	.LANCHOR0
+ 183              		.cfi_endproc
+ 184              	.LFE5:
+ 185              		.size	pcm1770_reg_write, .-pcm1770_reg_write
+ 186              		.section	.text.pcm1770_init,"ax",%progbits
+ 187              		.align	2
+ 188              		.global	pcm1770_init
+ 189              		.code	16
+ 190              		.thumb_func
+ 191              		.type	pcm1770_init, %function
+ 192              	pcm1770_init:
+ 193              	.LFB2:
+  51:pcm1770.c     ****     //CY_SYS_PINS_SET_DRIVE_MODE(CYREG_PRT2_DR, 3, CY_SYS_PINS_DM_STRONG);
+ 194              		.loc 1 51 0
+ 195              		.cfi_startproc
+ 196              		@ args = 0, pretend = 0, frame = 0
+ 197              		@ frame_needed = 0, uses_anonymous_args = 0
+ 198 0000 10B5     		push	{r4, lr}
+ 199              		.cfi_def_cfa_offset 8
+ 200              		.cfi_offset 4, -8
+ 201              		.cfi_offset 14, -4
+  63:pcm1770.c     **** 
+ 202              		.loc 1 63 0
+ 203 0002 0520     		movs	r0, #5
+ 204 0004 FFF7FEFF 		bl	CyDelay
+ 205              	.LVL27:
+  66:pcm1770.c     ****     
+ 206              		.loc 1 66 0
+ 207 0008 0120     		movs	r0, #1
+ 208 000a FFF7FEFF 		bl	PD_Write
+ 209              	.LVL28:
+  68:pcm1770.c     ****     
+ 210              		.loc 1 68 0
+ 211 000e 0520     		movs	r0, #5
+ 212 0010 FFF7FEFF 		bl	CyDelay
+ 213              	.LVL29:
+  70:pcm1770.c     ****     pcm1770_reg_write(PCM1770_REG_ZCAT_PWRD, 0x10);
+ 214              		.loc 1 70 0
+ 215 0014 0121     		movs	r1, #1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 7
+
+
+ 216 0016 0320     		movs	r0, #3
+ 217 0018 FFF7FEFF 		bl	pcm1770_reg_write
+ 218              	.LVL30:
+  71:pcm1770.c     **** }
+ 219              		.loc 1 71 0
+ 220 001c 1021     		movs	r1, #16
+ 221 001e 0420     		movs	r0, #4
+ 222 0020 FFF7FEFF 		bl	pcm1770_reg_write
+ 223              	.LVL31:
+  72:pcm1770.c     **** 
+ 224              		.loc 1 72 0
+ 225              		@ sp needed
+ 226 0024 10BD     		pop	{r4, pc}
+ 227              		.cfi_endproc
+ 228              	.LFE2:
+ 229              		.size	pcm1770_init, .-pcm1770_init
+ 230 0026 C046     		.section	.text.pcm1770_volume_set,"ax",%progbits
+ 231              		.align	2
+ 232              		.global	pcm1770_volume_set
+ 233              		.code	16
+ 234              		.thumb_func
+ 235              		.type	pcm1770_volume_set, %function
+ 236              	pcm1770_volume_set:
+ 237              	.LFB6:
+ 118:pcm1770.c     **** 
+ 119:pcm1770.c     **** void pcm1770_volume_set(int8 volume)
+ 120:pcm1770.c     **** {
+ 238              		.loc 1 120 0
+ 239              		.cfi_startproc
+ 240              		@ args = 0, pretend = 0, frame = 8
+ 241              		@ frame_needed = 0, uses_anonymous_args = 0
+ 242              	.LVL32:
+ 243 0000 30B5     		push	{r4, r5, lr}
+ 244              		.cfi_def_cfa_offset 12
+ 245              		.cfi_offset 4, -12
+ 246              		.cfi_offset 5, -8
+ 247              		.cfi_offset 14, -4
+ 248 0002 85B0     		sub	sp, sp, #20
+ 249              		.cfi_def_cfa_offset 32
+ 250 0004 0400     		movs	r4, r0
+ 121:pcm1770.c     ****     uint8 data = pcm1770_regs[PCM1770_REG_HPOUT_L];
+ 251              		.loc 1 121 0
+ 252 0006 1C4B     		ldr	r3, .L19
+ 253 0008 5A78     		ldrb	r2, [r3, #1]
+ 254 000a 0F23     		movs	r3, #15
+ 255 000c 6B44     		add	r3, r3, sp
+ 256 000e 1A70     		strb	r2, [r3]
+ 257              	.LVL33:
+ 122:pcm1770.c     ****     pcm1770_reg_hpout_l_s *pData = (pcm1770_reg_hpout_l_s *)&data;
+ 123:pcm1770.c     **** 
+ 124:pcm1770.c     ****     if (volume > PCM1770_VOL_MAX)
+ 258              		.loc 1 124 0
+ 259 0010 0028     		cmp	r0, #0
+ 260 0012 00DD     		ble	.L14
+ 125:pcm1770.c     ****     {
+ 126:pcm1770.c     ****         volume = PCM1770_VOL_MAX;
+ 261              		.loc 1 126 0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 8
+
+
+ 262 0014 0024     		movs	r4, #0
+ 263              	.L14:
+ 264              	.LVL34:
+ 127:pcm1770.c     ****     }
+ 128:pcm1770.c     ****     
+ 129:pcm1770.c     ****     if (volume < PCM1770_VOL_MIN)
+ 265              		.loc 1 129 0
+ 266 0016 2300     		movs	r3, r4
+ 267 0018 3F33     		adds	r3, r3, #63
+ 268 001a 01DA     		bge	.L15
+ 130:pcm1770.c     ****     {
+ 131:pcm1770.c     ****         volume = PCM1770_VOL_MIN;
+ 269              		.loc 1 131 0
+ 270 001c 3F24     		movs	r4, #63
+ 271              	.LVL35:
+ 272 001e 6442     		rsbs	r4, r4, #0
+ 273              	.L15:
+ 274              	.LVL36:
+ 132:pcm1770.c     ****     }
+ 133:pcm1770.c     **** 
+ 134:pcm1770.c     ****     D_PRINTF(DEBUG, "%s: %d -> %d\n", __FUNCTION__, pData->atl - NUM_OF_STEPS, volume);
+ 275              		.loc 1 134 0
+ 276 0020 164B     		ldr	r3, .L19+4
+ 277 0022 1B68     		ldr	r3, [r3]
+ 278 0024 002B     		cmp	r3, #0
+ 279 0026 12D0     		beq	.L16
+ 280              		.loc 1 134 0 is_stmt 0 discriminator 1
+ 281 0028 5B7C     		ldrb	r3, [r3, #17]
+ 282 002a 9B07     		lsls	r3, r3, #30
+ 283 002c 0FD0     		beq	.L16
+ 284              		.loc 1 134 0 discriminator 2
+ 285 002e 0F23     		movs	r3, #15
+ 286 0030 6B44     		add	r3, r3, sp
+ 287 0032 1B78     		ldrb	r3, [r3]
+ 288 0034 9B06     		lsls	r3, r3, #26
+ 289 0036 9B0E     		lsrs	r3, r3, #26
+ 290 0038 3F3B     		subs	r3, r3, #63
+ 291 003a 114D     		ldr	r5, .L19+8
+ 292 003c 0094     		str	r4, [sp]
+ 293 003e 114A     		ldr	r2, .L19+12
+ 294 0040 1149     		ldr	r1, .L19+16
+ 295 0042 2800     		movs	r0, r5
+ 296 0044 FFF7FEFF 		bl	sprintf
+ 297              	.LVL37:
+ 298 0048 2800     		movs	r0, r5
+ 299 004a FFF7FEFF 		bl	UART_UartPutString
+ 300              	.LVL38:
+ 301              	.L16:
+ 135:pcm1770.c     **** 
+ 136:pcm1770.c     ****     pData->atl = volume + NUM_OF_STEPS;
+ 302              		.loc 1 136 0 is_stmt 1
+ 303 004e 3F34     		adds	r4, r4, #63
+ 304              	.LVL39:
+ 305 0050 E4B2     		uxtb	r4, r4
+ 306 0052 0F22     		movs	r2, #15
+ 307 0054 6A44     		add	r2, r2, sp
+ 308 0056 3F21     		movs	r1, #63
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 9
+
+
+ 309 0058 0B00     		movs	r3, r1
+ 310 005a 2340     		ands	r3, r4
+ 311 005c 1178     		ldrb	r1, [r2]
+ 312 005e 3F20     		movs	r0, #63
+ 313 0060 8143     		bics	r1, r0
+ 314 0062 1943     		orrs	r1, r3
+ 315 0064 1170     		strb	r1, [r2]
+ 137:pcm1770.c     ****     pcm1770_reg_write(1, data);
+ 316              		.loc 1 137 0
+ 317 0066 3E38     		subs	r0, r0, #62
+ 318 0068 FFF7FEFF 		bl	pcm1770_reg_write
+ 319              	.LVL40:
+ 138:pcm1770.c     ****     pcm1770_reg_write(2, volume + NUM_OF_STEPS);
+ 320              		.loc 1 138 0
+ 321 006c 2100     		movs	r1, r4
+ 322 006e 0220     		movs	r0, #2
+ 323 0070 FFF7FEFF 		bl	pcm1770_reg_write
+ 324              	.LVL41:
+ 139:pcm1770.c     **** }
+ 325              		.loc 1 139 0
+ 326 0074 05B0     		add	sp, sp, #20
+ 327              		@ sp needed
+ 328 0076 30BD     		pop	{r4, r5, pc}
+ 329              	.L20:
+ 330              		.align	2
+ 331              	.L19:
+ 332 0078 00000000 		.word	.LANCHOR0
+ 333 007c 00000000 		.word	cal_data
+ 334 0080 00000000 		.word	gbuf
+ 335 0084 00000000 		.word	.LANCHOR1
+ 336 0088 00000000 		.word	.LC4
+ 337              		.cfi_endproc
+ 338              	.LFE6:
+ 339              		.size	pcm1770_volume_set, .-pcm1770_volume_set
+ 340              		.global	__aeabi_idiv
+ 341              		.section	.text.pcm1770_volume_set_level,"ax",%progbits
+ 342              		.align	2
+ 343              		.global	pcm1770_volume_set_level
+ 344              		.code	16
+ 345              		.thumb_func
+ 346              		.type	pcm1770_volume_set_level, %function
+ 347              	pcm1770_volume_set_level:
+ 348              	.LFB7:
+ 140:pcm1770.c     **** 
+ 141:pcm1770.c     **** void pcm1770_volume_set_level(uint8 level)
+ 142:pcm1770.c     **** {
+ 349              		.loc 1 142 0
+ 350              		.cfi_startproc
+ 351              		@ args = 0, pretend = 0, frame = 0
+ 352              		@ frame_needed = 0, uses_anonymous_args = 0
+ 353              	.LVL42:
+ 354 0000 10B5     		push	{r4, lr}
+ 355              		.cfi_def_cfa_offset 8
+ 356              		.cfi_offset 4, -8
+ 357              		.cfi_offset 14, -4
+ 358              	.LVL43:
+ 143:pcm1770.c     ****     int32 volume = level;
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 10
+
+
+ 144:pcm1770.c     **** 
+ 145:pcm1770.c     ****     // Round with 1000th digit precision
+ 146:pcm1770.c     ****     volume = ((volume * 1000 / PC_VOLUME_MSB_MAX) * NUM_OF_STEPS + 500) / 1000 + PCM1770_VOL_MIN;
+ 359              		.loc 1 146 0
+ 360 0002 FA24     		movs	r4, #250
+ 361 0004 A400     		lsls	r4, r4, #2
+ 362 0006 6043     		muls	r0, r4
+ 363              	.LVL44:
+ 364 0008 7F21     		movs	r1, #127
+ 365 000a FFF7FEFF 		bl	__aeabi_idiv
+ 366              	.LVL45:
+ 367 000e 8301     		lsls	r3, r0, #6
+ 368 0010 181A     		subs	r0, r3, r0
+ 369 0012 F530     		adds	r0, r0, #245
+ 370 0014 FF30     		adds	r0, r0, #255
+ 371 0016 2100     		movs	r1, r4
+ 372 0018 FFF7FEFF 		bl	__aeabi_idiv
+ 373              	.LVL46:
+ 374 001c 3F38     		subs	r0, r0, #63
+ 375              	.LVL47:
+ 147:pcm1770.c     **** 
+ 148:pcm1770.c     ****     pcm1770_volume_set((int8) volume);
+ 376              		.loc 1 148 0
+ 377 001e 40B2     		sxtb	r0, r0
+ 378              	.LVL48:
+ 379 0020 FFF7FEFF 		bl	pcm1770_volume_set
+ 380              	.LVL49:
+ 149:pcm1770.c     **** }
+ 381              		.loc 1 149 0
+ 382              		@ sp needed
+ 383 0024 10BD     		pop	{r4, pc}
+ 384              		.cfi_endproc
+ 385              	.LFE7:
+ 386              		.size	pcm1770_volume_set_level, .-pcm1770_volume_set_level
+ 387 0026 C046     		.section	.text.pcm1770_mute_set,"ax",%progbits
+ 388              		.align	2
+ 389              		.global	pcm1770_mute_set
+ 390              		.code	16
+ 391              		.thumb_func
+ 392              		.type	pcm1770_mute_set, %function
+ 393              	pcm1770_mute_set:
+ 394              	.LFB8:
+ 150:pcm1770.c     **** 
+ 151:pcm1770.c     **** void pcm1770_mute_set(bool left, bool right)
+ 152:pcm1770.c     **** {
+ 395              		.loc 1 152 0
+ 396              		.cfi_startproc
+ 397              		@ args = 0, pretend = 0, frame = 8
+ 398              		@ frame_needed = 0, uses_anonymous_args = 0
+ 399              	.LVL50:
+ 400 0000 00B5     		push	{lr}
+ 401              		.cfi_def_cfa_offset 4
+ 402              		.cfi_offset 14, -4
+ 403 0002 83B0     		sub	sp, sp, #12
+ 404              		.cfi_def_cfa_offset 16
+ 405              	.LVL51:
+ 153:pcm1770.c     ****     uint8 data = pcm1770_regs[PCM1770_REG_HPOUT_L];
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 11
+
+
+ 154:pcm1770.c     ****     pcm1770_reg_hpout_l_s *pData = (pcm1770_reg_hpout_l_s *)&data;
+ 155:pcm1770.c     **** 
+ 156:pcm1770.c     ****     pData->mutl = left;
+ 406              		.loc 1 156 0
+ 407 0004 0122     		movs	r2, #1
+ 408 0006 1040     		ands	r0, r2
+ 409              	.LVL52:
+ 410 0008 8201     		lsls	r2, r0, #6
+ 411 000a 094B     		ldr	r3, .L23
+ 412 000c 5878     		ldrb	r0, [r3, #1]
+ 413 000e 4023     		movs	r3, #64
+ 414 0010 9843     		bics	r0, r3
+ 157:pcm1770.c     ****     pData->mutr = right;
+ 415              		.loc 1 157 0
+ 416 0012 C901     		lsls	r1, r1, #7
+ 417              	.LVL53:
+ 418 0014 0300     		movs	r3, r0
+ 419 0016 1343     		orrs	r3, r2
+ 420 0018 7F20     		movs	r0, #127
+ 421 001a 1840     		ands	r0, r3
+ 422 001c 0843     		orrs	r0, r1
+ 423 001e 6B46     		mov	r3, sp
+ 424 0020 D871     		strb	r0, [r3, #7]
+ 158:pcm1770.c     **** 
+ 159:pcm1770.c     ****     pcm1770_reg_write(PCM1770_REG_HPOUT_L, data);
+ 425              		.loc 1 159 0
+ 426 0022 C1B2     		uxtb	r1, r0
+ 427 0024 0120     		movs	r0, #1
+ 428 0026 FFF7FEFF 		bl	pcm1770_reg_write
+ 429              	.LVL54:
+ 160:pcm1770.c     **** }
+ 430              		.loc 1 160 0
+ 431 002a 03B0     		add	sp, sp, #12
+ 432              		@ sp needed
+ 433 002c 00BD     		pop	{pc}
+ 434              	.L24:
+ 435 002e C046     		.align	2
+ 436              	.L23:
+ 437 0030 00000000 		.word	.LANCHOR0
+ 438              		.cfi_endproc
+ 439              	.LFE8:
+ 440              		.size	pcm1770_mute_set, .-pcm1770_mute_set
+ 441              		.section	.text.pcm1770_reg_read,"ax",%progbits
+ 442              		.align	2
+ 443              		.global	pcm1770_reg_read
+ 444              		.code	16
+ 445              		.thumb_func
+ 446              		.type	pcm1770_reg_read, %function
+ 447              	pcm1770_reg_read:
+ 448              	.LFB9:
+ 161:pcm1770.c     **** 
+ 162:pcm1770.c     **** uint8 pcm1770_reg_read(uint8 reg)
+ 163:pcm1770.c     **** {
+ 449              		.loc 1 163 0
+ 450              		.cfi_startproc
+ 451              		@ args = 0, pretend = 0, frame = 0
+ 452              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 12
+
+
+ 453              		@ link register save eliminated.
+ 454              	.LVL55:
+ 164:pcm1770.c     ****     if (reg >= PCM1770_NUM_OF_REGS)
+ 455              		.loc 1 164 0
+ 456 0000 0428     		cmp	r0, #4
+ 457 0002 02D8     		bhi	.L27
+ 165:pcm1770.c     ****     {
+ 166:pcm1770.c     ****         return 0;
+ 167:pcm1770.c     ****     }
+ 168:pcm1770.c     **** 
+ 169:pcm1770.c     ****     return pcm1770_regs[reg];
+ 458              		.loc 1 169 0
+ 459 0004 024B     		ldr	r3, .L28
+ 460 0006 185C     		ldrb	r0, [r3, r0]
+ 461              	.LVL56:
+ 462 0008 00E0     		b	.L26
+ 463              	.LVL57:
+ 464              	.L27:
+ 166:pcm1770.c     ****     }
+ 465              		.loc 1 166 0
+ 466 000a 0020     		movs	r0, #0
+ 467              	.LVL58:
+ 468              	.L26:
+ 170:pcm1770.c     **** }
+ 469              		.loc 1 170 0
+ 470              		@ sp needed
+ 471 000c 7047     		bx	lr
+ 472              	.L29:
+ 473 000e C046     		.align	2
+ 474              	.L28:
+ 475 0010 00000000 		.word	.LANCHOR0
+ 476              		.cfi_endproc
+ 477              	.LFE9:
+ 478              		.size	pcm1770_reg_read, .-pcm1770_reg_read
+ 479              		.section	.rodata
+ 480              		.align	2
+ 481              		.set	.LANCHOR1,. + 0
+ 482              		.type	__FUNCTION__.6471, %object
+ 483              		.size	__FUNCTION__.6471, 19
+ 484              	__FUNCTION__.6471:
+ 485 0000 70636D31 		.ascii	"pcm1770_volume_set\000"
+ 485      3737305F 
+ 485      766F6C75 
+ 485      6D655F73 
+ 485      657400
+ 486              		.data
+ 487              		.align	2
+ 488              		.set	.LANCHOR0,. + 0
+ 489              		.type	pcm1770_regs, %object
+ 490              		.size	pcm1770_regs, 5
+ 491              	pcm1770_regs:
+ 492 0000 00       		.byte	0
+ 493 0001 3F       		.byte	63
+ 494 0002 3F       		.byte	63
+ 495 0003 00       		.byte	0
+ 496 0004 00       		.byte	0
+ 497              		.section	.rodata.str1.4,"aMS",%progbits,1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 13
+
+
+ 498              		.align	2
+ 499              	.LC4:
+ 500 0000 25733A20 		.ascii	"%s: %d -> %d\012\000"
+ 500      2564202D 
+ 500      3E202564 
+ 500      0A00
+ 501              		.text
+ 502              	.Letext0:
+ 503              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 504              		.file 3 "./Calibration.h"
+ 505              		.file 4 "pcm1770.h"
+ 506              		.file 5 "./Application.h"
+ 507              		.file 6 "Generated_Source\\PSoC4/SPI_CS.h"
+ 508              		.file 7 "Generated_Source\\PSoC4/SPI_CLK.h"
+ 509              		.file 8 "Generated_Source\\PSoC4/SPI_MOSI.h"
+ 510              		.file 9 "Generated_Source\\PSoC4/CyLib.h"
+ 511              		.file 10 "Generated_Source\\PSoC4/PD.h"
+ 512              		.file 11 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4
+ 513              		.file 12 "Generated_Source\\PSoC4/UART_SPI_UART.h"
+ 514              		.section	.debug_info,"",%progbits
+ 515              	.Ldebug_info0:
+ 516 0000 92050000 		.4byte	0x592
+ 517 0004 0400     		.2byte	0x4
+ 518 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 519 000a 04       		.byte	0x4
+ 520 000b 01       		.uleb128 0x1
+ 521 000c 8E000000 		.4byte	.LASF54
+ 522 0010 0C       		.byte	0xc
+ 523 0011 39000000 		.4byte	.LASF55
+ 524 0015 76010000 		.4byte	.LASF56
+ 525 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 526 001d 00000000 		.4byte	0
+ 527 0021 00000000 		.4byte	.Ldebug_line0
+ 528 0025 02       		.uleb128 0x2
+ 529 0026 01       		.byte	0x1
+ 530 0027 06       		.byte	0x6
+ 531 0028 15020000 		.4byte	.LASF0
+ 532 002c 02       		.uleb128 0x2
+ 533 002d 01       		.byte	0x1
+ 534 002e 08       		.byte	0x8
+ 535 002f F7010000 		.4byte	.LASF1
+ 536 0033 02       		.uleb128 0x2
+ 537 0034 02       		.byte	0x2
+ 538 0035 05       		.byte	0x5
+ 539 0036 26000000 		.4byte	.LASF2
+ 540 003a 02       		.uleb128 0x2
+ 541 003b 02       		.byte	0x2
+ 542 003c 07       		.byte	0x7
+ 543 003d 5D020000 		.4byte	.LASF3
+ 544 0041 02       		.uleb128 0x2
+ 545 0042 04       		.byte	0x4
+ 546 0043 05       		.byte	0x5
+ 547 0044 6D010000 		.4byte	.LASF4
+ 548 0048 02       		.uleb128 0x2
+ 549 0049 04       		.byte	0x4
+ 550 004a 07       		.byte	0x7
+ 551 004b D9020000 		.4byte	.LASF5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 14
+
+
+ 552 004f 02       		.uleb128 0x2
+ 553 0050 08       		.byte	0x8
+ 554 0051 05       		.byte	0x5
+ 555 0052 5A010000 		.4byte	.LASF6
+ 556 0056 02       		.uleb128 0x2
+ 557 0057 08       		.byte	0x8
+ 558 0058 07       		.byte	0x7
+ 559 0059 21020000 		.4byte	.LASF7
+ 560 005d 03       		.uleb128 0x3
+ 561 005e 04       		.byte	0x4
+ 562 005f 05       		.byte	0x5
+ 563 0060 696E7400 		.ascii	"int\000"
+ 564 0064 02       		.uleb128 0x2
+ 565 0065 04       		.byte	0x4
+ 566 0066 07       		.byte	0x7
+ 567 0067 4B020000 		.4byte	.LASF8
+ 568 006b 04       		.uleb128 0x4
+ 569 006c 22010000 		.4byte	.LASF9
+ 570 0070 02       		.byte	0x2
+ 571 0071 E401     		.2byte	0x1e4
+ 572 0073 2C000000 		.4byte	0x2c
+ 573 0077 04       		.uleb128 0x4
+ 574 0078 BA020000 		.4byte	.LASF10
+ 575 007c 02       		.byte	0x2
+ 576 007d E501     		.2byte	0x1e5
+ 577 007f 3A000000 		.4byte	0x3a
+ 578 0083 04       		.uleb128 0x4
+ 579 0084 D2020000 		.4byte	.LASF11
+ 580 0088 02       		.byte	0x2
+ 581 0089 E601     		.2byte	0x1e6
+ 582 008b 48000000 		.4byte	0x48
+ 583 008f 04       		.uleb128 0x4
+ 584 0090 68010000 		.4byte	.LASF12
+ 585 0094 02       		.byte	0x2
+ 586 0095 E701     		.2byte	0x1e7
+ 587 0097 25000000 		.4byte	0x25
+ 588 009b 04       		.uleb128 0x4
+ 589 009c 1C010000 		.4byte	.LASF13
+ 590 00a0 02       		.byte	0x2
+ 591 00a1 E801     		.2byte	0x1e8
+ 592 00a3 33000000 		.4byte	0x33
+ 593 00a7 04       		.uleb128 0x4
+ 594 00a8 EB020000 		.4byte	.LASF14
+ 595 00ac 02       		.byte	0x2
+ 596 00ad E901     		.2byte	0x1e9
+ 597 00af 41000000 		.4byte	0x41
+ 598 00b3 02       		.uleb128 0x2
+ 599 00b4 04       		.byte	0x4
+ 600 00b5 04       		.byte	0x4
+ 601 00b6 47010000 		.4byte	.LASF15
+ 602 00ba 02       		.uleb128 0x2
+ 603 00bb 08       		.byte	0x8
+ 604 00bc 04       		.byte	0x4
+ 605 00bd F1020000 		.4byte	.LASF16
+ 606 00c1 02       		.uleb128 0x2
+ 607 00c2 01       		.byte	0x1
+ 608 00c3 08       		.byte	0x8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 15
+
+
+ 609 00c4 70020000 		.4byte	.LASF17
+ 610 00c8 02       		.uleb128 0x2
+ 611 00c9 08       		.byte	0x8
+ 612 00ca 04       		.byte	0x4
+ 613 00cb D7010000 		.4byte	.LASF18
+ 614 00cf 02       		.uleb128 0x2
+ 615 00d0 04       		.byte	0x4
+ 616 00d1 07       		.byte	0x7
+ 617 00d2 30000000 		.4byte	.LASF19
+ 618 00d6 05       		.uleb128 0x5
+ 619 00d7 C1000000 		.4byte	0xc1
+ 620 00db 06       		.uleb128 0x6
+ 621 00dc 14       		.byte	0x14
+ 622 00dd 03       		.byte	0x3
+ 623 00de 12       		.byte	0x12
+ 624 00df 2C010000 		.4byte	0x12c
+ 625 00e3 07       		.uleb128 0x7
+ 626 00e4 10030000 		.4byte	.LASF20
+ 627 00e8 03       		.byte	0x3
+ 628 00e9 14       		.byte	0x14
+ 629 00ea 83000000 		.4byte	0x83
+ 630 00ee 00       		.byte	0
+ 631 00ef 07       		.uleb128 0x7
+ 632 00f0 05020000 		.4byte	.LASF21
+ 633 00f4 03       		.byte	0x3
+ 634 00f5 15       		.byte	0x15
+ 635 00f6 83000000 		.4byte	0x83
+ 636 00fa 04       		.byte	0x4
+ 637 00fb 07       		.uleb128 0x7
+ 638 00fc 75020000 		.4byte	.LASF22
+ 639 0100 03       		.byte	0x3
+ 640 0101 16       		.byte	0x16
+ 641 0102 2C010000 		.4byte	0x12c
+ 642 0106 08       		.byte	0x8
+ 643 0107 07       		.uleb128 0x7
+ 644 0108 02030000 		.4byte	.LASF23
+ 645 010c 03       		.byte	0x3
+ 646 010d 17       		.byte	0x17
+ 647 010e 2C010000 		.4byte	0x12c
+ 648 0112 0C       		.byte	0xc
+ 649 0113 07       		.uleb128 0x7
+ 650 0114 1A030000 		.4byte	.LASF24
+ 651 0118 03       		.byte	0x3
+ 652 0119 19       		.byte	0x19
+ 653 011a 6B000000 		.4byte	0x6b
+ 654 011e 10       		.byte	0x10
+ 655 011f 07       		.uleb128 0x7
+ 656 0120 C3010000 		.4byte	.LASF25
+ 657 0124 03       		.byte	0x3
+ 658 0125 1A       		.byte	0x1a
+ 659 0126 6B000000 		.4byte	0x6b
+ 660 012a 11       		.byte	0x11
+ 661 012b 00       		.byte	0
+ 662 012c 08       		.uleb128 0x8
+ 663 012d 9B000000 		.4byte	0x9b
+ 664 0131 3C010000 		.4byte	0x13c
+ 665 0135 09       		.uleb128 0x9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 16
+
+
+ 666 0136 CF000000 		.4byte	0xcf
+ 667 013a 01       		.byte	0x1
+ 668 013b 00       		.byte	0
+ 669 013c 0A       		.uleb128 0xa
+ 670 013d 7D020000 		.4byte	.LASF26
+ 671 0141 03       		.byte	0x3
+ 672 0142 1B       		.byte	0x1b
+ 673 0143 DB000000 		.4byte	0xdb
+ 674 0147 06       		.uleb128 0x6
+ 675 0148 04       		.byte	0x4
+ 676 0149 04       		.byte	0x4
+ 677 014a 18       		.byte	0x18
+ 678 014b 7D010000 		.4byte	0x17d
+ 679 014f 0B       		.uleb128 0xb
+ 680 0150 61746C00 		.ascii	"atl\000"
+ 681 0154 04       		.byte	0x4
+ 682 0155 1A       		.byte	0x1a
+ 683 0156 64000000 		.4byte	0x64
+ 684 015a 04       		.byte	0x4
+ 685 015b 06       		.byte	0x6
+ 686 015c 1A       		.byte	0x1a
+ 687 015d 00       		.byte	0
+ 688 015e 0C       		.uleb128 0xc
+ 689 015f F8020000 		.4byte	.LASF27
+ 690 0163 04       		.byte	0x4
+ 691 0164 1B       		.byte	0x1b
+ 692 0165 64000000 		.4byte	0x64
+ 693 0169 04       		.byte	0x4
+ 694 016a 01       		.byte	0x1
+ 695 016b 19       		.byte	0x19
+ 696 016c 00       		.byte	0
+ 697 016d 0C       		.uleb128 0xc
+ 698 016e FD020000 		.4byte	.LASF28
+ 699 0172 04       		.byte	0x4
+ 700 0173 1C       		.byte	0x1c
+ 701 0174 64000000 		.4byte	0x64
+ 702 0178 04       		.byte	0x4
+ 703 0179 01       		.byte	0x1
+ 704 017a 18       		.byte	0x18
+ 705 017b 00       		.byte	0
+ 706 017c 00       		.byte	0
+ 707 017d 0A       		.uleb128 0xa
+ 708 017e 50000000 		.4byte	.LASF29
+ 709 0182 04       		.byte	0x4
+ 710 0183 1D       		.byte	0x1d
+ 711 0184 47010000 		.4byte	0x147
+ 712 0188 0D       		.uleb128 0xd
+ 713 0189 10000000 		.4byte	.LASF57
+ 714 018d 01       		.byte	0x1
+ 715 018e 4A       		.byte	0x4a
+ 716 018f 00000000 		.4byte	.LFB3
+ 717 0193 3A000000 		.4byte	.LFE3-.LFB3
+ 718 0197 01       		.uleb128 0x1
+ 719 0198 9C       		.byte	0x9c
+ 720 0199 27020000 		.4byte	0x227
+ 721 019d 0E       		.uleb128 0xe
+ 722 019e B5020000 		.4byte	.LASF30
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 17
+
+
+ 723 01a2 01       		.byte	0x1
+ 724 01a3 4A       		.byte	0x4a
+ 725 01a4 77000000 		.4byte	0x77
+ 726 01a8 00000000 		.4byte	.LLST0
+ 727 01ac 0E       		.uleb128 0xe
+ 728 01ad 00000000 		.4byte	.LASF31
+ 729 01b1 01       		.byte	0x1
+ 730 01b2 4A       		.byte	0x4a
+ 731 01b3 27020000 		.4byte	0x227
+ 732 01b7 37000000 		.4byte	.LLST1
+ 733 01bb 0F       		.uleb128 0xf
+ 734 01bc 6900     		.ascii	"i\000"
+ 735 01be 01       		.byte	0x1
+ 736 01bf 4C       		.byte	0x4c
+ 737 01c0 5D000000 		.4byte	0x5d
+ 738 01c4 58000000 		.4byte	.LLST2
+ 739 01c8 10       		.uleb128 0x10
+ 740 01c9 0E000000 		.4byte	.LVL2
+ 741 01cd 47050000 		.4byte	0x547
+ 742 01d1 DB010000 		.4byte	0x1db
+ 743 01d5 11       		.uleb128 0x11
+ 744 01d6 01       		.uleb128 0x1
+ 745 01d7 50       		.byte	0x50
+ 746 01d8 01       		.uleb128 0x1
+ 747 01d9 30       		.byte	0x30
+ 748 01da 00       		.byte	0
+ 749 01db 10       		.uleb128 0x10
+ 750 01dc 18000000 		.4byte	.LVL4
+ 751 01e0 52050000 		.4byte	0x552
+ 752 01e4 EE010000 		.4byte	0x1ee
+ 753 01e8 11       		.uleb128 0x11
+ 754 01e9 01       		.uleb128 0x1
+ 755 01ea 50       		.byte	0x50
+ 756 01eb 01       		.uleb128 0x1
+ 757 01ec 30       		.byte	0x30
+ 758 01ed 00       		.byte	0
+ 759 01ee 10       		.uleb128 0x10
+ 760 01ef 1E000000 		.4byte	.LVL5
+ 761 01f3 5D050000 		.4byte	0x55d
+ 762 01f7 04020000 		.4byte	0x204
+ 763 01fb 11       		.uleb128 0x11
+ 764 01fc 01       		.uleb128 0x1
+ 765 01fd 50       		.byte	0x50
+ 766 01fe 04       		.uleb128 0x4
+ 767 01ff 74       		.byte	0x74
+ 768 0200 00       		.sleb128 0
+ 769 0201 3F       		.byte	0x3f
+ 770 0202 25       		.byte	0x25
+ 771 0203 00       		.byte	0
+ 772 0204 10       		.uleb128 0x10
+ 773 0205 28000000 		.4byte	.LVL8
+ 774 0209 52050000 		.4byte	0x552
+ 775 020d 17020000 		.4byte	0x217
+ 776 0211 11       		.uleb128 0x11
+ 777 0212 01       		.uleb128 0x1
+ 778 0213 50       		.byte	0x50
+ 779 0214 01       		.uleb128 0x1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 18
+
+
+ 780 0215 31       		.byte	0x31
+ 781 0216 00       		.byte	0
+ 782 0217 12       		.uleb128 0x12
+ 783 0218 38000000 		.4byte	.LVL10
+ 784 021c 47050000 		.4byte	0x547
+ 785 0220 11       		.uleb128 0x11
+ 786 0221 01       		.uleb128 0x1
+ 787 0222 50       		.byte	0x50
+ 788 0223 01       		.uleb128 0x1
+ 789 0224 31       		.byte	0x31
+ 790 0225 00       		.byte	0
+ 791 0226 00       		.byte	0
+ 792 0227 02       		.uleb128 0x2
+ 793 0228 01       		.byte	0x1
+ 794 0229 02       		.byte	0x2
+ 795 022a AF020000 		.4byte	.LASF32
+ 796 022e 13       		.uleb128 0x13
+ 797 022f B1010000 		.4byte	.LASF34
+ 798 0233 01       		.byte	0x1
+ 799 0234 61       		.byte	0x61
+ 800 0235 00000000 		.4byte	.LFB4
+ 801 0239 22000000 		.4byte	.LFE4-.LFB4
+ 802 023d 01       		.uleb128 0x1
+ 803 023e 9C       		.byte	0x9c
+ 804 023f 91020000 		.4byte	0x291
+ 805 0243 0E       		.uleb128 0xe
+ 806 0244 0A000000 		.4byte	.LASF33
+ 807 0248 01       		.byte	0x1
+ 808 0249 61       		.byte	0x61
+ 809 024a 91020000 		.4byte	0x291
+ 810 024e 6B000000 		.4byte	.LLST3
+ 811 0252 14       		.uleb128 0x14
+ 812 0253 6C656E00 		.ascii	"len\000"
+ 813 0257 01       		.byte	0x1
+ 814 0258 61       		.byte	0x61
+ 815 0259 77000000 		.4byte	0x77
+ 816 025d 97000000 		.4byte	.LLST4
+ 817 0261 0F       		.uleb128 0xf
+ 818 0262 6900     		.ascii	"i\000"
+ 819 0264 01       		.byte	0x1
+ 820 0265 63       		.byte	0x63
+ 821 0266 5D000000 		.4byte	0x5d
+ 822 026a B8000000 		.4byte	.LLST5
+ 823 026e 10       		.uleb128 0x10
+ 824 026f 0C000000 		.4byte	.LVL15
+ 825 0273 47050000 		.4byte	0x547
+ 826 0277 81020000 		.4byte	0x281
+ 827 027b 11       		.uleb128 0x11
+ 828 027c 01       		.uleb128 0x1
+ 829 027d 50       		.byte	0x50
+ 830 027e 01       		.uleb128 0x1
+ 831 027f 30       		.byte	0x30
+ 832 0280 00       		.byte	0
+ 833 0281 12       		.uleb128 0x12
+ 834 0282 1A000000 		.4byte	.LVL17
+ 835 0286 88010000 		.4byte	0x188
+ 836 028a 11       		.uleb128 0x11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 19
+
+
+ 837 028b 01       		.uleb128 0x1
+ 838 028c 51       		.byte	0x51
+ 839 028d 01       		.uleb128 0x1
+ 840 028e 30       		.byte	0x30
+ 841 028f 00       		.byte	0
+ 842 0290 00       		.byte	0
+ 843 0291 15       		.uleb128 0x15
+ 844 0292 04       		.byte	0x4
+ 845 0293 77000000 		.4byte	0x77
+ 846 0297 13       		.uleb128 0x13
+ 847 0298 28010000 		.4byte	.LASF35
+ 848 029c 01       		.byte	0x1
+ 849 029d 6D       		.byte	0x6d
+ 850 029e 00000000 		.4byte	.LFB5
+ 851 02a2 18000000 		.4byte	.LFE5-.LFB5
+ 852 02a6 01       		.uleb128 0x1
+ 853 02a7 9C       		.byte	0x9c
+ 854 02a8 E9020000 		.4byte	0x2e9
+ 855 02ac 14       		.uleb128 0x14
+ 856 02ad 72656700 		.ascii	"reg\000"
+ 857 02b1 01       		.byte	0x1
+ 858 02b2 6D       		.byte	0x6d
+ 859 02b3 6B000000 		.4byte	0x6b
+ 860 02b7 D7000000 		.4byte	.LLST6
+ 861 02bb 0E       		.uleb128 0xe
+ 862 02bc B5020000 		.4byte	.LASF30
+ 863 02c0 01       		.byte	0x1
+ 864 02c1 6D       		.byte	0x6d
+ 865 02c2 6B000000 		.4byte	0x6b
+ 866 02c6 F8000000 		.4byte	.LLST7
+ 867 02ca 0F       		.uleb128 0xf
+ 868 02cb 746D7000 		.ascii	"tmp\000"
+ 869 02cf 01       		.byte	0x1
+ 870 02d0 6F       		.byte	0x6f
+ 871 02d1 77000000 		.4byte	0x77
+ 872 02d5 19010000 		.4byte	.LLST8
+ 873 02d9 12       		.uleb128 0x12
+ 874 02da 10000000 		.4byte	.LVL26
+ 875 02de 88010000 		.4byte	0x188
+ 876 02e2 11       		.uleb128 0x11
+ 877 02e3 01       		.uleb128 0x1
+ 878 02e4 51       		.byte	0x51
+ 879 02e5 01       		.uleb128 0x1
+ 880 02e6 31       		.byte	0x31
+ 881 02e7 00       		.byte	0
+ 882 02e8 00       		.byte	0
+ 883 02e9 13       		.uleb128 0x13
+ 884 02ea 3A010000 		.4byte	.LASF36
+ 885 02ee 01       		.byte	0x1
+ 886 02ef 32       		.byte	0x32
+ 887 02f0 00000000 		.4byte	.LFB2
+ 888 02f4 26000000 		.4byte	.LFE2-.LFB2
+ 889 02f8 01       		.uleb128 0x1
+ 890 02f9 9C       		.byte	0x9c
+ 891 02fa 64030000 		.4byte	0x364
+ 892 02fe 10       		.uleb128 0x10
+ 893 02ff 08000000 		.4byte	.LVL27
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 20
+
+
+ 894 0303 68050000 		.4byte	0x568
+ 895 0307 11030000 		.4byte	0x311
+ 896 030b 11       		.uleb128 0x11
+ 897 030c 01       		.uleb128 0x1
+ 898 030d 50       		.byte	0x50
+ 899 030e 01       		.uleb128 0x1
+ 900 030f 35       		.byte	0x35
+ 901 0310 00       		.byte	0
+ 902 0311 10       		.uleb128 0x10
+ 903 0312 0E000000 		.4byte	.LVL28
+ 904 0316 73050000 		.4byte	0x573
+ 905 031a 24030000 		.4byte	0x324
+ 906 031e 11       		.uleb128 0x11
+ 907 031f 01       		.uleb128 0x1
+ 908 0320 50       		.byte	0x50
+ 909 0321 01       		.uleb128 0x1
+ 910 0322 31       		.byte	0x31
+ 911 0323 00       		.byte	0
+ 912 0324 10       		.uleb128 0x10
+ 913 0325 14000000 		.4byte	.LVL29
+ 914 0329 68050000 		.4byte	0x568
+ 915 032d 37030000 		.4byte	0x337
+ 916 0331 11       		.uleb128 0x11
+ 917 0332 01       		.uleb128 0x1
+ 918 0333 50       		.byte	0x50
+ 919 0334 01       		.uleb128 0x1
+ 920 0335 35       		.byte	0x35
+ 921 0336 00       		.byte	0
+ 922 0337 10       		.uleb128 0x10
+ 923 0338 1C000000 		.4byte	.LVL30
+ 924 033c 97020000 		.4byte	0x297
+ 925 0340 4F030000 		.4byte	0x34f
+ 926 0344 11       		.uleb128 0x11
+ 927 0345 01       		.uleb128 0x1
+ 928 0346 50       		.byte	0x50
+ 929 0347 01       		.uleb128 0x1
+ 930 0348 33       		.byte	0x33
+ 931 0349 11       		.uleb128 0x11
+ 932 034a 01       		.uleb128 0x1
+ 933 034b 51       		.byte	0x51
+ 934 034c 01       		.uleb128 0x1
+ 935 034d 31       		.byte	0x31
+ 936 034e 00       		.byte	0
+ 937 034f 12       		.uleb128 0x12
+ 938 0350 24000000 		.4byte	.LVL31
+ 939 0354 97020000 		.4byte	0x297
+ 940 0358 11       		.uleb128 0x11
+ 941 0359 01       		.uleb128 0x1
+ 942 035a 50       		.byte	0x50
+ 943 035b 01       		.uleb128 0x1
+ 944 035c 34       		.byte	0x34
+ 945 035d 11       		.uleb128 0x11
+ 946 035e 01       		.uleb128 0x1
+ 947 035f 51       		.byte	0x51
+ 948 0360 01       		.uleb128 0x1
+ 949 0361 40       		.byte	0x40
+ 950 0362 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 21
+
+
+ 951 0363 00       		.byte	0
+ 952 0364 13       		.uleb128 0x13
+ 953 0365 2D030000 		.4byte	.LASF37
+ 954 0369 01       		.byte	0x1
+ 955 036a 77       		.byte	0x77
+ 956 036b 00000000 		.4byte	.LFB6
+ 957 036f 8C000000 		.4byte	.LFE6-.LFB6
+ 958 0373 01       		.uleb128 0x1
+ 959 0374 9C       		.byte	0x9c
+ 960 0375 1E040000 		.4byte	0x41e
+ 961 0379 0E       		.uleb128 0xe
+ 962 037a 9D010000 		.4byte	.LASF38
+ 963 037e 01       		.byte	0x1
+ 964 037f 77       		.byte	0x77
+ 965 0380 8F000000 		.4byte	0x8f
+ 966 0384 4D010000 		.4byte	.LLST9
+ 967 0388 16       		.uleb128 0x16
+ 968 0389 B5020000 		.4byte	.LASF30
+ 969 038d 01       		.byte	0x1
+ 970 038e 79       		.byte	0x79
+ 971 038f 6B000000 		.4byte	0x6b
+ 972 0393 02       		.uleb128 0x2
+ 973 0394 91       		.byte	0x91
+ 974 0395 6F       		.sleb128 -17
+ 975 0396 16       		.uleb128 0x16
+ 976 0397 0A000000 		.4byte	.LASF33
+ 977 039b 01       		.byte	0x1
+ 978 039c 7A       		.byte	0x7a
+ 979 039d 1E040000 		.4byte	0x41e
+ 980 03a1 03       		.uleb128 0x3
+ 981 03a2 91       		.byte	0x91
+ 982 03a3 6F       		.sleb128 -17
+ 983 03a4 9F       		.byte	0x9f
+ 984 03a5 17       		.uleb128 0x17
+ 985 03a6 A4010000 		.4byte	.LASF58
+ 986 03aa 34040000 		.4byte	0x434
+ 987 03ae 05       		.uleb128 0x5
+ 988 03af 03       		.byte	0x3
+ 989 03b0 00000000 		.4byte	__FUNCTION__.6471
+ 990 03b4 10       		.uleb128 0x10
+ 991 03b5 48000000 		.4byte	.LVL37
+ 992 03b9 7E050000 		.4byte	0x57e
+ 993 03bd E1030000 		.4byte	0x3e1
+ 994 03c1 11       		.uleb128 0x11
+ 995 03c2 01       		.uleb128 0x1
+ 996 03c3 50       		.byte	0x50
+ 997 03c4 02       		.uleb128 0x2
+ 998 03c5 75       		.byte	0x75
+ 999 03c6 00       		.sleb128 0
+ 1000 03c7 11       		.uleb128 0x11
+ 1001 03c8 01       		.uleb128 0x1
+ 1002 03c9 51       		.byte	0x51
+ 1003 03ca 05       		.uleb128 0x5
+ 1004 03cb 03       		.byte	0x3
+ 1005 03cc 00000000 		.4byte	.LC4
+ 1006 03d0 11       		.uleb128 0x11
+ 1007 03d1 01       		.uleb128 0x1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 22
+
+
+ 1008 03d2 52       		.byte	0x52
+ 1009 03d3 05       		.uleb128 0x5
+ 1010 03d4 03       		.byte	0x3
+ 1011 03d5 00000000 		.4byte	.LANCHOR1
+ 1012 03d9 11       		.uleb128 0x11
+ 1013 03da 02       		.uleb128 0x2
+ 1014 03db 7D       		.byte	0x7d
+ 1015 03dc 00       		.sleb128 0
+ 1016 03dd 02       		.uleb128 0x2
+ 1017 03de 74       		.byte	0x74
+ 1018 03df 00       		.sleb128 0
+ 1019 03e0 00       		.byte	0
+ 1020 03e1 10       		.uleb128 0x10
+ 1021 03e2 4E000000 		.4byte	.LVL38
+ 1022 03e6 89050000 		.4byte	0x589
+ 1023 03ea F5030000 		.4byte	0x3f5
+ 1024 03ee 11       		.uleb128 0x11
+ 1025 03ef 01       		.uleb128 0x1
+ 1026 03f0 50       		.byte	0x50
+ 1027 03f1 02       		.uleb128 0x2
+ 1028 03f2 75       		.byte	0x75
+ 1029 03f3 00       		.sleb128 0
+ 1030 03f4 00       		.byte	0
+ 1031 03f5 10       		.uleb128 0x10
+ 1032 03f6 6C000000 		.4byte	.LVL40
+ 1033 03fa 97020000 		.4byte	0x297
+ 1034 03fe 08040000 		.4byte	0x408
+ 1035 0402 11       		.uleb128 0x11
+ 1036 0403 01       		.uleb128 0x1
+ 1037 0404 50       		.byte	0x50
+ 1038 0405 01       		.uleb128 0x1
+ 1039 0406 31       		.byte	0x31
+ 1040 0407 00       		.byte	0
+ 1041 0408 12       		.uleb128 0x12
+ 1042 0409 74000000 		.4byte	.LVL41
+ 1043 040d 97020000 		.4byte	0x297
+ 1044 0411 11       		.uleb128 0x11
+ 1045 0412 01       		.uleb128 0x1
+ 1046 0413 50       		.byte	0x50
+ 1047 0414 01       		.uleb128 0x1
+ 1048 0415 32       		.byte	0x32
+ 1049 0416 11       		.uleb128 0x11
+ 1050 0417 01       		.uleb128 0x1
+ 1051 0418 51       		.byte	0x51
+ 1052 0419 02       		.uleb128 0x2
+ 1053 041a 74       		.byte	0x74
+ 1054 041b 00       		.sleb128 0
+ 1055 041c 00       		.byte	0
+ 1056 041d 00       		.byte	0
+ 1057 041e 15       		.uleb128 0x15
+ 1058 041f 04       		.byte	0x4
+ 1059 0420 7D010000 		.4byte	0x17d
+ 1060 0424 08       		.uleb128 0x8
+ 1061 0425 D6000000 		.4byte	0xd6
+ 1062 0429 34040000 		.4byte	0x434
+ 1063 042d 09       		.uleb128 0x9
+ 1064 042e CF000000 		.4byte	0xcf
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 23
+
+
+ 1065 0432 12       		.byte	0x12
+ 1066 0433 00       		.byte	0
+ 1067 0434 05       		.uleb128 0x5
+ 1068 0435 24040000 		.4byte	0x424
+ 1069 0439 18       		.uleb128 0x18
+ 1070 043a 66000000 		.4byte	.LASF39
+ 1071 043e 01       		.byte	0x1
+ 1072 043f 8D       		.byte	0x8d
+ 1073 0440 00000000 		.4byte	.LFB7
+ 1074 0444 26000000 		.4byte	.LFE7-.LFB7
+ 1075 0448 01       		.uleb128 0x1
+ 1076 0449 9C       		.byte	0x9c
+ 1077 044a 76040000 		.4byte	0x476
+ 1078 044e 0E       		.uleb128 0xe
+ 1079 044f 0A030000 		.4byte	.LASF40
+ 1080 0453 01       		.byte	0x1
+ 1081 0454 8D       		.byte	0x8d
+ 1082 0455 6B000000 		.4byte	0x6b
+ 1083 0459 76010000 		.4byte	.LLST10
+ 1084 045d 19       		.uleb128 0x19
+ 1085 045e 9D010000 		.4byte	.LASF38
+ 1086 0462 01       		.byte	0x1
+ 1087 0463 8F       		.byte	0x8f
+ 1088 0464 A7000000 		.4byte	0xa7
+ 1089 0468 97010000 		.4byte	.LLST11
+ 1090 046c 1A       		.uleb128 0x1a
+ 1091 046d 24000000 		.4byte	.LVL49
+ 1092 0471 64030000 		.4byte	0x364
+ 1093 0475 00       		.byte	0
+ 1094 0476 13       		.uleb128 0x13
+ 1095 0477 C1020000 		.4byte	.LASF41
+ 1096 047b 01       		.byte	0x1
+ 1097 047c 97       		.byte	0x97
+ 1098 047d 00000000 		.4byte	.LFB8
+ 1099 0481 34000000 		.4byte	.LFE8-.LFB8
+ 1100 0485 01       		.uleb128 0x1
+ 1101 0486 9C       		.byte	0x9c
+ 1102 0487 D6040000 		.4byte	0x4d6
+ 1103 048b 0E       		.uleb128 0xe
+ 1104 048c 58020000 		.4byte	.LASF42
+ 1105 0490 01       		.byte	0x1
+ 1106 0491 97       		.byte	0x97
+ 1107 0492 27020000 		.4byte	0x227
+ 1108 0496 B5010000 		.4byte	.LLST12
+ 1109 049a 0E       		.uleb128 0xe
+ 1110 049b F1010000 		.4byte	.LASF43
+ 1111 049f 01       		.byte	0x1
+ 1112 04a0 97       		.byte	0x97
+ 1113 04a1 27020000 		.4byte	0x227
+ 1114 04a5 D6010000 		.4byte	.LLST13
+ 1115 04a9 16       		.uleb128 0x16
+ 1116 04aa B5020000 		.4byte	.LASF30
+ 1117 04ae 01       		.byte	0x1
+ 1118 04af 99       		.byte	0x99
+ 1119 04b0 6B000000 		.4byte	0x6b
+ 1120 04b4 02       		.uleb128 0x2
+ 1121 04b5 91       		.byte	0x91
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 24
+
+
+ 1122 04b6 77       		.sleb128 -9
+ 1123 04b7 16       		.uleb128 0x16
+ 1124 04b8 0A000000 		.4byte	.LASF33
+ 1125 04bc 01       		.byte	0x1
+ 1126 04bd 9A       		.byte	0x9a
+ 1127 04be 1E040000 		.4byte	0x41e
+ 1128 04c2 03       		.uleb128 0x3
+ 1129 04c3 91       		.byte	0x91
+ 1130 04c4 77       		.sleb128 -9
+ 1131 04c5 9F       		.byte	0x9f
+ 1132 04c6 12       		.uleb128 0x12
+ 1133 04c7 2A000000 		.4byte	.LVL54
+ 1134 04cb 97020000 		.4byte	0x297
+ 1135 04cf 11       		.uleb128 0x11
+ 1136 04d0 01       		.uleb128 0x1
+ 1137 04d1 50       		.byte	0x50
+ 1138 04d2 01       		.uleb128 0x1
+ 1139 04d3 31       		.byte	0x31
+ 1140 04d4 00       		.byte	0
+ 1141 04d5 00       		.byte	0
+ 1142 04d6 1B       		.uleb128 0x1b
+ 1143 04d7 95020000 		.4byte	.LASF59
+ 1144 04db 01       		.byte	0x1
+ 1145 04dc A2       		.byte	0xa2
+ 1146 04dd 6B000000 		.4byte	0x6b
+ 1147 04e1 00000000 		.4byte	.LFB9
+ 1148 04e5 14000000 		.4byte	.LFE9-.LFB9
+ 1149 04e9 01       		.uleb128 0x1
+ 1150 04ea 9C       		.byte	0x9c
+ 1151 04eb FF040000 		.4byte	0x4ff
+ 1152 04ef 14       		.uleb128 0x14
+ 1153 04f0 72656700 		.ascii	"reg\000"
+ 1154 04f4 01       		.byte	0x1
+ 1155 04f5 A2       		.byte	0xa2
+ 1156 04f6 6B000000 		.4byte	0x6b
+ 1157 04fa F7010000 		.4byte	.LLST14
+ 1158 04fe 00       		.byte	0
+ 1159 04ff 08       		.uleb128 0x8
+ 1160 0500 6B000000 		.4byte	0x6b
+ 1161 0504 0F050000 		.4byte	0x50f
+ 1162 0508 09       		.uleb128 0x9
+ 1163 0509 CF000000 		.4byte	0xcf
+ 1164 050d 04       		.byte	0x4
+ 1165 050e 00       		.byte	0
+ 1166 050f 16       		.uleb128 0x16
+ 1167 0510 43000000 		.4byte	.LASF44
+ 1168 0514 01       		.byte	0x1
+ 1169 0515 29       		.byte	0x29
+ 1170 0516 FF040000 		.4byte	0x4ff
+ 1171 051a 05       		.uleb128 0x5
+ 1172 051b 03       		.byte	0x3
+ 1173 051c 00000000 		.4byte	pcm1770_regs
+ 1174 0520 1C       		.uleb128 0x1c
+ 1175 0521 CE010000 		.4byte	.LASF45
+ 1176 0525 03       		.byte	0x3
+ 1177 0526 1D       		.byte	0x1d
+ 1178 0527 2B050000 		.4byte	0x52b
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 25
+
+
+ 1179 052b 15       		.uleb128 0x15
+ 1180 052c 04       		.byte	0x4
+ 1181 052d 3C010000 		.4byte	0x13c
+ 1182 0531 08       		.uleb128 0x8
+ 1183 0532 C1000000 		.4byte	0xc1
+ 1184 0536 3C050000 		.4byte	0x53c
+ 1185 053a 1D       		.uleb128 0x1d
+ 1186 053b 00       		.byte	0
+ 1187 053c 1C       		.uleb128 0x1c
+ 1188 053d 90020000 		.4byte	.LASF46
+ 1189 0541 05       		.byte	0x5
+ 1190 0542 3A       		.byte	0x3a
+ 1191 0543 31050000 		.4byte	0x531
+ 1192 0547 1E       		.uleb128 0x1e
+ 1193 0548 4D010000 		.4byte	.LASF47
+ 1194 054c 4D010000 		.4byte	.LASF47
+ 1195 0550 06       		.byte	0x6
+ 1196 0551 33       		.byte	0x33
+ 1197 0552 1E       		.uleb128 0x1e
+ 1198 0553 E3010000 		.4byte	.LASF48
+ 1199 0557 E3010000 		.4byte	.LASF48
+ 1200 055b 07       		.byte	0x7
+ 1201 055c 33       		.byte	0x33
+ 1202 055d 1E       		.uleb128 0x1e
+ 1203 055e 7F000000 		.4byte	.LASF49
+ 1204 0562 7F000000 		.4byte	.LASF49
+ 1205 0566 08       		.byte	0x8
+ 1206 0567 33       		.byte	0x33
+ 1207 0568 1E       		.uleb128 0x1e
+ 1208 0569 40030000 		.4byte	.LASF50
+ 1209 056d 40030000 		.4byte	.LASF50
+ 1210 0571 09       		.byte	0x9
+ 1211 0572 D9       		.byte	0xd9
+ 1212 0573 1E       		.uleb128 0x1e
+ 1213 0574 A6020000 		.4byte	.LASF51
+ 1214 0578 A6020000 		.4byte	.LASF51
+ 1215 057c 0A       		.byte	0xa
+ 1216 057d 33       		.byte	0x33
+ 1217 057e 1E       		.uleb128 0x1e
+ 1218 057f 0D020000 		.4byte	.LASF52
+ 1219 0583 0D020000 		.4byte	.LASF52
+ 1220 0587 0B       		.byte	0xb
+ 1221 0588 E7       		.byte	0xe7
+ 1222 0589 1F       		.uleb128 0x1f
+ 1223 058a 38020000 		.4byte	.LASF53
+ 1224 058e 38020000 		.4byte	.LASF53
+ 1225 0592 0C       		.byte	0xc
+ 1226 0593 2A03     		.2byte	0x32a
+ 1227 0595 00       		.byte	0
+ 1228              		.section	.debug_abbrev,"",%progbits
+ 1229              	.Ldebug_abbrev0:
+ 1230 0000 01       		.uleb128 0x1
+ 1231 0001 11       		.uleb128 0x11
+ 1232 0002 01       		.byte	0x1
+ 1233 0003 25       		.uleb128 0x25
+ 1234 0004 0E       		.uleb128 0xe
+ 1235 0005 13       		.uleb128 0x13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 26
+
+
+ 1236 0006 0B       		.uleb128 0xb
+ 1237 0007 03       		.uleb128 0x3
+ 1238 0008 0E       		.uleb128 0xe
+ 1239 0009 1B       		.uleb128 0x1b
+ 1240 000a 0E       		.uleb128 0xe
+ 1241 000b 55       		.uleb128 0x55
+ 1242 000c 17       		.uleb128 0x17
+ 1243 000d 11       		.uleb128 0x11
+ 1244 000e 01       		.uleb128 0x1
+ 1245 000f 10       		.uleb128 0x10
+ 1246 0010 17       		.uleb128 0x17
+ 1247 0011 00       		.byte	0
+ 1248 0012 00       		.byte	0
+ 1249 0013 02       		.uleb128 0x2
+ 1250 0014 24       		.uleb128 0x24
+ 1251 0015 00       		.byte	0
+ 1252 0016 0B       		.uleb128 0xb
+ 1253 0017 0B       		.uleb128 0xb
+ 1254 0018 3E       		.uleb128 0x3e
+ 1255 0019 0B       		.uleb128 0xb
+ 1256 001a 03       		.uleb128 0x3
+ 1257 001b 0E       		.uleb128 0xe
+ 1258 001c 00       		.byte	0
+ 1259 001d 00       		.byte	0
+ 1260 001e 03       		.uleb128 0x3
+ 1261 001f 24       		.uleb128 0x24
+ 1262 0020 00       		.byte	0
+ 1263 0021 0B       		.uleb128 0xb
+ 1264 0022 0B       		.uleb128 0xb
+ 1265 0023 3E       		.uleb128 0x3e
+ 1266 0024 0B       		.uleb128 0xb
+ 1267 0025 03       		.uleb128 0x3
+ 1268 0026 08       		.uleb128 0x8
+ 1269 0027 00       		.byte	0
+ 1270 0028 00       		.byte	0
+ 1271 0029 04       		.uleb128 0x4
+ 1272 002a 16       		.uleb128 0x16
+ 1273 002b 00       		.byte	0
+ 1274 002c 03       		.uleb128 0x3
+ 1275 002d 0E       		.uleb128 0xe
+ 1276 002e 3A       		.uleb128 0x3a
+ 1277 002f 0B       		.uleb128 0xb
+ 1278 0030 3B       		.uleb128 0x3b
+ 1279 0031 05       		.uleb128 0x5
+ 1280 0032 49       		.uleb128 0x49
+ 1281 0033 13       		.uleb128 0x13
+ 1282 0034 00       		.byte	0
+ 1283 0035 00       		.byte	0
+ 1284 0036 05       		.uleb128 0x5
+ 1285 0037 26       		.uleb128 0x26
+ 1286 0038 00       		.byte	0
+ 1287 0039 49       		.uleb128 0x49
+ 1288 003a 13       		.uleb128 0x13
+ 1289 003b 00       		.byte	0
+ 1290 003c 00       		.byte	0
+ 1291 003d 06       		.uleb128 0x6
+ 1292 003e 13       		.uleb128 0x13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 27
+
+
+ 1293 003f 01       		.byte	0x1
+ 1294 0040 0B       		.uleb128 0xb
+ 1295 0041 0B       		.uleb128 0xb
+ 1296 0042 3A       		.uleb128 0x3a
+ 1297 0043 0B       		.uleb128 0xb
+ 1298 0044 3B       		.uleb128 0x3b
+ 1299 0045 0B       		.uleb128 0xb
+ 1300 0046 01       		.uleb128 0x1
+ 1301 0047 13       		.uleb128 0x13
+ 1302 0048 00       		.byte	0
+ 1303 0049 00       		.byte	0
+ 1304 004a 07       		.uleb128 0x7
+ 1305 004b 0D       		.uleb128 0xd
+ 1306 004c 00       		.byte	0
+ 1307 004d 03       		.uleb128 0x3
+ 1308 004e 0E       		.uleb128 0xe
+ 1309 004f 3A       		.uleb128 0x3a
+ 1310 0050 0B       		.uleb128 0xb
+ 1311 0051 3B       		.uleb128 0x3b
+ 1312 0052 0B       		.uleb128 0xb
+ 1313 0053 49       		.uleb128 0x49
+ 1314 0054 13       		.uleb128 0x13
+ 1315 0055 38       		.uleb128 0x38
+ 1316 0056 0B       		.uleb128 0xb
+ 1317 0057 00       		.byte	0
+ 1318 0058 00       		.byte	0
+ 1319 0059 08       		.uleb128 0x8
+ 1320 005a 01       		.uleb128 0x1
+ 1321 005b 01       		.byte	0x1
+ 1322 005c 49       		.uleb128 0x49
+ 1323 005d 13       		.uleb128 0x13
+ 1324 005e 01       		.uleb128 0x1
+ 1325 005f 13       		.uleb128 0x13
+ 1326 0060 00       		.byte	0
+ 1327 0061 00       		.byte	0
+ 1328 0062 09       		.uleb128 0x9
+ 1329 0063 21       		.uleb128 0x21
+ 1330 0064 00       		.byte	0
+ 1331 0065 49       		.uleb128 0x49
+ 1332 0066 13       		.uleb128 0x13
+ 1333 0067 2F       		.uleb128 0x2f
+ 1334 0068 0B       		.uleb128 0xb
+ 1335 0069 00       		.byte	0
+ 1336 006a 00       		.byte	0
+ 1337 006b 0A       		.uleb128 0xa
+ 1338 006c 16       		.uleb128 0x16
+ 1339 006d 00       		.byte	0
+ 1340 006e 03       		.uleb128 0x3
+ 1341 006f 0E       		.uleb128 0xe
+ 1342 0070 3A       		.uleb128 0x3a
+ 1343 0071 0B       		.uleb128 0xb
+ 1344 0072 3B       		.uleb128 0x3b
+ 1345 0073 0B       		.uleb128 0xb
+ 1346 0074 49       		.uleb128 0x49
+ 1347 0075 13       		.uleb128 0x13
+ 1348 0076 00       		.byte	0
+ 1349 0077 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 28
+
+
+ 1350 0078 0B       		.uleb128 0xb
+ 1351 0079 0D       		.uleb128 0xd
+ 1352 007a 00       		.byte	0
+ 1353 007b 03       		.uleb128 0x3
+ 1354 007c 08       		.uleb128 0x8
+ 1355 007d 3A       		.uleb128 0x3a
+ 1356 007e 0B       		.uleb128 0xb
+ 1357 007f 3B       		.uleb128 0x3b
+ 1358 0080 0B       		.uleb128 0xb
+ 1359 0081 49       		.uleb128 0x49
+ 1360 0082 13       		.uleb128 0x13
+ 1361 0083 0B       		.uleb128 0xb
+ 1362 0084 0B       		.uleb128 0xb
+ 1363 0085 0D       		.uleb128 0xd
+ 1364 0086 0B       		.uleb128 0xb
+ 1365 0087 0C       		.uleb128 0xc
+ 1366 0088 0B       		.uleb128 0xb
+ 1367 0089 38       		.uleb128 0x38
+ 1368 008a 0B       		.uleb128 0xb
+ 1369 008b 00       		.byte	0
+ 1370 008c 00       		.byte	0
+ 1371 008d 0C       		.uleb128 0xc
+ 1372 008e 0D       		.uleb128 0xd
+ 1373 008f 00       		.byte	0
+ 1374 0090 03       		.uleb128 0x3
+ 1375 0091 0E       		.uleb128 0xe
+ 1376 0092 3A       		.uleb128 0x3a
+ 1377 0093 0B       		.uleb128 0xb
+ 1378 0094 3B       		.uleb128 0x3b
+ 1379 0095 0B       		.uleb128 0xb
+ 1380 0096 49       		.uleb128 0x49
+ 1381 0097 13       		.uleb128 0x13
+ 1382 0098 0B       		.uleb128 0xb
+ 1383 0099 0B       		.uleb128 0xb
+ 1384 009a 0D       		.uleb128 0xd
+ 1385 009b 0B       		.uleb128 0xb
+ 1386 009c 0C       		.uleb128 0xc
+ 1387 009d 0B       		.uleb128 0xb
+ 1388 009e 38       		.uleb128 0x38
+ 1389 009f 0B       		.uleb128 0xb
+ 1390 00a0 00       		.byte	0
+ 1391 00a1 00       		.byte	0
+ 1392 00a2 0D       		.uleb128 0xd
+ 1393 00a3 2E       		.uleb128 0x2e
+ 1394 00a4 01       		.byte	0x1
+ 1395 00a5 03       		.uleb128 0x3
+ 1396 00a6 0E       		.uleb128 0xe
+ 1397 00a7 3A       		.uleb128 0x3a
+ 1398 00a8 0B       		.uleb128 0xb
+ 1399 00a9 3B       		.uleb128 0x3b
+ 1400 00aa 0B       		.uleb128 0xb
+ 1401 00ab 27       		.uleb128 0x27
+ 1402 00ac 19       		.uleb128 0x19
+ 1403 00ad 11       		.uleb128 0x11
+ 1404 00ae 01       		.uleb128 0x1
+ 1405 00af 12       		.uleb128 0x12
+ 1406 00b0 06       		.uleb128 0x6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 29
+
+
+ 1407 00b1 40       		.uleb128 0x40
+ 1408 00b2 18       		.uleb128 0x18
+ 1409 00b3 9742     		.uleb128 0x2117
+ 1410 00b5 19       		.uleb128 0x19
+ 1411 00b6 01       		.uleb128 0x1
+ 1412 00b7 13       		.uleb128 0x13
+ 1413 00b8 00       		.byte	0
+ 1414 00b9 00       		.byte	0
+ 1415 00ba 0E       		.uleb128 0xe
+ 1416 00bb 05       		.uleb128 0x5
+ 1417 00bc 00       		.byte	0
+ 1418 00bd 03       		.uleb128 0x3
+ 1419 00be 0E       		.uleb128 0xe
+ 1420 00bf 3A       		.uleb128 0x3a
+ 1421 00c0 0B       		.uleb128 0xb
+ 1422 00c1 3B       		.uleb128 0x3b
+ 1423 00c2 0B       		.uleb128 0xb
+ 1424 00c3 49       		.uleb128 0x49
+ 1425 00c4 13       		.uleb128 0x13
+ 1426 00c5 02       		.uleb128 0x2
+ 1427 00c6 17       		.uleb128 0x17
+ 1428 00c7 00       		.byte	0
+ 1429 00c8 00       		.byte	0
+ 1430 00c9 0F       		.uleb128 0xf
+ 1431 00ca 34       		.uleb128 0x34
+ 1432 00cb 00       		.byte	0
+ 1433 00cc 03       		.uleb128 0x3
+ 1434 00cd 08       		.uleb128 0x8
+ 1435 00ce 3A       		.uleb128 0x3a
+ 1436 00cf 0B       		.uleb128 0xb
+ 1437 00d0 3B       		.uleb128 0x3b
+ 1438 00d1 0B       		.uleb128 0xb
+ 1439 00d2 49       		.uleb128 0x49
+ 1440 00d3 13       		.uleb128 0x13
+ 1441 00d4 02       		.uleb128 0x2
+ 1442 00d5 17       		.uleb128 0x17
+ 1443 00d6 00       		.byte	0
+ 1444 00d7 00       		.byte	0
+ 1445 00d8 10       		.uleb128 0x10
+ 1446 00d9 898201   		.uleb128 0x4109
+ 1447 00dc 01       		.byte	0x1
+ 1448 00dd 11       		.uleb128 0x11
+ 1449 00de 01       		.uleb128 0x1
+ 1450 00df 31       		.uleb128 0x31
+ 1451 00e0 13       		.uleb128 0x13
+ 1452 00e1 01       		.uleb128 0x1
+ 1453 00e2 13       		.uleb128 0x13
+ 1454 00e3 00       		.byte	0
+ 1455 00e4 00       		.byte	0
+ 1456 00e5 11       		.uleb128 0x11
+ 1457 00e6 8A8201   		.uleb128 0x410a
+ 1458 00e9 00       		.byte	0
+ 1459 00ea 02       		.uleb128 0x2
+ 1460 00eb 18       		.uleb128 0x18
+ 1461 00ec 9142     		.uleb128 0x2111
+ 1462 00ee 18       		.uleb128 0x18
+ 1463 00ef 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 30
+
+
+ 1464 00f0 00       		.byte	0
+ 1465 00f1 12       		.uleb128 0x12
+ 1466 00f2 898201   		.uleb128 0x4109
+ 1467 00f5 01       		.byte	0x1
+ 1468 00f6 11       		.uleb128 0x11
+ 1469 00f7 01       		.uleb128 0x1
+ 1470 00f8 31       		.uleb128 0x31
+ 1471 00f9 13       		.uleb128 0x13
+ 1472 00fa 00       		.byte	0
+ 1473 00fb 00       		.byte	0
+ 1474 00fc 13       		.uleb128 0x13
+ 1475 00fd 2E       		.uleb128 0x2e
+ 1476 00fe 01       		.byte	0x1
+ 1477 00ff 3F       		.uleb128 0x3f
+ 1478 0100 19       		.uleb128 0x19
+ 1479 0101 03       		.uleb128 0x3
+ 1480 0102 0E       		.uleb128 0xe
+ 1481 0103 3A       		.uleb128 0x3a
+ 1482 0104 0B       		.uleb128 0xb
+ 1483 0105 3B       		.uleb128 0x3b
+ 1484 0106 0B       		.uleb128 0xb
+ 1485 0107 27       		.uleb128 0x27
+ 1486 0108 19       		.uleb128 0x19
+ 1487 0109 11       		.uleb128 0x11
+ 1488 010a 01       		.uleb128 0x1
+ 1489 010b 12       		.uleb128 0x12
+ 1490 010c 06       		.uleb128 0x6
+ 1491 010d 40       		.uleb128 0x40
+ 1492 010e 18       		.uleb128 0x18
+ 1493 010f 9742     		.uleb128 0x2117
+ 1494 0111 19       		.uleb128 0x19
+ 1495 0112 01       		.uleb128 0x1
+ 1496 0113 13       		.uleb128 0x13
+ 1497 0114 00       		.byte	0
+ 1498 0115 00       		.byte	0
+ 1499 0116 14       		.uleb128 0x14
+ 1500 0117 05       		.uleb128 0x5
+ 1501 0118 00       		.byte	0
+ 1502 0119 03       		.uleb128 0x3
+ 1503 011a 08       		.uleb128 0x8
+ 1504 011b 3A       		.uleb128 0x3a
+ 1505 011c 0B       		.uleb128 0xb
+ 1506 011d 3B       		.uleb128 0x3b
+ 1507 011e 0B       		.uleb128 0xb
+ 1508 011f 49       		.uleb128 0x49
+ 1509 0120 13       		.uleb128 0x13
+ 1510 0121 02       		.uleb128 0x2
+ 1511 0122 17       		.uleb128 0x17
+ 1512 0123 00       		.byte	0
+ 1513 0124 00       		.byte	0
+ 1514 0125 15       		.uleb128 0x15
+ 1515 0126 0F       		.uleb128 0xf
+ 1516 0127 00       		.byte	0
+ 1517 0128 0B       		.uleb128 0xb
+ 1518 0129 0B       		.uleb128 0xb
+ 1519 012a 49       		.uleb128 0x49
+ 1520 012b 13       		.uleb128 0x13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 31
+
+
+ 1521 012c 00       		.byte	0
+ 1522 012d 00       		.byte	0
+ 1523 012e 16       		.uleb128 0x16
+ 1524 012f 34       		.uleb128 0x34
+ 1525 0130 00       		.byte	0
+ 1526 0131 03       		.uleb128 0x3
+ 1527 0132 0E       		.uleb128 0xe
+ 1528 0133 3A       		.uleb128 0x3a
+ 1529 0134 0B       		.uleb128 0xb
+ 1530 0135 3B       		.uleb128 0x3b
+ 1531 0136 0B       		.uleb128 0xb
+ 1532 0137 49       		.uleb128 0x49
+ 1533 0138 13       		.uleb128 0x13
+ 1534 0139 02       		.uleb128 0x2
+ 1535 013a 18       		.uleb128 0x18
+ 1536 013b 00       		.byte	0
+ 1537 013c 00       		.byte	0
+ 1538 013d 17       		.uleb128 0x17
+ 1539 013e 34       		.uleb128 0x34
+ 1540 013f 00       		.byte	0
+ 1541 0140 03       		.uleb128 0x3
+ 1542 0141 0E       		.uleb128 0xe
+ 1543 0142 49       		.uleb128 0x49
+ 1544 0143 13       		.uleb128 0x13
+ 1545 0144 34       		.uleb128 0x34
+ 1546 0145 19       		.uleb128 0x19
+ 1547 0146 02       		.uleb128 0x2
+ 1548 0147 18       		.uleb128 0x18
+ 1549 0148 00       		.byte	0
+ 1550 0149 00       		.byte	0
+ 1551 014a 18       		.uleb128 0x18
+ 1552 014b 2E       		.uleb128 0x2e
+ 1553 014c 01       		.byte	0x1
+ 1554 014d 3F       		.uleb128 0x3f
+ 1555 014e 19       		.uleb128 0x19
+ 1556 014f 03       		.uleb128 0x3
+ 1557 0150 0E       		.uleb128 0xe
+ 1558 0151 3A       		.uleb128 0x3a
+ 1559 0152 0B       		.uleb128 0xb
+ 1560 0153 3B       		.uleb128 0x3b
+ 1561 0154 0B       		.uleb128 0xb
+ 1562 0155 27       		.uleb128 0x27
+ 1563 0156 19       		.uleb128 0x19
+ 1564 0157 11       		.uleb128 0x11
+ 1565 0158 01       		.uleb128 0x1
+ 1566 0159 12       		.uleb128 0x12
+ 1567 015a 06       		.uleb128 0x6
+ 1568 015b 40       		.uleb128 0x40
+ 1569 015c 18       		.uleb128 0x18
+ 1570 015d 9642     		.uleb128 0x2116
+ 1571 015f 19       		.uleb128 0x19
+ 1572 0160 01       		.uleb128 0x1
+ 1573 0161 13       		.uleb128 0x13
+ 1574 0162 00       		.byte	0
+ 1575 0163 00       		.byte	0
+ 1576 0164 19       		.uleb128 0x19
+ 1577 0165 34       		.uleb128 0x34
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 32
+
+
+ 1578 0166 00       		.byte	0
+ 1579 0167 03       		.uleb128 0x3
+ 1580 0168 0E       		.uleb128 0xe
+ 1581 0169 3A       		.uleb128 0x3a
+ 1582 016a 0B       		.uleb128 0xb
+ 1583 016b 3B       		.uleb128 0x3b
+ 1584 016c 0B       		.uleb128 0xb
+ 1585 016d 49       		.uleb128 0x49
+ 1586 016e 13       		.uleb128 0x13
+ 1587 016f 02       		.uleb128 0x2
+ 1588 0170 17       		.uleb128 0x17
+ 1589 0171 00       		.byte	0
+ 1590 0172 00       		.byte	0
+ 1591 0173 1A       		.uleb128 0x1a
+ 1592 0174 898201   		.uleb128 0x4109
+ 1593 0177 00       		.byte	0
+ 1594 0178 11       		.uleb128 0x11
+ 1595 0179 01       		.uleb128 0x1
+ 1596 017a 31       		.uleb128 0x31
+ 1597 017b 13       		.uleb128 0x13
+ 1598 017c 00       		.byte	0
+ 1599 017d 00       		.byte	0
+ 1600 017e 1B       		.uleb128 0x1b
+ 1601 017f 2E       		.uleb128 0x2e
+ 1602 0180 01       		.byte	0x1
+ 1603 0181 3F       		.uleb128 0x3f
+ 1604 0182 19       		.uleb128 0x19
+ 1605 0183 03       		.uleb128 0x3
+ 1606 0184 0E       		.uleb128 0xe
+ 1607 0185 3A       		.uleb128 0x3a
+ 1608 0186 0B       		.uleb128 0xb
+ 1609 0187 3B       		.uleb128 0x3b
+ 1610 0188 0B       		.uleb128 0xb
+ 1611 0189 27       		.uleb128 0x27
+ 1612 018a 19       		.uleb128 0x19
+ 1613 018b 49       		.uleb128 0x49
+ 1614 018c 13       		.uleb128 0x13
+ 1615 018d 11       		.uleb128 0x11
+ 1616 018e 01       		.uleb128 0x1
+ 1617 018f 12       		.uleb128 0x12
+ 1618 0190 06       		.uleb128 0x6
+ 1619 0191 40       		.uleb128 0x40
+ 1620 0192 18       		.uleb128 0x18
+ 1621 0193 9742     		.uleb128 0x2117
+ 1622 0195 19       		.uleb128 0x19
+ 1623 0196 01       		.uleb128 0x1
+ 1624 0197 13       		.uleb128 0x13
+ 1625 0198 00       		.byte	0
+ 1626 0199 00       		.byte	0
+ 1627 019a 1C       		.uleb128 0x1c
+ 1628 019b 34       		.uleb128 0x34
+ 1629 019c 00       		.byte	0
+ 1630 019d 03       		.uleb128 0x3
+ 1631 019e 0E       		.uleb128 0xe
+ 1632 019f 3A       		.uleb128 0x3a
+ 1633 01a0 0B       		.uleb128 0xb
+ 1634 01a1 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 33
+
+
+ 1635 01a2 0B       		.uleb128 0xb
+ 1636 01a3 49       		.uleb128 0x49
+ 1637 01a4 13       		.uleb128 0x13
+ 1638 01a5 3F       		.uleb128 0x3f
+ 1639 01a6 19       		.uleb128 0x19
+ 1640 01a7 3C       		.uleb128 0x3c
+ 1641 01a8 19       		.uleb128 0x19
+ 1642 01a9 00       		.byte	0
+ 1643 01aa 00       		.byte	0
+ 1644 01ab 1D       		.uleb128 0x1d
+ 1645 01ac 21       		.uleb128 0x21
+ 1646 01ad 00       		.byte	0
+ 1647 01ae 00       		.byte	0
+ 1648 01af 00       		.byte	0
+ 1649 01b0 1E       		.uleb128 0x1e
+ 1650 01b1 2E       		.uleb128 0x2e
+ 1651 01b2 00       		.byte	0
+ 1652 01b3 3F       		.uleb128 0x3f
+ 1653 01b4 19       		.uleb128 0x19
+ 1654 01b5 3C       		.uleb128 0x3c
+ 1655 01b6 19       		.uleb128 0x19
+ 1656 01b7 6E       		.uleb128 0x6e
+ 1657 01b8 0E       		.uleb128 0xe
+ 1658 01b9 03       		.uleb128 0x3
+ 1659 01ba 0E       		.uleb128 0xe
+ 1660 01bb 3A       		.uleb128 0x3a
+ 1661 01bc 0B       		.uleb128 0xb
+ 1662 01bd 3B       		.uleb128 0x3b
+ 1663 01be 0B       		.uleb128 0xb
+ 1664 01bf 00       		.byte	0
+ 1665 01c0 00       		.byte	0
+ 1666 01c1 1F       		.uleb128 0x1f
+ 1667 01c2 2E       		.uleb128 0x2e
+ 1668 01c3 00       		.byte	0
+ 1669 01c4 3F       		.uleb128 0x3f
+ 1670 01c5 19       		.uleb128 0x19
+ 1671 01c6 3C       		.uleb128 0x3c
+ 1672 01c7 19       		.uleb128 0x19
+ 1673 01c8 6E       		.uleb128 0x6e
+ 1674 01c9 0E       		.uleb128 0xe
+ 1675 01ca 03       		.uleb128 0x3
+ 1676 01cb 0E       		.uleb128 0xe
+ 1677 01cc 3A       		.uleb128 0x3a
+ 1678 01cd 0B       		.uleb128 0xb
+ 1679 01ce 3B       		.uleb128 0x3b
+ 1680 01cf 05       		.uleb128 0x5
+ 1681 01d0 00       		.byte	0
+ 1682 01d1 00       		.byte	0
+ 1683 01d2 00       		.byte	0
+ 1684              		.section	.debug_loc,"",%progbits
+ 1685              	.Ldebug_loc0:
+ 1686              	.LLST0:
+ 1687 0000 00000000 		.4byte	.LVL0
+ 1688 0004 0A000000 		.4byte	.LVL1
+ 1689 0008 0100     		.2byte	0x1
+ 1690 000a 50       		.byte	0x50
+ 1691 000b 0A000000 		.4byte	.LVL1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 34
+
+
+ 1692 000f 12000000 		.4byte	.LVL3
+ 1693 0013 0400     		.2byte	0x4
+ 1694 0015 F3       		.byte	0xf3
+ 1695 0016 01       		.uleb128 0x1
+ 1696 0017 50       		.byte	0x50
+ 1697 0018 9F       		.byte	0x9f
+ 1698 0019 12000000 		.4byte	.LVL3
+ 1699 001d 20000000 		.4byte	.LVL6
+ 1700 0021 0100     		.2byte	0x1
+ 1701 0023 54       		.byte	0x54
+ 1702 0024 22000000 		.4byte	.LVL7
+ 1703 0028 38000000 		.4byte	.LVL11
+ 1704 002c 0100     		.2byte	0x1
+ 1705 002e 54       		.byte	0x54
+ 1706 002f 00000000 		.4byte	0
+ 1707 0033 00000000 		.4byte	0
+ 1708              	.LLST1:
+ 1709 0037 00000000 		.4byte	.LVL0
+ 1710 003b 0D000000 		.4byte	.LVL2-1
+ 1711 003f 0100     		.2byte	0x1
+ 1712 0041 51       		.byte	0x51
+ 1713 0042 0D000000 		.4byte	.LVL2-1
+ 1714 0046 3A000000 		.4byte	.LFE3
+ 1715 004a 0400     		.2byte	0x4
+ 1716 004c F3       		.byte	0xf3
+ 1717 004d 01       		.uleb128 0x1
+ 1718 004e 51       		.byte	0x51
+ 1719 004f 9F       		.byte	0x9f
+ 1720 0050 00000000 		.4byte	0
+ 1721 0054 00000000 		.4byte	0
+ 1722              	.LLST2:
+ 1723 0058 12000000 		.4byte	.LVL3
+ 1724 005c 38000000 		.4byte	.LVL12
+ 1725 0060 0100     		.2byte	0x1
+ 1726 0062 55       		.byte	0x55
+ 1727 0063 00000000 		.4byte	0
+ 1728 0067 00000000 		.4byte	0
+ 1729              	.LLST3:
+ 1730 006b 00000000 		.4byte	.LVL13
+ 1731 006f 08000000 		.4byte	.LVL14
+ 1732 0073 0100     		.2byte	0x1
+ 1733 0075 50       		.byte	0x50
+ 1734 0076 08000000 		.4byte	.LVL14
+ 1735 007a 20000000 		.4byte	.LVL20
+ 1736 007e 0100     		.2byte	0x1
+ 1737 0080 56       		.byte	0x56
+ 1738 0081 20000000 		.4byte	.LVL20
+ 1739 0085 22000000 		.4byte	.LFE4
+ 1740 0089 0400     		.2byte	0x4
+ 1741 008b F3       		.byte	0xf3
+ 1742 008c 01       		.uleb128 0x1
+ 1743 008d 50       		.byte	0x50
+ 1744 008e 9F       		.byte	0x9f
+ 1745 008f 00000000 		.4byte	0
+ 1746 0093 00000000 		.4byte	0
+ 1747              	.LLST4:
+ 1748 0097 00000000 		.4byte	.LVL13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 35
+
+
+ 1749 009b 0B000000 		.4byte	.LVL15-1
+ 1750 009f 0100     		.2byte	0x1
+ 1751 00a1 51       		.byte	0x51
+ 1752 00a2 0B000000 		.4byte	.LVL15-1
+ 1753 00a6 22000000 		.4byte	.LFE4
+ 1754 00aa 0400     		.2byte	0x4
+ 1755 00ac F3       		.byte	0xf3
+ 1756 00ad 01       		.uleb128 0x1
+ 1757 00ae 51       		.byte	0x51
+ 1758 00af 9F       		.byte	0x9f
+ 1759 00b0 00000000 		.4byte	0
+ 1760 00b4 00000000 		.4byte	0
+ 1761              	.LLST5:
+ 1762 00b8 0C000000 		.4byte	.LVL15
+ 1763 00bc 10000000 		.4byte	.LVL16
+ 1764 00c0 0200     		.2byte	0x2
+ 1765 00c2 30       		.byte	0x30
+ 1766 00c3 9F       		.byte	0x9f
+ 1767 00c4 10000000 		.4byte	.LVL16
+ 1768 00c8 20000000 		.4byte	.LVL19
+ 1769 00cc 0100     		.2byte	0x1
+ 1770 00ce 54       		.byte	0x54
+ 1771 00cf 00000000 		.4byte	0
+ 1772 00d3 00000000 		.4byte	0
+ 1773              	.LLST6:
+ 1774 00d7 00000000 		.4byte	.LVL21
+ 1775 00db 08000000 		.4byte	.LVL23
+ 1776 00df 0100     		.2byte	0x1
+ 1777 00e1 50       		.byte	0x50
+ 1778 00e2 08000000 		.4byte	.LVL23
+ 1779 00e6 18000000 		.4byte	.LFE5
+ 1780 00ea 0400     		.2byte	0x4
+ 1781 00ec F3       		.byte	0xf3
+ 1782 00ed 01       		.uleb128 0x1
+ 1783 00ee 50       		.byte	0x50
+ 1784 00ef 9F       		.byte	0x9f
+ 1785 00f0 00000000 		.4byte	0
+ 1786 00f4 00000000 		.4byte	0
+ 1787              	.LLST7:
+ 1788 00f8 00000000 		.4byte	.LVL21
+ 1789 00fc 0C000000 		.4byte	.LVL25
+ 1790 0100 0100     		.2byte	0x1
+ 1791 0102 51       		.byte	0x51
+ 1792 0103 0C000000 		.4byte	.LVL25
+ 1793 0107 18000000 		.4byte	.LFE5
+ 1794 010b 0400     		.2byte	0x4
+ 1795 010d F3       		.byte	0xf3
+ 1796 010e 01       		.uleb128 0x1
+ 1797 010f 51       		.byte	0x51
+ 1798 0110 9F       		.byte	0x9f
+ 1799 0111 00000000 		.4byte	0
+ 1800 0115 00000000 		.4byte	0
+ 1801              	.LLST8:
+ 1802 0119 02000000 		.4byte	.LVL22
+ 1803 011d 08000000 		.4byte	.LVL23
+ 1804 0121 0600     		.2byte	0x6
+ 1805 0123 70       		.byte	0x70
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 36
+
+
+ 1806 0124 00       		.sleb128 0
+ 1807 0125 08       		.byte	0x8
+ 1808 0126 FF       		.byte	0xff
+ 1809 0127 1A       		.byte	0x1a
+ 1810 0128 9F       		.byte	0x9f
+ 1811 0129 08000000 		.4byte	.LVL23
+ 1812 012d 0A000000 		.4byte	.LVL24
+ 1813 0131 0700     		.2byte	0x7
+ 1814 0133 F3       		.byte	0xf3
+ 1815 0134 01       		.uleb128 0x1
+ 1816 0135 50       		.byte	0x50
+ 1817 0136 08       		.byte	0x8
+ 1818 0137 FF       		.byte	0xff
+ 1819 0138 1A       		.byte	0x1a
+ 1820 0139 9F       		.byte	0x9f
+ 1821 013a 0A000000 		.4byte	.LVL24
+ 1822 013e 0F000000 		.4byte	.LVL26-1
+ 1823 0142 0100     		.2byte	0x1
+ 1824 0144 50       		.byte	0x50
+ 1825 0145 00000000 		.4byte	0
+ 1826 0149 00000000 		.4byte	0
+ 1827              	.LLST9:
+ 1828 014d 00000000 		.4byte	.LVL32
+ 1829 0151 16000000 		.4byte	.LVL34
+ 1830 0155 0100     		.2byte	0x1
+ 1831 0157 50       		.byte	0x50
+ 1832 0158 16000000 		.4byte	.LVL34
+ 1833 015c 1E000000 		.4byte	.LVL35
+ 1834 0160 0100     		.2byte	0x1
+ 1835 0162 54       		.byte	0x54
+ 1836 0163 20000000 		.4byte	.LVL36
+ 1837 0167 50000000 		.4byte	.LVL39
+ 1838 016b 0100     		.2byte	0x1
+ 1839 016d 54       		.byte	0x54
+ 1840 016e 00000000 		.4byte	0
+ 1841 0172 00000000 		.4byte	0
+ 1842              	.LLST10:
+ 1843 0176 00000000 		.4byte	.LVL42
+ 1844 017a 08000000 		.4byte	.LVL44
+ 1845 017e 0100     		.2byte	0x1
+ 1846 0180 50       		.byte	0x50
+ 1847 0181 08000000 		.4byte	.LVL44
+ 1848 0185 26000000 		.4byte	.LFE7
+ 1849 0189 0400     		.2byte	0x4
+ 1850 018b F3       		.byte	0xf3
+ 1851 018c 01       		.uleb128 0x1
+ 1852 018d 50       		.byte	0x50
+ 1853 018e 9F       		.byte	0x9f
+ 1854 018f 00000000 		.4byte	0
+ 1855 0193 00000000 		.4byte	0
+ 1856              	.LLST11:
+ 1857 0197 02000000 		.4byte	.LVL43
+ 1858 019b 08000000 		.4byte	.LVL44
+ 1859 019f 0100     		.2byte	0x1
+ 1860 01a1 50       		.byte	0x50
+ 1861 01a2 1E000000 		.4byte	.LVL47
+ 1862 01a6 20000000 		.4byte	.LVL48
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 37
+
+
+ 1863 01aa 0100     		.2byte	0x1
+ 1864 01ac 50       		.byte	0x50
+ 1865 01ad 00000000 		.4byte	0
+ 1866 01b1 00000000 		.4byte	0
+ 1867              	.LLST12:
+ 1868 01b5 00000000 		.4byte	.LVL50
+ 1869 01b9 08000000 		.4byte	.LVL52
+ 1870 01bd 0100     		.2byte	0x1
+ 1871 01bf 50       		.byte	0x50
+ 1872 01c0 08000000 		.4byte	.LVL52
+ 1873 01c4 34000000 		.4byte	.LFE8
+ 1874 01c8 0400     		.2byte	0x4
+ 1875 01ca F3       		.byte	0xf3
+ 1876 01cb 01       		.uleb128 0x1
+ 1877 01cc 50       		.byte	0x50
+ 1878 01cd 9F       		.byte	0x9f
+ 1879 01ce 00000000 		.4byte	0
+ 1880 01d2 00000000 		.4byte	0
+ 1881              	.LLST13:
+ 1882 01d6 00000000 		.4byte	.LVL50
+ 1883 01da 14000000 		.4byte	.LVL53
+ 1884 01de 0100     		.2byte	0x1
+ 1885 01e0 51       		.byte	0x51
+ 1886 01e1 14000000 		.4byte	.LVL53
+ 1887 01e5 34000000 		.4byte	.LFE8
+ 1888 01e9 0400     		.2byte	0x4
+ 1889 01eb F3       		.byte	0xf3
+ 1890 01ec 01       		.uleb128 0x1
+ 1891 01ed 51       		.byte	0x51
+ 1892 01ee 9F       		.byte	0x9f
+ 1893 01ef 00000000 		.4byte	0
+ 1894 01f3 00000000 		.4byte	0
+ 1895              	.LLST14:
+ 1896 01f7 00000000 		.4byte	.LVL55
+ 1897 01fb 08000000 		.4byte	.LVL56
+ 1898 01ff 0100     		.2byte	0x1
+ 1899 0201 50       		.byte	0x50
+ 1900 0202 08000000 		.4byte	.LVL56
+ 1901 0206 0A000000 		.4byte	.LVL57
+ 1902 020a 0400     		.2byte	0x4
+ 1903 020c F3       		.byte	0xf3
+ 1904 020d 01       		.uleb128 0x1
+ 1905 020e 50       		.byte	0x50
+ 1906 020f 9F       		.byte	0x9f
+ 1907 0210 0A000000 		.4byte	.LVL57
+ 1908 0214 0C000000 		.4byte	.LVL58
+ 1909 0218 0100     		.2byte	0x1
+ 1910 021a 50       		.byte	0x50
+ 1911 021b 0C000000 		.4byte	.LVL58
+ 1912 021f 14000000 		.4byte	.LFE9
+ 1913 0223 0400     		.2byte	0x4
+ 1914 0225 F3       		.byte	0xf3
+ 1915 0226 01       		.uleb128 0x1
+ 1916 0227 50       		.byte	0x50
+ 1917 0228 9F       		.byte	0x9f
+ 1918 0229 00000000 		.4byte	0
+ 1919 022d 00000000 		.4byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 38
+
+
+ 1920              		.section	.debug_aranges,"",%progbits
+ 1921 0000 54000000 		.4byte	0x54
+ 1922 0004 0200     		.2byte	0x2
+ 1923 0006 00000000 		.4byte	.Ldebug_info0
+ 1924 000a 04       		.byte	0x4
+ 1925 000b 00       		.byte	0
+ 1926 000c 0000     		.2byte	0
+ 1927 000e 0000     		.2byte	0
+ 1928 0010 00000000 		.4byte	.LFB3
+ 1929 0014 3A000000 		.4byte	.LFE3-.LFB3
+ 1930 0018 00000000 		.4byte	.LFB4
+ 1931 001c 22000000 		.4byte	.LFE4-.LFB4
+ 1932 0020 00000000 		.4byte	.LFB5
+ 1933 0024 18000000 		.4byte	.LFE5-.LFB5
+ 1934 0028 00000000 		.4byte	.LFB2
+ 1935 002c 26000000 		.4byte	.LFE2-.LFB2
+ 1936 0030 00000000 		.4byte	.LFB6
+ 1937 0034 8C000000 		.4byte	.LFE6-.LFB6
+ 1938 0038 00000000 		.4byte	.LFB7
+ 1939 003c 26000000 		.4byte	.LFE7-.LFB7
+ 1940 0040 00000000 		.4byte	.LFB8
+ 1941 0044 34000000 		.4byte	.LFE8-.LFB8
+ 1942 0048 00000000 		.4byte	.LFB9
+ 1943 004c 14000000 		.4byte	.LFE9-.LFB9
+ 1944 0050 00000000 		.4byte	0
+ 1945 0054 00000000 		.4byte	0
+ 1946              		.section	.debug_ranges,"",%progbits
+ 1947              	.Ldebug_ranges0:
+ 1948 0000 00000000 		.4byte	.LFB3
+ 1949 0004 3A000000 		.4byte	.LFE3
+ 1950 0008 00000000 		.4byte	.LFB4
+ 1951 000c 22000000 		.4byte	.LFE4
+ 1952 0010 00000000 		.4byte	.LFB5
+ 1953 0014 18000000 		.4byte	.LFE5
+ 1954 0018 00000000 		.4byte	.LFB2
+ 1955 001c 26000000 		.4byte	.LFE2
+ 1956 0020 00000000 		.4byte	.LFB6
+ 1957 0024 8C000000 		.4byte	.LFE6
+ 1958 0028 00000000 		.4byte	.LFB7
+ 1959 002c 26000000 		.4byte	.LFE7
+ 1960 0030 00000000 		.4byte	.LFB8
+ 1961 0034 34000000 		.4byte	.LFE8
+ 1962 0038 00000000 		.4byte	.LFB9
+ 1963 003c 14000000 		.4byte	.LFE9
+ 1964 0040 00000000 		.4byte	0
+ 1965 0044 00000000 		.4byte	0
+ 1966              		.section	.debug_line,"",%progbits
+ 1967              	.Ldebug_line0:
+ 1968 0000 29020000 		.section	.debug_str,"MS",%progbits,1
+ 1968      02003701 
+ 1968      00000201 
+ 1968      FB0E0D00 
+ 1968      01010101 
+ 1969              	.LASF31:
+ 1970 0000 746F6767 		.ascii	"toggle_cs\000"
+ 1970      6C655F63 
+ 1970      7300
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 39
+
+
+ 1971              	.LASF33:
+ 1972 000a 70446174 		.ascii	"pData\000"
+ 1972      6100
+ 1973              	.LASF57:
+ 1974 0010 70636D31 		.ascii	"pcm1770_send_halfword\000"
+ 1974      3737305F 
+ 1974      73656E64 
+ 1974      5F68616C 
+ 1974      66776F72 
+ 1975              	.LASF2:
+ 1976 0026 73686F72 		.ascii	"short int\000"
+ 1976      7420696E 
+ 1976      7400
+ 1977              	.LASF19:
+ 1978 0030 73697A65 		.ascii	"sizetype\000"
+ 1978      74797065 
+ 1978      00
+ 1979              	.LASF55:
+ 1980 0039 70636D31 		.ascii	"pcm1770.c\000"
+ 1980      3737302E 
+ 1980      6300
+ 1981              	.LASF44:
+ 1982 0043 70636D31 		.ascii	"pcm1770_regs\000"
+ 1982      3737305F 
+ 1982      72656773 
+ 1982      00
+ 1983              	.LASF29:
+ 1984 0050 70636D31 		.ascii	"pcm1770_reg_hpout_l_s\000"
+ 1984      3737305F 
+ 1984      7265675F 
+ 1984      68706F75 
+ 1984      745F6C5F 
+ 1985              	.LASF39:
+ 1986 0066 70636D31 		.ascii	"pcm1770_volume_set_level\000"
+ 1986      3737305F 
+ 1986      766F6C75 
+ 1986      6D655F73 
+ 1986      65745F6C 
+ 1987              	.LASF49:
+ 1988 007f 5350495F 		.ascii	"SPI_MOSI_Write\000"
+ 1988      4D4F5349 
+ 1988      5F577269 
+ 1988      746500
+ 1989              	.LASF54:
+ 1990 008e 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1990      43313120 
+ 1990      352E342E 
+ 1990      31203230 
+ 1990      31363036 
+ 1991 00c1 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1991      20726576 
+ 1991      6973696F 
+ 1991      6E203233 
+ 1991      37373135 
+ 1992 00f4 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1992      66756E63 
+ 1992      74696F6E 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 40
+
+
+ 1992      2D736563 
+ 1992      74696F6E 
+ 1993              	.LASF13:
+ 1994 011c 696E7431 		.ascii	"int16\000"
+ 1994      3600
+ 1995              	.LASF9:
+ 1996 0122 75696E74 		.ascii	"uint8\000"
+ 1996      3800
+ 1997              	.LASF35:
+ 1998 0128 70636D31 		.ascii	"pcm1770_reg_write\000"
+ 1998      3737305F 
+ 1998      7265675F 
+ 1998      77726974 
+ 1998      6500
+ 1999              	.LASF36:
+ 2000 013a 70636D31 		.ascii	"pcm1770_init\000"
+ 2000      3737305F 
+ 2000      696E6974 
+ 2000      00
+ 2001              	.LASF15:
+ 2002 0147 666C6F61 		.ascii	"float\000"
+ 2002      7400
+ 2003              	.LASF47:
+ 2004 014d 5350495F 		.ascii	"SPI_CS_Write\000"
+ 2004      43535F57 
+ 2004      72697465 
+ 2004      00
+ 2005              	.LASF6:
+ 2006 015a 6C6F6E67 		.ascii	"long long int\000"
+ 2006      206C6F6E 
+ 2006      6720696E 
+ 2006      7400
+ 2007              	.LASF12:
+ 2008 0168 696E7438 		.ascii	"int8\000"
+ 2008      00
+ 2009              	.LASF4:
+ 2010 016d 6C6F6E67 		.ascii	"long int\000"
+ 2010      20696E74 
+ 2010      00
+ 2011              	.LASF56:
+ 2012 0176 433A5C64 		.ascii	"C:\\dev\\git\\Icebreaker\\Icebreaker.cydsn\000"
+ 2012      65765C67 
+ 2012      69745C49 
+ 2012      63656272 
+ 2012      65616B65 
+ 2013              	.LASF38:
+ 2014 019d 766F6C75 		.ascii	"volume\000"
+ 2014      6D6500
+ 2015              	.LASF58:
+ 2016 01a4 5F5F4655 		.ascii	"__FUNCTION__\000"
+ 2016      4E435449 
+ 2016      4F4E5F5F 
+ 2016      00
+ 2017              	.LASF34:
+ 2018 01b1 70636D31 		.ascii	"pcm1770_send_data\000"
+ 2018      3737305F 
+ 2018      73656E64 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 41
+
+
+ 2018      5F646174 
+ 2018      6100
+ 2019              	.LASF25:
+ 2020 01c3 64656275 		.ascii	"debug_mask\000"
+ 2020      675F6D61 
+ 2020      736B00
+ 2021              	.LASF45:
+ 2022 01ce 63616C5F 		.ascii	"cal_data\000"
+ 2022      64617461 
+ 2022      00
+ 2023              	.LASF18:
+ 2024 01d7 6C6F6E67 		.ascii	"long double\000"
+ 2024      20646F75 
+ 2024      626C6500 
+ 2025              	.LASF48:
+ 2026 01e3 5350495F 		.ascii	"SPI_CLK_Write\000"
+ 2026      434C4B5F 
+ 2026      57726974 
+ 2026      6500
+ 2027              	.LASF43:
+ 2028 01f1 72696768 		.ascii	"right\000"
+ 2028      7400
+ 2029              	.LASF1:
+ 2030 01f7 756E7369 		.ascii	"unsigned char\000"
+ 2030      676E6564 
+ 2030      20636861 
+ 2030      7200
+ 2031              	.LASF21:
+ 2032 0205 636F756E 		.ascii	"counter\000"
+ 2032      74657200 
+ 2033              	.LASF52:
+ 2034 020d 73707269 		.ascii	"sprintf\000"
+ 2034      6E746600 
+ 2035              	.LASF0:
+ 2036 0215 7369676E 		.ascii	"signed char\000"
+ 2036      65642063 
+ 2036      68617200 
+ 2037              	.LASF7:
+ 2038 0221 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2038      206C6F6E 
+ 2038      6720756E 
+ 2038      7369676E 
+ 2038      65642069 
+ 2039              	.LASF53:
+ 2040 0238 55415254 		.ascii	"UART_UartPutString\000"
+ 2040      5F556172 
+ 2040      74507574 
+ 2040      53747269 
+ 2040      6E6700
+ 2041              	.LASF8:
+ 2042 024b 756E7369 		.ascii	"unsigned int\000"
+ 2042      676E6564 
+ 2042      20696E74 
+ 2042      00
+ 2043              	.LASF42:
+ 2044 0258 6C656674 		.ascii	"left\000"
+ 2044      00
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 42
+
+
+ 2045              	.LASF3:
+ 2046 025d 73686F72 		.ascii	"short unsigned int\000"
+ 2046      7420756E 
+ 2046      7369676E 
+ 2046      65642069 
+ 2046      6E7400
+ 2047              	.LASF17:
+ 2048 0270 63686172 		.ascii	"char\000"
+ 2048      00
+ 2049              	.LASF22:
+ 2050 0275 6164635F 		.ascii	"adc_min\000"
+ 2050      6D696E00 
+ 2051              	.LASF26:
+ 2052 027d 63616C69 		.ascii	"calibration_data_s\000"
+ 2052      62726174 
+ 2052      696F6E5F 
+ 2052      64617461 
+ 2052      5F7300
+ 2053              	.LASF46:
+ 2054 0290 67627566 		.ascii	"gbuf\000"
+ 2054      00
+ 2055              	.LASF59:
+ 2056 0295 70636D31 		.ascii	"pcm1770_reg_read\000"
+ 2056      3737305F 
+ 2056      7265675F 
+ 2056      72656164 
+ 2056      00
+ 2057              	.LASF51:
+ 2058 02a6 50445F57 		.ascii	"PD_Write\000"
+ 2058      72697465 
+ 2058      00
+ 2059              	.LASF32:
+ 2060 02af 5F426F6F 		.ascii	"_Bool\000"
+ 2060      6C00
+ 2061              	.LASF30:
+ 2062 02b5 64617461 		.ascii	"data\000"
+ 2062      00
+ 2063              	.LASF10:
+ 2064 02ba 75696E74 		.ascii	"uint16\000"
+ 2064      313600
+ 2065              	.LASF41:
+ 2066 02c1 70636D31 		.ascii	"pcm1770_mute_set\000"
+ 2066      3737305F 
+ 2066      6D757465 
+ 2066      5F736574 
+ 2066      00
+ 2067              	.LASF11:
+ 2068 02d2 75696E74 		.ascii	"uint32\000"
+ 2068      333200
+ 2069              	.LASF5:
+ 2070 02d9 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2070      20756E73 
+ 2070      69676E65 
+ 2070      6420696E 
+ 2070      7400
+ 2071              	.LASF14:
+ 2072 02eb 696E7433 		.ascii	"int32\000"
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cctAVZMf.s 			page 43
+
+
+ 2072      3200
+ 2073              	.LASF16:
+ 2074 02f1 646F7562 		.ascii	"double\000"
+ 2074      6C6500
+ 2075              	.LASF27:
+ 2076 02f8 6D75746C 		.ascii	"mutl\000"
+ 2076      00
+ 2077              	.LASF28:
+ 2078 02fd 6D757472 		.ascii	"mutr\000"
+ 2078      00
+ 2079              	.LASF23:
+ 2080 0302 6164635F 		.ascii	"adc_max\000"
+ 2080      6D617800 
+ 2081              	.LASF40:
+ 2082 030a 6C657665 		.ascii	"level\000"
+ 2082      6C00
+ 2083              	.LASF20:
+ 2084 0310 7369676E 		.ascii	"signature\000"
+ 2084      61747572 
+ 2084      6500
+ 2085              	.LASF24:
+ 2086 031a 6C65645F 		.ascii	"led_max_brightness\000"
+ 2086      6D61785F 
+ 2086      62726967 
+ 2086      68746E65 
+ 2086      737300
+ 2087              	.LASF37:
+ 2088 032d 70636D31 		.ascii	"pcm1770_volume_set\000"
+ 2088      3737305F 
+ 2088      766F6C75 
+ 2088      6D655F73 
+ 2088      657400
+ 2089              	.LASF50:
+ 2090 0340 43794465 		.ascii	"CyDelay\000"
+ 2090      6C617900 
+ 2091              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

@@ -1,0 +1,2169 @@
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"USBInterface.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.UpdateFeedbackCount,"ax",%progbits
+  20              		.align	2
+  21              		.global	UpdateFeedbackCount
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	UpdateFeedbackCount, %function
+  25              	UpdateFeedbackCount:
+  26              	.LFB356:
+  27              		.file 1 "USBInterface.c"
+   1:USBInterface.c **** /*******************************************************************************
+   2:USBInterface.c **** * File Name: USBInterface.c
+   3:USBInterface.c **** *
+   4:USBInterface.c **** * Version 1.0
+   5:USBInterface.c **** *
+   6:USBInterface.c **** * Description: This file contains routines for handling PC/Mac/any USB Host
+   7:USBInterface.c **** *              USB interface requests.
+   8:USBInterface.c **** *
+   9:USBInterface.c **** *******************************************************************************
+  10:USBInterface.c **** * Copyright (2018), Cypress Semiconductor Corporation. All rights reserved.
+  11:USBInterface.c **** *******************************************************************************
+  12:USBInterface.c **** * This software, including source code, documentation and related materials
+  13:USBInterface.c **** * (“Software”), is owned by Cypress Semiconductor Corporation or one of its
+  14:USBInterface.c **** * subsidiaries (“Cypress”) and is protected by and subject to worldwide patent
+  15:USBInterface.c **** * protection (United States and foreign), United States copyright laws and
+  16:USBInterface.c **** * international treaty provisions. Therefore, you may use this Software only
+  17:USBInterface.c **** * as provided in the license agreement accompanying the software package from
+  18:USBInterface.c **** * which you obtained this Software (“EULA”).
+  19:USBInterface.c **** *
+  20:USBInterface.c **** * If no EULA applies, Cypress hereby grants you a personal, nonexclusive,
+  21:USBInterface.c **** * non-transferable license to copy, modify, and compile the Software source
+  22:USBInterface.c **** * code solely for use in connection with Cypress’s integrated circuit products.
+  23:USBInterface.c **** * Any reproduction, modification, translation, compilation, or representation
+  24:USBInterface.c **** * of this Software except as specified above is prohibited without the express
+  25:USBInterface.c **** * written permission of Cypress.
+  26:USBInterface.c **** *
+  27:USBInterface.c **** * Disclaimer: THIS SOFTWARE IS PROVIDED AS-IS, WITH NO WARRANTY OF ANY KIND, 
+  28:USBInterface.c **** * EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, NONINFRINGEMENT, IMPLIED 
+  29:USBInterface.c **** * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. Cypress 
+  30:USBInterface.c **** * reserves the right to make changes to the Software without notice. Cypress 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 2
+
+
+  31:USBInterface.c **** * does not assume any liability arising out of the application or use of the 
+  32:USBInterface.c **** * Software or any product or circuit described in the Software. Cypress does 
+  33:USBInterface.c **** * not authorize its products for use in any products where a malfunction or 
+  34:USBInterface.c **** * failure of the Cypress product may reasonably be expected to result in 
+  35:USBInterface.c **** * significant property damage, injury or death (“High Risk Product”). By 
+  36:USBInterface.c **** * including Cypress’s product in a High Risk Product, the manufacturer of such 
+  37:USBInterface.c **** * system or application assumes all risk of such use and in doing so agrees to 
+  38:USBInterface.c **** * indemnify Cypress against all liability.
+  39:USBInterface.c **** *******************************************************************************/
+  40:USBInterface.c **** #include <Application.h>
+  41:USBInterface.c **** #include <AudioControl.h>
+  42:USBInterface.c **** #include <AudioIn.h>
+  43:USBInterface.c **** #include <AudioOut.h>
+  44:USBInterface.c **** #include <Config.h>
+  45:USBInterface.c **** #include <USBInterface.h>
+  46:USBInterface.c **** #include <Codec.h>
+  47:USBInterface.c **** 
+  48:USBInterface.c **** extern volatile uint8 USBFS_interfaceSetting[];
+  49:USBInterface.c **** 
+  50:USBInterface.c **** extern uint8 USBFS_initVar;
+  51:USBInterface.c **** extern uint8 playlistControlReport;
+  52:USBInterface.c **** extern CYBIT outPlaying;
+  53:USBInterface.c **** extern CYBIT inPlaying;
+  54:USBInterface.c **** 
+  55:USBInterface.c **** extern CYBIT codecInit;  
+  56:USBInterface.c **** 
+  57:USBInterface.c **** uint8 USBDeviceState = USB_INTERFACE_INACTIVE;
+  58:USBInterface.c **** 
+  59:USBInterface.c **** #if(USBFS_EP_MM == USBFS__EP_DMAAUTO) 
+  60:USBInterface.c **** 	uint8 outRam[OUT_AUDIOMAXPKT];
+  61:USBInterface.c **** 	uint8 inRam[IN_AUDIOMAXPKT];
+  62:USBInterface.c ****     uint16 inCnt;    
+  63:USBInterface.c **** #endif
+  64:USBInterface.c **** 
+  65:USBInterface.c **** uint8 freeRunningLRCLKCount;
+  66:USBInterface.c **** uint8 audioSamples;
+  67:USBInterface.c **** uint8 lastFreeRunningLRCLKCount = MAX_UINT8_COUNT-1;
+  68:USBInterface.c **** uint8 explicitFeedback[3] = {0x00,0x00, 0x0C}; /* 48 bytes explicit feedback */
+  69:USBInterface.c **** uint16 explicitFeedbackSamples;
+  70:USBInterface.c **** uint8 updated = FALSE;
+  71:USBInterface.c **** 
+  72:USBInterface.c **** extern uint16 outLevel;
+  73:USBInterface.c **** CYBIT audioAsync = IMPLICIT_FEEDBACK ;
+  74:USBInterface.c **** extern uint8 setRate;
+  75:USBInterface.c **** uint8 asyncready = FALSE;
+  76:USBInterface.c **** 
+  77:USBInterface.c **** uint8 altSetting[NO_OF_AUDIO_STREAM_INTERFACE] = {ALT_SETTING_INVALID, ALT_SETTING_INVALID};
+  78:USBInterface.c **** 
+  79:USBInterface.c **** /*******************************************************************************
+  80:USBInterface.c **** * Function Name: ServiceUSB
+  81:USBInterface.c **** ********************************************************************************
+  82:USBInterface.c **** * Summary: This routine performs tasks that should be done soon after USB 
+  83:USBInterface.c **** *          enumeration is completed (configure DMA, initialize state machine, etc.).
+  84:USBInterface.c **** *          When the USB configuration is changed, this routine reinitializes all
+  85:USBInterface.c **** *          the USB endpoints as required by the application.       
+  86:USBInterface.c **** *
+  87:USBInterface.c **** * Parameters:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 3
+
+
+  88:USBInterface.c **** *  void
+  89:USBInterface.c **** *
+  90:USBInterface.c **** * Return:
+  91:USBInterface.c **** *  void
+  92:USBInterface.c **** *
+  93:USBInterface.c **** *******************************************************************************/
+  94:USBInterface.c **** void ServiceUSB(void)
+  95:USBInterface.c **** {
+  96:USBInterface.c **** 	audioAsync = EXPLICIT_FEEDBACK;
+  97:USBInterface.c **** 	
+  98:USBInterface.c **** 	if(USB_INTERFACE_INACTIVE == USBDeviceState)
+  99:USBInterface.c ****     {
+ 100:USBInterface.c ****         USBDeviceState = USB_INIT_AFTER_ENUMERATION_REQUIRED;
+ 101:USBInterface.c ****     }
+ 102:USBInterface.c **** 	
+ 103:USBInterface.c **** 	/* Initialization sequence for every USB host enumeration event */
+ 104:USBInterface.c ****     if(USBDeviceState == USB_INIT_AFTER_ENUMERATION_REQUIRED)
+ 105:USBInterface.c ****     {
+ 106:USBInterface.c ****         uint16 index = 0;
+ 107:USBInterface.c ****         
+ 108:USBInterface.c ****         USBDeviceState = USB_INIT_AFTER_ENUMERATION_COMPLETED;
+ 109:USBInterface.c ****         
+ 110:USBInterface.c ****         #if(USBFS_EP_MM == USBFS__EP_DMAAUTO)
+ 111:USBInterface.c ****             
+ 112:USBInterface.c **** 			for(index=0; index< AUDIOMAXPKT; index++)
+ 113:USBInterface.c ****             {
+ 114:USBInterface.c **** 				outRam[index] = 0;
+ 115:USBInterface.c ****                 inRam[index] = 0;                
+ 116:USBInterface.c ****             }	
+ 117:USBInterface.c ****             
+ 118:USBInterface.c **** 		  	inCnt = AUDIOMAXPKT;            
+ 119:USBInterface.c ****         #endif		
+ 120:USBInterface.c ****     }
+ 121:USBInterface.c ****     
+ 122:USBInterface.c ****    
+ 123:USBInterface.c ****     /* USBFS_IsConfigurationChanged() is a clear on read status update therefore, only one read of 
+ 124:USBInterface.c ****      * USBFS_IsConfigurationChanged() should ever exist in user code */
+ 125:USBInterface.c ****     if(USBFS_IsConfigurationChanged())
+ 126:USBInterface.c ****     {	                    
+ 127:USBInterface.c ****         if(altSetting[AUDIO_OUT_INTERFACE_INDEX] != USBFS_GetInterfaceSetting(1))
+ 128:USBInterface.c **** 		{
+ 129:USBInterface.c **** 	        /* Get Alternate setting */	        
+ 130:USBInterface.c ****             altSetting[AUDIO_OUT_INTERFACE_INDEX] = USBFS_GetInterfaceSetting(1); 
+ 131:USBInterface.c **** 			
+ 132:USBInterface.c **** 			/* Set 24-bit mode for I2S */
+ 133:USBInterface.c **** 			/* Clear internal pointers */			
+ 134:USBInterface.c **** 			Stop_I2S_Rx();			  
+ 135:USBInterface.c **** 			Stop_I2S_Tx();
+ 136:USBInterface.c **** 			
+ 137:USBInterface.c **** 			/* Stop component */
+ 138:USBInterface.c **** 			I2S_Stop();
+ 139:USBInterface.c **** 
+ 140:USBInterface.c **** 			/* Note: ByteCounter is stopped in Stop_I2S_Tx(); */        
+ 141:USBInterface.c **** 	        ByteCounter_Tx_WritePeriod((OUT_TRANS_SIZE) - 1);
+ 142:USBInterface.c **** 	        ByteCounter_Tx_Enable();
+ 143:USBInterface.c **** 
+ 144:USBInterface.c **** 			/* Restart I2S*/
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 4
+
+
+ 145:USBInterface.c **** 			I2S_Start();
+ 146:USBInterface.c **** 						
+ 147:USBInterface.c **** 	        
+ 148:USBInterface.c **** 	        /* Arming the audio out EP if it is not zero bandwidth alt setting */
+ 149:USBInterface.c **** 	        if (altSetting[AUDIO_OUT_INTERFACE_INDEX]!= ALT_SETTING_ZERO_BANDWIDTH)           
+ 150:USBInterface.c **** 	        {
+ 151:USBInterface.c **** 	            /* Init DMA configurations for audio OUT EP */
+ 152:USBInterface.c **** 	            USBFS_ReadOutEP(AUDIO_OUT_ENDPOINT, &outRam[0], OUT_AUDIOMAXPKT);
+ 153:USBInterface.c **** 	            USBFS_EnableOutEP(AUDIO_OUT_ENDPOINT);                   
+ 154:USBInterface.c ****                 
+ 155:USBInterface.c ****                 if (EXPLICIT_FEEDBACK == audioAsync )
+ 156:USBInterface.c ****     			{
+ 157:USBInterface.c ****     	            USBFS_LoadInEP(ASYNC_EXPLICIT_FEEDBACK_ENDPOINT, &explicitFeedback[0], sizeof(expl
+ 158:USBInterface.c ****     				USBFS_LoadInEP(ASYNC_EXPLICIT_FEEDBACK_ENDPOINT, USBFS_NULL, sizeof(explicitFeedback));
+ 159:USBInterface.c ****     	        }
+ 160:USBInterface.c **** 	        }
+ 161:USBInterface.c ****             else
+ 162:USBInterface.c ****             {                
+ 163:USBInterface.c ****                 /* Trigger USB Audio OUT EP DMA to flush out the data before entering zero bandwidt
+ 164:USBInterface.c ****                 USBFS_CyDmaTriggerIn(USBFS_DmaReqOut[AUDIO_OUT_ENDPOINT]);
+ 165:USBInterface.c ****                 USBFS_CyDmaTriggerIn(USBFS_DmaReqOut[ASYNC_EXPLICIT_FEEDBACK_ENDPOINT]);
+ 166:USBInterface.c ****             }
+ 167:USBInterface.c **** 			
+ 168:USBInterface.c **** 			processAsyncFeedbackTransfer(DO_NOT_CLEAR_UPDATE_FLAG);        
+ 169:USBInterface.c ****         }        
+ 170:USBInterface.c ****         
+ 171:USBInterface.c ****         if(altSetting[AUDIO_IN_INTERFACE_INDEX] != USBFS_GetInterfaceSetting(2))
+ 172:USBInterface.c ****     	{            
+ 173:USBInterface.c ****             altSetting[AUDIO_IN_INTERFACE_INDEX] = USBFS_GetInterfaceSetting(2);           
+ 174:USBInterface.c **** 		
+ 175:USBInterface.c **** 			Stop_I2S_Rx();			
+ 176:USBInterface.c **** 			
+ 177:USBInterface.c ****             ByteCounter_Rx_WritePeriod((IN_TRANS_SIZE) - 1);
+ 178:USBInterface.c ****             
+ 179:USBInterface.c ****             /* Arming the audio in EP if it is not zero bandwidth alt setting */
+ 180:USBInterface.c ****             if (altSetting[AUDIO_IN_INTERFACE_INDEX] != ALT_SETTING_ZERO_BANDWIDTH)               
+ 181:USBInterface.c ****             {
+ 182:USBInterface.c ****                 /* Init DMA configurations for audio IN EP */  
+ 183:USBInterface.c ****                 inCnt = IN_AUDIOMAXPKT;
+ 184:USBInterface.c ****                 USBFS_LoadInEP(AUDIO_IN_ENDPOINT, &inRam[0], inCnt);
+ 185:USBInterface.c ****                 
+ 186:USBInterface.c ****                 /* Pre-arm first audio IN request */
+ 187:USBInterface.c ****                 USBFS_LoadInEP(AUDIO_IN_ENDPOINT, USBFS_NULL, inCnt);                
+ 188:USBInterface.c ****             }
+ 189:USBInterface.c ****             else
+ 190:USBInterface.c ****             {
+ 191:USBInterface.c ****                  /* Trigger USB Audio IN EP DMA to flush out the data before entering zero bandwidt
+ 192:USBInterface.c ****                 USBFS_CyDmaTriggerIn(USBFS_DmaReqOut[AUDIO_IN_ENDPOINT]);
+ 193:USBInterface.c ****             }
+ 194:USBInterface.c **** 		}       
+ 195:USBInterface.c **** 	}
+ 196:USBInterface.c **** }
+ 197:USBInterface.c **** 
+ 198:USBInterface.c **** /*******************************************************************************
+ 199:USBInterface.c **** * Function Name: UpdateFeedbackCount
+ 200:USBInterface.c **** ********************************************************************************
+ 201:USBInterface.c **** * Summary: This routine calculates the total number of audio samples consumed
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 5
+
+
+ 202:USBInterface.c **** *          by PSoC per SOF interval. The number of audio samples consumed
+ 203:USBInterface.c **** *          determines the explicit feedback count to be sent to the USB host
+ 204:USBInterface.c **** *          over the feedback endpoint
+ 205:USBInterface.c **** *
+ 206:USBInterface.c **** * Parameters:
+ 207:USBInterface.c **** *  None
+ 208:USBInterface.c **** *
+ 209:USBInterface.c **** * Return:
+ 210:USBInterface.c **** *  None
+ 211:USBInterface.c **** *
+ 212:USBInterface.c **** *******************************************************************************/
+ 213:USBInterface.c **** void UpdateFeedbackCount(void)
+ 214:USBInterface.c **** {	
+  28              		.loc 1 214 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 10B5     		push	{r4, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+ 215:USBInterface.c **** 	/* Feedback calculation logic for both implicit and explicit feedback on every SOF interrupt */
+ 216:USBInterface.c **** 	/* Get the Async_Feedback_Counter current count value */
+ 217:USBInterface.c **** 	freeRunningLRCLKCount = Async_Feedback_Counter_ReadCounter();
+  36              		.loc 1 217 0
+  37 0002 FFF7FEFF 		bl	Async_Feedback_Counter_ReadCounter
+  38              	.LVL0:
+  39 0006 224B     		ldr	r3, .L5
+  40 0008 1870     		strb	r0, [r3]
+ 218:USBInterface.c **** 	
+ 219:USBInterface.c **** 	/* Calculate the number of audio samples transferred from last SOF interrupt */
+ 220:USBInterface.c ****     audioSamples = (((uint32)lastFreeRunningLRCLKCount) + MAX_UINT8_COUNT - ((uint32)freeRunningLRC
+  41              		.loc 1 220 0
+  42 000a 224A     		ldr	r2, .L5+4
+  43 000c 1378     		ldrb	r3, [r2]
+  44 000e 1B1A     		subs	r3, r3, r0
+  45 0010 2149     		ldr	r1, .L5+8
+  46 0012 0B70     		strb	r3, [r1]
+ 221:USBInterface.c **** 	
+ 222:USBInterface.c **** 	/* Store the read counter value for next cycle */
+ 223:USBInterface.c **** 	lastFreeRunningLRCLKCount = freeRunningLRCLKCount;
+  47              		.loc 1 223 0
+  48 0014 1070     		strb	r0, [r2]
+ 224:USBInterface.c **** 	
+ 225:USBInterface.c **** 	/* If clocks and Async endpoint are configured, process Async data */
+ 226:USBInterface.c ****     if(asyncready)
+  49              		.loc 1 226 0
+  50 0016 214B     		ldr	r3, .L5+12
+  51 0018 1B78     		ldrb	r3, [r3]
+  52 001a 002B     		cmp	r3, #0
+  53 001c 37D0     		beq	.L1
+ 227:USBInterface.c ****     {
+ 228:USBInterface.c **** 	    /* Process only for explicit feedback */
+ 229:USBInterface.c **** 		if (EXPLICIT_FEEDBACK == audioAsync )
+  54              		.loc 1 229 0
+  55 001e 1F4B     		ldr	r3, .L5+12
+  56 0020 5B78     		ldrb	r3, [r3, #1]
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 6
+
+
+  57 0022 012B     		cmp	r3, #1
+  58 0024 33D1     		bne	.L1
+ 230:USBInterface.c **** 	    {	 	        
+ 231:USBInterface.c **** 			/* Read the feedback count value */
+ 232:USBInterface.c **** 			explicitFeedbackSamples = ((uint16)explicitFeedback[2]) << 8 | explicitFeedback[1];
+  59              		.loc 1 232 0
+  60 0026 9379     		ldrb	r3, [r2, #6]
+  61 0028 1B02     		lsls	r3, r3, #8
+  62 002a 5279     		ldrb	r2, [r2, #5]
+  63 002c 1343     		orrs	r3, r2
+  64 002e 1C4A     		ldr	r2, .L5+16
+  65 0030 1380     		strh	r3, [r2]
+ 233:USBInterface.c **** 			
+ 234:USBInterface.c **** 			/* Increment or decrement the feedback count value depending on whether the audio out buffer is 
+ 235:USBInterface.c **** 				The update happens only once every Async feedback point read from the host */
+ 236:USBInterface.c **** 	        if((outLevel < OUT_HALF) && (updated == FALSE))
+  66              		.loc 1 236 0
+  67 0032 1C4A     		ldr	r2, .L5+20
+  68 0034 1288     		ldrh	r2, [r2]
+  69 0036 1C49     		ldr	r1, .L5+24
+  70 0038 8A42     		cmp	r2, r1
+  71 003a 0AD8     		bhi	.L3
+  72              		.loc 1 236 0 is_stmt 0 discriminator 1
+  73 003c 1749     		ldr	r1, .L5+12
+  74 003e 8978     		ldrb	r1, [r1, #2]
+  75 0040 0029     		cmp	r1, #0
+  76 0042 06D1     		bne	.L3
+ 237:USBInterface.c **** 	        {	            
+ 238:USBInterface.c **** 				explicitFeedbackSamples += MINIMUM_FEEDBACK_REQUEST;					
+  77              		.loc 1 238 0 is_stmt 1
+  78 0044 0833     		adds	r3, r3, #8
+  79 0046 164A     		ldr	r2, .L5+16
+  80 0048 1380     		strh	r3, [r2]
+ 239:USBInterface.c **** 	            updated = TRUE;
+  81              		.loc 1 239 0
+  82 004a 0122     		movs	r2, #1
+  83 004c 134B     		ldr	r3, .L5+12
+  84 004e 9A70     		strb	r2, [r3, #2]
+  85 0050 0DE0     		b	.L4
+  86              	.L3:
+ 240:USBInterface.c **** 	        }
+ 241:USBInterface.c **** 	        else if((outLevel > (OUT_HALF + AUDIOMAXPKT))&& (updated == FALSE))
+  87              		.loc 1 241 0
+  88 0052 D821     		movs	r1, #216
+  89 0054 8900     		lsls	r1, r1, #2
+  90 0056 8A42     		cmp	r2, r1
+  91 0058 09D9     		bls	.L4
+  92              		.loc 1 241 0 is_stmt 0 discriminator 1
+  93 005a 104A     		ldr	r2, .L5+12
+  94 005c 9278     		ldrb	r2, [r2, #2]
+  95 005e 002A     		cmp	r2, #0
+  96 0060 05D1     		bne	.L4
+ 242:USBInterface.c **** 	        {				
+ 243:USBInterface.c **** 				explicitFeedbackSamples -= MINIMUM_FEEDBACK_REQUEST;			
+  97              		.loc 1 243 0 is_stmt 1
+  98 0062 083B     		subs	r3, r3, #8
+  99 0064 0E4A     		ldr	r2, .L5+16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 7
+
+
+ 100 0066 1380     		strh	r3, [r2]
+ 244:USBInterface.c **** 	            updated = TRUE;				
+ 101              		.loc 1 244 0
+ 102 0068 0122     		movs	r2, #1
+ 103 006a 0C4B     		ldr	r3, .L5+12
+ 104 006c 9A70     		strb	r2, [r3, #2]
+ 105              	.L4:
+ 245:USBInterface.c **** 	        }
+ 246:USBInterface.c **** 			
+ 247:USBInterface.c **** 			/* Update the feedback count back */
+ 248:USBInterface.c **** 			explicitFeedback[2] = HI8(explicitFeedbackSamples);
+ 106              		.loc 1 248 0
+ 107 006e 0C4B     		ldr	r3, .L5+16
+ 108 0070 1A88     		ldrh	r2, [r3]
+ 109 0072 110A     		lsrs	r1, r2, #8
+ 110 0074 074B     		ldr	r3, .L5+4
+ 111 0076 9971     		strb	r1, [r3, #6]
+ 249:USBInterface.c **** 			explicitFeedback[1] = LO8(explicitFeedbackSamples);
+ 112              		.loc 1 249 0
+ 113 0078 5A71     		strb	r2, [r3, #5]
+ 250:USBInterface.c **** 	        	        	        
+ 251:USBInterface.c **** 	        /* Arm the feedback endpoint */
+ 252:USBInterface.c **** 	        if((USBFS_GetEPState(ASYNC_EXPLICIT_FEEDBACK_ENDPOINT) == USBFS_IN_BUFFER_EMPTY))
+ 114              		.loc 1 252 0
+ 115 007a 0320     		movs	r0, #3
+ 116 007c FFF7FEFF 		bl	USBFS_GetEPState
+ 117              	.LVL1:
+ 118 0080 0128     		cmp	r0, #1
+ 119 0082 04D1     		bne	.L1
+ 253:USBInterface.c **** 	        {		            
+ 254:USBInterface.c **** 				USBFS_LoadInEP(ASYNC_EXPLICIT_FEEDBACK_ENDPOINT, USBFS_NULL, sizeof(explicitFeedback));
+ 120              		.loc 1 254 0
+ 121 0084 0322     		movs	r2, #3
+ 122 0086 0021     		movs	r1, #0
+ 123 0088 0230     		adds	r0, r0, #2
+ 124 008a FFF7FEFF 		bl	USBFS_LoadInEP
+ 125              	.LVL2:
+ 126              	.L1:
+ 255:USBInterface.c **** 	        }
+ 256:USBInterface.c **** 	    
+ 257:USBInterface.c **** 	    }
+ 258:USBInterface.c ****     }
+ 259:USBInterface.c **** 
+ 260:USBInterface.c **** }
+ 127              		.loc 1 260 0
+ 128              		@ sp needed
+ 129 008e 10BD     		pop	{r4, pc}
+ 130              	.L6:
+ 131              		.align	2
+ 132              	.L5:
+ 133 0090 00000000 		.word	freeRunningLRCLKCount
+ 134 0094 00000000 		.word	.LANCHOR0
+ 135 0098 00000000 		.word	audioSamples
+ 136 009c 00000000 		.word	.LANCHOR1
+ 137 00a0 00000000 		.word	explicitFeedbackSamples
+ 138 00a4 00000000 		.word	outLevel
+ 139 00a8 3F020000 		.word	575
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 8
+
+
+ 140              		.cfi_endproc
+ 141              	.LFE356:
+ 142              		.size	UpdateFeedbackCount, .-UpdateFeedbackCount
+ 143              		.section	.text.processAsyncFeedbackTransfer,"ax",%progbits
+ 144              		.align	2
+ 145              		.global	processAsyncFeedbackTransfer
+ 146              		.code	16
+ 147              		.thumb_func
+ 148              		.type	processAsyncFeedbackTransfer, %function
+ 149              	processAsyncFeedbackTransfer:
+ 150              	.LFB357:
+ 261:USBInterface.c **** 
+ 262:USBInterface.c **** /*******************************************************************************
+ 263:USBInterface.c **** * Function Name: processAsyncFeedbackTransfer
+ 264:USBInterface.c **** ********************************************************************************
+ 265:USBInterface.c **** * Summary: This routine uses the Async explicit feedback endpoint data transfer
+ 266:USBInterface.c **** *          completion interrupt to update the explicit feedback count to it's
+ 267:USBInterface.c **** *          default value corresponding to system sampling rate
+ 268:USBInterface.c ****     *
+ 269:USBInterface.c **** * Parameters:
+ 270:USBInterface.c **** *  None
+ 271:USBInterface.c **** *
+ 272:USBInterface.c **** * Return:   
+ 273:USBInterface.c **** *  None
+ 274:USBInterface.c **** *
+ 275:USBInterface.c **** *******************************************************************************/
+ 276:USBInterface.c **** void processAsyncFeedbackTransfer(uint32 clearFlag)
+ 277:USBInterface.c **** {
+ 151              		.loc 1 277 0
+ 152              		.cfi_startproc
+ 153              		@ args = 0, pretend = 0, frame = 0
+ 154              		@ frame_needed = 0, uses_anonymous_args = 0
+ 155              		@ link register save eliminated.
+ 156              	.LVL3:
+ 278:USBInterface.c ****     /* Reset the feedback count every time the host reads the feedback count data */
+ 279:USBInterface.c **** 	
+ 280:USBInterface.c **** 	if (EXPLICIT_FEEDBACK == audioAsync )
+ 157              		.loc 1 280 0
+ 158 0000 0F4B     		ldr	r3, .L12
+ 159 0002 5B78     		ldrb	r3, [r3, #1]
+ 160 0004 012B     		cmp	r3, #1
+ 161 0006 19D1     		bne	.L7
+ 281:USBInterface.c **** 	{				
+ 282:USBInterface.c **** 		switch(setRate)
+ 162              		.loc 1 282 0
+ 163 0008 0E4B     		ldr	r3, .L12+4
+ 164 000a 1B78     		ldrb	r3, [r3]
+ 165 000c 002B     		cmp	r3, #0
+ 166 000e 02D0     		beq	.L10
+ 167 0010 012B     		cmp	r3, #1
+ 168 0012 07D0     		beq	.L11
+ 169 0014 0DE0     		b	.L9
+ 170              	.L10:
+ 283:USBInterface.c **** 		{
+ 284:USBInterface.c **** 			case RATE_48KHZ:
+ 285:USBInterface.c **** 				explicitFeedback[0] = 0x00;
+ 171              		.loc 1 285 0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 9
+
+
+ 172 0016 0C4B     		ldr	r3, .L12+8
+ 173 0018 0022     		movs	r2, #0
+ 174 001a 1A71     		strb	r2, [r3, #4]
+ 286:USBInterface.c **** 				explicitFeedback[1] = 0x00;
+ 175              		.loc 1 286 0
+ 176 001c 5A71     		strb	r2, [r3, #5]
+ 287:USBInterface.c **** 				explicitFeedback[2] = 0x0C; /* 48 samples explicit feedback */
+ 177              		.loc 1 287 0
+ 178 001e 0C32     		adds	r2, r2, #12
+ 179 0020 9A71     		strb	r2, [r3, #6]
+ 288:USBInterface.c **** 			break;
+ 180              		.loc 1 288 0
+ 181 0022 06E0     		b	.L9
+ 182              	.L11:
+ 289:USBInterface.c **** 				
+ 290:USBInterface.c **** 			case RATE_44KHZ:
+ 291:USBInterface.c **** 				explicitFeedback[0] = 0x66; 
+ 183              		.loc 1 291 0
+ 184 0024 084B     		ldr	r3, .L12+8
+ 185 0026 6622     		movs	r2, #102
+ 186 0028 1A71     		strb	r2, [r3, #4]
+ 292:USBInterface.c **** 				explicitFeedback[1] = 0x06;
+ 187              		.loc 1 292 0
+ 188 002a 603A     		subs	r2, r2, #96
+ 189 002c 5A71     		strb	r2, [r3, #5]
+ 293:USBInterface.c **** 				explicitFeedback[2] = 0x0B; /* 44.1 samples explicit feedback */
+ 190              		.loc 1 293 0
+ 191 002e 0532     		adds	r2, r2, #5
+ 192 0030 9A71     		strb	r2, [r3, #6]
+ 193              	.L9:
+ 294:USBInterface.c **** 			break;
+ 295:USBInterface.c **** 			
+ 296:USBInterface.c **** 			default:
+ 297:USBInterface.c **** 			break;
+ 298:USBInterface.c **** 		}	
+ 299:USBInterface.c **** 		
+ 300:USBInterface.c **** 		/* Clear the flag to indicate the data has been read by the host */
+ 301:USBInterface.c **** 		if(clearFlag)
+ 194              		.loc 1 301 0
+ 195 0032 0028     		cmp	r0, #0
+ 196 0034 02D0     		beq	.L7
+ 302:USBInterface.c **** 		{
+ 303:USBInterface.c **** 			updated = FALSE;
+ 197              		.loc 1 303 0
+ 198 0036 0022     		movs	r2, #0
+ 199 0038 014B     		ldr	r3, .L12
+ 200 003a 9A70     		strb	r2, [r3, #2]
+ 201              	.L7:
+ 304:USBInterface.c **** 		}
+ 305:USBInterface.c **** 	}
+ 306:USBInterface.c **** }
+ 202              		.loc 1 306 0
+ 203              		@ sp needed
+ 204 003c 7047     		bx	lr
+ 205              	.L13:
+ 206 003e C046     		.align	2
+ 207              	.L12:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 10
+
+
+ 208 0040 00000000 		.word	.LANCHOR1
+ 209 0044 00000000 		.word	setRate
+ 210 0048 00000000 		.word	.LANCHOR0
+ 211              		.cfi_endproc
+ 212              	.LFE357:
+ 213              		.size	processAsyncFeedbackTransfer, .-processAsyncFeedbackTransfer
+ 214              		.section	.text.ServiceUSB,"ax",%progbits
+ 215              		.align	2
+ 216              		.global	ServiceUSB
+ 217              		.code	16
+ 218              		.thumb_func
+ 219              		.type	ServiceUSB, %function
+ 220              	ServiceUSB:
+ 221              	.LFB355:
+  95:USBInterface.c **** 	audioAsync = EXPLICIT_FEEDBACK;
+ 222              		.loc 1 95 0
+ 223              		.cfi_startproc
+ 224              		@ args = 0, pretend = 0, frame = 0
+ 225              		@ frame_needed = 0, uses_anonymous_args = 0
+ 226 0000 10B5     		push	{r4, lr}
+ 227              		.cfi_def_cfa_offset 8
+ 228              		.cfi_offset 4, -8
+ 229              		.cfi_offset 14, -4
+  96:USBInterface.c **** 	
+ 230              		.loc 1 96 0
+ 231 0002 464B     		ldr	r3, .L24
+ 232 0004 0122     		movs	r2, #1
+ 233 0006 5A70     		strb	r2, [r3, #1]
+  98:USBInterface.c ****     {
+ 234              		.loc 1 98 0
+ 235 0008 DB78     		ldrb	r3, [r3, #3]
+ 236 000a 002B     		cmp	r3, #0
+ 237 000c 01D1     		bne	.L15
+ 100:USBInterface.c ****     }
+ 238              		.loc 1 100 0
+ 239 000e 434B     		ldr	r3, .L24
+ 240 0010 DA70     		strb	r2, [r3, #3]
+ 241              	.L15:
+ 104:USBInterface.c ****     {
+ 242              		.loc 1 104 0
+ 243 0012 424B     		ldr	r3, .L24
+ 244 0014 DB78     		ldrb	r3, [r3, #3]
+ 245 0016 012B     		cmp	r3, #1
+ 246 0018 12D1     		bne	.L16
+ 247              	.LVL4:
+ 248              	.LBB2:
+ 108:USBInterface.c ****         
+ 249              		.loc 1 108 0
+ 250 001a 0222     		movs	r2, #2
+ 251 001c 3F4B     		ldr	r3, .L24
+ 252 001e DA70     		strb	r2, [r3, #3]
+ 112:USBInterface.c ****             {
+ 253              		.loc 1 112 0
+ 254 0020 0023     		movs	r3, #0
+ 255 0022 06E0     		b	.L17
+ 256              	.LVL5:
+ 257              	.L18:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 11
+
+
+ 114:USBInterface.c ****                 inRam[index] = 0;                
+ 258              		.loc 1 114 0 discriminator 3
+ 259 0024 0022     		movs	r2, #0
+ 260 0026 3E49     		ldr	r1, .L24+4
+ 261 0028 CA54     		strb	r2, [r1, r3]
+ 115:USBInterface.c ****             }	
+ 262              		.loc 1 115 0 discriminator 3
+ 263 002a 3E49     		ldr	r1, .L24+8
+ 264 002c CA54     		strb	r2, [r1, r3]
+ 112:USBInterface.c ****             {
+ 265              		.loc 1 112 0 discriminator 3
+ 266 002e 0133     		adds	r3, r3, #1
+ 267              	.LVL6:
+ 268 0030 9BB2     		uxth	r3, r3
+ 269              	.LVL7:
+ 270              	.L17:
+ 112:USBInterface.c ****             {
+ 271              		.loc 1 112 0 is_stmt 0 discriminator 1
+ 272 0032 2022     		movs	r2, #32
+ 273 0034 FF32     		adds	r2, r2, #255
+ 274 0036 9342     		cmp	r3, r2
+ 275 0038 F4D9     		bls	.L18
+ 118:USBInterface.c ****         #endif		
+ 276              		.loc 1 118 0 is_stmt 1
+ 277 003a 0132     		adds	r2, r2, #1
+ 278 003c 3A4B     		ldr	r3, .L24+12
+ 279              	.LVL8:
+ 280 003e 1A80     		strh	r2, [r3]
+ 281              	.L16:
+ 282              	.LBE2:
+ 125:USBInterface.c ****     {	                    
+ 283              		.loc 1 125 0
+ 284 0040 FFF7FEFF 		bl	USBFS_IsConfigurationChanged
+ 285              	.LVL9:
+ 286 0044 0028     		cmp	r0, #0
+ 287 0046 68D0     		beq	.L14
+ 127:USBInterface.c **** 		{
+ 288              		.loc 1 127 0
+ 289 0048 384B     		ldr	r3, .L24+16
+ 290 004a 1C7A     		ldrb	r4, [r3, #8]
+ 291 004c 0120     		movs	r0, #1
+ 292 004e FFF7FEFF 		bl	USBFS_GetInterfaceSetting
+ 293              	.LVL10:
+ 294 0052 8442     		cmp	r4, r0
+ 295 0054 39D0     		beq	.L20
+ 130:USBInterface.c **** 			
+ 296              		.loc 1 130 0
+ 297 0056 0120     		movs	r0, #1
+ 298 0058 FFF7FEFF 		bl	USBFS_GetInterfaceSetting
+ 299              	.LVL11:
+ 300 005c 334C     		ldr	r4, .L24+16
+ 301 005e 2072     		strb	r0, [r4, #8]
+ 134:USBInterface.c **** 			Stop_I2S_Tx();
+ 302              		.loc 1 134 0
+ 303 0060 FFF7FEFF 		bl	Stop_I2S_Rx
+ 304              	.LVL12:
+ 135:USBInterface.c **** 			
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 12
+
+
+ 305              		.loc 1 135 0
+ 306 0064 FFF7FEFF 		bl	Stop_I2S_Tx
+ 307              	.LVL13:
+ 138:USBInterface.c **** 
+ 308              		.loc 1 138 0
+ 309 0068 FFF7FEFF 		bl	I2S_Stop
+ 310              	.LVL14:
+ 141:USBInterface.c **** 	        ByteCounter_Tx_Enable();
+ 311              		.loc 1 141 0
+ 312 006c 8F20     		movs	r0, #143
+ 313 006e FFF7FEFF 		bl	ByteCounter_Tx_WritePeriod
+ 314              	.LVL15:
+ 142:USBInterface.c **** 
+ 315              		.loc 1 142 0
+ 316 0072 FFF7FEFF 		bl	ByteCounter_Tx_Enable
+ 317              	.LVL16:
+ 145:USBInterface.c **** 						
+ 318              		.loc 1 145 0
+ 319 0076 FFF7FEFF 		bl	I2S_Start
+ 320              	.LVL17:
+ 149:USBInterface.c **** 	        {
+ 321              		.loc 1 149 0
+ 322 007a 237A     		ldrb	r3, [r4, #8]
+ 323 007c 002B     		cmp	r3, #0
+ 324 007e 18D0     		beq	.L21
+ 152:USBInterface.c **** 	            USBFS_EnableOutEP(AUDIO_OUT_ENDPOINT);                   
+ 325              		.loc 1 152 0
+ 326 0080 9322     		movs	r2, #147
+ 327 0082 5200     		lsls	r2, r2, #1
+ 328 0084 2649     		ldr	r1, .L24+4
+ 329 0086 0120     		movs	r0, #1
+ 330 0088 FFF7FEFF 		bl	USBFS_ReadOutEP
+ 331              	.LVL18:
+ 153:USBInterface.c ****                 
+ 332              		.loc 1 153 0
+ 333 008c 0120     		movs	r0, #1
+ 334 008e FFF7FEFF 		bl	USBFS_EnableOutEP
+ 335              	.LVL19:
+ 155:USBInterface.c ****     			{
+ 336              		.loc 1 155 0
+ 337 0092 224B     		ldr	r3, .L24
+ 338 0094 5B78     		ldrb	r3, [r3, #1]
+ 339 0096 012B     		cmp	r3, #1
+ 340 0098 14D1     		bne	.L22
+ 157:USBInterface.c ****     				USBFS_LoadInEP(ASYNC_EXPLICIT_FEEDBACK_ENDPOINT, USBFS_NULL, sizeof(explicitFeedback));
+ 341              		.loc 1 157 0
+ 342 009a 0322     		movs	r2, #3
+ 343 009c 2349     		ldr	r1, .L24+16
+ 344 009e 0431     		adds	r1, r1, #4
+ 345 00a0 0320     		movs	r0, #3
+ 346 00a2 FFF7FEFF 		bl	USBFS_LoadInEP
+ 347              	.LVL20:
+ 158:USBInterface.c ****     	        }
+ 348              		.loc 1 158 0
+ 349 00a6 0322     		movs	r2, #3
+ 350 00a8 0021     		movs	r1, #0
+ 351 00aa 0320     		movs	r0, #3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 13
+
+
+ 352 00ac FFF7FEFF 		bl	USBFS_LoadInEP
+ 353              	.LVL21:
+ 354 00b0 08E0     		b	.L22
+ 355              	.L21:
+ 164:USBInterface.c ****                 USBFS_CyDmaTriggerIn(USBFS_DmaReqOut[ASYNC_EXPLICIT_FEEDBACK_ENDPOINT]);
+ 356              		.loc 1 164 0
+ 357 00b2 1F4B     		ldr	r3, .L24+20
+ 358 00b4 5A78     		ldrb	r2, [r3, #1]
+ 359 00b6 1F48     		ldr	r0, .L24+24
+ 360 00b8 0243     		orrs	r2, r0
+ 361 00ba 1F49     		ldr	r1, .L24+28
+ 362 00bc 0A60     		str	r2, [r1]
+ 165:USBInterface.c ****             }
+ 363              		.loc 1 165 0
+ 364 00be DB78     		ldrb	r3, [r3, #3]
+ 365 00c0 0343     		orrs	r3, r0
+ 366 00c2 0B60     		str	r3, [r1]
+ 367              	.L22:
+ 168:USBInterface.c ****         }        
+ 368              		.loc 1 168 0
+ 369 00c4 0020     		movs	r0, #0
+ 370 00c6 FFF7FEFF 		bl	processAsyncFeedbackTransfer
+ 371              	.LVL22:
+ 372              	.L20:
+ 171:USBInterface.c ****     	{            
+ 373              		.loc 1 171 0
+ 374 00ca 184B     		ldr	r3, .L24+16
+ 375 00cc 5C7A     		ldrb	r4, [r3, #9]
+ 376 00ce 0220     		movs	r0, #2
+ 377 00d0 FFF7FEFF 		bl	USBFS_GetInterfaceSetting
+ 378              	.LVL23:
+ 379 00d4 8442     		cmp	r4, r0
+ 380 00d6 20D0     		beq	.L14
+ 173:USBInterface.c **** 		
+ 381              		.loc 1 173 0
+ 382 00d8 0220     		movs	r0, #2
+ 383 00da FFF7FEFF 		bl	USBFS_GetInterfaceSetting
+ 384              	.LVL24:
+ 385 00de 134C     		ldr	r4, .L24+16
+ 386 00e0 6072     		strb	r0, [r4, #9]
+ 175:USBInterface.c **** 			
+ 387              		.loc 1 175 0
+ 388 00e2 FFF7FEFF 		bl	Stop_I2S_Rx
+ 389              	.LVL25:
+ 177:USBInterface.c ****             
+ 390              		.loc 1 177 0
+ 391 00e6 8F20     		movs	r0, #143
+ 392 00e8 FFF7FEFF 		bl	ByteCounter_Rx_WritePeriod
+ 393              	.LVL26:
+ 180:USBInterface.c ****             {
+ 394              		.loc 1 180 0
+ 395 00ec 637A     		ldrb	r3, [r4, #9]
+ 396 00ee 002B     		cmp	r3, #0
+ 397 00f0 0DD0     		beq	.L23
+ 183:USBInterface.c ****                 USBFS_LoadInEP(AUDIO_IN_ENDPOINT, &inRam[0], inCnt);
+ 398              		.loc 1 183 0
+ 399 00f2 0D4C     		ldr	r4, .L24+12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 14
+
+
+ 400 00f4 9322     		movs	r2, #147
+ 401 00f6 5200     		lsls	r2, r2, #1
+ 402 00f8 2280     		strh	r2, [r4]
+ 184:USBInterface.c ****                 
+ 403              		.loc 1 184 0
+ 404 00fa 0A49     		ldr	r1, .L24+8
+ 405 00fc 0220     		movs	r0, #2
+ 406 00fe FFF7FEFF 		bl	USBFS_LoadInEP
+ 407              	.LVL27:
+ 187:USBInterface.c ****             }
+ 408              		.loc 1 187 0
+ 409 0102 2288     		ldrh	r2, [r4]
+ 410 0104 0021     		movs	r1, #0
+ 411 0106 0220     		movs	r0, #2
+ 412 0108 FFF7FEFF 		bl	USBFS_LoadInEP
+ 413              	.LVL28:
+ 414 010c 05E0     		b	.L14
+ 415              	.L23:
+ 192:USBInterface.c ****             }
+ 416              		.loc 1 192 0
+ 417 010e 084B     		ldr	r3, .L24+20
+ 418 0110 9B78     		ldrb	r3, [r3, #2]
+ 419 0112 084A     		ldr	r2, .L24+24
+ 420 0114 1343     		orrs	r3, r2
+ 421 0116 084A     		ldr	r2, .L24+28
+ 422 0118 1360     		str	r3, [r2]
+ 423              	.L14:
+ 196:USBInterface.c **** 
+ 424              		.loc 1 196 0
+ 425              		@ sp needed
+ 426 011a 10BD     		pop	{r4, pc}
+ 427              	.L25:
+ 428              		.align	2
+ 429              	.L24:
+ 430 011c 00000000 		.word	.LANCHOR1
+ 431 0120 00000000 		.word	outRam
+ 432 0124 00000000 		.word	inRam
+ 433 0128 00000000 		.word	inCnt
+ 434 012c 00000000 		.word	.LANCHOR0
+ 435 0130 00000000 		.word	USBFS_DmaReqOut
+ 436 0134 000102C0 		.word	-1073610496
+ 437 0138 00060140 		.word	1073808896
+ 438              		.cfi_endproc
+ 439              	.LFE355:
+ 440              		.size	ServiceUSB, .-ServiceUSB
+ 441              		.global	altSetting
+ 442              		.global	asyncready
+ 443              		.global	audioAsync
+ 444              		.global	updated
+ 445              		.comm	explicitFeedbackSamples,2,2
+ 446              		.global	explicitFeedback
+ 447              		.global	lastFreeRunningLRCLKCount
+ 448              		.comm	audioSamples,1,1
+ 449              		.comm	freeRunningLRCLKCount,1,1
+ 450              		.comm	inCnt,2,2
+ 451              		.comm	inRam,294,4
+ 452              		.comm	outRam,294,4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 15
+
+
+ 453              		.global	USBDeviceState
+ 454              		.data
+ 455              		.align	2
+ 456              		.set	.LANCHOR0,. + 0
+ 457              		.type	lastFreeRunningLRCLKCount, %object
+ 458              		.size	lastFreeRunningLRCLKCount, 1
+ 459              	lastFreeRunningLRCLKCount:
+ 460 0000 FF       		.byte	-1
+ 461 0001 000000   		.space	3
+ 462              		.type	explicitFeedback, %object
+ 463              		.size	explicitFeedback, 3
+ 464              	explicitFeedback:
+ 465 0004 00       		.byte	0
+ 466 0005 00       		.byte	0
+ 467 0006 0C       		.byte	12
+ 468 0007 00       		.space	1
+ 469              		.type	altSetting, %object
+ 470              		.size	altSetting, 2
+ 471              	altSetting:
+ 472 0008 FF       		.byte	-1
+ 473 0009 FF       		.byte	-1
+ 474              		.bss
+ 475              		.set	.LANCHOR1,. + 0
+ 476              		.type	asyncready, %object
+ 477              		.size	asyncready, 1
+ 478              	asyncready:
+ 479 0000 00       		.space	1
+ 480              		.type	audioAsync, %object
+ 481              		.size	audioAsync, 1
+ 482              	audioAsync:
+ 483 0001 00       		.space	1
+ 484              		.type	updated, %object
+ 485              		.size	updated, 1
+ 486              	updated:
+ 487 0002 00       		.space	1
+ 488              		.type	USBDeviceState, %object
+ 489              		.size	USBDeviceState, 1
+ 490              	USBDeviceState:
+ 491 0003 00       		.space	1
+ 492              		.text
+ 493              	.Letext0:
+ 494              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 495              		.file 3 "Generated_Source\\PSoC4/USBFS_pvt.h"
+ 496              		.file 4 "Generated_Source\\PSoC4/Async_Feedback_Counter.h"
+ 497              		.file 5 "Generated_Source\\PSoC4/USBFS.h"
+ 498              		.file 6 "./AudioIn.h"
+ 499              		.file 7 "./AudioOut.h"
+ 500              		.file 8 "Generated_Source\\PSoC4/I2S.h"
+ 501              		.file 9 "Generated_Source\\PSoC4/ByteCounter_Tx.h"
+ 502              		.file 10 "Generated_Source\\PSoC4/ByteCounter_Rx.h"
+ 503              		.section	.debug_info,"",%progbits
+ 504              	.Ldebug_info0:
+ 505 0000 B8040000 		.4byte	0x4b8
+ 506 0004 0400     		.2byte	0x4
+ 507 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 508 000a 04       		.byte	0x4
+ 509 000b 01       		.uleb128 0x1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 16
+
+
+ 510 000c 3F020000 		.4byte	.LASF51
+ 511 0010 0C       		.byte	0xc
+ 512 0011 0C000000 		.4byte	.LASF52
+ 513 0015 E3000000 		.4byte	.LASF53
+ 514 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 515 001d 00000000 		.4byte	0
+ 516 0021 00000000 		.4byte	.Ldebug_line0
+ 517 0025 02       		.uleb128 0x2
+ 518 0026 01       		.byte	0x1
+ 519 0027 06       		.byte	0x6
+ 520 0028 63030000 		.4byte	.LASF0
+ 521 002c 02       		.uleb128 0x2
+ 522 002d 01       		.byte	0x1
+ 523 002e 08       		.byte	0x8
+ 524 002f 15010000 		.4byte	.LASF1
+ 525 0033 02       		.uleb128 0x2
+ 526 0034 02       		.byte	0x2
+ 527 0035 05       		.byte	0x5
+ 528 0036 1A030000 		.4byte	.LASF2
+ 529 003a 02       		.uleb128 0x2
+ 530 003b 02       		.byte	0x2
+ 531 003c 07       		.byte	0x7
+ 532 003d 3B010000 		.4byte	.LASF3
+ 533 0041 02       		.uleb128 0x2
+ 534 0042 04       		.byte	0x4
+ 535 0043 05       		.byte	0x5
+ 536 0044 4E030000 		.4byte	.LASF4
+ 537 0048 02       		.uleb128 0x2
+ 538 0049 04       		.byte	0x4
+ 539 004a 07       		.byte	0x7
+ 540 004b 29010000 		.4byte	.LASF5
+ 541 004f 02       		.uleb128 0x2
+ 542 0050 08       		.byte	0x8
+ 543 0051 05       		.byte	0x5
+ 544 0052 E2020000 		.4byte	.LASF6
+ 545 0056 02       		.uleb128 0x2
+ 546 0057 08       		.byte	0x8
+ 547 0058 07       		.byte	0x7
+ 548 0059 1E020000 		.4byte	.LASF7
+ 549 005d 03       		.uleb128 0x3
+ 550 005e 04       		.byte	0x4
+ 551 005f 05       		.byte	0x5
+ 552 0060 696E7400 		.ascii	"int\000"
+ 553 0064 02       		.uleb128 0x2
+ 554 0065 04       		.byte	0x4
+ 555 0066 07       		.byte	0x7
+ 556 0067 11020000 		.4byte	.LASF8
+ 557 006b 04       		.uleb128 0x4
+ 558 006c 2B030000 		.4byte	.LASF9
+ 559 0070 02       		.byte	0x2
+ 560 0071 E401     		.2byte	0x1e4
+ 561 0073 2C000000 		.4byte	0x2c
+ 562 0077 04       		.uleb128 0x4
+ 563 0078 FB010000 		.4byte	.LASF10
+ 564 007c 02       		.byte	0x2
+ 565 007d E501     		.2byte	0x1e5
+ 566 007f 3A000000 		.4byte	0x3a
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 17
+
+
+ 567 0083 04       		.uleb128 0x4
+ 568 0084 0A020000 		.4byte	.LASF11
+ 569 0088 02       		.byte	0x2
+ 570 0089 E601     		.2byte	0x1e6
+ 571 008b 48000000 		.4byte	0x48
+ 572 008f 02       		.uleb128 0x2
+ 573 0090 04       		.byte	0x4
+ 574 0091 04       		.byte	0x4
+ 575 0092 1B000000 		.4byte	.LASF12
+ 576 0096 02       		.uleb128 0x2
+ 577 0097 08       		.byte	0x8
+ 578 0098 04       		.byte	0x4
+ 579 0099 87000000 		.4byte	.LASF13
+ 580 009d 02       		.uleb128 0x2
+ 581 009e 01       		.byte	0x1
+ 582 009f 08       		.byte	0x8
+ 583 00a0 04030000 		.4byte	.LASF14
+ 584 00a4 04       		.uleb128 0x4
+ 585 00a5 00000000 		.4byte	.LASF15
+ 586 00a9 02       		.byte	0x2
+ 587 00aa 9002     		.2byte	0x290
+ 588 00ac B0000000 		.4byte	0xb0
+ 589 00b0 05       		.uleb128 0x5
+ 590 00b1 83000000 		.4byte	0x83
+ 591 00b5 02       		.uleb128 0x2
+ 592 00b6 08       		.byte	0x8
+ 593 00b7 04       		.byte	0x4
+ 594 00b8 CD020000 		.4byte	.LASF16
+ 595 00bc 02       		.uleb128 0x2
+ 596 00bd 04       		.byte	0x4
+ 597 00be 07       		.byte	0x7
+ 598 00bf D9020000 		.4byte	.LASF17
+ 599 00c3 06       		.uleb128 0x6
+ 600 00c4 F0020000 		.4byte	.LASF18
+ 601 00c8 01       		.byte	0x1
+ 602 00c9 D5       		.byte	0xd5
+ 603 00ca 00000000 		.4byte	.LFB356
+ 604 00ce AC000000 		.4byte	.LFE356-.LFB356
+ 605 00d2 01       		.uleb128 0x1
+ 606 00d3 9C       		.byte	0x9c
+ 607 00d4 09010000 		.4byte	0x109
+ 608 00d8 07       		.uleb128 0x7
+ 609 00d9 06000000 		.4byte	.LVL0
+ 610 00dd 18040000 		.4byte	0x418
+ 611 00e1 08       		.uleb128 0x8
+ 612 00e2 80000000 		.4byte	.LVL1
+ 613 00e6 23040000 		.4byte	0x423
+ 614 00ea F4000000 		.4byte	0xf4
+ 615 00ee 09       		.uleb128 0x9
+ 616 00ef 01       		.uleb128 0x1
+ 617 00f0 50       		.byte	0x50
+ 618 00f1 01       		.uleb128 0x1
+ 619 00f2 33       		.byte	0x33
+ 620 00f3 00       		.byte	0
+ 621 00f4 0A       		.uleb128 0xa
+ 622 00f5 8E000000 		.4byte	.LVL2
+ 623 00f9 2F040000 		.4byte	0x42f
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 18
+
+
+ 624 00fd 09       		.uleb128 0x9
+ 625 00fe 01       		.uleb128 0x1
+ 626 00ff 51       		.byte	0x51
+ 627 0100 01       		.uleb128 0x1
+ 628 0101 30       		.byte	0x30
+ 629 0102 09       		.uleb128 0x9
+ 630 0103 01       		.uleb128 0x1
+ 631 0104 52       		.byte	0x52
+ 632 0105 01       		.uleb128 0x1
+ 633 0106 33       		.byte	0x33
+ 634 0107 00       		.byte	0
+ 635 0108 00       		.byte	0
+ 636 0109 0B       		.uleb128 0xb
+ 637 010a 4E010000 		.4byte	.LASF19
+ 638 010e 01       		.byte	0x1
+ 639 010f 1401     		.2byte	0x114
+ 640 0111 00000000 		.4byte	.LFB357
+ 641 0115 4C000000 		.4byte	.LFE357-.LFB357
+ 642 0119 01       		.uleb128 0x1
+ 643 011a 9C       		.byte	0x9c
+ 644 011b 2E010000 		.4byte	0x12e
+ 645 011f 0C       		.uleb128 0xc
+ 646 0120 6B010000 		.4byte	.LASF54
+ 647 0124 01       		.byte	0x1
+ 648 0125 1401     		.2byte	0x114
+ 649 0127 83000000 		.4byte	0x83
+ 650 012b 01       		.uleb128 0x1
+ 651 012c 50       		.byte	0x50
+ 652 012d 00       		.byte	0
+ 653 012e 06       		.uleb128 0x6
+ 654 012f C5010000 		.4byte	.LASF20
+ 655 0133 01       		.byte	0x1
+ 656 0134 5E       		.byte	0x5e
+ 657 0135 00000000 		.4byte	.LFB355
+ 658 0139 3C010000 		.4byte	.LFE355-.LFB355
+ 659 013d 01       		.uleb128 0x1
+ 660 013e 9C       		.byte	0x9c
+ 661 013f CF020000 		.4byte	0x2cf
+ 662 0143 0D       		.uleb128 0xd
+ 663 0144 1A000000 		.4byte	.LBB2
+ 664 0148 26000000 		.4byte	.LBE2-.LBB2
+ 665 014c 60010000 		.4byte	0x160
+ 666 0150 0E       		.uleb128 0xe
+ 667 0151 09030000 		.4byte	.LASF55
+ 668 0155 01       		.byte	0x1
+ 669 0156 6A       		.byte	0x6a
+ 670 0157 77000000 		.4byte	0x77
+ 671 015b 00000000 		.4byte	.LLST0
+ 672 015f 00       		.byte	0
+ 673 0160 07       		.uleb128 0x7
+ 674 0161 44000000 		.4byte	.LVL9
+ 675 0165 3B040000 		.4byte	0x43b
+ 676 0169 08       		.uleb128 0x8
+ 677 016a 52000000 		.4byte	.LVL10
+ 678 016e 47040000 		.4byte	0x447
+ 679 0172 7C010000 		.4byte	0x17c
+ 680 0176 09       		.uleb128 0x9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 19
+
+
+ 681 0177 01       		.uleb128 0x1
+ 682 0178 50       		.byte	0x50
+ 683 0179 01       		.uleb128 0x1
+ 684 017a 31       		.byte	0x31
+ 685 017b 00       		.byte	0
+ 686 017c 08       		.uleb128 0x8
+ 687 017d 5C000000 		.4byte	.LVL11
+ 688 0181 47040000 		.4byte	0x447
+ 689 0185 8F010000 		.4byte	0x18f
+ 690 0189 09       		.uleb128 0x9
+ 691 018a 01       		.uleb128 0x1
+ 692 018b 50       		.byte	0x50
+ 693 018c 01       		.uleb128 0x1
+ 694 018d 31       		.byte	0x31
+ 695 018e 00       		.byte	0
+ 696 018f 07       		.uleb128 0x7
+ 697 0190 64000000 		.4byte	.LVL12
+ 698 0194 53040000 		.4byte	0x453
+ 699 0198 07       		.uleb128 0x7
+ 700 0199 68000000 		.4byte	.LVL13
+ 701 019d 5E040000 		.4byte	0x45e
+ 702 01a1 07       		.uleb128 0x7
+ 703 01a2 6C000000 		.4byte	.LVL14
+ 704 01a6 69040000 		.4byte	0x469
+ 705 01aa 08       		.uleb128 0x8
+ 706 01ab 72000000 		.4byte	.LVL15
+ 707 01af 74040000 		.4byte	0x474
+ 708 01b3 BE010000 		.4byte	0x1be
+ 709 01b7 09       		.uleb128 0x9
+ 710 01b8 01       		.uleb128 0x1
+ 711 01b9 50       		.byte	0x50
+ 712 01ba 02       		.uleb128 0x2
+ 713 01bb 08       		.byte	0x8
+ 714 01bc 8F       		.byte	0x8f
+ 715 01bd 00       		.byte	0
+ 716 01be 07       		.uleb128 0x7
+ 717 01bf 76000000 		.4byte	.LVL16
+ 718 01c3 80040000 		.4byte	0x480
+ 719 01c7 07       		.uleb128 0x7
+ 720 01c8 7A000000 		.4byte	.LVL17
+ 721 01cc 8C040000 		.4byte	0x48c
+ 722 01d0 08       		.uleb128 0x8
+ 723 01d1 8C000000 		.4byte	.LVL18
+ 724 01d5 97040000 		.4byte	0x497
+ 725 01d9 F3010000 		.4byte	0x1f3
+ 726 01dd 09       		.uleb128 0x9
+ 727 01de 01       		.uleb128 0x1
+ 728 01df 50       		.byte	0x50
+ 729 01e0 01       		.uleb128 0x1
+ 730 01e1 31       		.byte	0x31
+ 731 01e2 09       		.uleb128 0x9
+ 732 01e3 01       		.uleb128 0x1
+ 733 01e4 51       		.byte	0x51
+ 734 01e5 05       		.uleb128 0x5
+ 735 01e6 03       		.byte	0x3
+ 736 01e7 00000000 		.4byte	outRam
+ 737 01eb 09       		.uleb128 0x9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 20
+
+
+ 738 01ec 01       		.uleb128 0x1
+ 739 01ed 52       		.byte	0x52
+ 740 01ee 03       		.uleb128 0x3
+ 741 01ef 0A       		.byte	0xa
+ 742 01f0 2601     		.2byte	0x126
+ 743 01f2 00       		.byte	0
+ 744 01f3 08       		.uleb128 0x8
+ 745 01f4 92000000 		.4byte	.LVL19
+ 746 01f8 A3040000 		.4byte	0x4a3
+ 747 01fc 06020000 		.4byte	0x206
+ 748 0200 09       		.uleb128 0x9
+ 749 0201 01       		.uleb128 0x1
+ 750 0202 50       		.byte	0x50
+ 751 0203 01       		.uleb128 0x1
+ 752 0204 31       		.byte	0x31
+ 753 0205 00       		.byte	0
+ 754 0206 08       		.uleb128 0x8
+ 755 0207 A6000000 		.4byte	.LVL20
+ 756 020b 2F040000 		.4byte	0x42f
+ 757 020f 24020000 		.4byte	0x224
+ 758 0213 09       		.uleb128 0x9
+ 759 0214 01       		.uleb128 0x1
+ 760 0215 50       		.byte	0x50
+ 761 0216 01       		.uleb128 0x1
+ 762 0217 33       		.byte	0x33
+ 763 0218 09       		.uleb128 0x9
+ 764 0219 01       		.uleb128 0x1
+ 765 021a 51       		.byte	0x51
+ 766 021b 02       		.uleb128 0x2
+ 767 021c 74       		.byte	0x74
+ 768 021d 04       		.sleb128 4
+ 769 021e 09       		.uleb128 0x9
+ 770 021f 01       		.uleb128 0x1
+ 771 0220 52       		.byte	0x52
+ 772 0221 01       		.uleb128 0x1
+ 773 0222 33       		.byte	0x33
+ 774 0223 00       		.byte	0
+ 775 0224 08       		.uleb128 0x8
+ 776 0225 B0000000 		.4byte	.LVL21
+ 777 0229 2F040000 		.4byte	0x42f
+ 778 022d 41020000 		.4byte	0x241
+ 779 0231 09       		.uleb128 0x9
+ 780 0232 01       		.uleb128 0x1
+ 781 0233 50       		.byte	0x50
+ 782 0234 01       		.uleb128 0x1
+ 783 0235 33       		.byte	0x33
+ 784 0236 09       		.uleb128 0x9
+ 785 0237 01       		.uleb128 0x1
+ 786 0238 51       		.byte	0x51
+ 787 0239 01       		.uleb128 0x1
+ 788 023a 30       		.byte	0x30
+ 789 023b 09       		.uleb128 0x9
+ 790 023c 01       		.uleb128 0x1
+ 791 023d 52       		.byte	0x52
+ 792 023e 01       		.uleb128 0x1
+ 793 023f 33       		.byte	0x33
+ 794 0240 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 21
+
+
+ 795 0241 08       		.uleb128 0x8
+ 796 0242 CA000000 		.4byte	.LVL22
+ 797 0246 09010000 		.4byte	0x109
+ 798 024a 54020000 		.4byte	0x254
+ 799 024e 09       		.uleb128 0x9
+ 800 024f 01       		.uleb128 0x1
+ 801 0250 50       		.byte	0x50
+ 802 0251 01       		.uleb128 0x1
+ 803 0252 30       		.byte	0x30
+ 804 0253 00       		.byte	0
+ 805 0254 08       		.uleb128 0x8
+ 806 0255 D4000000 		.4byte	.LVL23
+ 807 0259 47040000 		.4byte	0x447
+ 808 025d 67020000 		.4byte	0x267
+ 809 0261 09       		.uleb128 0x9
+ 810 0262 01       		.uleb128 0x1
+ 811 0263 50       		.byte	0x50
+ 812 0264 01       		.uleb128 0x1
+ 813 0265 32       		.byte	0x32
+ 814 0266 00       		.byte	0
+ 815 0267 08       		.uleb128 0x8
+ 816 0268 DE000000 		.4byte	.LVL24
+ 817 026c 47040000 		.4byte	0x447
+ 818 0270 7A020000 		.4byte	0x27a
+ 819 0274 09       		.uleb128 0x9
+ 820 0275 01       		.uleb128 0x1
+ 821 0276 50       		.byte	0x50
+ 822 0277 01       		.uleb128 0x1
+ 823 0278 32       		.byte	0x32
+ 824 0279 00       		.byte	0
+ 825 027a 07       		.uleb128 0x7
+ 826 027b E6000000 		.4byte	.LVL25
+ 827 027f 53040000 		.4byte	0x453
+ 828 0283 08       		.uleb128 0x8
+ 829 0284 EC000000 		.4byte	.LVL26
+ 830 0288 AF040000 		.4byte	0x4af
+ 831 028c 97020000 		.4byte	0x297
+ 832 0290 09       		.uleb128 0x9
+ 833 0291 01       		.uleb128 0x1
+ 834 0292 50       		.byte	0x50
+ 835 0293 02       		.uleb128 0x2
+ 836 0294 08       		.byte	0x8
+ 837 0295 8F       		.byte	0x8f
+ 838 0296 00       		.byte	0
+ 839 0297 08       		.uleb128 0x8
+ 840 0298 02010000 		.4byte	.LVL27
+ 841 029c 2F040000 		.4byte	0x42f
+ 842 02a0 BA020000 		.4byte	0x2ba
+ 843 02a4 09       		.uleb128 0x9
+ 844 02a5 01       		.uleb128 0x1
+ 845 02a6 50       		.byte	0x50
+ 846 02a7 01       		.uleb128 0x1
+ 847 02a8 32       		.byte	0x32
+ 848 02a9 09       		.uleb128 0x9
+ 849 02aa 01       		.uleb128 0x1
+ 850 02ab 51       		.byte	0x51
+ 851 02ac 05       		.uleb128 0x5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 22
+
+
+ 852 02ad 03       		.byte	0x3
+ 853 02ae 00000000 		.4byte	inRam
+ 854 02b2 09       		.uleb128 0x9
+ 855 02b3 01       		.uleb128 0x1
+ 856 02b4 52       		.byte	0x52
+ 857 02b5 03       		.uleb128 0x3
+ 858 02b6 0A       		.byte	0xa
+ 859 02b7 2601     		.2byte	0x126
+ 860 02b9 00       		.byte	0
+ 861 02ba 0A       		.uleb128 0xa
+ 862 02bb 0C010000 		.4byte	.LVL28
+ 863 02bf 2F040000 		.4byte	0x42f
+ 864 02c3 09       		.uleb128 0x9
+ 865 02c4 01       		.uleb128 0x1
+ 866 02c5 50       		.byte	0x50
+ 867 02c6 01       		.uleb128 0x1
+ 868 02c7 32       		.byte	0x32
+ 869 02c8 09       		.uleb128 0x9
+ 870 02c9 01       		.uleb128 0x1
+ 871 02ca 51       		.byte	0x51
+ 872 02cb 01       		.uleb128 0x1
+ 873 02cc 30       		.byte	0x30
+ 874 02cd 00       		.byte	0
+ 875 02ce 00       		.byte	0
+ 876 02cf 0F       		.uleb128 0xf
+ 877 02d0 DF020000 		.4byte	0x2df
+ 878 02d4 DF020000 		.4byte	0x2df
+ 879 02d8 10       		.uleb128 0x10
+ 880 02d9 BC000000 		.4byte	0xbc
+ 881 02dd 08       		.byte	0x8
+ 882 02de 00       		.byte	0
+ 883 02df 11       		.uleb128 0x11
+ 884 02e0 6B000000 		.4byte	0x6b
+ 885 02e4 12       		.uleb128 0x12
+ 886 02e5 9D000000 		.4byte	.LASF21
+ 887 02e9 03       		.byte	0x3
+ 888 02ea 94       		.byte	0x94
+ 889 02eb EF020000 		.4byte	0x2ef
+ 890 02ef 11       		.uleb128 0x11
+ 891 02f0 CF020000 		.4byte	0x2cf
+ 892 02f4 13       		.uleb128 0x13
+ 893 02f5 8E000000 		.4byte	.LASF22
+ 894 02f9 01       		.byte	0x1
+ 895 02fa 39       		.byte	0x39
+ 896 02fb 6B000000 		.4byte	0x6b
+ 897 02ff 05       		.uleb128 0x5
+ 898 0300 03       		.byte	0x3
+ 899 0301 00000000 		.4byte	USBDeviceState
+ 900 0305 0F       		.uleb128 0xf
+ 901 0306 6B000000 		.4byte	0x6b
+ 902 030a 15030000 		.4byte	0x315
+ 903 030e 10       		.uleb128 0x10
+ 904 030f BC000000 		.4byte	0xbc
+ 905 0313 01       		.byte	0x1
+ 906 0314 00       		.byte	0
+ 907 0315 13       		.uleb128 0x13
+ 908 0316 0A010000 		.4byte	.LASF23
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 23
+
+
+ 909 031a 01       		.byte	0x1
+ 910 031b 4D       		.byte	0x4d
+ 911 031c 05030000 		.4byte	0x305
+ 912 0320 05       		.uleb128 0x5
+ 913 0321 03       		.byte	0x3
+ 914 0322 00000000 		.4byte	altSetting
+ 915 0326 0F       		.uleb128 0xf
+ 916 0327 6B000000 		.4byte	0x6b
+ 917 032b 37030000 		.4byte	0x337
+ 918 032f 14       		.uleb128 0x14
+ 919 0330 BC000000 		.4byte	0xbc
+ 920 0334 2501     		.2byte	0x125
+ 921 0336 00       		.byte	0
+ 922 0337 13       		.uleb128 0x13
+ 923 0338 24030000 		.4byte	.LASF24
+ 924 033c 01       		.byte	0x1
+ 925 033d 3C       		.byte	0x3c
+ 926 033e 26030000 		.4byte	0x326
+ 927 0342 05       		.uleb128 0x5
+ 928 0343 03       		.byte	0x3
+ 929 0344 00000000 		.4byte	outRam
+ 930 0348 13       		.uleb128 0x13
+ 931 0349 23010000 		.4byte	.LASF25
+ 932 034d 01       		.byte	0x1
+ 933 034e 3D       		.byte	0x3d
+ 934 034f 26030000 		.4byte	0x326
+ 935 0353 05       		.uleb128 0x5
+ 936 0354 03       		.byte	0x3
+ 937 0355 00000000 		.4byte	inRam
+ 938 0359 13       		.uleb128 0x13
+ 939 035a 06000000 		.4byte	.LASF26
+ 940 035e 01       		.byte	0x1
+ 941 035f 3E       		.byte	0x3e
+ 942 0360 77000000 		.4byte	0x77
+ 943 0364 05       		.uleb128 0x5
+ 944 0365 03       		.byte	0x3
+ 945 0366 00000000 		.4byte	inCnt
+ 946 036a 13       		.uleb128 0x13
+ 947 036b 21000000 		.4byte	.LASF27
+ 948 036f 01       		.byte	0x1
+ 949 0370 41       		.byte	0x41
+ 950 0371 6B000000 		.4byte	0x6b
+ 951 0375 05       		.uleb128 0x5
+ 952 0376 03       		.byte	0x3
+ 953 0377 00000000 		.4byte	freeRunningLRCLKCount
+ 954 037b 13       		.uleb128 0x13
+ 955 037c 87030000 		.4byte	.LASF28
+ 956 0380 01       		.byte	0x1
+ 957 0381 42       		.byte	0x42
+ 958 0382 6B000000 		.4byte	0x6b
+ 959 0386 05       		.uleb128 0x5
+ 960 0387 03       		.byte	0x3
+ 961 0388 00000000 		.4byte	audioSamples
+ 962 038c 13       		.uleb128 0x13
+ 963 038d C9000000 		.4byte	.LASF29
+ 964 0391 01       		.byte	0x1
+ 965 0392 43       		.byte	0x43
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 24
+
+
+ 966 0393 6B000000 		.4byte	0x6b
+ 967 0397 05       		.uleb128 0x5
+ 968 0398 03       		.byte	0x3
+ 969 0399 00000000 		.4byte	lastFreeRunningLRCLKCount
+ 970 039d 0F       		.uleb128 0xf
+ 971 039e 6B000000 		.4byte	0x6b
+ 972 03a2 AD030000 		.4byte	0x3ad
+ 973 03a6 10       		.uleb128 0x10
+ 974 03a7 BC000000 		.4byte	0xbc
+ 975 03ab 02       		.byte	0x2
+ 976 03ac 00       		.byte	0
+ 977 03ad 13       		.uleb128 0x13
+ 978 03ae AD000000 		.4byte	.LASF30
+ 979 03b2 01       		.byte	0x1
+ 980 03b3 44       		.byte	0x44
+ 981 03b4 9D030000 		.4byte	0x39d
+ 982 03b8 05       		.uleb128 0x5
+ 983 03b9 03       		.byte	0x3
+ 984 03ba 00000000 		.4byte	explicitFeedback
+ 985 03be 13       		.uleb128 0x13
+ 986 03bf 67000000 		.4byte	.LASF31
+ 987 03c3 01       		.byte	0x1
+ 988 03c4 45       		.byte	0x45
+ 989 03c5 77000000 		.4byte	0x77
+ 990 03c9 05       		.uleb128 0x5
+ 991 03ca 03       		.byte	0x3
+ 992 03cb 00000000 		.4byte	explicitFeedbackSamples
+ 993 03cf 13       		.uleb128 0x13
+ 994 03d0 7F000000 		.4byte	.LASF32
+ 995 03d4 01       		.byte	0x1
+ 996 03d5 46       		.byte	0x46
+ 997 03d6 6B000000 		.4byte	0x6b
+ 998 03da 05       		.uleb128 0x5
+ 999 03db 03       		.byte	0x3
+ 1000 03dc 00000000 		.4byte	updated
+ 1001 03e0 12       		.uleb128 0x12
+ 1002 03e1 94030000 		.4byte	.LASF33
+ 1003 03e5 01       		.byte	0x1
+ 1004 03e6 48       		.byte	0x48
+ 1005 03e7 77000000 		.4byte	0x77
+ 1006 03eb 13       		.uleb128 0x13
+ 1007 03ec 0F030000 		.4byte	.LASF34
+ 1008 03f0 01       		.byte	0x1
+ 1009 03f1 49       		.byte	0x49
+ 1010 03f2 6B000000 		.4byte	0x6b
+ 1011 03f6 05       		.uleb128 0x5
+ 1012 03f7 03       		.byte	0x3
+ 1013 03f8 00000000 		.4byte	audioAsync
+ 1014 03fc 12       		.uleb128 0x12
+ 1015 03fd 02020000 		.4byte	.LASF35
+ 1016 0401 01       		.byte	0x1
+ 1017 0402 4A       		.byte	0x4a
+ 1018 0403 6B000000 		.4byte	0x6b
+ 1019 0407 13       		.uleb128 0x13
+ 1020 0408 BE000000 		.4byte	.LASF36
+ 1021 040c 01       		.byte	0x1
+ 1022 040d 4B       		.byte	0x4b
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 25
+
+
+ 1023 040e 6B000000 		.4byte	0x6b
+ 1024 0412 05       		.uleb128 0x5
+ 1025 0413 03       		.byte	0x3
+ 1026 0414 00000000 		.4byte	asyncready
+ 1027 0418 15       		.uleb128 0x15
+ 1028 0419 75010000 		.4byte	.LASF37
+ 1029 041d 75010000 		.4byte	.LASF37
+ 1030 0421 04       		.byte	0x4
+ 1031 0422 69       		.byte	0x69
+ 1032 0423 16       		.uleb128 0x16
+ 1033 0424 3D030000 		.4byte	.LASF38
+ 1034 0428 3D030000 		.4byte	.LASF38
+ 1035 042c 05       		.byte	0x5
+ 1036 042d 3801     		.2byte	0x138
+ 1037 042f 16       		.uleb128 0x16
+ 1038 0430 6F030000 		.4byte	.LASF39
+ 1039 0434 6F030000 		.4byte	.LASF39
+ 1040 0438 05       		.byte	0x5
+ 1041 0439 3A01     		.2byte	0x13a
+ 1042 043b 16       		.uleb128 0x16
+ 1043 043c 9D030000 		.4byte	.LASF40
+ 1044 0440 9D030000 		.4byte	.LASF40
+ 1045 0444 05       		.byte	0x5
+ 1046 0445 3601     		.2byte	0x136
+ 1047 0447 16       		.uleb128 0x16
+ 1048 0448 4D000000 		.4byte	.LASF41
+ 1049 044c 4D000000 		.4byte	.LASF41
+ 1050 0450 05       		.byte	0x5
+ 1051 0451 3701     		.2byte	0x137
+ 1052 0453 15       		.uleb128 0x15
+ 1053 0454 31030000 		.4byte	.LASF42
+ 1054 0458 31030000 		.4byte	.LASF42
+ 1055 045c 06       		.byte	0x6
+ 1056 045d 34       		.byte	0x34
+ 1057 045e 15       		.uleb128 0x15
+ 1058 045f 57030000 		.4byte	.LASF43
+ 1059 0463 57030000 		.4byte	.LASF43
+ 1060 0467 07       		.byte	0x7
+ 1061 0468 2B       		.byte	0x2b
+ 1062 0469 15       		.uleb128 0x15
+ 1063 046a 7E030000 		.4byte	.LASF44
+ 1064 046e 7E030000 		.4byte	.LASF44
+ 1065 0472 08       		.byte	0x8
+ 1066 0473 29       		.byte	0x29
+ 1067 0474 16       		.uleb128 0x16
+ 1068 0475 D0010000 		.4byte	.LASF45
+ 1069 0479 D0010000 		.4byte	.LASF45
+ 1070 047d 09       		.byte	0x9
+ 1071 047e 5001     		.2byte	0x150
+ 1072 0480 16       		.uleb128 0x16
+ 1073 0481 37000000 		.4byte	.LASF46
+ 1074 0485 37000000 		.4byte	.LASF46
+ 1075 0489 09       		.byte	0x9
+ 1076 048a 3101     		.2byte	0x131
+ 1077 048c 15       		.uleb128 0x15
+ 1078 048d 35020000 		.4byte	.LASF47
+ 1079 0491 35020000 		.4byte	.LASF47
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 26
+
+
+ 1080 0495 08       		.byte	0x8
+ 1081 0496 28       		.byte	0x28
+ 1082 0497 16       		.uleb128 0x16
+ 1083 0498 EB010000 		.4byte	.LASF48
+ 1084 049c EB010000 		.4byte	.LASF48
+ 1085 04a0 05       		.byte	0x5
+ 1086 04a1 3C01     		.2byte	0x13c
+ 1087 04a3 16       		.uleb128 0x16
+ 1088 04a4 98010000 		.4byte	.LASF49
+ 1089 04a8 98010000 		.4byte	.LASF49
+ 1090 04ac 05       		.byte	0x5
+ 1091 04ad 3E01     		.2byte	0x13e
+ 1092 04af 16       		.uleb128 0x16
+ 1093 04b0 AA010000 		.4byte	.LASF50
+ 1094 04b4 AA010000 		.4byte	.LASF50
+ 1095 04b8 0A       		.byte	0xa
+ 1096 04b9 5001     		.2byte	0x150
+ 1097 04bb 00       		.byte	0
+ 1098              		.section	.debug_abbrev,"",%progbits
+ 1099              	.Ldebug_abbrev0:
+ 1100 0000 01       		.uleb128 0x1
+ 1101 0001 11       		.uleb128 0x11
+ 1102 0002 01       		.byte	0x1
+ 1103 0003 25       		.uleb128 0x25
+ 1104 0004 0E       		.uleb128 0xe
+ 1105 0005 13       		.uleb128 0x13
+ 1106 0006 0B       		.uleb128 0xb
+ 1107 0007 03       		.uleb128 0x3
+ 1108 0008 0E       		.uleb128 0xe
+ 1109 0009 1B       		.uleb128 0x1b
+ 1110 000a 0E       		.uleb128 0xe
+ 1111 000b 55       		.uleb128 0x55
+ 1112 000c 17       		.uleb128 0x17
+ 1113 000d 11       		.uleb128 0x11
+ 1114 000e 01       		.uleb128 0x1
+ 1115 000f 10       		.uleb128 0x10
+ 1116 0010 17       		.uleb128 0x17
+ 1117 0011 00       		.byte	0
+ 1118 0012 00       		.byte	0
+ 1119 0013 02       		.uleb128 0x2
+ 1120 0014 24       		.uleb128 0x24
+ 1121 0015 00       		.byte	0
+ 1122 0016 0B       		.uleb128 0xb
+ 1123 0017 0B       		.uleb128 0xb
+ 1124 0018 3E       		.uleb128 0x3e
+ 1125 0019 0B       		.uleb128 0xb
+ 1126 001a 03       		.uleb128 0x3
+ 1127 001b 0E       		.uleb128 0xe
+ 1128 001c 00       		.byte	0
+ 1129 001d 00       		.byte	0
+ 1130 001e 03       		.uleb128 0x3
+ 1131 001f 24       		.uleb128 0x24
+ 1132 0020 00       		.byte	0
+ 1133 0021 0B       		.uleb128 0xb
+ 1134 0022 0B       		.uleb128 0xb
+ 1135 0023 3E       		.uleb128 0x3e
+ 1136 0024 0B       		.uleb128 0xb
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 27
+
+
+ 1137 0025 03       		.uleb128 0x3
+ 1138 0026 08       		.uleb128 0x8
+ 1139 0027 00       		.byte	0
+ 1140 0028 00       		.byte	0
+ 1141 0029 04       		.uleb128 0x4
+ 1142 002a 16       		.uleb128 0x16
+ 1143 002b 00       		.byte	0
+ 1144 002c 03       		.uleb128 0x3
+ 1145 002d 0E       		.uleb128 0xe
+ 1146 002e 3A       		.uleb128 0x3a
+ 1147 002f 0B       		.uleb128 0xb
+ 1148 0030 3B       		.uleb128 0x3b
+ 1149 0031 05       		.uleb128 0x5
+ 1150 0032 49       		.uleb128 0x49
+ 1151 0033 13       		.uleb128 0x13
+ 1152 0034 00       		.byte	0
+ 1153 0035 00       		.byte	0
+ 1154 0036 05       		.uleb128 0x5
+ 1155 0037 35       		.uleb128 0x35
+ 1156 0038 00       		.byte	0
+ 1157 0039 49       		.uleb128 0x49
+ 1158 003a 13       		.uleb128 0x13
+ 1159 003b 00       		.byte	0
+ 1160 003c 00       		.byte	0
+ 1161 003d 06       		.uleb128 0x6
+ 1162 003e 2E       		.uleb128 0x2e
+ 1163 003f 01       		.byte	0x1
+ 1164 0040 3F       		.uleb128 0x3f
+ 1165 0041 19       		.uleb128 0x19
+ 1166 0042 03       		.uleb128 0x3
+ 1167 0043 0E       		.uleb128 0xe
+ 1168 0044 3A       		.uleb128 0x3a
+ 1169 0045 0B       		.uleb128 0xb
+ 1170 0046 3B       		.uleb128 0x3b
+ 1171 0047 0B       		.uleb128 0xb
+ 1172 0048 27       		.uleb128 0x27
+ 1173 0049 19       		.uleb128 0x19
+ 1174 004a 11       		.uleb128 0x11
+ 1175 004b 01       		.uleb128 0x1
+ 1176 004c 12       		.uleb128 0x12
+ 1177 004d 06       		.uleb128 0x6
+ 1178 004e 40       		.uleb128 0x40
+ 1179 004f 18       		.uleb128 0x18
+ 1180 0050 9742     		.uleb128 0x2117
+ 1181 0052 19       		.uleb128 0x19
+ 1182 0053 01       		.uleb128 0x1
+ 1183 0054 13       		.uleb128 0x13
+ 1184 0055 00       		.byte	0
+ 1185 0056 00       		.byte	0
+ 1186 0057 07       		.uleb128 0x7
+ 1187 0058 898201   		.uleb128 0x4109
+ 1188 005b 00       		.byte	0
+ 1189 005c 11       		.uleb128 0x11
+ 1190 005d 01       		.uleb128 0x1
+ 1191 005e 31       		.uleb128 0x31
+ 1192 005f 13       		.uleb128 0x13
+ 1193 0060 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 28
+
+
+ 1194 0061 00       		.byte	0
+ 1195 0062 08       		.uleb128 0x8
+ 1196 0063 898201   		.uleb128 0x4109
+ 1197 0066 01       		.byte	0x1
+ 1198 0067 11       		.uleb128 0x11
+ 1199 0068 01       		.uleb128 0x1
+ 1200 0069 31       		.uleb128 0x31
+ 1201 006a 13       		.uleb128 0x13
+ 1202 006b 01       		.uleb128 0x1
+ 1203 006c 13       		.uleb128 0x13
+ 1204 006d 00       		.byte	0
+ 1205 006e 00       		.byte	0
+ 1206 006f 09       		.uleb128 0x9
+ 1207 0070 8A8201   		.uleb128 0x410a
+ 1208 0073 00       		.byte	0
+ 1209 0074 02       		.uleb128 0x2
+ 1210 0075 18       		.uleb128 0x18
+ 1211 0076 9142     		.uleb128 0x2111
+ 1212 0078 18       		.uleb128 0x18
+ 1213 0079 00       		.byte	0
+ 1214 007a 00       		.byte	0
+ 1215 007b 0A       		.uleb128 0xa
+ 1216 007c 898201   		.uleb128 0x4109
+ 1217 007f 01       		.byte	0x1
+ 1218 0080 11       		.uleb128 0x11
+ 1219 0081 01       		.uleb128 0x1
+ 1220 0082 31       		.uleb128 0x31
+ 1221 0083 13       		.uleb128 0x13
+ 1222 0084 00       		.byte	0
+ 1223 0085 00       		.byte	0
+ 1224 0086 0B       		.uleb128 0xb
+ 1225 0087 2E       		.uleb128 0x2e
+ 1226 0088 01       		.byte	0x1
+ 1227 0089 3F       		.uleb128 0x3f
+ 1228 008a 19       		.uleb128 0x19
+ 1229 008b 03       		.uleb128 0x3
+ 1230 008c 0E       		.uleb128 0xe
+ 1231 008d 3A       		.uleb128 0x3a
+ 1232 008e 0B       		.uleb128 0xb
+ 1233 008f 3B       		.uleb128 0x3b
+ 1234 0090 05       		.uleb128 0x5
+ 1235 0091 27       		.uleb128 0x27
+ 1236 0092 19       		.uleb128 0x19
+ 1237 0093 11       		.uleb128 0x11
+ 1238 0094 01       		.uleb128 0x1
+ 1239 0095 12       		.uleb128 0x12
+ 1240 0096 06       		.uleb128 0x6
+ 1241 0097 40       		.uleb128 0x40
+ 1242 0098 18       		.uleb128 0x18
+ 1243 0099 9742     		.uleb128 0x2117
+ 1244 009b 19       		.uleb128 0x19
+ 1245 009c 01       		.uleb128 0x1
+ 1246 009d 13       		.uleb128 0x13
+ 1247 009e 00       		.byte	0
+ 1248 009f 00       		.byte	0
+ 1249 00a0 0C       		.uleb128 0xc
+ 1250 00a1 05       		.uleb128 0x5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 29
+
+
+ 1251 00a2 00       		.byte	0
+ 1252 00a3 03       		.uleb128 0x3
+ 1253 00a4 0E       		.uleb128 0xe
+ 1254 00a5 3A       		.uleb128 0x3a
+ 1255 00a6 0B       		.uleb128 0xb
+ 1256 00a7 3B       		.uleb128 0x3b
+ 1257 00a8 05       		.uleb128 0x5
+ 1258 00a9 49       		.uleb128 0x49
+ 1259 00aa 13       		.uleb128 0x13
+ 1260 00ab 02       		.uleb128 0x2
+ 1261 00ac 18       		.uleb128 0x18
+ 1262 00ad 00       		.byte	0
+ 1263 00ae 00       		.byte	0
+ 1264 00af 0D       		.uleb128 0xd
+ 1265 00b0 0B       		.uleb128 0xb
+ 1266 00b1 01       		.byte	0x1
+ 1267 00b2 11       		.uleb128 0x11
+ 1268 00b3 01       		.uleb128 0x1
+ 1269 00b4 12       		.uleb128 0x12
+ 1270 00b5 06       		.uleb128 0x6
+ 1271 00b6 01       		.uleb128 0x1
+ 1272 00b7 13       		.uleb128 0x13
+ 1273 00b8 00       		.byte	0
+ 1274 00b9 00       		.byte	0
+ 1275 00ba 0E       		.uleb128 0xe
+ 1276 00bb 34       		.uleb128 0x34
+ 1277 00bc 00       		.byte	0
+ 1278 00bd 03       		.uleb128 0x3
+ 1279 00be 0E       		.uleb128 0xe
+ 1280 00bf 3A       		.uleb128 0x3a
+ 1281 00c0 0B       		.uleb128 0xb
+ 1282 00c1 3B       		.uleb128 0x3b
+ 1283 00c2 0B       		.uleb128 0xb
+ 1284 00c3 49       		.uleb128 0x49
+ 1285 00c4 13       		.uleb128 0x13
+ 1286 00c5 02       		.uleb128 0x2
+ 1287 00c6 17       		.uleb128 0x17
+ 1288 00c7 00       		.byte	0
+ 1289 00c8 00       		.byte	0
+ 1290 00c9 0F       		.uleb128 0xf
+ 1291 00ca 01       		.uleb128 0x1
+ 1292 00cb 01       		.byte	0x1
+ 1293 00cc 49       		.uleb128 0x49
+ 1294 00cd 13       		.uleb128 0x13
+ 1295 00ce 01       		.uleb128 0x1
+ 1296 00cf 13       		.uleb128 0x13
+ 1297 00d0 00       		.byte	0
+ 1298 00d1 00       		.byte	0
+ 1299 00d2 10       		.uleb128 0x10
+ 1300 00d3 21       		.uleb128 0x21
+ 1301 00d4 00       		.byte	0
+ 1302 00d5 49       		.uleb128 0x49
+ 1303 00d6 13       		.uleb128 0x13
+ 1304 00d7 2F       		.uleb128 0x2f
+ 1305 00d8 0B       		.uleb128 0xb
+ 1306 00d9 00       		.byte	0
+ 1307 00da 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 30
+
+
+ 1308 00db 11       		.uleb128 0x11
+ 1309 00dc 26       		.uleb128 0x26
+ 1310 00dd 00       		.byte	0
+ 1311 00de 49       		.uleb128 0x49
+ 1312 00df 13       		.uleb128 0x13
+ 1313 00e0 00       		.byte	0
+ 1314 00e1 00       		.byte	0
+ 1315 00e2 12       		.uleb128 0x12
+ 1316 00e3 34       		.uleb128 0x34
+ 1317 00e4 00       		.byte	0
+ 1318 00e5 03       		.uleb128 0x3
+ 1319 00e6 0E       		.uleb128 0xe
+ 1320 00e7 3A       		.uleb128 0x3a
+ 1321 00e8 0B       		.uleb128 0xb
+ 1322 00e9 3B       		.uleb128 0x3b
+ 1323 00ea 0B       		.uleb128 0xb
+ 1324 00eb 49       		.uleb128 0x49
+ 1325 00ec 13       		.uleb128 0x13
+ 1326 00ed 3F       		.uleb128 0x3f
+ 1327 00ee 19       		.uleb128 0x19
+ 1328 00ef 3C       		.uleb128 0x3c
+ 1329 00f0 19       		.uleb128 0x19
+ 1330 00f1 00       		.byte	0
+ 1331 00f2 00       		.byte	0
+ 1332 00f3 13       		.uleb128 0x13
+ 1333 00f4 34       		.uleb128 0x34
+ 1334 00f5 00       		.byte	0
+ 1335 00f6 03       		.uleb128 0x3
+ 1336 00f7 0E       		.uleb128 0xe
+ 1337 00f8 3A       		.uleb128 0x3a
+ 1338 00f9 0B       		.uleb128 0xb
+ 1339 00fa 3B       		.uleb128 0x3b
+ 1340 00fb 0B       		.uleb128 0xb
+ 1341 00fc 49       		.uleb128 0x49
+ 1342 00fd 13       		.uleb128 0x13
+ 1343 00fe 3F       		.uleb128 0x3f
+ 1344 00ff 19       		.uleb128 0x19
+ 1345 0100 02       		.uleb128 0x2
+ 1346 0101 18       		.uleb128 0x18
+ 1347 0102 00       		.byte	0
+ 1348 0103 00       		.byte	0
+ 1349 0104 14       		.uleb128 0x14
+ 1350 0105 21       		.uleb128 0x21
+ 1351 0106 00       		.byte	0
+ 1352 0107 49       		.uleb128 0x49
+ 1353 0108 13       		.uleb128 0x13
+ 1354 0109 2F       		.uleb128 0x2f
+ 1355 010a 05       		.uleb128 0x5
+ 1356 010b 00       		.byte	0
+ 1357 010c 00       		.byte	0
+ 1358 010d 15       		.uleb128 0x15
+ 1359 010e 2E       		.uleb128 0x2e
+ 1360 010f 00       		.byte	0
+ 1361 0110 3F       		.uleb128 0x3f
+ 1362 0111 19       		.uleb128 0x19
+ 1363 0112 3C       		.uleb128 0x3c
+ 1364 0113 19       		.uleb128 0x19
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 31
+
+
+ 1365 0114 6E       		.uleb128 0x6e
+ 1366 0115 0E       		.uleb128 0xe
+ 1367 0116 03       		.uleb128 0x3
+ 1368 0117 0E       		.uleb128 0xe
+ 1369 0118 3A       		.uleb128 0x3a
+ 1370 0119 0B       		.uleb128 0xb
+ 1371 011a 3B       		.uleb128 0x3b
+ 1372 011b 0B       		.uleb128 0xb
+ 1373 011c 00       		.byte	0
+ 1374 011d 00       		.byte	0
+ 1375 011e 16       		.uleb128 0x16
+ 1376 011f 2E       		.uleb128 0x2e
+ 1377 0120 00       		.byte	0
+ 1378 0121 3F       		.uleb128 0x3f
+ 1379 0122 19       		.uleb128 0x19
+ 1380 0123 3C       		.uleb128 0x3c
+ 1381 0124 19       		.uleb128 0x19
+ 1382 0125 6E       		.uleb128 0x6e
+ 1383 0126 0E       		.uleb128 0xe
+ 1384 0127 03       		.uleb128 0x3
+ 1385 0128 0E       		.uleb128 0xe
+ 1386 0129 3A       		.uleb128 0x3a
+ 1387 012a 0B       		.uleb128 0xb
+ 1388 012b 3B       		.uleb128 0x3b
+ 1389 012c 05       		.uleb128 0x5
+ 1390 012d 00       		.byte	0
+ 1391 012e 00       		.byte	0
+ 1392 012f 00       		.byte	0
+ 1393              		.section	.debug_loc,"",%progbits
+ 1394              	.Ldebug_loc0:
+ 1395              	.LLST0:
+ 1396 0000 1A000000 		.4byte	.LVL4
+ 1397 0004 24000000 		.4byte	.LVL5
+ 1398 0008 0200     		.2byte	0x2
+ 1399 000a 30       		.byte	0x30
+ 1400 000b 9F       		.byte	0x9f
+ 1401 000c 24000000 		.4byte	.LVL5
+ 1402 0010 30000000 		.4byte	.LVL6
+ 1403 0014 0100     		.2byte	0x1
+ 1404 0016 53       		.byte	0x53
+ 1405 0017 32000000 		.4byte	.LVL7
+ 1406 001b 3E000000 		.4byte	.LVL8
+ 1407 001f 0100     		.2byte	0x1
+ 1408 0021 53       		.byte	0x53
+ 1409 0022 00000000 		.4byte	0
+ 1410 0026 00000000 		.4byte	0
+ 1411              		.section	.debug_aranges,"",%progbits
+ 1412 0000 2C000000 		.4byte	0x2c
+ 1413 0004 0200     		.2byte	0x2
+ 1414 0006 00000000 		.4byte	.Ldebug_info0
+ 1415 000a 04       		.byte	0x4
+ 1416 000b 00       		.byte	0
+ 1417 000c 0000     		.2byte	0
+ 1418 000e 0000     		.2byte	0
+ 1419 0010 00000000 		.4byte	.LFB356
+ 1420 0014 AC000000 		.4byte	.LFE356-.LFB356
+ 1421 0018 00000000 		.4byte	.LFB357
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 32
+
+
+ 1422 001c 4C000000 		.4byte	.LFE357-.LFB357
+ 1423 0020 00000000 		.4byte	.LFB355
+ 1424 0024 3C010000 		.4byte	.LFE355-.LFB355
+ 1425 0028 00000000 		.4byte	0
+ 1426 002c 00000000 		.4byte	0
+ 1427              		.section	.debug_ranges,"",%progbits
+ 1428              	.Ldebug_ranges0:
+ 1429 0000 00000000 		.4byte	.LFB356
+ 1430 0004 AC000000 		.4byte	.LFE356
+ 1431 0008 00000000 		.4byte	.LFB357
+ 1432 000c 4C000000 		.4byte	.LFE357
+ 1433 0010 00000000 		.4byte	.LFB355
+ 1434 0014 3C010000 		.4byte	.LFE355
+ 1435 0018 00000000 		.4byte	0
+ 1436 001c 00000000 		.4byte	0
+ 1437              		.section	.debug_line,"",%progbits
+ 1438              	.Ldebug_line0:
+ 1439 0000 68010000 		.section	.debug_str,"MS",%progbits,1
+ 1439      0200CF00 
+ 1439      00000201 
+ 1439      FB0E0D00 
+ 1439      01010101 
+ 1440              	.LASF15:
+ 1441 0000 72656733 		.ascii	"reg32\000"
+ 1441      3200
+ 1442              	.LASF26:
+ 1443 0006 696E436E 		.ascii	"inCnt\000"
+ 1443      7400
+ 1444              	.LASF52:
+ 1445 000c 55534249 		.ascii	"USBInterface.c\000"
+ 1445      6E746572 
+ 1445      66616365 
+ 1445      2E6300
+ 1446              	.LASF12:
+ 1447 001b 666C6F61 		.ascii	"float\000"
+ 1447      7400
+ 1448              	.LASF27:
+ 1449 0021 66726565 		.ascii	"freeRunningLRCLKCount\000"
+ 1449      52756E6E 
+ 1449      696E674C 
+ 1449      52434C4B 
+ 1449      436F756E 
+ 1450              	.LASF46:
+ 1451 0037 42797465 		.ascii	"ByteCounter_Tx_Enable\000"
+ 1451      436F756E 
+ 1451      7465725F 
+ 1451      54785F45 
+ 1451      6E61626C 
+ 1452              	.LASF41:
+ 1453 004d 55534246 		.ascii	"USBFS_GetInterfaceSetting\000"
+ 1453      535F4765 
+ 1453      74496E74 
+ 1453      65726661 
+ 1453      63655365 
+ 1454              	.LASF31:
+ 1455 0067 6578706C 		.ascii	"explicitFeedbackSamples\000"
+ 1455      69636974 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 33
+
+
+ 1455      46656564 
+ 1455      6261636B 
+ 1455      53616D70 
+ 1456              	.LASF32:
+ 1457 007f 75706461 		.ascii	"updated\000"
+ 1457      74656400 
+ 1458              	.LASF13:
+ 1459 0087 646F7562 		.ascii	"double\000"
+ 1459      6C6500
+ 1460              	.LASF22:
+ 1461 008e 55534244 		.ascii	"USBDeviceState\000"
+ 1461      65766963 
+ 1461      65537461 
+ 1461      746500
+ 1462              	.LASF21:
+ 1463 009d 55534246 		.ascii	"USBFS_DmaReqOut\000"
+ 1463      535F446D 
+ 1463      61526571 
+ 1463      4F757400 
+ 1464              	.LASF30:
+ 1465 00ad 6578706C 		.ascii	"explicitFeedback\000"
+ 1465      69636974 
+ 1465      46656564 
+ 1465      6261636B 
+ 1465      00
+ 1466              	.LASF36:
+ 1467 00be 6173796E 		.ascii	"asyncready\000"
+ 1467      63726561 
+ 1467      647900
+ 1468              	.LASF29:
+ 1469 00c9 6C617374 		.ascii	"lastFreeRunningLRCLKCount\000"
+ 1469      46726565 
+ 1469      52756E6E 
+ 1469      696E674C 
+ 1469      52434C4B 
+ 1470              	.LASF53:
+ 1471 00e3 433A5C64 		.ascii	"C:\\dev\\git\\Icebreaker\\Icebreaker.cydsn\000"
+ 1471      65765C67 
+ 1471      69745C49 
+ 1471      63656272 
+ 1471      65616B65 
+ 1472              	.LASF23:
+ 1473 010a 616C7453 		.ascii	"altSetting\000"
+ 1473      65747469 
+ 1473      6E6700
+ 1474              	.LASF1:
+ 1475 0115 756E7369 		.ascii	"unsigned char\000"
+ 1475      676E6564 
+ 1475      20636861 
+ 1475      7200
+ 1476              	.LASF25:
+ 1477 0123 696E5261 		.ascii	"inRam\000"
+ 1477      6D00
+ 1478              	.LASF5:
+ 1479 0129 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1479      20756E73 
+ 1479      69676E65 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 34
+
+
+ 1479      6420696E 
+ 1479      7400
+ 1480              	.LASF3:
+ 1481 013b 73686F72 		.ascii	"short unsigned int\000"
+ 1481      7420756E 
+ 1481      7369676E 
+ 1481      65642069 
+ 1481      6E7400
+ 1482              	.LASF19:
+ 1483 014e 70726F63 		.ascii	"processAsyncFeedbackTransfer\000"
+ 1483      65737341 
+ 1483      73796E63 
+ 1483      46656564 
+ 1483      6261636B 
+ 1484              	.LASF54:
+ 1485 016b 636C6561 		.ascii	"clearFlag\000"
+ 1485      72466C61 
+ 1485      6700
+ 1486              	.LASF37:
+ 1487 0175 4173796E 		.ascii	"Async_Feedback_Counter_ReadCounter\000"
+ 1487      635F4665 
+ 1487      65646261 
+ 1487      636B5F43 
+ 1487      6F756E74 
+ 1488              	.LASF49:
+ 1489 0198 55534246 		.ascii	"USBFS_EnableOutEP\000"
+ 1489      535F456E 
+ 1489      61626C65 
+ 1489      4F757445 
+ 1489      5000
+ 1490              	.LASF50:
+ 1491 01aa 42797465 		.ascii	"ByteCounter_Rx_WritePeriod\000"
+ 1491      436F756E 
+ 1491      7465725F 
+ 1491      52785F57 
+ 1491      72697465 
+ 1492              	.LASF20:
+ 1493 01c5 53657276 		.ascii	"ServiceUSB\000"
+ 1493      69636555 
+ 1493      534200
+ 1494              	.LASF45:
+ 1495 01d0 42797465 		.ascii	"ByteCounter_Tx_WritePeriod\000"
+ 1495      436F756E 
+ 1495      7465725F 
+ 1495      54785F57 
+ 1495      72697465 
+ 1496              	.LASF48:
+ 1497 01eb 55534246 		.ascii	"USBFS_ReadOutEP\000"
+ 1497      535F5265 
+ 1497      61644F75 
+ 1497      74455000 
+ 1498              	.LASF10:
+ 1499 01fb 75696E74 		.ascii	"uint16\000"
+ 1499      313600
+ 1500              	.LASF35:
+ 1501 0202 73657452 		.ascii	"setRate\000"
+ 1501      61746500 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 35
+
+
+ 1502              	.LASF11:
+ 1503 020a 75696E74 		.ascii	"uint32\000"
+ 1503      333200
+ 1504              	.LASF8:
+ 1505 0211 756E7369 		.ascii	"unsigned int\000"
+ 1505      676E6564 
+ 1505      20696E74 
+ 1505      00
+ 1506              	.LASF7:
+ 1507 021e 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1507      206C6F6E 
+ 1507      6720756E 
+ 1507      7369676E 
+ 1507      65642069 
+ 1508              	.LASF47:
+ 1509 0235 4932535F 		.ascii	"I2S_Start\000"
+ 1509      53746172 
+ 1509      7400
+ 1510              	.LASF51:
+ 1511 023f 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1511      43313120 
+ 1511      352E342E 
+ 1511      31203230 
+ 1511      31363036 
+ 1512 0272 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1512      20726576 
+ 1512      6973696F 
+ 1512      6E203233 
+ 1512      37373135 
+ 1513 02a5 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1513      66756E63 
+ 1513      74696F6E 
+ 1513      2D736563 
+ 1513      74696F6E 
+ 1514              	.LASF16:
+ 1515 02cd 6C6F6E67 		.ascii	"long double\000"
+ 1515      20646F75 
+ 1515      626C6500 
+ 1516              	.LASF17:
+ 1517 02d9 73697A65 		.ascii	"sizetype\000"
+ 1517      74797065 
+ 1517      00
+ 1518              	.LASF6:
+ 1519 02e2 6C6F6E67 		.ascii	"long long int\000"
+ 1519      206C6F6E 
+ 1519      6720696E 
+ 1519      7400
+ 1520              	.LASF18:
+ 1521 02f0 55706461 		.ascii	"UpdateFeedbackCount\000"
+ 1521      74654665 
+ 1521      65646261 
+ 1521      636B436F 
+ 1521      756E7400 
+ 1522              	.LASF14:
+ 1523 0304 63686172 		.ascii	"char\000"
+ 1523      00
+ 1524              	.LASF55:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 36
+
+
+ 1525 0309 696E6465 		.ascii	"index\000"
+ 1525      7800
+ 1526              	.LASF34:
+ 1527 030f 61756469 		.ascii	"audioAsync\000"
+ 1527      6F417379 
+ 1527      6E6300
+ 1528              	.LASF2:
+ 1529 031a 73686F72 		.ascii	"short int\000"
+ 1529      7420696E 
+ 1529      7400
+ 1530              	.LASF24:
+ 1531 0324 6F757452 		.ascii	"outRam\000"
+ 1531      616D00
+ 1532              	.LASF9:
+ 1533 032b 75696E74 		.ascii	"uint8\000"
+ 1533      3800
+ 1534              	.LASF42:
+ 1535 0331 53746F70 		.ascii	"Stop_I2S_Rx\000"
+ 1535      5F493253 
+ 1535      5F527800 
+ 1536              	.LASF38:
+ 1537 033d 55534246 		.ascii	"USBFS_GetEPState\000"
+ 1537      535F4765 
+ 1537      74455053 
+ 1537      74617465 
+ 1537      00
+ 1538              	.LASF4:
+ 1539 034e 6C6F6E67 		.ascii	"long int\000"
+ 1539      20696E74 
+ 1539      00
+ 1540              	.LASF43:
+ 1541 0357 53746F70 		.ascii	"Stop_I2S_Tx\000"
+ 1541      5F493253 
+ 1541      5F547800 
+ 1542              	.LASF0:
+ 1543 0363 7369676E 		.ascii	"signed char\000"
+ 1543      65642063 
+ 1543      68617200 
+ 1544              	.LASF39:
+ 1545 036f 55534246 		.ascii	"USBFS_LoadInEP\000"
+ 1545      535F4C6F 
+ 1545      6164496E 
+ 1545      455000
+ 1546              	.LASF44:
+ 1547 037e 4932535F 		.ascii	"I2S_Stop\000"
+ 1547      53746F70 
+ 1547      00
+ 1548              	.LASF28:
+ 1549 0387 61756469 		.ascii	"audioSamples\000"
+ 1549      6F53616D 
+ 1549      706C6573 
+ 1549      00
+ 1550              	.LASF33:
+ 1551 0394 6F75744C 		.ascii	"outLevel\000"
+ 1551      6576656C 
+ 1551      00
+ 1552              	.LASF40:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccUuZVQv.s 			page 37
+
+
+ 1553 039d 55534246 		.ascii	"USBFS_IsConfigurationChanged\000"
+ 1553      535F4973 
+ 1553      436F6E66 
+ 1553      69677572 
+ 1553      6174696F 
+ 1554              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

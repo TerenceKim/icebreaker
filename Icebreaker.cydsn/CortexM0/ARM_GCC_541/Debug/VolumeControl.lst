@@ -1,0 +1,2504 @@
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"VolumeControl.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.DmaIntHandler,"ax",%progbits
+  20              		.align	2
+  21              		.global	DmaIntHandler
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	DmaIntHandler, %function
+  25              	DmaIntHandler:
+  26              	.LFB34:
+  27              		.file 1 "VolumeControl.c"
+   1:VolumeControl.c **** /* ========================================
+   2:VolumeControl.c ****  *
+   3:VolumeControl.c ****  * Copyright YOUR COMPANY, THE YEAR
+   4:VolumeControl.c ****  * All Rights Reserved
+   5:VolumeControl.c ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:VolumeControl.c ****  *
+   7:VolumeControl.c ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:VolumeControl.c ****  * WHICH IS THE PROPERTY OF your company.
+   9:VolumeControl.c ****  *
+  10:VolumeControl.c ****  * ========================================
+  11:VolumeControl.c **** */
+  12:VolumeControl.c **** #include "VolumeControl.h"
+  13:VolumeControl.c **** #include <Config.h>
+  14:VolumeControl.c **** #include <Application.h>
+  15:VolumeControl.c **** #include <ADC.h>
+  16:VolumeControl.c **** #include <DMA.h>
+  17:VolumeControl.c **** #include <Codec.h>
+  18:VolumeControl.c **** #include <USBFS.h>
+  19:VolumeControl.c **** #include <pcm1770.h>
+  20:VolumeControl.c **** 
+  21:VolumeControl.c **** int32 ADC_MIN_READING[vol_ctrl_both] = { -2, -2 };
+  22:VolumeControl.c **** int32 ADC_MAX_READING[vol_ctrl_both] = { 2047, 2047 };
+  23:VolumeControl.c **** 
+  24:VolumeControl.c **** #define ADC_READING_RANGE(side)       (ADC_MAX_READING[side] - ADC_MIN_READING[side])
+  25:VolumeControl.c **** 
+  26:VolumeControl.c **** /* ADC measurement status and result */
+  27:VolumeControl.c **** int16   adcSample[vol_ctrl_both] = { 0, 0 };
+  28:VolumeControl.c **** 
+  29:VolumeControl.c **** CY_ISR(DmaIntHandler)
+  30:VolumeControl.c **** {
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 2
+
+
+  28              		.loc 1 30 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  31:VolumeControl.c ****     // Do nothing
+  32:VolumeControl.c **** }
+  33              		.loc 1 32 0
+  34              		@ sp needed
+  35 0000 7047     		bx	lr
+  36              		.cfi_endproc
+  37              	.LFE34:
+  38              		.size	DmaIntHandler, .-DmaIntHandler
+  39 0002 C046     		.section	.text.VolumeControlInit,"ax",%progbits
+  40              		.align	2
+  41              		.global	VolumeControlInit
+  42              		.code	16
+  43              		.thumb_func
+  44              		.type	VolumeControlInit, %function
+  45              	VolumeControlInit:
+  46              	.LFB35:
+  33:VolumeControl.c **** 
+  34:VolumeControl.c **** void VolumeControlInit(void)
+  35:VolumeControl.c **** {
+  47              		.loc 1 35 0
+  48              		.cfi_startproc
+  49              		@ args = 0, pretend = 0, frame = 0
+  50              		@ frame_needed = 0, uses_anonymous_args = 0
+  51 0000 10B5     		push	{r4, lr}
+  52              		.cfi_def_cfa_offset 8
+  53              		.cfi_offset 4, -8
+  54              		.cfi_offset 14, -4
+  36:VolumeControl.c ****     /* Initialize ADC. Conversion is not enabled yet. */
+  37:VolumeControl.c ****     ADC_Start();
+  55              		.loc 1 37 0
+  56 0002 FFF7FEFF 		bl	ADC_Start
+  57              	.LVL0:
+  38:VolumeControl.c **** 
+  39:VolumeControl.c ****     /* Configure DMA source and destination locations to transfer from
+  40:VolumeControl.c ****     * ADC data register to memory variable.
+  41:VolumeControl.c ****     */
+  42:VolumeControl.c ****     DMA_Start((void *)ADC_SAR_CHAN0_RESULT_PTR, (void *)adcSample);
+  58              		.loc 1 42 0
+  59 0006 0549     		ldr	r1, .L3
+  60 0008 0548     		ldr	r0, .L3+4
+  61 000a FFF7FEFF 		bl	DMA_Start
+  62              	.LVL1:
+  63              	.LBB4:
+  64              	.LBB5:
+  65              		.file 2 "Generated_Source\\PSoC4/DMA.h"
+   1:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+   2:Generated_Source\PSoC4/DMA.h **** * File Name: DMA.h
+   3:Generated_Source\PSoC4/DMA.h **** * Version 1.0
+   4:Generated_Source\PSoC4/DMA.h **** *
+   5:Generated_Source\PSoC4/DMA.h **** * Description:
+   6:Generated_Source\PSoC4/DMA.h **** *  This file provides DMA channel defines and API function definitions.
+   7:Generated_Source\PSoC4/DMA.h **** *
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 3
+
+
+   8:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+   9:Generated_Source\PSoC4/DMA.h **** * Copyright 2015, Cypress Semiconductor Corporation. All rights reserved.
+  10:Generated_Source\PSoC4/DMA.h **** * You may use this file only in accordance with the license, terms, conditions,
+  11:Generated_Source\PSoC4/DMA.h **** * disclaimers, and limitations in the end user license agreement accompanying
+  12:Generated_Source\PSoC4/DMA.h **** * the software package with which this file was provided.
+  13:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+  14:Generated_Source\PSoC4/DMA.h **** 
+  15:Generated_Source\PSoC4/DMA.h **** #ifndef CY_DMA_CHANNEL_DMA_H
+  16:Generated_Source\PSoC4/DMA.h **** #define CY_DMA_CHANNEL_DMA_H
+  17:Generated_Source\PSoC4/DMA.h **** 
+  18:Generated_Source\PSoC4/DMA.h **** #include "CyDMA.h"
+  19:Generated_Source\PSoC4/DMA.h **** 
+  20:Generated_Source\PSoC4/DMA.h ****     
+  21:Generated_Source\PSoC4/DMA.h **** /***************************************
+  22:Generated_Source\PSoC4/DMA.h **** *   Conditional Compilation Parameters
+  23:Generated_Source\PSoC4/DMA.h **** ***************************************/
+  24:Generated_Source\PSoC4/DMA.h **** 
+  25:Generated_Source\PSoC4/DMA.h **** #define DMA_CHANNEL           (DMA__CHANNEL_NUMBER)
+  26:Generated_Source\PSoC4/DMA.h **** #define DMA_CHANNEL_MASK      ((uint32)(1UL << DMA_CHANNEL))
+  27:Generated_Source\PSoC4/DMA.h **** 
+  28:Generated_Source\PSoC4/DMA.h **** 
+  29:Generated_Source\PSoC4/DMA.h **** /***************************************
+  30:Generated_Source\PSoC4/DMA.h **** *        Function Prototypes
+  31:Generated_Source\PSoC4/DMA.h **** ***************************************/
+  32:Generated_Source\PSoC4/DMA.h **** 
+  33:Generated_Source\PSoC4/DMA.h **** /* Functions specific to this DMA channel */
+  34:Generated_Source\PSoC4/DMA.h **** void DMA_Init(void);
+  35:Generated_Source\PSoC4/DMA.h **** void DMA_Start(void * srcAddress, void * dstAddress);
+  36:Generated_Source\PSoC4/DMA.h **** 
+  37:Generated_Source\PSoC4/DMA.h **** /* Inline functions that call global API functions */
+  38:Generated_Source\PSoC4/DMA.h **** static void   DMA_ChEnable(void);
+  39:Generated_Source\PSoC4/DMA.h **** static void   DMA_ChDisable(void);
+  40:Generated_Source\PSoC4/DMA.h **** static void   DMA_Trigger(void);
+  41:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetPriority(int32 priority);
+  42:Generated_Source\PSoC4/DMA.h **** static int32  DMA_GetPriority(void);
+  43:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetNextDescriptor(int32 descriptor);
+  44:Generated_Source\PSoC4/DMA.h **** static int32  DMA_GetNextDescriptor(void);
+  45:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetConfiguration(int32 descriptor, const cydma_init_struct * config);
+  46:Generated_Source\PSoC4/DMA.h **** static void   DMA_ValidateDescriptor(int32 descriptor);
+  47:Generated_Source\PSoC4/DMA.h **** static uint32 DMA_GetDescriptorStatus(int32 descriptor);
+  48:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetSrcAddress(int32 descriptor, void * srcAddress);
+  49:Generated_Source\PSoC4/DMA.h **** static void * DMA_GetSrcAddress(int32 descriptor);
+  50:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetDstAddress(int32 descriptor, void * dstAddress);
+  51:Generated_Source\PSoC4/DMA.h **** static void * DMA_GetDstAddress(int32 descriptor);
+  52:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetDataElementSize(int32 descriptor, uint32 dataElementSize);
+  53:Generated_Source\PSoC4/DMA.h **** static uint32 DMA_GetDataElementSize(int32 descriptor);
+  54:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetNumDataElements(int32 descriptor, int32 numDataElements);
+  55:Generated_Source\PSoC4/DMA.h **** static int32  DMA_GetNumDataElements(int32 descriptor);
+  56:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetSrcDstTransferWidth(int32 descriptor, uint32 transferWidth);
+  57:Generated_Source\PSoC4/DMA.h **** static uint32 DMA_GetSrcDstTransferWidth(int32 descriptor);
+  58:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetAddressIncrement(int32 descriptor, uint32 addressIncrement);
+  59:Generated_Source\PSoC4/DMA.h **** static uint32 DMA_GetAddressIncrement(int32 descriptor);
+  60:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetTriggerType(int32 descriptor, uint32 triggerType);
+  61:Generated_Source\PSoC4/DMA.h **** static uint32 DMA_GetTriggerType(int32 descriptor);
+  62:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetTransferMode(int32 descriptor, uint32 transferMode);
+  63:Generated_Source\PSoC4/DMA.h **** static uint32 DMA_GetTransferMode(int32 descriptor);
+  64:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetPreemptable(int32 descriptor, uint32 preemptable);
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 4
+
+
+  65:Generated_Source\PSoC4/DMA.h **** static uint32 DMA_GetPreemptable(int32 descriptor);
+  66:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetPostCompletionActions(int32 descriptor, uint32 actions);
+  67:Generated_Source\PSoC4/DMA.h **** static uint32 DMA_GetPostCompletionAction(int32 descriptor);
+  68:Generated_Source\PSoC4/DMA.h **** static cydma_callback_t DMA_SetInterruptCallback(cydma_callback_t callback);
+  69:Generated_Source\PSoC4/DMA.h **** static cydma_callback_t DMA_GetInterruptCallback(void);
+  70:Generated_Source\PSoC4/DMA.h **** 
+  71:Generated_Source\PSoC4/DMA.h **** 
+  72:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+  73:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_ChEnable
+  74:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+  75:Generated_Source\PSoC4/DMA.h **** *
+  76:Generated_Source\PSoC4/DMA.h **** * Summary:
+  77:Generated_Source\PSoC4/DMA.h **** *  Enables the DMA channel. It is not necessary to call DMA_ChEnable()
+  78:Generated_Source\PSoC4/DMA.h **** *  because the DMA_Start() API calls this function, which is the
+  79:Generated_Source\PSoC4/DMA.h **** *  preferred method to begin the component operation.
+  80:Generated_Source\PSoC4/DMA.h **** *
+  81:Generated_Source\PSoC4/DMA.h **** * Parameters:
+  82:Generated_Source\PSoC4/DMA.h **** *  None.
+  83:Generated_Source\PSoC4/DMA.h **** *                   
+  84:Generated_Source\PSoC4/DMA.h **** * Return:
+  85:Generated_Source\PSoC4/DMA.h **** *  None.
+  86:Generated_Source\PSoC4/DMA.h **** *
+  87:Generated_Source\PSoC4/DMA.h **** * Side effect:
+  88:Generated_Source\PSoC4/DMA.h **** *  If this function is called before DMA_Start(), or DMA_Init()
+  89:Generated_Source\PSoC4/DMA.h **** *  or DMA_SetConfiguration(), and DMA_SetSrcAddress()
+  90:Generated_Source\PSoC4/DMA.h **** *  and DMA_SetDstAddress the operation of the DMA is 
+  91:Generated_Source\PSoC4/DMA.h **** *  undefined and could result in system data corruption. 
+  92:Generated_Source\PSoC4/DMA.h **** *
+  93:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+  94:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_ChEnable(void)
+  95:Generated_Source\PSoC4/DMA.h **** {
+  96:Generated_Source\PSoC4/DMA.h ****     CyDmaChEnable(DMA_CHANNEL);
+  97:Generated_Source\PSoC4/DMA.h **** }
+  98:Generated_Source\PSoC4/DMA.h **** 
+  99:Generated_Source\PSoC4/DMA.h **** 
+ 100:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 101:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_ChDisable
+ 102:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 103:Generated_Source\PSoC4/DMA.h **** *
+ 104:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 105:Generated_Source\PSoC4/DMA.h **** *  Disables the DMA channel.
+ 106:Generated_Source\PSoC4/DMA.h **** *
+ 107:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 108:Generated_Source\PSoC4/DMA.h **** *  None.
+ 109:Generated_Source\PSoC4/DMA.h **** *                   
+ 110:Generated_Source\PSoC4/DMA.h **** * Return:
+ 111:Generated_Source\PSoC4/DMA.h **** *  None.
+ 112:Generated_Source\PSoC4/DMA.h **** *
+ 113:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 114:Generated_Source\PSoC4/DMA.h **** *  If this function is called during a DMA transfer the transfer is aborted. 
+ 115:Generated_Source\PSoC4/DMA.h **** *
+ 116:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 117:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_ChDisable(void)
+ 118:Generated_Source\PSoC4/DMA.h **** {
+ 119:Generated_Source\PSoC4/DMA.h ****     CyDmaChDisable(DMA_CHANNEL);
+ 120:Generated_Source\PSoC4/DMA.h **** }
+ 121:Generated_Source\PSoC4/DMA.h **** 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 5
+
+
+ 122:Generated_Source\PSoC4/DMA.h **** 
+ 123:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 124:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_Trigger
+ 125:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 126:Generated_Source\PSoC4/DMA.h **** *
+ 127:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 128:Generated_Source\PSoC4/DMA.h **** *  Triggers the DMA channel, this is useful only for software triggers. This is
+ 129:Generated_Source\PSoC4/DMA.h **** *  not needed when hardware triggers are used.
+ 130:Generated_Source\PSoC4/DMA.h **** *
+ 131:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 132:Generated_Source\PSoC4/DMA.h **** *  None.
+ 133:Generated_Source\PSoC4/DMA.h **** *                   
+ 134:Generated_Source\PSoC4/DMA.h **** * Return:
+ 135:Generated_Source\PSoC4/DMA.h **** *  None. 
+ 136:Generated_Source\PSoC4/DMA.h **** *
+ 137:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 138:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_Trigger(void)
+ 139:Generated_Source\PSoC4/DMA.h **** {
+ 140:Generated_Source\PSoC4/DMA.h ****     CyDmaTrigger(DMA_CHANNEL);
+ 141:Generated_Source\PSoC4/DMA.h **** }
+ 142:Generated_Source\PSoC4/DMA.h **** 
+ 143:Generated_Source\PSoC4/DMA.h **** 
+ 144:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 145:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetPriority
+ 146:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 147:Generated_Source\PSoC4/DMA.h **** *
+ 148:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 149:Generated_Source\PSoC4/DMA.h **** *  Sets the priority for the channel.
+ 150:Generated_Source\PSoC4/DMA.h **** *
+ 151:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 152:Generated_Source\PSoC4/DMA.h **** *  priority: Priority for channel. Priority can be 0,1,2, or 3.
+ 153:Generated_Source\PSoC4/DMA.h **** *            0 is the highest priority.
+ 154:Generated_Source\PSoC4/DMA.h **** *                   
+ 155:Generated_Source\PSoC4/DMA.h **** * Return:
+ 156:Generated_Source\PSoC4/DMA.h **** *  None.
+ 157:Generated_Source\PSoC4/DMA.h **** *
+ 158:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 159:Generated_Source\PSoC4/DMA.h **** *  This function should not be called while the channel is enabled.
+ 160:Generated_Source\PSoC4/DMA.h **** *
+ 161:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 162:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetPriority(int32 priority)
+ 163:Generated_Source\PSoC4/DMA.h **** {
+ 164:Generated_Source\PSoC4/DMA.h ****     CyDmaSetPriority(DMA_CHANNEL, priority);
+ 165:Generated_Source\PSoC4/DMA.h **** }
+ 166:Generated_Source\PSoC4/DMA.h **** 
+ 167:Generated_Source\PSoC4/DMA.h **** 
+ 168:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 169:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetPriority
+ 170:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 171:Generated_Source\PSoC4/DMA.h **** *
+ 172:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 173:Generated_Source\PSoC4/DMA.h **** *  Gets the priority for the channel.
+ 174:Generated_Source\PSoC4/DMA.h **** *
+ 175:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 176:Generated_Source\PSoC4/DMA.h **** *  None.
+ 177:Generated_Source\PSoC4/DMA.h **** *                   
+ 178:Generated_Source\PSoC4/DMA.h **** * Return:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 6
+
+
+ 179:Generated_Source\PSoC4/DMA.h **** *  Priority for channel. Priority can be 0,1,2, or 3. 0 is the highest priority.
+ 180:Generated_Source\PSoC4/DMA.h **** *
+ 181:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 182:Generated_Source\PSoC4/DMA.h **** static CY_INLINE int32 DMA_GetPriority(void)
+ 183:Generated_Source\PSoC4/DMA.h **** {
+ 184:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetPriority(DMA_CHANNEL));
+ 185:Generated_Source\PSoC4/DMA.h **** }
+ 186:Generated_Source\PSoC4/DMA.h **** 
+ 187:Generated_Source\PSoC4/DMA.h **** 
+ 188:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 189:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetNextDescriptor
+ 190:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 191:Generated_Source\PSoC4/DMA.h **** *
+ 192:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 193:Generated_Source\PSoC4/DMA.h **** *  Sets the descriptor that should be run the next time the channel is
+ 194:Generated_Source\PSoC4/DMA.h **** *  triggered.
+ 195:Generated_Source\PSoC4/DMA.h **** *
+ 196:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 197:Generated_Source\PSoC4/DMA.h **** *  descriptor: Next Descriptor to run (0 or 1).
+ 198:Generated_Source\PSoC4/DMA.h **** *                   
+ 199:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 200:Generated_Source\PSoC4/DMA.h **** *  This function should not be called while the channel is enabled.
+ 201:Generated_Source\PSoC4/DMA.h **** *
+ 202:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 203:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetNextDescriptor(int32 descriptor)
+ 204:Generated_Source\PSoC4/DMA.h **** {
+ 205:Generated_Source\PSoC4/DMA.h ****     CyDmaSetNextDescriptor(DMA_CHANNEL, descriptor);
+ 206:Generated_Source\PSoC4/DMA.h **** }
+ 207:Generated_Source\PSoC4/DMA.h **** 
+ 208:Generated_Source\PSoC4/DMA.h **** 
+ 209:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 210:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetNextDescriptor
+ 211:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 212:Generated_Source\PSoC4/DMA.h **** *
+ 213:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 214:Generated_Source\PSoC4/DMA.h **** *  Returns the next descriptor that should be run, as set by 
+ 215:Generated_Source\PSoC4/DMA.h **** *  DMA_SetNextDescriptor().
+ 216:Generated_Source\PSoC4/DMA.h **** *
+ 217:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 218:Generated_Source\PSoC4/DMA.h **** *  None.
+ 219:Generated_Source\PSoC4/DMA.h **** *                   
+ 220:Generated_Source\PSoC4/DMA.h **** * Return:
+ 221:Generated_Source\PSoC4/DMA.h **** *  Next Descriptor to run (0 or 1).
+ 222:Generated_Source\PSoC4/DMA.h **** *
+ 223:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 224:Generated_Source\PSoC4/DMA.h **** static CY_INLINE int32 DMA_GetNextDescriptor(void)
+ 225:Generated_Source\PSoC4/DMA.h **** {
+ 226:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetNextDescriptor(DMA_CHANNEL));
+ 227:Generated_Source\PSoC4/DMA.h **** }
+ 228:Generated_Source\PSoC4/DMA.h **** 
+ 229:Generated_Source\PSoC4/DMA.h **** 
+ 230:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 231:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetConfiguration
+ 232:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 233:Generated_Source\PSoC4/DMA.h **** *
+ 234:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 235:Generated_Source\PSoC4/DMA.h **** *  Sets configuration information for the specified descriptor.
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 7
+
+
+ 236:Generated_Source\PSoC4/DMA.h **** *
+ 237:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 238:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 239:Generated_Source\PSoC4/DMA.h **** *  config: Pointer to a configuration structure. Refer to cydma_init_struct
+ 240:Generated_Source\PSoC4/DMA.h **** *          structure definition in CyDMA_P4.h or the component datasheet.
+ 241:Generated_Source\PSoC4/DMA.h **** *                   
+ 242:Generated_Source\PSoC4/DMA.h **** * Return:
+ 243:Generated_Source\PSoC4/DMA.h **** *  None.
+ 244:Generated_Source\PSoC4/DMA.h **** *
+ 245:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 246:Generated_Source\PSoC4/DMA.h **** *  The status register associated with the specified descriptor is reset to
+ 247:Generated_Source\PSoC4/DMA.h **** *  zero after this function call. This function also validates the descriptor.
+ 248:Generated_Source\PSoC4/DMA.h **** *  This function should not be called while the descriptor is active.
+ 249:Generated_Source\PSoC4/DMA.h **** *  This can be checked by calling CyDmaGetStatus().
+ 250:Generated_Source\PSoC4/DMA.h **** *
+ 251:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 252:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetConfiguration(int32 descriptor, const cydma_init_struct * config)
+ 253:Generated_Source\PSoC4/DMA.h **** {
+ 254:Generated_Source\PSoC4/DMA.h ****     CyDmaSetConfiguration(DMA_CHANNEL, descriptor, config);
+ 255:Generated_Source\PSoC4/DMA.h **** }
+ 256:Generated_Source\PSoC4/DMA.h **** 
+ 257:Generated_Source\PSoC4/DMA.h **** 
+ 258:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 259:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_ValidateDescriptor
+ 260:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 261:Generated_Source\PSoC4/DMA.h **** *
+ 262:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 263:Generated_Source\PSoC4/DMA.h **** *  Validates the specified descriptor after it has been invalidated.
+ 264:Generated_Source\PSoC4/DMA.h **** *
+ 265:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 266:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 267:Generated_Source\PSoC4/DMA.h **** *                   
+ 268:Generated_Source\PSoC4/DMA.h **** * Return:
+ 269:Generated_Source\PSoC4/DMA.h **** *  None. 
+ 270:Generated_Source\PSoC4/DMA.h **** *
+ 271:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 272:Generated_Source\PSoC4/DMA.h **** *  The status register associated with the specified descriptor is reset to
+ 273:Generated_Source\PSoC4/DMA.h **** *  zero after this function call. This function should not be called while the
+ 274:Generated_Source\PSoC4/DMA.h **** *  descriptor is active. This can be checked by calling CyDmaGetStatus().
+ 275:Generated_Source\PSoC4/DMA.h **** *
+ 276:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 277:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_ValidateDescriptor(int32 descriptor)
+ 278:Generated_Source\PSoC4/DMA.h **** {
+ 279:Generated_Source\PSoC4/DMA.h ****     CyDmaValidateDescriptor(DMA_CHANNEL, descriptor);
+ 280:Generated_Source\PSoC4/DMA.h **** }
+ 281:Generated_Source\PSoC4/DMA.h **** 
+ 282:Generated_Source\PSoC4/DMA.h **** 
+ 283:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 284:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetDescriptorStatus
+ 285:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 286:Generated_Source\PSoC4/DMA.h **** *
+ 287:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 288:Generated_Source\PSoC4/DMA.h **** *  Returns the status of the specified descriptor.
+ 289:Generated_Source\PSoC4/DMA.h **** *
+ 290:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 291:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 292:Generated_Source\PSoC4/DMA.h **** *                   
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 8
+
+
+ 293:Generated_Source\PSoC4/DMA.h **** * Return:
+ 294:Generated_Source\PSoC4/DMA.h **** *  Returns the contents of the specified descriptors status register. Refer to 
+ 295:Generated_Source\PSoC4/DMA.h **** *  descriptor status register bit definitions in CyDMA_P4.h or the API
+ 296:Generated_Source\PSoC4/DMA.h **** *  description in the DMA channel datasheet for more information.
+ 297:Generated_Source\PSoC4/DMA.h **** *
+ 298:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 299:Generated_Source\PSoC4/DMA.h **** static CY_INLINE uint32 DMA_GetDescriptorStatus(int32 descriptor)
+ 300:Generated_Source\PSoC4/DMA.h **** {
+ 301:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetDescriptorStatus(DMA_CHANNEL, descriptor));
+ 302:Generated_Source\PSoC4/DMA.h **** }
+ 303:Generated_Source\PSoC4/DMA.h **** 
+ 304:Generated_Source\PSoC4/DMA.h **** 
+ 305:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 306:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetSrcAddress
+ 307:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 308:Generated_Source\PSoC4/DMA.h **** *
+ 309:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 310:Generated_Source\PSoC4/DMA.h **** *  Configures the source address for the specified descriptor.
+ 311:Generated_Source\PSoC4/DMA.h **** *
+ 312:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 313:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 314:Generated_Source\PSoC4/DMA.h **** *  srcAddress: Address of DMA transfer source.
+ 315:Generated_Source\PSoC4/DMA.h **** *                   
+ 316:Generated_Source\PSoC4/DMA.h **** * Return:
+ 317:Generated_Source\PSoC4/DMA.h **** *  None.
+ 318:Generated_Source\PSoC4/DMA.h **** *
+ 319:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 320:Generated_Source\PSoC4/DMA.h **** *  This function should not be called when the specified descriptor is active
+ 321:Generated_Source\PSoC4/DMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
+ 322:Generated_Source\PSoC4/DMA.h **** *
+ 323:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 324:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetSrcAddress(int32 descriptor, void * srcAddress)
+ 325:Generated_Source\PSoC4/DMA.h **** {
+ 326:Generated_Source\PSoC4/DMA.h ****     CyDmaSetSrcAddress(DMA_CHANNEL, descriptor, srcAddress);
+ 327:Generated_Source\PSoC4/DMA.h **** }
+ 328:Generated_Source\PSoC4/DMA.h **** 
+ 329:Generated_Source\PSoC4/DMA.h **** 
+ 330:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 331:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetSrcAddress
+ 332:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 333:Generated_Source\PSoC4/DMA.h **** *
+ 334:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 335:Generated_Source\PSoC4/DMA.h **** *  Returns the source address for the specified descriptor, set by either 
+ 336:Generated_Source\PSoC4/DMA.h **** *  DMA_Start() or DMA_SetSrcAddress().
+ 337:Generated_Source\PSoC4/DMA.h **** *
+ 338:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 339:Generated_Source\PSoC4/DMA.h **** *  descriptor: Specifies descriptor (0 or 1) used by this function.
+ 340:Generated_Source\PSoC4/DMA.h **** *                   
+ 341:Generated_Source\PSoC4/DMA.h **** * Return:
+ 342:Generated_Source\PSoC4/DMA.h **** *  Source address written to specified descriptor.
+ 343:Generated_Source\PSoC4/DMA.h **** *
+ 344:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 345:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void * DMA_GetSrcAddress(int32 descriptor)
+ 346:Generated_Source\PSoC4/DMA.h **** {
+ 347:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetSrcAddress(DMA_CHANNEL, descriptor));
+ 348:Generated_Source\PSoC4/DMA.h **** }
+ 349:Generated_Source\PSoC4/DMA.h **** 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 9
+
+
+ 350:Generated_Source\PSoC4/DMA.h **** 
+ 351:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 352:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetDstAddress
+ 353:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 354:Generated_Source\PSoC4/DMA.h **** *
+ 355:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 356:Generated_Source\PSoC4/DMA.h **** *  Configures the destination address for the specified descriptor.
+ 357:Generated_Source\PSoC4/DMA.h **** *
+ 358:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 359:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 360:Generated_Source\PSoC4/DMA.h **** *  dstAddress: Address of DMA transfer destination.
+ 361:Generated_Source\PSoC4/DMA.h **** *                   
+ 362:Generated_Source\PSoC4/DMA.h **** * Return:
+ 363:Generated_Source\PSoC4/DMA.h **** *  None.
+ 364:Generated_Source\PSoC4/DMA.h **** *
+ 365:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 366:Generated_Source\PSoC4/DMA.h **** *  This function should not be called when the specified descriptor is active
+ 367:Generated_Source\PSoC4/DMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
+ 368:Generated_Source\PSoC4/DMA.h **** *
+ 369:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 370:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetDstAddress(int32 descriptor, void * dstAddress)
+ 371:Generated_Source\PSoC4/DMA.h **** {
+ 372:Generated_Source\PSoC4/DMA.h ****     CyDmaSetDstAddress(DMA_CHANNEL, descriptor, dstAddress);
+ 373:Generated_Source\PSoC4/DMA.h **** }
+ 374:Generated_Source\PSoC4/DMA.h **** 
+ 375:Generated_Source\PSoC4/DMA.h **** 
+ 376:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 377:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetDstAddress
+ 378:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 379:Generated_Source\PSoC4/DMA.h **** *
+ 380:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 381:Generated_Source\PSoC4/DMA.h **** *  Returns the destination address for the specified descriptor, set by either 
+ 382:Generated_Source\PSoC4/DMA.h **** *  DMA_Start() or DMA_SetDstAddress().
+ 383:Generated_Source\PSoC4/DMA.h **** *
+ 384:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 385:Generated_Source\PSoC4/DMA.h **** *  descriptor: Specifies descriptor (0 or 1) used by this function.
+ 386:Generated_Source\PSoC4/DMA.h **** *                   
+ 387:Generated_Source\PSoC4/DMA.h **** * Return:
+ 388:Generated_Source\PSoC4/DMA.h **** *  Destination address written to specified descriptor.
+ 389:Generated_Source\PSoC4/DMA.h **** *
+ 390:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 391:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void * DMA_GetDstAddress(int32 descriptor)
+ 392:Generated_Source\PSoC4/DMA.h **** {
+ 393:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetDstAddress(DMA_CHANNEL, descriptor));
+ 394:Generated_Source\PSoC4/DMA.h **** }
+ 395:Generated_Source\PSoC4/DMA.h **** 
+ 396:Generated_Source\PSoC4/DMA.h **** 
+ 397:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 398:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetDataElementSize
+ 399:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 400:Generated_Source\PSoC4/DMA.h **** *
+ 401:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 402:Generated_Source\PSoC4/DMA.h **** *  Sets the data element size for the specified descriptor.
+ 403:Generated_Source\PSoC4/DMA.h **** *
+ 404:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 405:Generated_Source\PSoC4/DMA.h **** *  descriptor:      Descriptor (0 or 1) modified by this function.
+ 406:Generated_Source\PSoC4/DMA.h **** *  dataElementSize: Specifies the size of the data element. The DMA transfer
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 10
+
+
+ 407:Generated_Source\PSoC4/DMA.h **** *                   engine transfers one data element at a time. How these
+ 408:Generated_Source\PSoC4/DMA.h **** *                   transfers occur is controlled by the transfer mode.
+ 409:Generated_Source\PSoC4/DMA.h **** *                   Refer to the API bit field definitions in CyDMA_P4.h or API
+ 410:Generated_Source\PSoC4/DMA.h **** *                   description in the DMA channel datasheet for the parameter
+ 411:Generated_Source\PSoC4/DMA.h **** *                   options.
+ 412:Generated_Source\PSoC4/DMA.h **** *
+ 413:Generated_Source\PSoC4/DMA.h **** * Return:
+ 414:Generated_Source\PSoC4/DMA.h **** *  None.
+ 415:Generated_Source\PSoC4/DMA.h **** *
+ 416:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 417:Generated_Source\PSoC4/DMA.h **** *  This function should not be called when the specified descriptor is active
+ 418:Generated_Source\PSoC4/DMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
+ 419:Generated_Source\PSoC4/DMA.h **** *
+ 420:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 421:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetDataElementSize(int32 descriptor, uint32 dataElementSize)
+ 422:Generated_Source\PSoC4/DMA.h **** {
+ 423:Generated_Source\PSoC4/DMA.h ****     CyDmaSetDataElementSize(DMA_CHANNEL, descriptor, dataElementSize);
+ 424:Generated_Source\PSoC4/DMA.h **** }
+ 425:Generated_Source\PSoC4/DMA.h **** 
+ 426:Generated_Source\PSoC4/DMA.h **** 
+ 427:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 428:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetDataElementSize
+ 429:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 430:Generated_Source\PSoC4/DMA.h **** *
+ 431:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 432:Generated_Source\PSoC4/DMA.h **** *  Returns the data element size configured for the specified descriptor, set by
+ 433:Generated_Source\PSoC4/DMA.h **** *  DMA_SetDataElementSize() or DMA_SetConfiguration().
+ 434:Generated_Source\PSoC4/DMA.h **** *
+ 435:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 436:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 437:Generated_Source\PSoC4/DMA.h **** *                   
+ 438:Generated_Source\PSoC4/DMA.h **** * Return:
+ 439:Generated_Source\PSoC4/DMA.h **** *  The size of the data element. The DMA transfer engine transfers one data
+ 440:Generated_Source\PSoC4/DMA.h **** *  element at a time. How these transfers occur is controlled by the transfer
+ 441:Generated_Source\PSoC4/DMA.h **** *  mode. Refer to the API bit field definitions in CyDMA_P4.h or the API 
+ 442:Generated_Source\PSoC4/DMA.h **** *  description in the DMA channel datasheet for more information.
+ 443:Generated_Source\PSoC4/DMA.h **** *
+ 444:Generated_Source\PSoC4/DMA.h **** * Note:
+ 445:Generated_Source\PSoC4/DMA.h **** *  The size of the source and destination can be configured to use the
+ 446:Generated_Source\PSoC4/DMA.h **** *  data element size, or a Word, this is set in DMA_SetSrcDstTransferWidth().
+ 447:Generated_Source\PSoC4/DMA.h **** *
+ 448:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 449:Generated_Source\PSoC4/DMA.h **** static CY_INLINE uint32 DMA_GetDataElementSize(int32 descriptor)
+ 450:Generated_Source\PSoC4/DMA.h **** {
+ 451:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetDataElementSize(DMA_CHANNEL, descriptor));
+ 452:Generated_Source\PSoC4/DMA.h **** }
+ 453:Generated_Source\PSoC4/DMA.h **** 
+ 454:Generated_Source\PSoC4/DMA.h **** 
+ 455:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 456:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetNumDataElements
+ 457:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 458:Generated_Source\PSoC4/DMA.h **** *
+ 459:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 460:Generated_Source\PSoC4/DMA.h **** *  Sets the number of data elements to transfer for specified descriptor.
+ 461:Generated_Source\PSoC4/DMA.h **** *
+ 462:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 463:Generated_Source\PSoC4/DMA.h **** *  descriptor:      Descriptor (0 or 1) modified by this function.
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 11
+
+
+ 464:Generated_Source\PSoC4/DMA.h **** *  numDataElements: Total number of data elements this descriptor transfers.
+ 465:Generated_Source\PSoC4/DMA.h **** *                   Valid ranges are 1 to 65536.
+ 466:Generated_Source\PSoC4/DMA.h **** *                   
+ 467:Generated_Source\PSoC4/DMA.h **** * Return:
+ 468:Generated_Source\PSoC4/DMA.h **** *  None.
+ 469:Generated_Source\PSoC4/DMA.h **** *
+ 470:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 471:Generated_Source\PSoC4/DMA.h **** *  This function should not be called when the specified descriptor is active
+ 472:Generated_Source\PSoC4/DMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
+ 473:Generated_Source\PSoC4/DMA.h **** *
+ 474:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 475:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetNumDataElements(int32 descriptor, int32 numDataElements)
+ 476:Generated_Source\PSoC4/DMA.h **** {
+ 477:Generated_Source\PSoC4/DMA.h ****     CyDmaSetNumDataElements(DMA_CHANNEL, descriptor, numDataElements);
+ 478:Generated_Source\PSoC4/DMA.h **** }
+ 479:Generated_Source\PSoC4/DMA.h **** 
+ 480:Generated_Source\PSoC4/DMA.h **** 
+ 481:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 482:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetNumDataElements
+ 483:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 484:Generated_Source\PSoC4/DMA.h **** *
+ 485:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 486:Generated_Source\PSoC4/DMA.h **** *  Returns the number of data elements to be transferred. Only reflects the
+ 487:Generated_Source\PSoC4/DMA.h **** *  value written by DMA_SetNumDataElements() or DMA_SetConfiguration().
+ 488:Generated_Source\PSoC4/DMA.h **** *  This does not reflect how many elements have been transferred. For that
+ 489:Generated_Source\PSoC4/DMA.h **** *  information use the DMA_GetDescriptorStatus() function.
+ 490:Generated_Source\PSoC4/DMA.h **** *
+ 491:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 492:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 493:Generated_Source\PSoC4/DMA.h **** *                   
+ 494:Generated_Source\PSoC4/DMA.h **** * Return:
+ 495:Generated_Source\PSoC4/DMA.h **** *  Number of data elements to transfer.
+ 496:Generated_Source\PSoC4/DMA.h **** *
+ 497:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 498:Generated_Source\PSoC4/DMA.h **** static CY_INLINE int32 DMA_GetNumDataElements(int32 descriptor)
+ 499:Generated_Source\PSoC4/DMA.h **** {
+ 500:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetNumDataElements(DMA_CHANNEL, descriptor));
+ 501:Generated_Source\PSoC4/DMA.h **** }
+ 502:Generated_Source\PSoC4/DMA.h **** 
+ 503:Generated_Source\PSoC4/DMA.h **** 
+ 504:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 505:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetSrcDstTransferWidth
+ 506:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 507:Generated_Source\PSoC4/DMA.h **** *
+ 508:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 509:Generated_Source\PSoC4/DMA.h **** *  Sets the width of the source and destination. The DMA can either read and
+ 510:Generated_Source\PSoC4/DMA.h **** *  write data from the source and destination at the size specified by
+ 511:Generated_Source\PSoC4/DMA.h **** *  DMA_SetDataElementSize() or by a word (4bytes). This also determines how
+ 512:Generated_Source\PSoC4/DMA.h **** *  many bytes the addresses are incremented if increment source and destination
+ 513:Generated_Source\PSoC4/DMA.h **** *  address are turned on.
+ 514:Generated_Source\PSoC4/DMA.h **** *
+ 515:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 516:Generated_Source\PSoC4/DMA.h **** *  descriptor:    Descriptor (0 or 1) modified by this function.
+ 517:Generated_Source\PSoC4/DMA.h **** *  transferWidth: Specifies the source and destination widths. Refer to the API
+ 518:Generated_Source\PSoC4/DMA.h **** *                 bit field definitions in CyDMA_P4.h or the API description in
+ 519:Generated_Source\PSoC4/DMA.h **** *                 the DMA channel datasheet for the parameter options.
+ 520:Generated_Source\PSoC4/DMA.h **** *                   
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 12
+
+
+ 521:Generated_Source\PSoC4/DMA.h **** * Return:
+ 522:Generated_Source\PSoC4/DMA.h **** *  None.
+ 523:Generated_Source\PSoC4/DMA.h **** *
+ 524:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 525:Generated_Source\PSoC4/DMA.h **** *  This function should not be called when the specified descriptor is active
+ 526:Generated_Source\PSoC4/DMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
+ 527:Generated_Source\PSoC4/DMA.h **** *
+ 528:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 529:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetSrcDstTransferWidth(int32 descriptor, uint32 transferWidth)
+ 530:Generated_Source\PSoC4/DMA.h **** {
+ 531:Generated_Source\PSoC4/DMA.h ****     CyDmaSetSrcDstTransferWidth(DMA_CHANNEL, descriptor, transferWidth);
+ 532:Generated_Source\PSoC4/DMA.h **** }
+ 533:Generated_Source\PSoC4/DMA.h **** 
+ 534:Generated_Source\PSoC4/DMA.h **** 
+ 535:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 536:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetSrcDstTransferWidth
+ 537:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 538:Generated_Source\PSoC4/DMA.h **** *
+ 539:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 540:Generated_Source\PSoC4/DMA.h **** *  Returns the width of the source and destination, as set by 
+ 541:Generated_Source\PSoC4/DMA.h **** *  DMA_SetSrcDstTransferWidth() or DMA_SetConfiguration().
+ 542:Generated_Source\PSoC4/DMA.h **** *
+ 543:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 544:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 545:Generated_Source\PSoC4/DMA.h **** *                   
+ 546:Generated_Source\PSoC4/DMA.h **** * Return:
+ 547:Generated_Source\PSoC4/DMA.h **** *  Width of source and destination. Refer to the API bit field definitions in
+ 548:Generated_Source\PSoC4/DMA.h **** *  CyDMA_P4.h or the API description in the DMA channel datasheet for more
+ 549:Generated_Source\PSoC4/DMA.h **** *  information.
+ 550:Generated_Source\PSoC4/DMA.h **** *
+ 551:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 552:Generated_Source\PSoC4/DMA.h **** static CY_INLINE uint32 DMA_GetSrcDstTransferWidth(int32 descriptor)
+ 553:Generated_Source\PSoC4/DMA.h **** {
+ 554:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetSrcDstTransferWidth(DMA_CHANNEL, descriptor));
+ 555:Generated_Source\PSoC4/DMA.h **** }
+ 556:Generated_Source\PSoC4/DMA.h **** 
+ 557:Generated_Source\PSoC4/DMA.h **** 
+ 558:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 559:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetAddressIncrement
+ 560:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 561:Generated_Source\PSoC4/DMA.h **** *
+ 562:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 563:Generated_Source\PSoC4/DMA.h **** *  Sets whether the source or destination addresses are incremented after the
+ 564:Generated_Source\PSoC4/DMA.h **** *  transfer of each data element. The amount that the source and destination
+ 565:Generated_Source\PSoC4/DMA.h **** *  address are incremented is determined by the DMA_SetSrcDstTransferWidth()
+ 566:Generated_Source\PSoC4/DMA.h **** *  function. The addresses will either be incremented by the data element size
+ 567:Generated_Source\PSoC4/DMA.h **** *  or by a word (4 bytes).
+ 568:Generated_Source\PSoC4/DMA.h **** *
+ 569:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 570:Generated_Source\PSoC4/DMA.h **** *  descriptor:       Descriptor (0 or 1) modified by this function.
+ 571:Generated_Source\PSoC4/DMA.h **** *  addressIncrement: Address increment settings. Refer to the API bit field
+ 572:Generated_Source\PSoC4/DMA.h **** *                    definitions in CyDMA_P4.h or the API description in the DMA
+ 573:Generated_Source\PSoC4/DMA.h **** *                    channel datasheet for the parameter options.
+ 574:Generated_Source\PSoC4/DMA.h **** *    
+ 575:Generated_Source\PSoC4/DMA.h **** * Return:
+ 576:Generated_Source\PSoC4/DMA.h **** *  None.
+ 577:Generated_Source\PSoC4/DMA.h **** *
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 13
+
+
+ 578:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 579:Generated_Source\PSoC4/DMA.h **** *  This function should not be called when the specified descriptor is active
+ 580:Generated_Source\PSoC4/DMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
+ 581:Generated_Source\PSoC4/DMA.h **** *
+ 582:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 583:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetAddressIncrement(int32 descriptor, uint32 addressIncrement)
+ 584:Generated_Source\PSoC4/DMA.h **** {
+ 585:Generated_Source\PSoC4/DMA.h ****     CyDmaSetAddressIncrement(DMA_CHANNEL, descriptor, addressIncrement);
+ 586:Generated_Source\PSoC4/DMA.h **** }
+ 587:Generated_Source\PSoC4/DMA.h **** 
+ 588:Generated_Source\PSoC4/DMA.h **** 
+ 589:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 590:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetAddressIncrement
+ 591:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 592:Generated_Source\PSoC4/DMA.h **** *
+ 593:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 594:Generated_Source\PSoC4/DMA.h **** *  Returns address increment settings as set by DMA_SetAddressIncrement()
+ 595:Generated_Source\PSoC4/DMA.h **** *  or DMA_SetConfiguration().
+ 596:Generated_Source\PSoC4/DMA.h **** *
+ 597:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 598:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 599:Generated_Source\PSoC4/DMA.h **** *                   
+ 600:Generated_Source\PSoC4/DMA.h **** * Return:
+ 601:Generated_Source\PSoC4/DMA.h **** *  Address increment settings. Refer to the API bit field definitions in
+ 602:Generated_Source\PSoC4/DMA.h **** *  CyDMA_P4.h or the API description in the DMA channel datasheet for more
+ 603:Generated_Source\PSoC4/DMA.h **** *  information.
+ 604:Generated_Source\PSoC4/DMA.h **** *
+ 605:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 606:Generated_Source\PSoC4/DMA.h **** static CY_INLINE uint32 DMA_GetAddressIncrement(int32 descriptor)
+ 607:Generated_Source\PSoC4/DMA.h **** {
+ 608:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetAddressIncrement(DMA_CHANNEL, descriptor));
+ 609:Generated_Source\PSoC4/DMA.h **** }
+ 610:Generated_Source\PSoC4/DMA.h **** 
+ 611:Generated_Source\PSoC4/DMA.h **** 
+ 612:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 613:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetTriggerType
+ 614:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 615:Generated_Source\PSoC4/DMA.h **** *
+ 616:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 617:Generated_Source\PSoC4/DMA.h **** *  Sets the type of input trigger for the DMA For level sensitive triggers sets
+ 618:Generated_Source\PSoC4/DMA.h **** *  how long the DMA waits for the trigger to go low (deactivate) before
+ 619:Generated_Source\PSoC4/DMA.h **** *  triggering the channel again.
+ 620:Generated_Source\PSoC4/DMA.h **** *
+ 621:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 622:Generated_Source\PSoC4/DMA.h **** *  descriptor:  Descriptor (0 or 1) modified by this function.
+ 623:Generated_Source\PSoC4/DMA.h **** *  triggerType: Type of DMA trigger. Refer to the API bit field definitions in
+ 624:Generated_Source\PSoC4/DMA.h **** *               CyDMA_P4.h or the API description in the DMA channel datasheet
+ 625:Generated_Source\PSoC4/DMA.h **** *               for the parameter options.
+ 626:Generated_Source\PSoC4/DMA.h **** *                   
+ 627:Generated_Source\PSoC4/DMA.h **** * Return:
+ 628:Generated_Source\PSoC4/DMA.h **** *  None.
+ 629:Generated_Source\PSoC4/DMA.h **** *
+ 630:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 631:Generated_Source\PSoC4/DMA.h **** *  This function should not be called when the specified descriptor is active
+ 632:Generated_Source\PSoC4/DMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
+ 633:Generated_Source\PSoC4/DMA.h **** *
+ 634:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 14
+
+
+ 635:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetTriggerType(int32 descriptor, uint32 triggerType)
+ 636:Generated_Source\PSoC4/DMA.h **** {
+ 637:Generated_Source\PSoC4/DMA.h ****     CyDmaSetTriggerType(DMA_CHANNEL, descriptor, triggerType);
+ 638:Generated_Source\PSoC4/DMA.h **** }
+ 639:Generated_Source\PSoC4/DMA.h **** 
+ 640:Generated_Source\PSoC4/DMA.h **** 
+ 641:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 642:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetTriggerType
+ 643:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 644:Generated_Source\PSoC4/DMA.h **** *
+ 645:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 646:Generated_Source\PSoC4/DMA.h **** *  Returns the trigger deactivation settings as set by DMA_SetTriggerType()
+ 647:Generated_Source\PSoC4/DMA.h **** *  or DMA_SetConfiguration().
+ 648:Generated_Source\PSoC4/DMA.h **** *
+ 649:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 650:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 651:Generated_Source\PSoC4/DMA.h **** *                   
+ 652:Generated_Source\PSoC4/DMA.h **** * Return:
+ 653:Generated_Source\PSoC4/DMA.h **** *  Trigger deactivation settings. Refer to the API bit field definitions in
+ 654:Generated_Source\PSoC4/DMA.h **** *  CyDMA_P4.h or the API description in the DMA channel datasheet for more
+ 655:Generated_Source\PSoC4/DMA.h **** *  information.
+ 656:Generated_Source\PSoC4/DMA.h **** *
+ 657:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 658:Generated_Source\PSoC4/DMA.h **** static CY_INLINE uint32 DMA_GetTriggerType(int32 descriptor)
+ 659:Generated_Source\PSoC4/DMA.h **** {
+ 660:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetTriggerType(DMA_CHANNEL, descriptor));
+ 661:Generated_Source\PSoC4/DMA.h **** }
+ 662:Generated_Source\PSoC4/DMA.h **** 
+ 663:Generated_Source\PSoC4/DMA.h **** 
+ 664:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 665:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetTransferMode
+ 666:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 667:Generated_Source\PSoC4/DMA.h **** *
+ 668:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 669:Generated_Source\PSoC4/DMA.h **** *  Sets the DMA transfer mode. This determines how the DMA reacts to each trigger
+ 670:Generated_Source\PSoC4/DMA.h **** *  event.
+ 671:Generated_Source\PSoC4/DMA.h **** *
+ 672:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 673:Generated_Source\PSoC4/DMA.h **** *  descriptor:   Descriptor (0 or 1) modified by this function.
+ 674:Generated_Source\PSoC4/DMA.h **** *  transferMode: Specifies the DMA transfer mode settings. Refer to the API bit
+ 675:Generated_Source\PSoC4/DMA.h **** *                field definitions in CyDMA_P4.h or the API description in the
+ 676:Generated_Source\PSoC4/DMA.h **** *                DMA channel datasheet for the parameter options.
+ 677:Generated_Source\PSoC4/DMA.h **** *                   
+ 678:Generated_Source\PSoC4/DMA.h **** * Return:
+ 679:Generated_Source\PSoC4/DMA.h **** *  None.
+ 680:Generated_Source\PSoC4/DMA.h **** *
+ 681:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 682:Generated_Source\PSoC4/DMA.h **** *  This function should not be called when the specified descriptor is active
+ 683:Generated_Source\PSoC4/DMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
+ 684:Generated_Source\PSoC4/DMA.h **** *
+ 685:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 686:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetTransferMode(int32 descriptor, uint32 transferMode)
+ 687:Generated_Source\PSoC4/DMA.h **** {
+ 688:Generated_Source\PSoC4/DMA.h ****     CyDmaSetTransferMode(DMA_CHANNEL, descriptor, transferMode);
+ 689:Generated_Source\PSoC4/DMA.h **** }
+ 690:Generated_Source\PSoC4/DMA.h **** 
+ 691:Generated_Source\PSoC4/DMA.h **** 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 15
+
+
+ 692:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 693:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetTransferMode
+ 694:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 695:Generated_Source\PSoC4/DMA.h **** *
+ 696:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 697:Generated_Source\PSoC4/DMA.h **** *  Returns the transfer mode for the specified descriptor as set by 
+ 698:Generated_Source\PSoC4/DMA.h **** *  DMA_SetTransferMode() or DMA_SetConfiguration().
+ 699:Generated_Source\PSoC4/DMA.h **** *
+ 700:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 701:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 702:Generated_Source\PSoC4/DMA.h **** *                   
+ 703:Generated_Source\PSoC4/DMA.h **** * Return:
+ 704:Generated_Source\PSoC4/DMA.h **** *  DMA transfer mode settings. Refer to the API bit field definitions in
+ 705:Generated_Source\PSoC4/DMA.h **** *  CyDMA_P4.h or the API description in the DMA channel datasheet for more
+ 706:Generated_Source\PSoC4/DMA.h **** *  information.
+ 707:Generated_Source\PSoC4/DMA.h **** *
+ 708:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 709:Generated_Source\PSoC4/DMA.h **** static CY_INLINE uint32 DMA_GetTransferMode(int32 descriptor)
+ 710:Generated_Source\PSoC4/DMA.h **** {
+ 711:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetTransferMode(DMA_CHANNEL, descriptor));
+ 712:Generated_Source\PSoC4/DMA.h **** }
+ 713:Generated_Source\PSoC4/DMA.h **** 
+ 714:Generated_Source\PSoC4/DMA.h **** 
+ 715:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 716:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetPreemptable
+ 717:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 718:Generated_Source\PSoC4/DMA.h **** *
+ 719:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 720:Generated_Source\PSoC4/DMA.h **** *  Determines if the descriptor is preemptable.
+ 721:Generated_Source\PSoC4/DMA.h **** *
+ 722:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 723:Generated_Source\PSoC4/DMA.h **** *  descriptor:  Descriptor (0 or 1) modified by this function.
+ 724:Generated_Source\PSoC4/DMA.h **** *  preemptable: Descriptor preemption settings. Refer to the API bit field
+ 725:Generated_Source\PSoC4/DMA.h **** *               definitions in CyDMA_P4.h or the API description in the DMA 
+ 726:Generated_Source\PSoC4/DMA.h **** *               channel datasheet for the parameter options.
+ 727:Generated_Source\PSoC4/DMA.h **** *                   
+ 728:Generated_Source\PSoC4/DMA.h **** * Return:
+ 729:Generated_Source\PSoC4/DMA.h **** *  None.
+ 730:Generated_Source\PSoC4/DMA.h **** *
+ 731:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 732:Generated_Source\PSoC4/DMA.h **** *  This function should not be called when the specified descriptor is active
+ 733:Generated_Source\PSoC4/DMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
+ 734:Generated_Source\PSoC4/DMA.h **** *
+ 735:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 736:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetPreemptable(int32 descriptor, uint32 preemptable)
+ 737:Generated_Source\PSoC4/DMA.h **** {
+ 738:Generated_Source\PSoC4/DMA.h ****     CyDmaSetPreemptable(DMA_CHANNEL, descriptor, preemptable);
+ 739:Generated_Source\PSoC4/DMA.h **** }
+ 740:Generated_Source\PSoC4/DMA.h **** 
+ 741:Generated_Source\PSoC4/DMA.h **** 
+ 742:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 743:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetPreemptable
+ 744:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 745:Generated_Source\PSoC4/DMA.h **** *
+ 746:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 747:Generated_Source\PSoC4/DMA.h **** *  Returns whether or not the descriptor is preemptable.
+ 748:Generated_Source\PSoC4/DMA.h **** *
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 16
+
+
+ 749:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 750:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 751:Generated_Source\PSoC4/DMA.h **** *                   
+ 752:Generated_Source\PSoC4/DMA.h **** * Return:
+ 753:Generated_Source\PSoC4/DMA.h **** *  Descriptor preemption setting. Refer to the API bit field definitions in
+ 754:Generated_Source\PSoC4/DMA.h **** *  CyDMA_P4.h or the API description in the DMA channel datasheet for more
+ 755:Generated_Source\PSoC4/DMA.h **** *  information.
+ 756:Generated_Source\PSoC4/DMA.h **** *
+ 757:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 758:Generated_Source\PSoC4/DMA.h **** static CY_INLINE uint32 DMA_GetPreemptable(int32 descriptor)
+ 759:Generated_Source\PSoC4/DMA.h **** {
+ 760:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetPreemptable(DMA_CHANNEL, descriptor));
+ 761:Generated_Source\PSoC4/DMA.h **** }
+ 762:Generated_Source\PSoC4/DMA.h **** 
+ 763:Generated_Source\PSoC4/DMA.h **** 
+ 764:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 765:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetPostCompletionActions
+ 766:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 767:Generated_Source\PSoC4/DMA.h **** *
+ 768:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 769:Generated_Source\PSoC4/DMA.h **** *  Determines what occurs after a descriptor completes.
+ 770:Generated_Source\PSoC4/DMA.h **** *
+ 771:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 772:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 773:Generated_Source\PSoC4/DMA.h **** *  actions:    Specifies descriptor post completion actions. Refer to the API
+ 774:Generated_Source\PSoC4/DMA.h **** *              bit field definitions in CyDMA_P4.h or the API description in the
+ 775:Generated_Source\PSoC4/DMA.h **** *              DMA channel datasheet for the parameter options.
+ 776:Generated_Source\PSoC4/DMA.h **** *                   
+ 777:Generated_Source\PSoC4/DMA.h **** * Return:
+ 778:Generated_Source\PSoC4/DMA.h **** *  None.  
+ 779:Generated_Source\PSoC4/DMA.h **** *
+ 780:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ 781:Generated_Source\PSoC4/DMA.h **** *  This function should not be called when the specified descriptor is active
+ 782:Generated_Source\PSoC4/DMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
+ 783:Generated_Source\PSoC4/DMA.h **** *
+ 784:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 785:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetPostCompletionActions(int32 descriptor, uint32 actions)
+ 786:Generated_Source\PSoC4/DMA.h **** {
+ 787:Generated_Source\PSoC4/DMA.h ****     CyDmaSetPostCompletionActions(DMA_CHANNEL, descriptor, actions);
+ 788:Generated_Source\PSoC4/DMA.h **** }
+ 789:Generated_Source\PSoC4/DMA.h **** 
+ 790:Generated_Source\PSoC4/DMA.h **** 
+ 791:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 792:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetPostCompletionAction
+ 793:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 794:Generated_Source\PSoC4/DMA.h **** *
+ 795:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 796:Generated_Source\PSoC4/DMA.h **** *  Returns the post descriptor action settings as set by 
+ 797:Generated_Source\PSoC4/DMA.h **** *  DMA_SetPostCompletionActions() or DMA_SetConfiguration().
+ 798:Generated_Source\PSoC4/DMA.h **** *
+ 799:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 800:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 801:Generated_Source\PSoC4/DMA.h **** *                   
+ 802:Generated_Source\PSoC4/DMA.h **** * Return:
+ 803:Generated_Source\PSoC4/DMA.h **** *  Post descriptor actions. Refer to the API bit field definitions in CyDMA_P4.h
+ 804:Generated_Source\PSoC4/DMA.h **** *  or the API description in the DMA channel datasheet for more information.
+ 805:Generated_Source\PSoC4/DMA.h **** *
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 17
+
+
+ 806:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 807:Generated_Source\PSoC4/DMA.h **** static CY_INLINE uint32 DMA_GetPostCompletionAction(int32 descriptor)
+ 808:Generated_Source\PSoC4/DMA.h **** {
+ 809:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetPostCompletionActions(DMA_CHANNEL, descriptor));
+ 810:Generated_Source\PSoC4/DMA.h **** }
+ 811:Generated_Source\PSoC4/DMA.h **** 
+ 812:Generated_Source\PSoC4/DMA.h **** 
+ 813:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ 814:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetInterruptCallback
+ 815:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ 816:Generated_Source\PSoC4/DMA.h **** *
+ 817:Generated_Source\PSoC4/DMA.h **** * Summary:
+ 818:Generated_Source\PSoC4/DMA.h **** *  Sets a user defined callback function to be called by the DMA interrupt. The
+ 819:Generated_Source\PSoC4/DMA.h **** *  function should contain code to process the interrupt request for the 
+ 820:Generated_Source\PSoC4/DMA.h **** *  associated DMA channel.
+ 821:Generated_Source\PSoC4/DMA.h **** *
+ 822:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ 823:Generated_Source\PSoC4/DMA.h **** *  callback: Pointer to the user defined callback function.
+ 824:Generated_Source\PSoC4/DMA.h **** *
+ 825:Generated_Source\PSoC4/DMA.h **** * Return:
+ 826:Generated_Source\PSoC4/DMA.h **** *  Pointer to the function previously set for the specified channel. 
+ 827:Generated_Source\PSoC4/DMA.h **** *
+ 828:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ 829:Generated_Source\PSoC4/DMA.h **** static CY_INLINE cydma_callback_t DMA_SetInterruptCallback(cydma_callback_t callback)
+ 830:Generated_Source\PSoC4/DMA.h **** {
+ 831:Generated_Source\PSoC4/DMA.h ****     return (CyDmaSetInterruptCallback(DMA_CHANNEL, callback));
+  66              		.loc 2 831 0
+  67 000e 0549     		ldr	r1, .L3+8
+  68 0010 0220     		movs	r0, #2
+  69 0012 FFF7FEFF 		bl	CyDmaSetInterruptCallback
+  70              	.LVL2:
+  71              	.LBE5:
+  72              	.LBE4:
+  43:VolumeControl.c ****     
+  44:VolumeControl.c ****     DMA_SetInterruptCallback(DmaIntHandler);
+  45:VolumeControl.c **** 
+  46:VolumeControl.c ****     /* Start ADC conversion. */
+  47:VolumeControl.c ****     ADC_StartConvert();
+  73              		.loc 1 47 0
+  74 0016 FFF7FEFF 		bl	ADC_StartConvert
+  75              	.LVL3:
+  48:VolumeControl.c **** }
+  76              		.loc 1 48 0
+  77              		@ sp needed
+  78 001a 10BD     		pop	{r4, pc}
+  79              	.L4:
+  80              		.align	2
+  81              	.L3:
+  82 001c 00000000 		.word	.LANCHOR0
+  83 0020 80013A40 		.word	1077543296
+  84 0024 00000000 		.word	DmaIntHandler
+  85              		.cfi_endproc
+  86              	.LFE35:
+  87              		.size	VolumeControlInit, .-VolumeControlInit
+  88              		.global	__aeabi_idiv
+  89              		.section	.text.VolumeControlService,"ax",%progbits
+  90              		.align	2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 18
+
+
+  91              		.global	VolumeControlService
+  92              		.code	16
+  93              		.thumb_func
+  94              		.type	VolumeControlService, %function
+  95              	VolumeControlService:
+  96              	.LFB36:
+  49:VolumeControl.c **** 
+  50:VolumeControl.c **** void VolumeControlService(void)
+  51:VolumeControl.c **** {
+  97              		.loc 1 51 0
+  98              		.cfi_startproc
+  99              		@ args = 0, pretend = 0, frame = 0
+ 100              		@ frame_needed = 0, uses_anonymous_args = 0
+ 101 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 102              		.cfi_def_cfa_offset 20
+ 103              		.cfi_offset 4, -20
+ 104              		.cfi_offset 5, -16
+ 105              		.cfi_offset 6, -12
+ 106              		.cfi_offset 7, -8
+ 107              		.cfi_offset 14, -4
+ 108 0002 83B0     		sub	sp, sp, #12
+ 109              		.cfi_def_cfa_offset 32
+ 110              	.LVL4:
+  52:VolumeControl.c ****     static int32 prevVol[vol_ctrl_both] = { 0, 0 };
+  53:VolumeControl.c ****     int32 volume[vol_ctrl_both] = { 0, 0 };
+  54:VolumeControl.c ****     int i;
+  55:VolumeControl.c **** 
+  56:VolumeControl.c ****     for (i = 0; i < vol_ctrl_both; i++)
+ 111              		.loc 1 56 0
+ 112 0004 0024     		movs	r4, #0
+ 113 0006 35E0     		b	.L6
+ 114              	.LVL5:
+ 115              	.L12:
+  57:VolumeControl.c **** 	{
+  58:VolumeControl.c ****         // Scale ADC reading to USBFS volume range
+  59:VolumeControl.c ****         volume[i] = (adcSample[i] - ADC_MIN_READING[i]) * PC_VOLUME_MSB_MAX / ADC_READING_RANGE(i);
+ 116              		.loc 1 59 0
+ 117 0008 1C4E     		ldr	r6, .L14
+ 118 000a 6300     		lsls	r3, r4, #1
+ 119 000c 9A5F     		ldrsh	r2, [r3, r6]
+ 120 000e 1C4B     		ldr	r3, .L14+4
+ 121 0010 A500     		lsls	r5, r4, #2
+ 122 0012 E958     		ldr	r1, [r5, r3]
+ 123 0014 521A     		subs	r2, r2, r1
+ 124 0016 D001     		lsls	r0, r2, #7
+ 125 0018 801A     		subs	r0, r0, r2
+ 126 001a 5B19     		adds	r3, r3, r5
+ 127 001c 9B68     		ldr	r3, [r3, #8]
+ 128 001e 591A     		subs	r1, r3, r1
+ 129 0020 FFF7FEFF 		bl	__aeabi_idiv
+ 130              	.LVL6:
+ 131 0024 0700     		movs	r7, r0
+  60:VolumeControl.c **** 
+  61:VolumeControl.c ****         #if 0
+  62:VolumeControl.c ****         /* Filter volume to be in the expected range */
+  63:VolumeControl.c **** 		if((volume[i] > PC_VOLUME_MSB_MIN) && (volume[i] <= PC_VOLUME_MSB_MAX))
+  64:VolumeControl.c **** 		{
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 19
+
+
+  65:VolumeControl.c **** 			volume[i] = (uint8)(((volume[i] - PC_VOLUME_MSB_MIN) * CODEC_HP_VOLUME_MAX) / (PC_VOLUME_MSB_MAX
+  66:VolumeControl.c **** 		}
+  67:VolumeControl.c **** 		else
+  68:VolumeControl.c **** 		{
+  69:VolumeControl.c **** 			/* Set volume to 0 if the volume from PC is not in expected range */
+  70:VolumeControl.c **** 			volume[i] = 0;
+  71:VolumeControl.c **** 		}
+  72:VolumeControl.c ****         #endif
+  73:VolumeControl.c **** 
+  74:VolumeControl.c ****         if (volume[i] != prevVol[i])
+ 132              		.loc 1 74 0
+ 133 0026 7519     		adds	r5, r6, r5
+ 134 0028 6B68     		ldr	r3, [r5, #4]
+ 135 002a 9842     		cmp	r0, r3
+ 136 002c 21D0     		beq	.L7
+  75:VolumeControl.c ****         {
+  76:VolumeControl.c ****             /* Update the codec volume */
+  77:VolumeControl.c ****             D_PRINTF(DEBUG, "%s volume knob change %ld -> %ld\n", (i == vol_ctrl_right) ? "Right" :
+ 137              		.loc 1 77 0
+ 138 002e 154A     		ldr	r2, .L14+8
+ 139 0030 1268     		ldr	r2, [r2]
+ 140 0032 002A     		cmp	r2, #0
+ 141 0034 10D0     		beq	.L8
+ 142              		.loc 1 77 0 is_stmt 0 discriminator 1
+ 143 0036 527C     		ldrb	r2, [r2, #17]
+ 144 0038 9207     		lsls	r2, r2, #30
+ 145 003a 0DD0     		beq	.L8
+ 146              		.loc 1 77 0 discriminator 2
+ 147 003c 002C     		cmp	r4, #0
+ 148 003e 01D1     		bne	.L13
+ 149              		.loc 1 77 0
+ 150 0040 114A     		ldr	r2, .L14+12
+ 151 0042 00E0     		b	.L9
+ 152              	.L13:
+ 153 0044 114A     		ldr	r2, .L14+16
+ 154              	.L9:
+ 155              		.loc 1 77 0 discriminator 6
+ 156 0046 124D     		ldr	r5, .L14+20
+ 157 0048 0097     		str	r7, [sp]
+ 158 004a 1249     		ldr	r1, .L14+24
+ 159 004c 2800     		movs	r0, r5
+ 160 004e FFF7FEFF 		bl	sprintf
+ 161              	.LVL7:
+ 162 0052 2800     		movs	r0, r5
+ 163 0054 FFF7FEFF 		bl	UART_UartPutString
+ 164              	.LVL8:
+ 165              	.L8:
+  78:VolumeControl.c ****             
+  79:VolumeControl.c ****             if (i == vol_ctrl_right)
+ 166              		.loc 1 79 0 is_stmt 1
+ 167 0058 002C     		cmp	r4, #0
+ 168 005a 03D1     		bne	.L10
+  80:VolumeControl.c ****             {
+  81:VolumeControl.c ****     		    Codec_AdjustBothHeadphoneVolumeLevel(volume[i]);
+ 169              		.loc 1 81 0
+ 170 005c F8B2     		uxtb	r0, r7
+ 171 005e FFF7FEFF 		bl	Codec_AdjustBothHeadphoneVolumeLevel
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 20
+
+
+ 172              	.LVL9:
+ 173 0062 02E0     		b	.L11
+ 174              	.L10:
+  82:VolumeControl.c ****             }
+  83:VolumeControl.c ****             else
+  84:VolumeControl.c ****             {
+  85:VolumeControl.c ****                 pcm1770_volume_set_level(volume[i]);
+ 175              		.loc 1 85 0
+ 176 0064 F8B2     		uxtb	r0, r7
+ 177 0066 FFF7FEFF 		bl	pcm1770_volume_set_level
+ 178              	.LVL10:
+ 179              	.L11:
+  86:VolumeControl.c ****             }
+  87:VolumeControl.c ****             prevVol[i] = volume[i];
+ 180              		.loc 1 87 0
+ 181 006a A300     		lsls	r3, r4, #2
+ 182 006c 034A     		ldr	r2, .L14
+ 183 006e D318     		adds	r3, r2, r3
+ 184 0070 5F60     		str	r7, [r3, #4]
+ 185              	.L7:
+  56:VolumeControl.c **** 	{
+ 186              		.loc 1 56 0 discriminator 2
+ 187 0072 0134     		adds	r4, r4, #1
+ 188              	.LVL11:
+ 189              	.L6:
+  56:VolumeControl.c **** 	{
+ 190              		.loc 1 56 0 is_stmt 0 discriminator 1
+ 191 0074 012C     		cmp	r4, #1
+ 192 0076 C7DD     		ble	.L12
+  88:VolumeControl.c ****         }
+  89:VolumeControl.c ****     }
+  90:VolumeControl.c **** }
+ 193              		.loc 1 90 0 is_stmt 1
+ 194 0078 03B0     		add	sp, sp, #12
+ 195              		@ sp needed
+ 196              	.LVL12:
+ 197 007a F0BD     		pop	{r4, r5, r6, r7, pc}
+ 198              	.L15:
+ 199              		.align	2
+ 200              	.L14:
+ 201 007c 00000000 		.word	.LANCHOR0
+ 202 0080 00000000 		.word	.LANCHOR1
+ 203 0084 00000000 		.word	cal_data
+ 204 0088 00000000 		.word	.LC2
+ 205 008c 08000000 		.word	.LC4
+ 206 0090 00000000 		.word	gbuf
+ 207 0094 10000000 		.word	.LC9
+ 208              		.cfi_endproc
+ 209              	.LFE36:
+ 210              		.size	VolumeControlService, .-VolumeControlService
+ 211              		.global	adcSample
+ 212              		.global	ADC_MAX_READING
+ 213              		.global	ADC_MIN_READING
+ 214              		.data
+ 215              		.align	2
+ 216              		.set	.LANCHOR1,. + 0
+ 217              		.type	ADC_MIN_READING, %object
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 21
+
+
+ 218              		.size	ADC_MIN_READING, 8
+ 219              	ADC_MIN_READING:
+ 220 0000 FEFFFFFF 		.word	-2
+ 221 0004 FEFFFFFF 		.word	-2
+ 222              		.type	ADC_MAX_READING, %object
+ 223              		.size	ADC_MAX_READING, 8
+ 224              	ADC_MAX_READING:
+ 225 0008 FF070000 		.word	2047
+ 226 000c FF070000 		.word	2047
+ 227              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 228              		.align	2
+ 229              	.LC2:
+ 230 0000 52696768 		.ascii	"Right\000"
+ 230      7400
+ 231 0006 0000     		.space	2
+ 232              	.LC4:
+ 233 0008 4C656674 		.ascii	"Left\000"
+ 233      00
+ 234 000d 000000   		.space	3
+ 235              	.LC9:
+ 236 0010 25732076 		.ascii	"%s volume knob change %ld -> %ld\012\000"
+ 236      6F6C756D 
+ 236      65206B6E 
+ 236      6F622063 
+ 236      68616E67 
+ 237              		.bss
+ 238              		.align	2
+ 239              		.set	.LANCHOR0,. + 0
+ 240              		.type	adcSample, %object
+ 241              		.size	adcSample, 4
+ 242              	adcSample:
+ 243 0000 00000000 		.space	4
+ 244              		.type	prevVol.6927, %object
+ 245              		.size	prevVol.6927, 8
+ 246              	prevVol.6927:
+ 247 0004 00000000 		.space	8
+ 247      00000000 
+ 248              		.text
+ 249              	.Letext0:
+ 250              		.file 3 "Generated_Source\\PSoC4/cytypes.h"
+ 251              		.file 4 "./Calibration.h"
+ 252              		.file 5 "Generated_Source\\PSoC4/CyDMA.h"
+ 253              		.file 6 "./Application.h"
+ 254              		.file 7 "Generated_Source\\PSoC4/ADC.h"
+ 255              		.file 8 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 256              		.file 9 "Generated_Source\\PSoC4/UART_SPI_UART.h"
+ 257              		.file 10 "./Codec.h"
+ 258              		.file 11 "./pcm1770.h"
+ 259              		.file 12 "VolumeControl.h"
+ 260              		.section	.debug_info,"",%progbits
+ 261              	.Ldebug_info0:
+ 262 0000 73030000 		.4byte	0x373
+ 263 0004 0400     		.2byte	0x4
+ 264 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 265 000a 04       		.byte	0x4
+ 266 000b 01       		.uleb128 0x1
+ 267 000c AE010000 		.4byte	.LASF46
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 22
+
+
+ 268 0010 0C       		.byte	0xc
+ 269 0011 06000000 		.4byte	.LASF47
+ 270 0015 64020000 		.4byte	.LASF48
+ 271 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 272 001d 00000000 		.4byte	0
+ 273 0021 00000000 		.4byte	.Ldebug_line0
+ 274 0025 02       		.uleb128 0x2
+ 275 0026 01       		.byte	0x1
+ 276 0027 06       		.byte	0x6
+ 277 0028 1D030000 		.4byte	.LASF0
+ 278 002c 02       		.uleb128 0x2
+ 279 002d 01       		.byte	0x1
+ 280 002e 08       		.byte	0x8
+ 281 002f 9B000000 		.4byte	.LASF1
+ 282 0033 02       		.uleb128 0x2
+ 283 0034 02       		.byte	0x2
+ 284 0035 05       		.byte	0x5
+ 285 0036 2F010000 		.4byte	.LASF2
+ 286 003a 02       		.uleb128 0x2
+ 287 003b 02       		.byte	0x2
+ 288 003c 07       		.byte	0x7
+ 289 003d 33000000 		.4byte	.LASF3
+ 290 0041 02       		.uleb128 0x2
+ 291 0042 04       		.byte	0x4
+ 292 0043 05       		.byte	0x5
+ 293 0044 FF020000 		.4byte	.LASF4
+ 294 0048 02       		.uleb128 0x2
+ 295 0049 04       		.byte	0x4
+ 296 004a 07       		.byte	0x7
+ 297 004b ED000000 		.4byte	.LASF5
+ 298 004f 02       		.uleb128 0x2
+ 299 0050 08       		.byte	0x8
+ 300 0051 05       		.byte	0x5
+ 301 0052 51020000 		.4byte	.LASF6
+ 302 0056 02       		.uleb128 0x2
+ 303 0057 08       		.byte	0x8
+ 304 0058 07       		.byte	0x7
+ 305 0059 74010000 		.4byte	.LASF7
+ 306 005d 03       		.uleb128 0x3
+ 307 005e 04       		.byte	0x4
+ 308 005f 05       		.byte	0x5
+ 309 0060 696E7400 		.ascii	"int\000"
+ 310 0064 02       		.uleb128 0x2
+ 311 0065 04       		.byte	0x4
+ 312 0066 07       		.byte	0x7
+ 313 0067 67010000 		.4byte	.LASF8
+ 314 006b 04       		.uleb128 0x4
+ 315 006c 4D000000 		.4byte	.LASF9
+ 316 0070 03       		.byte	0x3
+ 317 0071 E401     		.2byte	0x1e4
+ 318 0073 2C000000 		.4byte	0x2c
+ 319 0077 04       		.uleb128 0x4
+ 320 0078 52010000 		.4byte	.LASF10
+ 321 007c 03       		.byte	0x3
+ 322 007d E601     		.2byte	0x1e6
+ 323 007f 48000000 		.4byte	0x48
+ 324 0083 04       		.uleb128 0x4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 23
+
+
+ 325 0084 E7000000 		.4byte	.LASF11
+ 326 0088 03       		.byte	0x3
+ 327 0089 E801     		.2byte	0x1e8
+ 328 008b 33000000 		.4byte	0x33
+ 329 008f 04       		.uleb128 0x4
+ 330 0090 FF000000 		.4byte	.LASF12
+ 331 0094 03       		.byte	0x3
+ 332 0095 E901     		.2byte	0x1e9
+ 333 0097 41000000 		.4byte	0x41
+ 334 009b 02       		.uleb128 0x2
+ 335 009c 04       		.byte	0x4
+ 336 009d 04       		.byte	0x4
+ 337 009e 8E000000 		.4byte	.LASF13
+ 338 00a2 02       		.uleb128 0x2
+ 339 00a3 08       		.byte	0x8
+ 340 00a4 04       		.byte	0x4
+ 341 00a5 46000000 		.4byte	.LASF14
+ 342 00a9 02       		.uleb128 0x2
+ 343 00aa 01       		.byte	0x1
+ 344 00ab 08       		.byte	0x8
+ 345 00ac 5F020000 		.4byte	.LASF15
+ 346 00b0 04       		.uleb128 0x4
+ 347 00b1 00000000 		.4byte	.LASF16
+ 348 00b5 03       		.byte	0x3
+ 349 00b6 9002     		.2byte	0x290
+ 350 00b8 BC000000 		.4byte	0xbc
+ 351 00bc 05       		.uleb128 0x5
+ 352 00bd 77000000 		.4byte	0x77
+ 353 00c1 06       		.uleb128 0x6
+ 354 00c2 04       		.byte	0x4
+ 355 00c3 C7000000 		.4byte	0xc7
+ 356 00c7 07       		.uleb128 0x7
+ 357 00c8 02       		.uleb128 0x2
+ 358 00c9 08       		.byte	0x8
+ 359 00ca 04       		.byte	0x4
+ 360 00cb 3C020000 		.4byte	.LASF17
+ 361 00cf 02       		.uleb128 0x2
+ 362 00d0 04       		.byte	0x4
+ 363 00d1 07       		.byte	0x7
+ 364 00d2 48020000 		.4byte	.LASF18
+ 365 00d6 08       		.uleb128 0x8
+ 366 00d7 14       		.byte	0x14
+ 367 00d8 04       		.byte	0x4
+ 368 00d9 12       		.byte	0x12
+ 369 00da 27010000 		.4byte	0x127
+ 370 00de 09       		.uleb128 0x9
+ 371 00df 16000000 		.4byte	.LASF19
+ 372 00e3 04       		.byte	0x4
+ 373 00e4 14       		.byte	0x14
+ 374 00e5 77000000 		.4byte	0x77
+ 375 00e9 00       		.byte	0
+ 376 00ea 09       		.uleb128 0x9
+ 377 00eb 0E010000 		.4byte	.LASF20
+ 378 00ef 04       		.byte	0x4
+ 379 00f0 15       		.byte	0x15
+ 380 00f1 77000000 		.4byte	0x77
+ 381 00f5 04       		.byte	0x4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 24
+
+
+ 382 00f6 09       		.uleb128 0x9
+ 383 00f7 8B020000 		.4byte	.LASF21
+ 384 00fb 04       		.byte	0x4
+ 385 00fc 16       		.byte	0x16
+ 386 00fd 27010000 		.4byte	0x127
+ 387 0101 08       		.byte	0x8
+ 388 0102 09       		.uleb128 0x9
+ 389 0103 8B010000 		.4byte	.LASF22
+ 390 0107 04       		.byte	0x4
+ 391 0108 17       		.byte	0x17
+ 392 0109 27010000 		.4byte	0x127
+ 393 010d 0C       		.byte	0xc
+ 394 010e 09       		.uleb128 0x9
+ 395 010f 20000000 		.4byte	.LASF23
+ 396 0113 04       		.byte	0x4
+ 397 0114 19       		.byte	0x19
+ 398 0115 6B000000 		.4byte	0x6b
+ 399 0119 10       		.byte	0x10
+ 400 011a 09       		.uleb128 0x9
+ 401 011b 24010000 		.4byte	.LASF24
+ 402 011f 04       		.byte	0x4
+ 403 0120 1A       		.byte	0x1a
+ 404 0121 6B000000 		.4byte	0x6b
+ 405 0125 11       		.byte	0x11
+ 406 0126 00       		.byte	0
+ 407 0127 0A       		.uleb128 0xa
+ 408 0128 83000000 		.4byte	0x83
+ 409 012c 37010000 		.4byte	0x137
+ 410 0130 0B       		.uleb128 0xb
+ 411 0131 CF000000 		.4byte	0xcf
+ 412 0135 01       		.byte	0x1
+ 413 0136 00       		.byte	0
+ 414 0137 0C       		.uleb128 0xc
+ 415 0138 EC020000 		.4byte	.LASF25
+ 416 013c 04       		.byte	0x4
+ 417 013d 1B       		.byte	0x1b
+ 418 013e D6000000 		.4byte	0xd6
+ 419 0142 0D       		.uleb128 0xd
+ 420 0143 01       		.byte	0x1
+ 421 0144 2C000000 		.4byte	0x2c
+ 422 0148 0C       		.byte	0xc
+ 423 0149 14       		.byte	0x14
+ 424 014a 61010000 		.4byte	0x161
+ 425 014e 0E       		.uleb128 0xe
+ 426 014f C6020000 		.4byte	.LASF26
+ 427 0153 00       		.byte	0
+ 428 0154 0E       		.uleb128 0xe
+ 429 0155 59010000 		.4byte	.LASF27
+ 430 0159 01       		.byte	0x1
+ 431 015a 0E       		.uleb128 0xe
+ 432 015b 16010000 		.4byte	.LASF28
+ 433 015f 02       		.byte	0x2
+ 434 0160 00       		.byte	0
+ 435 0161 0C       		.uleb128 0xc
+ 436 0162 9D010000 		.4byte	.LASF29
+ 437 0166 05       		.byte	0x5
+ 438 0167 67       		.byte	0x67
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 25
+
+
+ 439 0168 C1000000 		.4byte	0xc1
+ 440 016c 0F       		.uleb128 0xf
+ 441 016d A9000000 		.4byte	.LASF49
+ 442 0171 02       		.byte	0x2
+ 443 0172 3D03     		.2byte	0x33d
+ 444 0174 61010000 		.4byte	0x161
+ 445 0178 03       		.byte	0x3
+ 446 0179 8A010000 		.4byte	0x18a
+ 447 017d 10       		.uleb128 0x10
+ 448 017e 05010000 		.4byte	.LASF50
+ 449 0182 02       		.byte	0x2
+ 450 0183 3D03     		.2byte	0x33d
+ 451 0185 61010000 		.4byte	0x161
+ 452 0189 00       		.byte	0
+ 453 018a 11       		.uleb128 0x11
+ 454 018b 80000000 		.4byte	.LASF51
+ 455 018f 01       		.byte	0x1
+ 456 0190 1D       		.byte	0x1d
+ 457 0191 00000000 		.4byte	.LFB34
+ 458 0195 02000000 		.4byte	.LFE34-.LFB34
+ 459 0199 01       		.uleb128 0x1
+ 460 019a 9C       		.byte	0x9c
+ 461 019b 12       		.uleb128 0x12
+ 462 019c D5020000 		.4byte	.LASF30
+ 463 01a0 01       		.byte	0x1
+ 464 01a1 22       		.byte	0x22
+ 465 01a2 00000000 		.4byte	.LFB35
+ 466 01a6 28000000 		.4byte	.LFE35-.LFB35
+ 467 01aa 01       		.uleb128 0x1
+ 468 01ab 9C       		.byte	0x9c
+ 469 01ac 18020000 		.4byte	0x218
+ 470 01b0 13       		.uleb128 0x13
+ 471 01b1 6C010000 		.4byte	0x16c
+ 472 01b5 0E000000 		.4byte	.LBB4
+ 473 01b9 08000000 		.4byte	.LBE4-.LBB4
+ 474 01bd 01       		.byte	0x1
+ 475 01be 2C       		.byte	0x2c
+ 476 01bf E5010000 		.4byte	0x1e5
+ 477 01c3 14       		.uleb128 0x14
+ 478 01c4 7D010000 		.4byte	0x17d
+ 479 01c8 00000000 		.4byte	.LLST0
+ 480 01cc 15       		.uleb128 0x15
+ 481 01cd 16000000 		.4byte	.LVL2
+ 482 01d1 1D030000 		.4byte	0x31d
+ 483 01d5 16       		.uleb128 0x16
+ 484 01d6 01       		.uleb128 0x1
+ 485 01d7 50       		.byte	0x50
+ 486 01d8 01       		.uleb128 0x1
+ 487 01d9 32       		.byte	0x32
+ 488 01da 16       		.uleb128 0x16
+ 489 01db 01       		.uleb128 0x1
+ 490 01dc 51       		.byte	0x51
+ 491 01dd 05       		.uleb128 0x5
+ 492 01de 03       		.byte	0x3
+ 493 01df 00000000 		.4byte	DmaIntHandler
+ 494 01e3 00       		.byte	0
+ 495 01e4 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 26
+
+
+ 496 01e5 17       		.uleb128 0x17
+ 497 01e6 06000000 		.4byte	.LVL0
+ 498 01ea 28030000 		.4byte	0x328
+ 499 01ee 18       		.uleb128 0x18
+ 500 01ef 0E000000 		.4byte	.LVL1
+ 501 01f3 33030000 		.4byte	0x333
+ 502 01f7 0E020000 		.4byte	0x20e
+ 503 01fb 16       		.uleb128 0x16
+ 504 01fc 01       		.uleb128 0x1
+ 505 01fd 50       		.byte	0x50
+ 506 01fe 05       		.uleb128 0x5
+ 507 01ff 0C       		.byte	0xc
+ 508 0200 80013A40 		.4byte	0x403a0180
+ 509 0204 16       		.uleb128 0x16
+ 510 0205 01       		.uleb128 0x1
+ 511 0206 51       		.byte	0x51
+ 512 0207 05       		.uleb128 0x5
+ 513 0208 03       		.byte	0x3
+ 514 0209 00000000 		.4byte	.LANCHOR0
+ 515 020d 00       		.byte	0
+ 516 020e 17       		.uleb128 0x17
+ 517 020f 1A000000 		.4byte	.LVL3
+ 518 0213 3E030000 		.4byte	0x33e
+ 519 0217 00       		.byte	0
+ 520 0218 19       		.uleb128 0x19
+ 521 0219 08030000 		.4byte	.LASF31
+ 522 021d 01       		.byte	0x1
+ 523 021e 32       		.byte	0x32
+ 524 021f 00000000 		.4byte	.LFB36
+ 525 0223 98000000 		.4byte	.LFE36-.LFB36
+ 526 0227 01       		.uleb128 0x1
+ 527 0228 9C       		.byte	0x9c
+ 528 0229 B3020000 		.4byte	0x2b3
+ 529 022d 1A       		.uleb128 0x1a
+ 530 022e 44030000 		.4byte	.LASF32
+ 531 0232 01       		.byte	0x1
+ 532 0233 34       		.byte	0x34
+ 533 0234 B3020000 		.4byte	0x2b3
+ 534 0238 05       		.uleb128 0x5
+ 535 0239 03       		.byte	0x3
+ 536 023a 04000000 		.4byte	prevVol.6927
+ 537 023e 1B       		.uleb128 0x1b
+ 538 023f 94000000 		.4byte	.LASF52
+ 539 0243 01       		.byte	0x1
+ 540 0244 35       		.byte	0x35
+ 541 0245 B3020000 		.4byte	0x2b3
+ 542 0249 1C       		.uleb128 0x1c
+ 543 024a 6900     		.ascii	"i\000"
+ 544 024c 01       		.byte	0x1
+ 545 024d 36       		.byte	0x36
+ 546 024e 5D000000 		.4byte	0x5d
+ 547 0252 18000000 		.4byte	.LLST1
+ 548 0256 18       		.uleb128 0x18
+ 549 0257 52000000 		.4byte	.LVL7
+ 550 025b 49030000 		.4byte	0x349
+ 551 025f 7A020000 		.4byte	0x27a
+ 552 0263 16       		.uleb128 0x16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 27
+
+
+ 553 0264 01       		.uleb128 0x1
+ 554 0265 50       		.byte	0x50
+ 555 0266 02       		.uleb128 0x2
+ 556 0267 75       		.byte	0x75
+ 557 0268 00       		.sleb128 0
+ 558 0269 16       		.uleb128 0x16
+ 559 026a 01       		.uleb128 0x1
+ 560 026b 51       		.byte	0x51
+ 561 026c 05       		.uleb128 0x5
+ 562 026d 03       		.byte	0x3
+ 563 026e 10000000 		.4byte	.LC9
+ 564 0272 16       		.uleb128 0x16
+ 565 0273 02       		.uleb128 0x2
+ 566 0274 7D       		.byte	0x7d
+ 567 0275 00       		.sleb128 0
+ 568 0276 02       		.uleb128 0x2
+ 569 0277 77       		.byte	0x77
+ 570 0278 00       		.sleb128 0
+ 571 0279 00       		.byte	0
+ 572 027a 18       		.uleb128 0x18
+ 573 027b 58000000 		.4byte	.LVL8
+ 574 027f 54030000 		.4byte	0x354
+ 575 0283 8E020000 		.4byte	0x28e
+ 576 0287 16       		.uleb128 0x16
+ 577 0288 01       		.uleb128 0x1
+ 578 0289 50       		.byte	0x50
+ 579 028a 02       		.uleb128 0x2
+ 580 028b 75       		.byte	0x75
+ 581 028c 00       		.sleb128 0
+ 582 028d 00       		.byte	0
+ 583 028e 18       		.uleb128 0x18
+ 584 028f 62000000 		.4byte	.LVL9
+ 585 0293 60030000 		.4byte	0x360
+ 586 0297 A2020000 		.4byte	0x2a2
+ 587 029b 16       		.uleb128 0x16
+ 588 029c 01       		.uleb128 0x1
+ 589 029d 50       		.byte	0x50
+ 590 029e 02       		.uleb128 0x2
+ 591 029f 77       		.byte	0x77
+ 592 02a0 00       		.sleb128 0
+ 593 02a1 00       		.byte	0
+ 594 02a2 15       		.uleb128 0x15
+ 595 02a3 6A000000 		.4byte	.LVL10
+ 596 02a7 6B030000 		.4byte	0x36b
+ 597 02ab 16       		.uleb128 0x16
+ 598 02ac 01       		.uleb128 0x1
+ 599 02ad 50       		.byte	0x50
+ 600 02ae 02       		.uleb128 0x2
+ 601 02af 77       		.byte	0x77
+ 602 02b0 00       		.sleb128 0
+ 603 02b1 00       		.byte	0
+ 604 02b2 00       		.byte	0
+ 605 02b3 0A       		.uleb128 0xa
+ 606 02b4 8F000000 		.4byte	0x8f
+ 607 02b8 C3020000 		.4byte	0x2c3
+ 608 02bc 0B       		.uleb128 0xb
+ 609 02bd CF000000 		.4byte	0xcf
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 28
+
+
+ 610 02c1 01       		.byte	0x1
+ 611 02c2 00       		.byte	0
+ 612 02c3 1D       		.uleb128 0x1d
+ 613 02c4 49010000 		.4byte	.LASF33
+ 614 02c8 04       		.byte	0x4
+ 615 02c9 1D       		.byte	0x1d
+ 616 02ca CE020000 		.4byte	0x2ce
+ 617 02ce 06       		.uleb128 0x6
+ 618 02cf 04       		.byte	0x4
+ 619 02d0 37010000 		.4byte	0x137
+ 620 02d4 0A       		.uleb128 0xa
+ 621 02d5 A9000000 		.4byte	0xa9
+ 622 02d9 DF020000 		.4byte	0x2df
+ 623 02dd 1E       		.uleb128 0x1e
+ 624 02de 00       		.byte	0
+ 625 02df 1D       		.uleb128 0x1d
+ 626 02e0 E7020000 		.4byte	.LASF34
+ 627 02e4 06       		.byte	0x6
+ 628 02e5 3A       		.byte	0x3a
+ 629 02e6 D4020000 		.4byte	0x2d4
+ 630 02ea 1F       		.uleb128 0x1f
+ 631 02eb BC020000 		.4byte	.LASF35
+ 632 02ef 01       		.byte	0x1
+ 633 02f0 1B       		.byte	0x1b
+ 634 02f1 27010000 		.4byte	0x127
+ 635 02f5 05       		.uleb128 0x5
+ 636 02f6 03       		.byte	0x3
+ 637 02f7 00000000 		.4byte	adcSample
+ 638 02fb 1F       		.uleb128 0x1f
+ 639 02fc 93020000 		.4byte	.LASF36
+ 640 0300 01       		.byte	0x1
+ 641 0301 15       		.byte	0x15
+ 642 0302 B3020000 		.4byte	0x2b3
+ 643 0306 05       		.uleb128 0x5
+ 644 0307 03       		.byte	0x3
+ 645 0308 00000000 		.4byte	ADC_MIN_READING
+ 646 030c 1F       		.uleb128 0x1f
+ 647 030d 39010000 		.4byte	.LASF37
+ 648 0311 01       		.byte	0x1
+ 649 0312 16       		.byte	0x16
+ 650 0313 B3020000 		.4byte	0x2b3
+ 651 0317 05       		.uleb128 0x5
+ 652 0318 03       		.byte	0x3
+ 653 0319 00000000 		.4byte	ADC_MAX_READING
+ 654 031d 20       		.uleb128 0x20
+ 655 031e 53000000 		.4byte	.LASF38
+ 656 0322 53000000 		.4byte	.LASF38
+ 657 0326 05       		.byte	0x5
+ 658 0327 7B       		.byte	0x7b
+ 659 0328 20       		.uleb128 0x20
+ 660 0329 93010000 		.4byte	.LASF39
+ 661 032d 93010000 		.4byte	.LASF39
+ 662 0331 07       		.byte	0x7
+ 663 0332 99       		.byte	0x99
+ 664 0333 20       		.uleb128 0x20
+ 665 0334 29030000 		.4byte	.LASF40
+ 666 0338 29030000 		.4byte	.LASF40
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 29
+
+
+ 667 033c 02       		.byte	0x2
+ 668 033d 23       		.byte	0x23
+ 669 033e 20       		.uleb128 0x20
+ 670 033f 33030000 		.4byte	.LASF41
+ 671 0343 33030000 		.4byte	.LASF41
+ 672 0347 07       		.byte	0x7
+ 673 0348 9D       		.byte	0x9d
+ 674 0349 20       		.uleb128 0x20
+ 675 034a 4C030000 		.4byte	.LASF42
+ 676 034e 4C030000 		.4byte	.LASF42
+ 677 0352 08       		.byte	0x8
+ 678 0353 E7       		.byte	0xe7
+ 679 0354 21       		.uleb128 0x21
+ 680 0355 6D000000 		.4byte	.LASF43
+ 681 0359 6D000000 		.4byte	.LASF43
+ 682 035d 09       		.byte	0x9
+ 683 035e 2A03     		.2byte	0x32a
+ 684 0360 20       		.uleb128 0x20
+ 685 0361 C2000000 		.4byte	.LASF44
+ 686 0365 C2000000 		.4byte	.LASF44
+ 687 0369 0A       		.byte	0xa
+ 688 036a AC       		.byte	0xac
+ 689 036b 20       		.uleb128 0x20
+ 690 036c A3020000 		.4byte	.LASF45
+ 691 0370 A3020000 		.4byte	.LASF45
+ 692 0374 0B       		.byte	0xb
+ 693 0375 21       		.byte	0x21
+ 694 0376 00       		.byte	0
+ 695              		.section	.debug_abbrev,"",%progbits
+ 696              	.Ldebug_abbrev0:
+ 697 0000 01       		.uleb128 0x1
+ 698 0001 11       		.uleb128 0x11
+ 699 0002 01       		.byte	0x1
+ 700 0003 25       		.uleb128 0x25
+ 701 0004 0E       		.uleb128 0xe
+ 702 0005 13       		.uleb128 0x13
+ 703 0006 0B       		.uleb128 0xb
+ 704 0007 03       		.uleb128 0x3
+ 705 0008 0E       		.uleb128 0xe
+ 706 0009 1B       		.uleb128 0x1b
+ 707 000a 0E       		.uleb128 0xe
+ 708 000b 55       		.uleb128 0x55
+ 709 000c 17       		.uleb128 0x17
+ 710 000d 11       		.uleb128 0x11
+ 711 000e 01       		.uleb128 0x1
+ 712 000f 10       		.uleb128 0x10
+ 713 0010 17       		.uleb128 0x17
+ 714 0011 00       		.byte	0
+ 715 0012 00       		.byte	0
+ 716 0013 02       		.uleb128 0x2
+ 717 0014 24       		.uleb128 0x24
+ 718 0015 00       		.byte	0
+ 719 0016 0B       		.uleb128 0xb
+ 720 0017 0B       		.uleb128 0xb
+ 721 0018 3E       		.uleb128 0x3e
+ 722 0019 0B       		.uleb128 0xb
+ 723 001a 03       		.uleb128 0x3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 30
+
+
+ 724 001b 0E       		.uleb128 0xe
+ 725 001c 00       		.byte	0
+ 726 001d 00       		.byte	0
+ 727 001e 03       		.uleb128 0x3
+ 728 001f 24       		.uleb128 0x24
+ 729 0020 00       		.byte	0
+ 730 0021 0B       		.uleb128 0xb
+ 731 0022 0B       		.uleb128 0xb
+ 732 0023 3E       		.uleb128 0x3e
+ 733 0024 0B       		.uleb128 0xb
+ 734 0025 03       		.uleb128 0x3
+ 735 0026 08       		.uleb128 0x8
+ 736 0027 00       		.byte	0
+ 737 0028 00       		.byte	0
+ 738 0029 04       		.uleb128 0x4
+ 739 002a 16       		.uleb128 0x16
+ 740 002b 00       		.byte	0
+ 741 002c 03       		.uleb128 0x3
+ 742 002d 0E       		.uleb128 0xe
+ 743 002e 3A       		.uleb128 0x3a
+ 744 002f 0B       		.uleb128 0xb
+ 745 0030 3B       		.uleb128 0x3b
+ 746 0031 05       		.uleb128 0x5
+ 747 0032 49       		.uleb128 0x49
+ 748 0033 13       		.uleb128 0x13
+ 749 0034 00       		.byte	0
+ 750 0035 00       		.byte	0
+ 751 0036 05       		.uleb128 0x5
+ 752 0037 35       		.uleb128 0x35
+ 753 0038 00       		.byte	0
+ 754 0039 49       		.uleb128 0x49
+ 755 003a 13       		.uleb128 0x13
+ 756 003b 00       		.byte	0
+ 757 003c 00       		.byte	0
+ 758 003d 06       		.uleb128 0x6
+ 759 003e 0F       		.uleb128 0xf
+ 760 003f 00       		.byte	0
+ 761 0040 0B       		.uleb128 0xb
+ 762 0041 0B       		.uleb128 0xb
+ 763 0042 49       		.uleb128 0x49
+ 764 0043 13       		.uleb128 0x13
+ 765 0044 00       		.byte	0
+ 766 0045 00       		.byte	0
+ 767 0046 07       		.uleb128 0x7
+ 768 0047 15       		.uleb128 0x15
+ 769 0048 00       		.byte	0
+ 770 0049 27       		.uleb128 0x27
+ 771 004a 19       		.uleb128 0x19
+ 772 004b 00       		.byte	0
+ 773 004c 00       		.byte	0
+ 774 004d 08       		.uleb128 0x8
+ 775 004e 13       		.uleb128 0x13
+ 776 004f 01       		.byte	0x1
+ 777 0050 0B       		.uleb128 0xb
+ 778 0051 0B       		.uleb128 0xb
+ 779 0052 3A       		.uleb128 0x3a
+ 780 0053 0B       		.uleb128 0xb
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 31
+
+
+ 781 0054 3B       		.uleb128 0x3b
+ 782 0055 0B       		.uleb128 0xb
+ 783 0056 01       		.uleb128 0x1
+ 784 0057 13       		.uleb128 0x13
+ 785 0058 00       		.byte	0
+ 786 0059 00       		.byte	0
+ 787 005a 09       		.uleb128 0x9
+ 788 005b 0D       		.uleb128 0xd
+ 789 005c 00       		.byte	0
+ 790 005d 03       		.uleb128 0x3
+ 791 005e 0E       		.uleb128 0xe
+ 792 005f 3A       		.uleb128 0x3a
+ 793 0060 0B       		.uleb128 0xb
+ 794 0061 3B       		.uleb128 0x3b
+ 795 0062 0B       		.uleb128 0xb
+ 796 0063 49       		.uleb128 0x49
+ 797 0064 13       		.uleb128 0x13
+ 798 0065 38       		.uleb128 0x38
+ 799 0066 0B       		.uleb128 0xb
+ 800 0067 00       		.byte	0
+ 801 0068 00       		.byte	0
+ 802 0069 0A       		.uleb128 0xa
+ 803 006a 01       		.uleb128 0x1
+ 804 006b 01       		.byte	0x1
+ 805 006c 49       		.uleb128 0x49
+ 806 006d 13       		.uleb128 0x13
+ 807 006e 01       		.uleb128 0x1
+ 808 006f 13       		.uleb128 0x13
+ 809 0070 00       		.byte	0
+ 810 0071 00       		.byte	0
+ 811 0072 0B       		.uleb128 0xb
+ 812 0073 21       		.uleb128 0x21
+ 813 0074 00       		.byte	0
+ 814 0075 49       		.uleb128 0x49
+ 815 0076 13       		.uleb128 0x13
+ 816 0077 2F       		.uleb128 0x2f
+ 817 0078 0B       		.uleb128 0xb
+ 818 0079 00       		.byte	0
+ 819 007a 00       		.byte	0
+ 820 007b 0C       		.uleb128 0xc
+ 821 007c 16       		.uleb128 0x16
+ 822 007d 00       		.byte	0
+ 823 007e 03       		.uleb128 0x3
+ 824 007f 0E       		.uleb128 0xe
+ 825 0080 3A       		.uleb128 0x3a
+ 826 0081 0B       		.uleb128 0xb
+ 827 0082 3B       		.uleb128 0x3b
+ 828 0083 0B       		.uleb128 0xb
+ 829 0084 49       		.uleb128 0x49
+ 830 0085 13       		.uleb128 0x13
+ 831 0086 00       		.byte	0
+ 832 0087 00       		.byte	0
+ 833 0088 0D       		.uleb128 0xd
+ 834 0089 04       		.uleb128 0x4
+ 835 008a 01       		.byte	0x1
+ 836 008b 0B       		.uleb128 0xb
+ 837 008c 0B       		.uleb128 0xb
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 32
+
+
+ 838 008d 49       		.uleb128 0x49
+ 839 008e 13       		.uleb128 0x13
+ 840 008f 3A       		.uleb128 0x3a
+ 841 0090 0B       		.uleb128 0xb
+ 842 0091 3B       		.uleb128 0x3b
+ 843 0092 0B       		.uleb128 0xb
+ 844 0093 01       		.uleb128 0x1
+ 845 0094 13       		.uleb128 0x13
+ 846 0095 00       		.byte	0
+ 847 0096 00       		.byte	0
+ 848 0097 0E       		.uleb128 0xe
+ 849 0098 28       		.uleb128 0x28
+ 850 0099 00       		.byte	0
+ 851 009a 03       		.uleb128 0x3
+ 852 009b 0E       		.uleb128 0xe
+ 853 009c 1C       		.uleb128 0x1c
+ 854 009d 0B       		.uleb128 0xb
+ 855 009e 00       		.byte	0
+ 856 009f 00       		.byte	0
+ 857 00a0 0F       		.uleb128 0xf
+ 858 00a1 2E       		.uleb128 0x2e
+ 859 00a2 01       		.byte	0x1
+ 860 00a3 03       		.uleb128 0x3
+ 861 00a4 0E       		.uleb128 0xe
+ 862 00a5 3A       		.uleb128 0x3a
+ 863 00a6 0B       		.uleb128 0xb
+ 864 00a7 3B       		.uleb128 0x3b
+ 865 00a8 05       		.uleb128 0x5
+ 866 00a9 27       		.uleb128 0x27
+ 867 00aa 19       		.uleb128 0x19
+ 868 00ab 49       		.uleb128 0x49
+ 869 00ac 13       		.uleb128 0x13
+ 870 00ad 20       		.uleb128 0x20
+ 871 00ae 0B       		.uleb128 0xb
+ 872 00af 01       		.uleb128 0x1
+ 873 00b0 13       		.uleb128 0x13
+ 874 00b1 00       		.byte	0
+ 875 00b2 00       		.byte	0
+ 876 00b3 10       		.uleb128 0x10
+ 877 00b4 05       		.uleb128 0x5
+ 878 00b5 00       		.byte	0
+ 879 00b6 03       		.uleb128 0x3
+ 880 00b7 0E       		.uleb128 0xe
+ 881 00b8 3A       		.uleb128 0x3a
+ 882 00b9 0B       		.uleb128 0xb
+ 883 00ba 3B       		.uleb128 0x3b
+ 884 00bb 05       		.uleb128 0x5
+ 885 00bc 49       		.uleb128 0x49
+ 886 00bd 13       		.uleb128 0x13
+ 887 00be 00       		.byte	0
+ 888 00bf 00       		.byte	0
+ 889 00c0 11       		.uleb128 0x11
+ 890 00c1 2E       		.uleb128 0x2e
+ 891 00c2 00       		.byte	0
+ 892 00c3 3F       		.uleb128 0x3f
+ 893 00c4 19       		.uleb128 0x19
+ 894 00c5 03       		.uleb128 0x3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 33
+
+
+ 895 00c6 0E       		.uleb128 0xe
+ 896 00c7 3A       		.uleb128 0x3a
+ 897 00c8 0B       		.uleb128 0xb
+ 898 00c9 3B       		.uleb128 0x3b
+ 899 00ca 0B       		.uleb128 0xb
+ 900 00cb 27       		.uleb128 0x27
+ 901 00cc 19       		.uleb128 0x19
+ 902 00cd 11       		.uleb128 0x11
+ 903 00ce 01       		.uleb128 0x1
+ 904 00cf 12       		.uleb128 0x12
+ 905 00d0 06       		.uleb128 0x6
+ 906 00d1 40       		.uleb128 0x40
+ 907 00d2 18       		.uleb128 0x18
+ 908 00d3 9742     		.uleb128 0x2117
+ 909 00d5 19       		.uleb128 0x19
+ 910 00d6 00       		.byte	0
+ 911 00d7 00       		.byte	0
+ 912 00d8 12       		.uleb128 0x12
+ 913 00d9 2E       		.uleb128 0x2e
+ 914 00da 01       		.byte	0x1
+ 915 00db 3F       		.uleb128 0x3f
+ 916 00dc 19       		.uleb128 0x19
+ 917 00dd 03       		.uleb128 0x3
+ 918 00de 0E       		.uleb128 0xe
+ 919 00df 3A       		.uleb128 0x3a
+ 920 00e0 0B       		.uleb128 0xb
+ 921 00e1 3B       		.uleb128 0x3b
+ 922 00e2 0B       		.uleb128 0xb
+ 923 00e3 27       		.uleb128 0x27
+ 924 00e4 19       		.uleb128 0x19
+ 925 00e5 11       		.uleb128 0x11
+ 926 00e6 01       		.uleb128 0x1
+ 927 00e7 12       		.uleb128 0x12
+ 928 00e8 06       		.uleb128 0x6
+ 929 00e9 40       		.uleb128 0x40
+ 930 00ea 18       		.uleb128 0x18
+ 931 00eb 9742     		.uleb128 0x2117
+ 932 00ed 19       		.uleb128 0x19
+ 933 00ee 01       		.uleb128 0x1
+ 934 00ef 13       		.uleb128 0x13
+ 935 00f0 00       		.byte	0
+ 936 00f1 00       		.byte	0
+ 937 00f2 13       		.uleb128 0x13
+ 938 00f3 1D       		.uleb128 0x1d
+ 939 00f4 01       		.byte	0x1
+ 940 00f5 31       		.uleb128 0x31
+ 941 00f6 13       		.uleb128 0x13
+ 942 00f7 11       		.uleb128 0x11
+ 943 00f8 01       		.uleb128 0x1
+ 944 00f9 12       		.uleb128 0x12
+ 945 00fa 06       		.uleb128 0x6
+ 946 00fb 58       		.uleb128 0x58
+ 947 00fc 0B       		.uleb128 0xb
+ 948 00fd 59       		.uleb128 0x59
+ 949 00fe 0B       		.uleb128 0xb
+ 950 00ff 01       		.uleb128 0x1
+ 951 0100 13       		.uleb128 0x13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 34
+
+
+ 952 0101 00       		.byte	0
+ 953 0102 00       		.byte	0
+ 954 0103 14       		.uleb128 0x14
+ 955 0104 05       		.uleb128 0x5
+ 956 0105 00       		.byte	0
+ 957 0106 31       		.uleb128 0x31
+ 958 0107 13       		.uleb128 0x13
+ 959 0108 02       		.uleb128 0x2
+ 960 0109 17       		.uleb128 0x17
+ 961 010a 00       		.byte	0
+ 962 010b 00       		.byte	0
+ 963 010c 15       		.uleb128 0x15
+ 964 010d 898201   		.uleb128 0x4109
+ 965 0110 01       		.byte	0x1
+ 966 0111 11       		.uleb128 0x11
+ 967 0112 01       		.uleb128 0x1
+ 968 0113 31       		.uleb128 0x31
+ 969 0114 13       		.uleb128 0x13
+ 970 0115 00       		.byte	0
+ 971 0116 00       		.byte	0
+ 972 0117 16       		.uleb128 0x16
+ 973 0118 8A8201   		.uleb128 0x410a
+ 974 011b 00       		.byte	0
+ 975 011c 02       		.uleb128 0x2
+ 976 011d 18       		.uleb128 0x18
+ 977 011e 9142     		.uleb128 0x2111
+ 978 0120 18       		.uleb128 0x18
+ 979 0121 00       		.byte	0
+ 980 0122 00       		.byte	0
+ 981 0123 17       		.uleb128 0x17
+ 982 0124 898201   		.uleb128 0x4109
+ 983 0127 00       		.byte	0
+ 984 0128 11       		.uleb128 0x11
+ 985 0129 01       		.uleb128 0x1
+ 986 012a 31       		.uleb128 0x31
+ 987 012b 13       		.uleb128 0x13
+ 988 012c 00       		.byte	0
+ 989 012d 00       		.byte	0
+ 990 012e 18       		.uleb128 0x18
+ 991 012f 898201   		.uleb128 0x4109
+ 992 0132 01       		.byte	0x1
+ 993 0133 11       		.uleb128 0x11
+ 994 0134 01       		.uleb128 0x1
+ 995 0135 31       		.uleb128 0x31
+ 996 0136 13       		.uleb128 0x13
+ 997 0137 01       		.uleb128 0x1
+ 998 0138 13       		.uleb128 0x13
+ 999 0139 00       		.byte	0
+ 1000 013a 00       		.byte	0
+ 1001 013b 19       		.uleb128 0x19
+ 1002 013c 2E       		.uleb128 0x2e
+ 1003 013d 01       		.byte	0x1
+ 1004 013e 3F       		.uleb128 0x3f
+ 1005 013f 19       		.uleb128 0x19
+ 1006 0140 03       		.uleb128 0x3
+ 1007 0141 0E       		.uleb128 0xe
+ 1008 0142 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 35
+
+
+ 1009 0143 0B       		.uleb128 0xb
+ 1010 0144 3B       		.uleb128 0x3b
+ 1011 0145 0B       		.uleb128 0xb
+ 1012 0146 27       		.uleb128 0x27
+ 1013 0147 19       		.uleb128 0x19
+ 1014 0148 11       		.uleb128 0x11
+ 1015 0149 01       		.uleb128 0x1
+ 1016 014a 12       		.uleb128 0x12
+ 1017 014b 06       		.uleb128 0x6
+ 1018 014c 40       		.uleb128 0x40
+ 1019 014d 18       		.uleb128 0x18
+ 1020 014e 9642     		.uleb128 0x2116
+ 1021 0150 19       		.uleb128 0x19
+ 1022 0151 01       		.uleb128 0x1
+ 1023 0152 13       		.uleb128 0x13
+ 1024 0153 00       		.byte	0
+ 1025 0154 00       		.byte	0
+ 1026 0155 1A       		.uleb128 0x1a
+ 1027 0156 34       		.uleb128 0x34
+ 1028 0157 00       		.byte	0
+ 1029 0158 03       		.uleb128 0x3
+ 1030 0159 0E       		.uleb128 0xe
+ 1031 015a 3A       		.uleb128 0x3a
+ 1032 015b 0B       		.uleb128 0xb
+ 1033 015c 3B       		.uleb128 0x3b
+ 1034 015d 0B       		.uleb128 0xb
+ 1035 015e 49       		.uleb128 0x49
+ 1036 015f 13       		.uleb128 0x13
+ 1037 0160 02       		.uleb128 0x2
+ 1038 0161 18       		.uleb128 0x18
+ 1039 0162 00       		.byte	0
+ 1040 0163 00       		.byte	0
+ 1041 0164 1B       		.uleb128 0x1b
+ 1042 0165 34       		.uleb128 0x34
+ 1043 0166 00       		.byte	0
+ 1044 0167 03       		.uleb128 0x3
+ 1045 0168 0E       		.uleb128 0xe
+ 1046 0169 3A       		.uleb128 0x3a
+ 1047 016a 0B       		.uleb128 0xb
+ 1048 016b 3B       		.uleb128 0x3b
+ 1049 016c 0B       		.uleb128 0xb
+ 1050 016d 49       		.uleb128 0x49
+ 1051 016e 13       		.uleb128 0x13
+ 1052 016f 00       		.byte	0
+ 1053 0170 00       		.byte	0
+ 1054 0171 1C       		.uleb128 0x1c
+ 1055 0172 34       		.uleb128 0x34
+ 1056 0173 00       		.byte	0
+ 1057 0174 03       		.uleb128 0x3
+ 1058 0175 08       		.uleb128 0x8
+ 1059 0176 3A       		.uleb128 0x3a
+ 1060 0177 0B       		.uleb128 0xb
+ 1061 0178 3B       		.uleb128 0x3b
+ 1062 0179 0B       		.uleb128 0xb
+ 1063 017a 49       		.uleb128 0x49
+ 1064 017b 13       		.uleb128 0x13
+ 1065 017c 02       		.uleb128 0x2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 36
+
+
+ 1066 017d 17       		.uleb128 0x17
+ 1067 017e 00       		.byte	0
+ 1068 017f 00       		.byte	0
+ 1069 0180 1D       		.uleb128 0x1d
+ 1070 0181 34       		.uleb128 0x34
+ 1071 0182 00       		.byte	0
+ 1072 0183 03       		.uleb128 0x3
+ 1073 0184 0E       		.uleb128 0xe
+ 1074 0185 3A       		.uleb128 0x3a
+ 1075 0186 0B       		.uleb128 0xb
+ 1076 0187 3B       		.uleb128 0x3b
+ 1077 0188 0B       		.uleb128 0xb
+ 1078 0189 49       		.uleb128 0x49
+ 1079 018a 13       		.uleb128 0x13
+ 1080 018b 3F       		.uleb128 0x3f
+ 1081 018c 19       		.uleb128 0x19
+ 1082 018d 3C       		.uleb128 0x3c
+ 1083 018e 19       		.uleb128 0x19
+ 1084 018f 00       		.byte	0
+ 1085 0190 00       		.byte	0
+ 1086 0191 1E       		.uleb128 0x1e
+ 1087 0192 21       		.uleb128 0x21
+ 1088 0193 00       		.byte	0
+ 1089 0194 00       		.byte	0
+ 1090 0195 00       		.byte	0
+ 1091 0196 1F       		.uleb128 0x1f
+ 1092 0197 34       		.uleb128 0x34
+ 1093 0198 00       		.byte	0
+ 1094 0199 03       		.uleb128 0x3
+ 1095 019a 0E       		.uleb128 0xe
+ 1096 019b 3A       		.uleb128 0x3a
+ 1097 019c 0B       		.uleb128 0xb
+ 1098 019d 3B       		.uleb128 0x3b
+ 1099 019e 0B       		.uleb128 0xb
+ 1100 019f 49       		.uleb128 0x49
+ 1101 01a0 13       		.uleb128 0x13
+ 1102 01a1 3F       		.uleb128 0x3f
+ 1103 01a2 19       		.uleb128 0x19
+ 1104 01a3 02       		.uleb128 0x2
+ 1105 01a4 18       		.uleb128 0x18
+ 1106 01a5 00       		.byte	0
+ 1107 01a6 00       		.byte	0
+ 1108 01a7 20       		.uleb128 0x20
+ 1109 01a8 2E       		.uleb128 0x2e
+ 1110 01a9 00       		.byte	0
+ 1111 01aa 3F       		.uleb128 0x3f
+ 1112 01ab 19       		.uleb128 0x19
+ 1113 01ac 3C       		.uleb128 0x3c
+ 1114 01ad 19       		.uleb128 0x19
+ 1115 01ae 6E       		.uleb128 0x6e
+ 1116 01af 0E       		.uleb128 0xe
+ 1117 01b0 03       		.uleb128 0x3
+ 1118 01b1 0E       		.uleb128 0xe
+ 1119 01b2 3A       		.uleb128 0x3a
+ 1120 01b3 0B       		.uleb128 0xb
+ 1121 01b4 3B       		.uleb128 0x3b
+ 1122 01b5 0B       		.uleb128 0xb
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 37
+
+
+ 1123 01b6 00       		.byte	0
+ 1124 01b7 00       		.byte	0
+ 1125 01b8 21       		.uleb128 0x21
+ 1126 01b9 2E       		.uleb128 0x2e
+ 1127 01ba 00       		.byte	0
+ 1128 01bb 3F       		.uleb128 0x3f
+ 1129 01bc 19       		.uleb128 0x19
+ 1130 01bd 3C       		.uleb128 0x3c
+ 1131 01be 19       		.uleb128 0x19
+ 1132 01bf 6E       		.uleb128 0x6e
+ 1133 01c0 0E       		.uleb128 0xe
+ 1134 01c1 03       		.uleb128 0x3
+ 1135 01c2 0E       		.uleb128 0xe
+ 1136 01c3 3A       		.uleb128 0x3a
+ 1137 01c4 0B       		.uleb128 0xb
+ 1138 01c5 3B       		.uleb128 0x3b
+ 1139 01c6 05       		.uleb128 0x5
+ 1140 01c7 00       		.byte	0
+ 1141 01c8 00       		.byte	0
+ 1142 01c9 00       		.byte	0
+ 1143              		.section	.debug_loc,"",%progbits
+ 1144              	.Ldebug_loc0:
+ 1145              	.LLST0:
+ 1146 0000 0E000000 		.4byte	.LVL1
+ 1147 0004 16000000 		.4byte	.LVL2
+ 1148 0008 0600     		.2byte	0x6
+ 1149 000a 03       		.byte	0x3
+ 1150 000b 00000000 		.4byte	DmaIntHandler
+ 1151 000f 9F       		.byte	0x9f
+ 1152 0010 00000000 		.4byte	0
+ 1153 0014 00000000 		.4byte	0
+ 1154              	.LLST1:
+ 1155 0018 04000000 		.4byte	.LVL4
+ 1156 001c 08000000 		.4byte	.LVL5
+ 1157 0020 0200     		.2byte	0x2
+ 1158 0022 30       		.byte	0x30
+ 1159 0023 9F       		.byte	0x9f
+ 1160 0024 08000000 		.4byte	.LVL5
+ 1161 0028 7A000000 		.4byte	.LVL12
+ 1162 002c 0100     		.2byte	0x1
+ 1163 002e 54       		.byte	0x54
+ 1164 002f 00000000 		.4byte	0
+ 1165 0033 00000000 		.4byte	0
+ 1166              		.section	.debug_aranges,"",%progbits
+ 1167 0000 2C000000 		.4byte	0x2c
+ 1168 0004 0200     		.2byte	0x2
+ 1169 0006 00000000 		.4byte	.Ldebug_info0
+ 1170 000a 04       		.byte	0x4
+ 1171 000b 00       		.byte	0
+ 1172 000c 0000     		.2byte	0
+ 1173 000e 0000     		.2byte	0
+ 1174 0010 00000000 		.4byte	.LFB34
+ 1175 0014 02000000 		.4byte	.LFE34-.LFB34
+ 1176 0018 00000000 		.4byte	.LFB35
+ 1177 001c 28000000 		.4byte	.LFE35-.LFB35
+ 1178 0020 00000000 		.4byte	.LFB36
+ 1179 0024 98000000 		.4byte	.LFE36-.LFB36
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 38
+
+
+ 1180 0028 00000000 		.4byte	0
+ 1181 002c 00000000 		.4byte	0
+ 1182              		.section	.debug_ranges,"",%progbits
+ 1183              	.Ldebug_ranges0:
+ 1184 0000 00000000 		.4byte	.LFB34
+ 1185 0004 02000000 		.4byte	.LFE34
+ 1186 0008 00000000 		.4byte	.LFB35
+ 1187 000c 28000000 		.4byte	.LFE35
+ 1188 0010 00000000 		.4byte	.LFB36
+ 1189 0014 98000000 		.4byte	.LFE36
+ 1190 0018 00000000 		.4byte	0
+ 1191 001c 00000000 		.4byte	0
+ 1192              		.section	.debug_line,"",%progbits
+ 1193              	.Ldebug_line0:
+ 1194 0000 B2010000 		.section	.debug_str,"MS",%progbits,1
+ 1194      02004201 
+ 1194      00000201 
+ 1194      FB0E0D00 
+ 1194      01010101 
+ 1195              	.LASF16:
+ 1196 0000 72656733 		.ascii	"reg32\000"
+ 1196      3200
+ 1197              	.LASF47:
+ 1198 0006 566F6C75 		.ascii	"VolumeControl.c\000"
+ 1198      6D65436F 
+ 1198      6E74726F 
+ 1198      6C2E6300 
+ 1199              	.LASF19:
+ 1200 0016 7369676E 		.ascii	"signature\000"
+ 1200      61747572 
+ 1200      6500
+ 1201              	.LASF23:
+ 1202 0020 6C65645F 		.ascii	"led_max_brightness\000"
+ 1202      6D61785F 
+ 1202      62726967 
+ 1202      68746E65 
+ 1202      737300
+ 1203              	.LASF3:
+ 1204 0033 73686F72 		.ascii	"short unsigned int\000"
+ 1204      7420756E 
+ 1204      7369676E 
+ 1204      65642069 
+ 1204      6E7400
+ 1205              	.LASF14:
+ 1206 0046 646F7562 		.ascii	"double\000"
+ 1206      6C6500
+ 1207              	.LASF9:
+ 1208 004d 75696E74 		.ascii	"uint8\000"
+ 1208      3800
+ 1209              	.LASF38:
+ 1210 0053 4379446D 		.ascii	"CyDmaSetInterruptCallback\000"
+ 1210      61536574 
+ 1210      496E7465 
+ 1210      72727570 
+ 1210      7443616C 
+ 1211              	.LASF43:
+ 1212 006d 55415254 		.ascii	"UART_UartPutString\000"
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 39
+
+
+ 1212      5F556172 
+ 1212      74507574 
+ 1212      53747269 
+ 1212      6E6700
+ 1213              	.LASF51:
+ 1214 0080 446D6149 		.ascii	"DmaIntHandler\000"
+ 1214      6E744861 
+ 1214      6E646C65 
+ 1214      7200
+ 1215              	.LASF13:
+ 1216 008e 666C6F61 		.ascii	"float\000"
+ 1216      7400
+ 1217              	.LASF52:
+ 1218 0094 766F6C75 		.ascii	"volume\000"
+ 1218      6D6500
+ 1219              	.LASF1:
+ 1220 009b 756E7369 		.ascii	"unsigned char\000"
+ 1220      676E6564 
+ 1220      20636861 
+ 1220      7200
+ 1221              	.LASF49:
+ 1222 00a9 444D415F 		.ascii	"DMA_SetInterruptCallback\000"
+ 1222      53657449 
+ 1222      6E746572 
+ 1222      72757074 
+ 1222      43616C6C 
+ 1223              	.LASF44:
+ 1224 00c2 436F6465 		.ascii	"Codec_AdjustBothHeadphoneVolumeLevel\000"
+ 1224      635F4164 
+ 1224      6A757374 
+ 1224      426F7468 
+ 1224      48656164 
+ 1225              	.LASF11:
+ 1226 00e7 696E7431 		.ascii	"int16\000"
+ 1226      3600
+ 1227              	.LASF5:
+ 1228 00ed 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1228      20756E73 
+ 1228      69676E65 
+ 1228      6420696E 
+ 1228      7400
+ 1229              	.LASF12:
+ 1230 00ff 696E7433 		.ascii	"int32\000"
+ 1230      3200
+ 1231              	.LASF50:
+ 1232 0105 63616C6C 		.ascii	"callback\000"
+ 1232      6261636B 
+ 1232      00
+ 1233              	.LASF20:
+ 1234 010e 636F756E 		.ascii	"counter\000"
+ 1234      74657200 
+ 1235              	.LASF28:
+ 1236 0116 766F6C5F 		.ascii	"vol_ctrl_both\000"
+ 1236      6374726C 
+ 1236      5F626F74 
+ 1236      6800
+ 1237              	.LASF24:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 40
+
+
+ 1238 0124 64656275 		.ascii	"debug_mask\000"
+ 1238      675F6D61 
+ 1238      736B00
+ 1239              	.LASF2:
+ 1240 012f 73686F72 		.ascii	"short int\000"
+ 1240      7420696E 
+ 1240      7400
+ 1241              	.LASF37:
+ 1242 0139 4144435F 		.ascii	"ADC_MAX_READING\000"
+ 1242      4D41585F 
+ 1242      52454144 
+ 1242      494E4700 
+ 1243              	.LASF33:
+ 1244 0149 63616C5F 		.ascii	"cal_data\000"
+ 1244      64617461 
+ 1244      00
+ 1245              	.LASF10:
+ 1246 0152 75696E74 		.ascii	"uint32\000"
+ 1246      333200
+ 1247              	.LASF27:
+ 1248 0159 766F6C5F 		.ascii	"vol_ctrl_left\000"
+ 1248      6374726C 
+ 1248      5F6C6566 
+ 1248      7400
+ 1249              	.LASF8:
+ 1250 0167 756E7369 		.ascii	"unsigned int\000"
+ 1250      676E6564 
+ 1250      20696E74 
+ 1250      00
+ 1251              	.LASF7:
+ 1252 0174 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1252      206C6F6E 
+ 1252      6720756E 
+ 1252      7369676E 
+ 1252      65642069 
+ 1253              	.LASF22:
+ 1254 018b 6164635F 		.ascii	"adc_max\000"
+ 1254      6D617800 
+ 1255              	.LASF39:
+ 1256 0193 4144435F 		.ascii	"ADC_Start\000"
+ 1256      53746172 
+ 1256      7400
+ 1257              	.LASF29:
+ 1258 019d 6379646D 		.ascii	"cydma_callback_t\000"
+ 1258      615F6361 
+ 1258      6C6C6261 
+ 1258      636B5F74 
+ 1258      00
+ 1259              	.LASF46:
+ 1260 01ae 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1260      43313120 
+ 1260      352E342E 
+ 1260      31203230 
+ 1260      31363036 
+ 1261 01e1 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1261      20726576 
+ 1261      6973696F 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 41
+
+
+ 1261      6E203233 
+ 1261      37373135 
+ 1262 0214 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1262      66756E63 
+ 1262      74696F6E 
+ 1262      2D736563 
+ 1262      74696F6E 
+ 1263              	.LASF17:
+ 1264 023c 6C6F6E67 		.ascii	"long double\000"
+ 1264      20646F75 
+ 1264      626C6500 
+ 1265              	.LASF18:
+ 1266 0248 73697A65 		.ascii	"sizetype\000"
+ 1266      74797065 
+ 1266      00
+ 1267              	.LASF6:
+ 1268 0251 6C6F6E67 		.ascii	"long long int\000"
+ 1268      206C6F6E 
+ 1268      6720696E 
+ 1268      7400
+ 1269              	.LASF15:
+ 1270 025f 63686172 		.ascii	"char\000"
+ 1270      00
+ 1271              	.LASF48:
+ 1272 0264 433A5C64 		.ascii	"C:\\dev\\git\\Icebreaker\\Icebreaker.cydsn\000"
+ 1272      65765C67 
+ 1272      69745C49 
+ 1272      63656272 
+ 1272      65616B65 
+ 1273              	.LASF21:
+ 1274 028b 6164635F 		.ascii	"adc_min\000"
+ 1274      6D696E00 
+ 1275              	.LASF36:
+ 1276 0293 4144435F 		.ascii	"ADC_MIN_READING\000"
+ 1276      4D494E5F 
+ 1276      52454144 
+ 1276      494E4700 
+ 1277              	.LASF45:
+ 1278 02a3 70636D31 		.ascii	"pcm1770_volume_set_level\000"
+ 1278      3737305F 
+ 1278      766F6C75 
+ 1278      6D655F73 
+ 1278      65745F6C 
+ 1279              	.LASF35:
+ 1280 02bc 61646353 		.ascii	"adcSample\000"
+ 1280      616D706C 
+ 1280      6500
+ 1281              	.LASF26:
+ 1282 02c6 766F6C5F 		.ascii	"vol_ctrl_right\000"
+ 1282      6374726C 
+ 1282      5F726967 
+ 1282      687400
+ 1283              	.LASF30:
+ 1284 02d5 566F6C75 		.ascii	"VolumeControlInit\000"
+ 1284      6D65436F 
+ 1284      6E74726F 
+ 1284      6C496E69 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccK5a9K6.s 			page 42
+
+
+ 1284      7400
+ 1285              	.LASF34:
+ 1286 02e7 67627566 		.ascii	"gbuf\000"
+ 1286      00
+ 1287              	.LASF25:
+ 1288 02ec 63616C69 		.ascii	"calibration_data_s\000"
+ 1288      62726174 
+ 1288      696F6E5F 
+ 1288      64617461 
+ 1288      5F7300
+ 1289              	.LASF4:
+ 1290 02ff 6C6F6E67 		.ascii	"long int\000"
+ 1290      20696E74 
+ 1290      00
+ 1291              	.LASF31:
+ 1292 0308 566F6C75 		.ascii	"VolumeControlService\000"
+ 1292      6D65436F 
+ 1292      6E74726F 
+ 1292      6C536572 
+ 1292      76696365 
+ 1293              	.LASF0:
+ 1294 031d 7369676E 		.ascii	"signed char\000"
+ 1294      65642063 
+ 1294      68617200 
+ 1295              	.LASF40:
+ 1296 0329 444D415F 		.ascii	"DMA_Start\000"
+ 1296      53746172 
+ 1296      7400
+ 1297              	.LASF41:
+ 1298 0333 4144435F 		.ascii	"ADC_StartConvert\000"
+ 1298      53746172 
+ 1298      74436F6E 
+ 1298      76657274 
+ 1298      00
+ 1299              	.LASF32:
+ 1300 0344 70726576 		.ascii	"prevVol\000"
+ 1300      566F6C00 
+ 1301              	.LASF42:
+ 1302 034c 73707269 		.ascii	"sprintf\000"
+ 1302      6E746600 
+ 1303              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

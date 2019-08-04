@@ -1,0 +1,3 @@
+--------------- Rebuild Started: 11/30/2018 02:12:55 Project: TkShell.c, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/TkShell.lst -g -D DEBUG -Wall -ffunction-sections -ffat-lto-objects -Og -c TkShell.c -o .\CortexM0\ARM_GCC_541\Debug\TkShell.o
+--------------- Rebuild Succeeded: 11/30/2018 02:12:56 ---------------

@@ -1,0 +1,60 @@
+C:/dev/git/Icebreaker/Icebreaker.cydsn/CortexM0/ARM_GCC_541/Debug/pcm1770.o : C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/CyLFClk.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/CyLib.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/PD.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/PD_aliases.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/SPI_CLK.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/SPI_CLK_aliases.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/SPI_CS.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/SPI_CS_aliases.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/SPI_MOSI.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/SPI_MOSI_aliases.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_PINS.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_SCBCLK.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_SPI_UART.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_rx.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_rx_aliases.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_tx.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_tx_aliases.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/cyfitter.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/cypins.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/cytypes.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Application.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Calibration.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Codec.h C:/dev/git/Icebreaker/Icebreaker.cydsn/Config.h C:/dev/git/Icebreaker/Icebreaker.cydsn/VolumeControl.h C:/dev/git/Icebreaker/Icebreaker.cydsn/pcm1770.c C:/dev/git/Icebreaker/Icebreaker.cydsn/pcm1770.h 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/CyLFClk.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/CyLib.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/PD.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/PD_aliases.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/SPI_CLK.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/SPI_CLK_aliases.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/SPI_CS.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/SPI_CS_aliases.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/SPI_MOSI.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/SPI_MOSI_aliases.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_PINS.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_SCBCLK.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_SPI_UART.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_rx.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_rx_aliases.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_tx.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/UART_tx_aliases.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/cydevice_trm.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/cyfitter.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/cypins.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Generated_Source/PSoC4/cytypes.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Application.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Calibration.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Codec.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/Config.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/VolumeControl.h : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/pcm1770.c : 
+
+C:/dev/git/Icebreaker/Icebreaker.cydsn/pcm1770.h : 
+

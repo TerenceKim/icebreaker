@@ -1,0 +1,1100 @@
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"Calibration.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.CalibrationInit,"ax",%progbits
+  20              		.align	2
+  21              		.global	CalibrationInit
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	CalibrationInit, %function
+  25              	CalibrationInit:
+  26              	.LFB2:
+  27              		.file 1 "Calibration.c"
+   1:Calibration.c **** /* ========================================
+   2:Calibration.c ****  *
+   3:Calibration.c ****  * Copyright YOUR COMPANY, THE YEAR
+   4:Calibration.c ****  * All Rights Reserved
+   5:Calibration.c ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:Calibration.c ****  *
+   7:Calibration.c ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:Calibration.c ****  * WHICH IS THE PROPERTY OF your company.
+   9:Calibration.c ****  *
+  10:Calibration.c ****  * ========================================
+  11:Calibration.c **** */
+  12:Calibration.c **** #include <Calibration.h>
+  13:Calibration.c **** #include <CyFlash.h>
+  14:Calibration.c **** 
+  15:Calibration.c **** #define CALIB_SIGN              0xDEADBEEF
+  16:Calibration.c **** 
+  17:Calibration.c **** /* Defines second ROW from the last ROW */
+  18:Calibration.c **** #define CY_TEST_FLASH_ROW       (CY_FLASH_NUMBER_ROWS - 2u)
+  19:Calibration.c **** 
+  20:Calibration.c **** /* Defines absolut address of ROW */
+  21:Calibration.c **** #define CY_TEST_FLASH_ADDR      (CY_TEST_FLASH_ROW * CY_FLASH_SIZEOF_ROW)
+  22:Calibration.c **** 
+  23:Calibration.c **** static uint8 page[CY_FLASH_SIZEOF_ROW];
+  24:Calibration.c **** 
+  25:Calibration.c **** calibration_data_s *cal_data;
+  26:Calibration.c **** 
+  27:Calibration.c **** void CalibrationInit(void)
+  28:Calibration.c **** {
+  28              		.loc 1 28 0
+  29              		.cfi_startproc
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 2
+
+
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 10B5     		push	{r4, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  36              	.LVL0:
+  29:Calibration.c ****     calibration_data_s *pCal = (calibration_data_s *)(CY_TEST_FLASH_ADDR);
+  30:Calibration.c ****     cal_data = (calibration_data_s *)page;
+  37              		.loc 1 30 0
+  38 0002 114A     		ldr	r2, .L4
+  39 0004 114B     		ldr	r3, .L4+4
+  40 0006 1A60     		str	r2, [r3]
+  31:Calibration.c ****     
+  32:Calibration.c ****     if (pCal->signature == CALIB_SIGN)
+  41              		.loc 1 32 0
+  42 0008 FE23     		movs	r3, #254
+  43 000a 1B02     		lsls	r3, r3, #8
+  44 000c 1A68     		ldr	r2, [r3]
+  45 000e 104B     		ldr	r3, .L4+8
+  46 0010 9A42     		cmp	r2, r3
+  47 0012 09D1     		bne	.L2
+  33:Calibration.c ****     {
+  34:Calibration.c ****         memcpy((void *)cal_data, (void *)pCal, sizeof(calibration_data_s));
+  48              		.loc 1 34 0
+  49 0014 0C49     		ldr	r1, .L4
+  50 0016 FE20     		movs	r0, #254
+  51 0018 0002     		lsls	r0, r0, #8
+  52 001a 0B00     		movs	r3, r1
+  53 001c 0200     		movs	r2, r0
+  54 001e 13CA     		ldmia	r2!, {r0, r1, r4}
+  55 0020 13C3     		stmia	r3!, {r0, r1, r4}
+  56 0022 03CA     		ldmia	r2!, {r0, r1}
+  57 0024 03C3     		stmia	r3!, {r0, r1}
+  58 0026 0EE0     		b	.L1
+  59              	.L2:
+  35:Calibration.c ****     }
+  36:Calibration.c ****     else
+  37:Calibration.c ****     {
+  38:Calibration.c ****         cal_data->signature = CALIB_SIGN;
+  60              		.loc 1 38 0
+  61 0028 074B     		ldr	r3, .L4
+  62 002a 094A     		ldr	r2, .L4+8
+  63 002c 1A60     		str	r2, [r3]
+  39:Calibration.c ****         
+  40:Calibration.c ****         cal_data->counter = 1;
+  64              		.loc 1 40 0
+  65 002e 0122     		movs	r2, #1
+  66 0030 5A60     		str	r2, [r3, #4]
+  41:Calibration.c **** 
+  42:Calibration.c ****         cal_data->adc_min[vol_ctrl_right] = -2;
+  67              		.loc 1 42 0
+  68 0032 033A     		subs	r2, r2, #3
+  69 0034 1A81     		strh	r2, [r3, #8]
+  43:Calibration.c ****         cal_data->adc_min[vol_ctrl_left] = -2;
+  70              		.loc 1 43 0
+  71 0036 5A81     		strh	r2, [r3, #10]
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 3
+
+
+  44:Calibration.c **** 
+  45:Calibration.c ****         cal_data->adc_max[vol_ctrl_right] = 2047;
+  72              		.loc 1 45 0
+  73 0038 064A     		ldr	r2, .L4+12
+  74 003a 9A81     		strh	r2, [r3, #12]
+  46:Calibration.c ****         cal_data->adc_max[vol_ctrl_left] = 2047;
+  75              		.loc 1 46 0
+  76 003c DA81     		strh	r2, [r3, #14]
+  47:Calibration.c **** 
+  48:Calibration.c ****         cal_data->led_max_brightness = 50;
+  77              		.loc 1 48 0
+  78 003e 3222     		movs	r2, #50
+  79 0040 1A74     		strb	r2, [r3, #16]
+  49:Calibration.c ****         
+  50:Calibration.c ****         cal_data->debug_mask = 0xFF;
+  80              		.loc 1 50 0
+  81 0042 CD32     		adds	r2, r2, #205
+  82 0044 5A74     		strb	r2, [r3, #17]
+  83              	.L1:
+  51:Calibration.c ****     }
+  52:Calibration.c **** }
+  84              		.loc 1 52 0
+  85              		@ sp needed
+  86 0046 10BD     		pop	{r4, pc}
+  87              	.L5:
+  88              		.align	2
+  89              	.L4:
+  90 0048 00000000 		.word	.LANCHOR0
+  91 004c 00000000 		.word	cal_data
+  92 0050 EFBEADDE 		.word	-559038737
+  93 0054 FF070000 		.word	2047
+  94              		.cfi_endproc
+  95              	.LFE2:
+  96              		.size	CalibrationInit, .-CalibrationInit
+  97              		.section	.text.CalibrationRun,"ax",%progbits
+  98              		.align	2
+  99              		.global	CalibrationRun
+ 100              		.code	16
+ 101              		.thumb_func
+ 102              		.type	CalibrationRun, %function
+ 103              	CalibrationRun:
+ 104              	.LFB3:
+  53:Calibration.c **** 
+  54:Calibration.c **** void CalibrationRun(void)
+  55:Calibration.c **** {
+ 105              		.loc 1 55 0
+ 106              		.cfi_startproc
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		@ link register save eliminated.
+  56:Calibration.c **** }
+ 110              		.loc 1 56 0
+ 111              		@ sp needed
+ 112 0000 7047     		bx	lr
+ 113              		.cfi_endproc
+ 114              	.LFE3:
+ 115              		.size	CalibrationRun, .-CalibrationRun
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 4
+
+
+ 116 0002 C046     		.section	.text.CalibrationSave,"ax",%progbits
+ 117              		.align	2
+ 118              		.global	CalibrationSave
+ 119              		.code	16
+ 120              		.thumb_func
+ 121              		.type	CalibrationSave, %function
+ 122              	CalibrationSave:
+ 123              	.LFB4:
+  57:Calibration.c **** 
+  58:Calibration.c **** bool CalibrationSave(void)
+  59:Calibration.c **** {
+ 124              		.loc 1 59 0
+ 125              		.cfi_startproc
+ 126              		@ args = 0, pretend = 0, frame = 0
+ 127              		@ frame_needed = 0, uses_anonymous_args = 0
+ 128 0000 10B5     		push	{r4, lr}
+ 129              		.cfi_def_cfa_offset 8
+ 130              		.cfi_offset 4, -8
+ 131              		.cfi_offset 14, -4
+  60:Calibration.c ****     cystatus returnValue;
+  61:Calibration.c **** 
+  62:Calibration.c ****     cal_data->counter++;
+ 132              		.loc 1 62 0
+ 133 0002 064B     		ldr	r3, .L8
+ 134 0004 1968     		ldr	r1, [r3]
+ 135 0006 4B68     		ldr	r3, [r1, #4]
+ 136 0008 0133     		adds	r3, r3, #1
+ 137 000a 4B60     		str	r3, [r1, #4]
+  63:Calibration.c **** 
+  64:Calibration.c ****     returnValue = CySysFlashWriteRow(CY_TEST_FLASH_ROW, (uint8 *)cal_data);
+ 138              		.loc 1 64 0
+ 139 000c FE20     		movs	r0, #254
+ 140 000e FFF7FEFF 		bl	CySysFlashWriteRow
+ 141              	.LVL1:
+ 142 0012 0300     		movs	r3, r0
+ 143              	.LVL2:
+  65:Calibration.c **** 
+  66:Calibration.c ****     /* Check if operation is successful */
+  67:Calibration.c ****     return (returnValue == CY_SYS_FLASH_SUCCESS);
+ 144              		.loc 1 67 0
+ 145 0014 5842     		rsbs	r0, r3, #0
+ 146 0016 5841     		adcs	r0, r0, r3
+ 147              	.LVL3:
+ 148 0018 C0B2     		uxtb	r0, r0
+  68:Calibration.c **** }
+ 149              		.loc 1 68 0
+ 150              		@ sp needed
+ 151 001a 10BD     		pop	{r4, pc}
+ 152              	.L9:
+ 153              		.align	2
+ 154              	.L8:
+ 155 001c 00000000 		.word	cal_data
+ 156              		.cfi_endproc
+ 157              	.LFE4:
+ 158              		.size	CalibrationSave, .-CalibrationSave
+ 159              		.comm	cal_data,4,4
+ 160              		.bss
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 5
+
+
+ 161              		.align	2
+ 162              		.set	.LANCHOR0,. + 0
+ 163              		.type	page, %object
+ 164              		.size	page, 256
+ 165              	page:
+ 166 0000 00000000 		.space	256
+ 166      00000000 
+ 166      00000000 
+ 166      00000000 
+ 166      00000000 
+ 167              		.text
+ 168              	.Letext0:
+ 169              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 170              		.file 3 "./Calibration.h"
+ 171              		.file 4 "./VolumeControl.h"
+ 172              		.file 5 "Generated_Source\\PSoC4/CyFlash.h"
+ 173              		.section	.debug_info,"",%progbits
+ 174              	.Ldebug_info0:
+ 175 0000 FD010000 		.4byte	0x1fd
+ 176 0004 0400     		.2byte	0x4
+ 177 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 178 000a 04       		.byte	0x4
+ 179 000b 01       		.uleb128 0x1
+ 180 000c 25010000 		.4byte	.LASF32
+ 181 0010 0C       		.byte	0xc
+ 182 0011 05000000 		.4byte	.LASF33
+ 183 0015 DF010000 		.4byte	.LASF34
+ 184 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 185 001d 00000000 		.4byte	0
+ 186 0021 00000000 		.4byte	.Ldebug_line0
+ 187 0025 02       		.uleb128 0x2
+ 188 0026 01       		.byte	0x1
+ 189 0027 06       		.byte	0x6
+ 190 0028 5D020000 		.4byte	.LASF0
+ 191 002c 02       		.uleb128 0x2
+ 192 002d 01       		.byte	0x1
+ 193 002e 08       		.byte	0x8
+ 194 002f 67000000 		.4byte	.LASF1
+ 195 0033 02       		.uleb128 0x2
+ 196 0034 02       		.byte	0x2
+ 197 0035 05       		.byte	0x5
+ 198 0036 0E020000 		.4byte	.LASF2
+ 199 003a 02       		.uleb128 0x2
+ 200 003b 02       		.byte	0x2
+ 201 003c 07       		.byte	0x7
+ 202 003d 2C000000 		.4byte	.LASF3
+ 203 0041 02       		.uleb128 0x2
+ 204 0042 04       		.byte	0x4
+ 205 0043 05       		.byte	0x5
+ 206 0044 48020000 		.4byte	.LASF4
+ 207 0048 02       		.uleb128 0x2
+ 208 0049 04       		.byte	0x4
+ 209 004a 07       		.byte	0x7
+ 210 004b 97000000 		.4byte	.LASF5
+ 211 004f 02       		.uleb128 0x2
+ 212 0050 08       		.byte	0x8
+ 213 0051 05       		.byte	0x5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 6
+
+
+ 214 0052 CC010000 		.4byte	.LASF6
+ 215 0056 02       		.uleb128 0x2
+ 216 0057 08       		.byte	0x8
+ 217 0058 07       		.byte	0x7
+ 218 0059 06010000 		.4byte	.LASF7
+ 219 005d 03       		.uleb128 0x3
+ 220 005e 04       		.byte	0x4
+ 221 005f 05       		.byte	0x5
+ 222 0060 696E7400 		.ascii	"int\000"
+ 223 0064 02       		.uleb128 0x2
+ 224 0065 04       		.byte	0x4
+ 225 0066 07       		.byte	0x7
+ 226 0067 F9000000 		.4byte	.LASF8
+ 227 006b 04       		.uleb128 0x4
+ 228 006c A9000000 		.4byte	.LASF9
+ 229 0070 02       		.byte	0x2
+ 230 0071 E401     		.2byte	0x1e4
+ 231 0073 2C000000 		.4byte	0x2c
+ 232 0077 04       		.uleb128 0x4
+ 233 0078 F2000000 		.4byte	.LASF10
+ 234 007c 02       		.byte	0x2
+ 235 007d E601     		.2byte	0x1e6
+ 236 007f 48000000 		.4byte	0x48
+ 237 0083 04       		.uleb128 0x4
+ 238 0084 91000000 		.4byte	.LASF11
+ 239 0088 02       		.byte	0x2
+ 240 0089 E801     		.2byte	0x1e8
+ 241 008b 33000000 		.4byte	0x33
+ 242 008f 02       		.uleb128 0x2
+ 243 0090 04       		.byte	0x4
+ 244 0091 04       		.byte	0x4
+ 245 0092 59000000 		.4byte	.LASF12
+ 246 0096 02       		.uleb128 0x2
+ 247 0097 08       		.byte	0x8
+ 248 0098 04       		.byte	0x4
+ 249 0099 3F000000 		.4byte	.LASF13
+ 250 009d 02       		.uleb128 0x2
+ 251 009e 01       		.byte	0x1
+ 252 009f 08       		.byte	0x8
+ 253 00a0 DA010000 		.4byte	.LASF14
+ 254 00a4 04       		.uleb128 0x4
+ 255 00a5 E0000000 		.4byte	.LASF15
+ 256 00a9 02       		.byte	0x2
+ 257 00aa 8602     		.2byte	0x286
+ 258 00ac 48000000 		.4byte	0x48
+ 259 00b0 02       		.uleb128 0x2
+ 260 00b1 08       		.byte	0x8
+ 261 00b2 04       		.byte	0x4
+ 262 00b3 51020000 		.4byte	.LASF16
+ 263 00b7 02       		.uleb128 0x2
+ 264 00b8 04       		.byte	0x4
+ 265 00b9 07       		.byte	0x7
+ 266 00ba C3010000 		.4byte	.LASF17
+ 267 00be 05       		.uleb128 0x5
+ 268 00bf 01       		.byte	0x1
+ 269 00c0 2C000000 		.4byte	0x2c
+ 270 00c4 04       		.byte	0x4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 7
+
+
+ 271 00c5 14       		.byte	0x14
+ 272 00c6 DD000000 		.4byte	0xdd
+ 273 00ca 06       		.uleb128 0x6
+ 274 00cb 18020000 		.4byte	.LASF18
+ 275 00cf 00       		.byte	0
+ 276 00d0 06       		.uleb128 0x6
+ 277 00d1 27020000 		.4byte	.LASF19
+ 278 00d5 01       		.byte	0x1
+ 279 00d6 06       		.uleb128 0x6
+ 280 00d7 AF000000 		.4byte	.LASF20
+ 281 00db 02       		.byte	0x2
+ 282 00dc 00       		.byte	0
+ 283 00dd 07       		.uleb128 0x7
+ 284 00de 14       		.byte	0x14
+ 285 00df 03       		.byte	0x3
+ 286 00e0 12       		.byte	0x12
+ 287 00e1 2E010000 		.4byte	0x12e
+ 288 00e5 08       		.uleb128 0x8
+ 289 00e6 13000000 		.4byte	.LASF21
+ 290 00ea 03       		.byte	0x3
+ 291 00eb 14       		.byte	0x14
+ 292 00ec 77000000 		.4byte	0x77
+ 293 00f0 00       		.byte	0
+ 294 00f1 08       		.uleb128 0x8
+ 295 00f2 5F000000 		.4byte	.LASF22
+ 296 00f6 03       		.byte	0x3
+ 297 00f7 15       		.byte	0x15
+ 298 00f8 77000000 		.4byte	0x77
+ 299 00fc 04       		.byte	0x4
+ 300 00fd 08       		.uleb128 0x8
+ 301 00fe 06020000 		.4byte	.LASF23
+ 302 0102 03       		.byte	0x3
+ 303 0103 16       		.byte	0x16
+ 304 0104 2E010000 		.4byte	0x12e
+ 305 0108 08       		.byte	0x8
+ 306 0109 08       		.uleb128 0x8
+ 307 010a 1D010000 		.4byte	.LASF24
+ 308 010e 03       		.byte	0x3
+ 309 010f 17       		.byte	0x17
+ 310 0110 2E010000 		.4byte	0x12e
+ 311 0114 0C       		.byte	0xc
+ 312 0115 08       		.uleb128 0x8
+ 313 0116 46000000 		.4byte	.LASF25
+ 314 011a 03       		.byte	0x3
+ 315 011b 19       		.byte	0x19
+ 316 011c 6B000000 		.4byte	0x6b
+ 317 0120 10       		.byte	0x10
+ 318 0121 08       		.uleb128 0x8
+ 319 0122 BD000000 		.4byte	.LASF26
+ 320 0126 03       		.byte	0x3
+ 321 0127 1A       		.byte	0x1a
+ 322 0128 6B000000 		.4byte	0x6b
+ 323 012c 11       		.byte	0x11
+ 324 012d 00       		.byte	0
+ 325 012e 09       		.uleb128 0x9
+ 326 012f 83000000 		.4byte	0x83
+ 327 0133 3E010000 		.4byte	0x13e
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 8
+
+
+ 328 0137 0A       		.uleb128 0xa
+ 329 0138 B7000000 		.4byte	0xb7
+ 330 013c 01       		.byte	0x1
+ 331 013d 00       		.byte	0
+ 332 013e 0B       		.uleb128 0xb
+ 333 013f 35020000 		.4byte	.LASF27
+ 334 0143 03       		.byte	0x3
+ 335 0144 1B       		.byte	0x1b
+ 336 0145 DD000000 		.4byte	0xdd
+ 337 0149 0C       		.uleb128 0xc
+ 338 014a 81000000 		.4byte	.LASF35
+ 339 014e 01       		.byte	0x1
+ 340 014f 1B       		.byte	0x1b
+ 341 0150 00000000 		.4byte	.LFB2
+ 342 0154 58000000 		.4byte	.LFE2-.LFB2
+ 343 0158 01       		.uleb128 0x1
+ 344 0159 9C       		.byte	0x9c
+ 345 015a 6C010000 		.4byte	0x16c
+ 346 015e 0D       		.uleb128 0xd
+ 347 015f DB000000 		.4byte	.LASF28
+ 348 0163 01       		.byte	0x1
+ 349 0164 1D       		.byte	0x1d
+ 350 0165 6C010000 		.4byte	0x16c
+ 351 0169 00FE     		.2byte	0xfe00
+ 352 016b 00       		.byte	0
+ 353 016c 0E       		.uleb128 0xe
+ 354 016d 04       		.byte	0x4
+ 355 016e 3E010000 		.4byte	0x13e
+ 356 0172 0F       		.uleb128 0xf
+ 357 0173 1D000000 		.4byte	.LASF36
+ 358 0177 01       		.byte	0x1
+ 359 0178 36       		.byte	0x36
+ 360 0179 00000000 		.4byte	.LFB3
+ 361 017d 02000000 		.4byte	.LFE3-.LFB3
+ 362 0181 01       		.uleb128 0x1
+ 363 0182 9C       		.byte	0x9c
+ 364 0183 10       		.uleb128 0x10
+ 365 0184 B3010000 		.4byte	.LASF37
+ 366 0188 01       		.byte	0x1
+ 367 0189 3A       		.byte	0x3a
+ 368 018a BC010000 		.4byte	0x1bc
+ 369 018e 00000000 		.4byte	.LFB4
+ 370 0192 20000000 		.4byte	.LFE4-.LFB4
+ 371 0196 01       		.uleb128 0x1
+ 372 0197 9C       		.byte	0x9c
+ 373 0198 BC010000 		.4byte	0x1bc
+ 374 019c 11       		.uleb128 0x11
+ 375 019d 75000000 		.4byte	.LASF29
+ 376 01a1 01       		.byte	0x1
+ 377 01a2 3C       		.byte	0x3c
+ 378 01a3 A4000000 		.4byte	0xa4
+ 379 01a7 00000000 		.4byte	.LLST0
+ 380 01ab 12       		.uleb128 0x12
+ 381 01ac 12000000 		.4byte	.LVL1
+ 382 01b0 F5010000 		.4byte	0x1f5
+ 383 01b4 13       		.uleb128 0x13
+ 384 01b5 01       		.uleb128 0x1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 9
+
+
+ 385 01b6 50       		.byte	0x50
+ 386 01b7 02       		.uleb128 0x2
+ 387 01b8 08       		.byte	0x8
+ 388 01b9 FE       		.byte	0xfe
+ 389 01ba 00       		.byte	0
+ 390 01bb 00       		.byte	0
+ 391 01bc 02       		.uleb128 0x2
+ 392 01bd 01       		.byte	0x1
+ 393 01be 02       		.byte	0x2
+ 394 01bf 69020000 		.4byte	.LASF30
+ 395 01c3 09       		.uleb128 0x9
+ 396 01c4 6B000000 		.4byte	0x6b
+ 397 01c8 D3010000 		.4byte	0x1d3
+ 398 01cc 0A       		.uleb128 0xa
+ 399 01cd B7000000 		.4byte	0xb7
+ 400 01d1 FF       		.byte	0xff
+ 401 01d2 00       		.byte	0
+ 402 01d3 14       		.uleb128 0x14
+ 403 01d4 00000000 		.4byte	.LASF31
+ 404 01d8 01       		.byte	0x1
+ 405 01d9 17       		.byte	0x17
+ 406 01da C3010000 		.4byte	0x1c3
+ 407 01de 05       		.uleb128 0x5
+ 408 01df 03       		.byte	0x3
+ 409 01e0 00000000 		.4byte	page
+ 410 01e4 15       		.uleb128 0x15
+ 411 01e5 E9000000 		.4byte	.LASF38
+ 412 01e9 01       		.byte	0x1
+ 413 01ea 19       		.byte	0x19
+ 414 01eb 6C010000 		.4byte	0x16c
+ 415 01ef 05       		.uleb128 0x5
+ 416 01f0 03       		.byte	0x3
+ 417 01f1 00000000 		.4byte	cal_data
+ 418 01f5 16       		.uleb128 0x16
+ 419 01f6 C8000000 		.4byte	.LASF39
+ 420 01fa C8000000 		.4byte	.LASF39
+ 421 01fe 05       		.byte	0x5
+ 422 01ff 4E       		.byte	0x4e
+ 423 0200 00       		.byte	0
+ 424              		.section	.debug_abbrev,"",%progbits
+ 425              	.Ldebug_abbrev0:
+ 426 0000 01       		.uleb128 0x1
+ 427 0001 11       		.uleb128 0x11
+ 428 0002 01       		.byte	0x1
+ 429 0003 25       		.uleb128 0x25
+ 430 0004 0E       		.uleb128 0xe
+ 431 0005 13       		.uleb128 0x13
+ 432 0006 0B       		.uleb128 0xb
+ 433 0007 03       		.uleb128 0x3
+ 434 0008 0E       		.uleb128 0xe
+ 435 0009 1B       		.uleb128 0x1b
+ 436 000a 0E       		.uleb128 0xe
+ 437 000b 55       		.uleb128 0x55
+ 438 000c 17       		.uleb128 0x17
+ 439 000d 11       		.uleb128 0x11
+ 440 000e 01       		.uleb128 0x1
+ 441 000f 10       		.uleb128 0x10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 10
+
+
+ 442 0010 17       		.uleb128 0x17
+ 443 0011 00       		.byte	0
+ 444 0012 00       		.byte	0
+ 445 0013 02       		.uleb128 0x2
+ 446 0014 24       		.uleb128 0x24
+ 447 0015 00       		.byte	0
+ 448 0016 0B       		.uleb128 0xb
+ 449 0017 0B       		.uleb128 0xb
+ 450 0018 3E       		.uleb128 0x3e
+ 451 0019 0B       		.uleb128 0xb
+ 452 001a 03       		.uleb128 0x3
+ 453 001b 0E       		.uleb128 0xe
+ 454 001c 00       		.byte	0
+ 455 001d 00       		.byte	0
+ 456 001e 03       		.uleb128 0x3
+ 457 001f 24       		.uleb128 0x24
+ 458 0020 00       		.byte	0
+ 459 0021 0B       		.uleb128 0xb
+ 460 0022 0B       		.uleb128 0xb
+ 461 0023 3E       		.uleb128 0x3e
+ 462 0024 0B       		.uleb128 0xb
+ 463 0025 03       		.uleb128 0x3
+ 464 0026 08       		.uleb128 0x8
+ 465 0027 00       		.byte	0
+ 466 0028 00       		.byte	0
+ 467 0029 04       		.uleb128 0x4
+ 468 002a 16       		.uleb128 0x16
+ 469 002b 00       		.byte	0
+ 470 002c 03       		.uleb128 0x3
+ 471 002d 0E       		.uleb128 0xe
+ 472 002e 3A       		.uleb128 0x3a
+ 473 002f 0B       		.uleb128 0xb
+ 474 0030 3B       		.uleb128 0x3b
+ 475 0031 05       		.uleb128 0x5
+ 476 0032 49       		.uleb128 0x49
+ 477 0033 13       		.uleb128 0x13
+ 478 0034 00       		.byte	0
+ 479 0035 00       		.byte	0
+ 480 0036 05       		.uleb128 0x5
+ 481 0037 04       		.uleb128 0x4
+ 482 0038 01       		.byte	0x1
+ 483 0039 0B       		.uleb128 0xb
+ 484 003a 0B       		.uleb128 0xb
+ 485 003b 49       		.uleb128 0x49
+ 486 003c 13       		.uleb128 0x13
+ 487 003d 3A       		.uleb128 0x3a
+ 488 003e 0B       		.uleb128 0xb
+ 489 003f 3B       		.uleb128 0x3b
+ 490 0040 0B       		.uleb128 0xb
+ 491 0041 01       		.uleb128 0x1
+ 492 0042 13       		.uleb128 0x13
+ 493 0043 00       		.byte	0
+ 494 0044 00       		.byte	0
+ 495 0045 06       		.uleb128 0x6
+ 496 0046 28       		.uleb128 0x28
+ 497 0047 00       		.byte	0
+ 498 0048 03       		.uleb128 0x3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 11
+
+
+ 499 0049 0E       		.uleb128 0xe
+ 500 004a 1C       		.uleb128 0x1c
+ 501 004b 0B       		.uleb128 0xb
+ 502 004c 00       		.byte	0
+ 503 004d 00       		.byte	0
+ 504 004e 07       		.uleb128 0x7
+ 505 004f 13       		.uleb128 0x13
+ 506 0050 01       		.byte	0x1
+ 507 0051 0B       		.uleb128 0xb
+ 508 0052 0B       		.uleb128 0xb
+ 509 0053 3A       		.uleb128 0x3a
+ 510 0054 0B       		.uleb128 0xb
+ 511 0055 3B       		.uleb128 0x3b
+ 512 0056 0B       		.uleb128 0xb
+ 513 0057 01       		.uleb128 0x1
+ 514 0058 13       		.uleb128 0x13
+ 515 0059 00       		.byte	0
+ 516 005a 00       		.byte	0
+ 517 005b 08       		.uleb128 0x8
+ 518 005c 0D       		.uleb128 0xd
+ 519 005d 00       		.byte	0
+ 520 005e 03       		.uleb128 0x3
+ 521 005f 0E       		.uleb128 0xe
+ 522 0060 3A       		.uleb128 0x3a
+ 523 0061 0B       		.uleb128 0xb
+ 524 0062 3B       		.uleb128 0x3b
+ 525 0063 0B       		.uleb128 0xb
+ 526 0064 49       		.uleb128 0x49
+ 527 0065 13       		.uleb128 0x13
+ 528 0066 38       		.uleb128 0x38
+ 529 0067 0B       		.uleb128 0xb
+ 530 0068 00       		.byte	0
+ 531 0069 00       		.byte	0
+ 532 006a 09       		.uleb128 0x9
+ 533 006b 01       		.uleb128 0x1
+ 534 006c 01       		.byte	0x1
+ 535 006d 49       		.uleb128 0x49
+ 536 006e 13       		.uleb128 0x13
+ 537 006f 01       		.uleb128 0x1
+ 538 0070 13       		.uleb128 0x13
+ 539 0071 00       		.byte	0
+ 540 0072 00       		.byte	0
+ 541 0073 0A       		.uleb128 0xa
+ 542 0074 21       		.uleb128 0x21
+ 543 0075 00       		.byte	0
+ 544 0076 49       		.uleb128 0x49
+ 545 0077 13       		.uleb128 0x13
+ 546 0078 2F       		.uleb128 0x2f
+ 547 0079 0B       		.uleb128 0xb
+ 548 007a 00       		.byte	0
+ 549 007b 00       		.byte	0
+ 550 007c 0B       		.uleb128 0xb
+ 551 007d 16       		.uleb128 0x16
+ 552 007e 00       		.byte	0
+ 553 007f 03       		.uleb128 0x3
+ 554 0080 0E       		.uleb128 0xe
+ 555 0081 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 12
+
+
+ 556 0082 0B       		.uleb128 0xb
+ 557 0083 3B       		.uleb128 0x3b
+ 558 0084 0B       		.uleb128 0xb
+ 559 0085 49       		.uleb128 0x49
+ 560 0086 13       		.uleb128 0x13
+ 561 0087 00       		.byte	0
+ 562 0088 00       		.byte	0
+ 563 0089 0C       		.uleb128 0xc
+ 564 008a 2E       		.uleb128 0x2e
+ 565 008b 01       		.byte	0x1
+ 566 008c 3F       		.uleb128 0x3f
+ 567 008d 19       		.uleb128 0x19
+ 568 008e 03       		.uleb128 0x3
+ 569 008f 0E       		.uleb128 0xe
+ 570 0090 3A       		.uleb128 0x3a
+ 571 0091 0B       		.uleb128 0xb
+ 572 0092 3B       		.uleb128 0x3b
+ 573 0093 0B       		.uleb128 0xb
+ 574 0094 27       		.uleb128 0x27
+ 575 0095 19       		.uleb128 0x19
+ 576 0096 11       		.uleb128 0x11
+ 577 0097 01       		.uleb128 0x1
+ 578 0098 12       		.uleb128 0x12
+ 579 0099 06       		.uleb128 0x6
+ 580 009a 40       		.uleb128 0x40
+ 581 009b 18       		.uleb128 0x18
+ 582 009c 9742     		.uleb128 0x2117
+ 583 009e 19       		.uleb128 0x19
+ 584 009f 01       		.uleb128 0x1
+ 585 00a0 13       		.uleb128 0x13
+ 586 00a1 00       		.byte	0
+ 587 00a2 00       		.byte	0
+ 588 00a3 0D       		.uleb128 0xd
+ 589 00a4 34       		.uleb128 0x34
+ 590 00a5 00       		.byte	0
+ 591 00a6 03       		.uleb128 0x3
+ 592 00a7 0E       		.uleb128 0xe
+ 593 00a8 3A       		.uleb128 0x3a
+ 594 00a9 0B       		.uleb128 0xb
+ 595 00aa 3B       		.uleb128 0x3b
+ 596 00ab 0B       		.uleb128 0xb
+ 597 00ac 49       		.uleb128 0x49
+ 598 00ad 13       		.uleb128 0x13
+ 599 00ae 1C       		.uleb128 0x1c
+ 600 00af 05       		.uleb128 0x5
+ 601 00b0 00       		.byte	0
+ 602 00b1 00       		.byte	0
+ 603 00b2 0E       		.uleb128 0xe
+ 604 00b3 0F       		.uleb128 0xf
+ 605 00b4 00       		.byte	0
+ 606 00b5 0B       		.uleb128 0xb
+ 607 00b6 0B       		.uleb128 0xb
+ 608 00b7 49       		.uleb128 0x49
+ 609 00b8 13       		.uleb128 0x13
+ 610 00b9 00       		.byte	0
+ 611 00ba 00       		.byte	0
+ 612 00bb 0F       		.uleb128 0xf
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 13
+
+
+ 613 00bc 2E       		.uleb128 0x2e
+ 614 00bd 00       		.byte	0
+ 615 00be 3F       		.uleb128 0x3f
+ 616 00bf 19       		.uleb128 0x19
+ 617 00c0 03       		.uleb128 0x3
+ 618 00c1 0E       		.uleb128 0xe
+ 619 00c2 3A       		.uleb128 0x3a
+ 620 00c3 0B       		.uleb128 0xb
+ 621 00c4 3B       		.uleb128 0x3b
+ 622 00c5 0B       		.uleb128 0xb
+ 623 00c6 27       		.uleb128 0x27
+ 624 00c7 19       		.uleb128 0x19
+ 625 00c8 11       		.uleb128 0x11
+ 626 00c9 01       		.uleb128 0x1
+ 627 00ca 12       		.uleb128 0x12
+ 628 00cb 06       		.uleb128 0x6
+ 629 00cc 40       		.uleb128 0x40
+ 630 00cd 18       		.uleb128 0x18
+ 631 00ce 9742     		.uleb128 0x2117
+ 632 00d0 19       		.uleb128 0x19
+ 633 00d1 00       		.byte	0
+ 634 00d2 00       		.byte	0
+ 635 00d3 10       		.uleb128 0x10
+ 636 00d4 2E       		.uleb128 0x2e
+ 637 00d5 01       		.byte	0x1
+ 638 00d6 3F       		.uleb128 0x3f
+ 639 00d7 19       		.uleb128 0x19
+ 640 00d8 03       		.uleb128 0x3
+ 641 00d9 0E       		.uleb128 0xe
+ 642 00da 3A       		.uleb128 0x3a
+ 643 00db 0B       		.uleb128 0xb
+ 644 00dc 3B       		.uleb128 0x3b
+ 645 00dd 0B       		.uleb128 0xb
+ 646 00de 27       		.uleb128 0x27
+ 647 00df 19       		.uleb128 0x19
+ 648 00e0 49       		.uleb128 0x49
+ 649 00e1 13       		.uleb128 0x13
+ 650 00e2 11       		.uleb128 0x11
+ 651 00e3 01       		.uleb128 0x1
+ 652 00e4 12       		.uleb128 0x12
+ 653 00e5 06       		.uleb128 0x6
+ 654 00e6 40       		.uleb128 0x40
+ 655 00e7 18       		.uleb128 0x18
+ 656 00e8 9742     		.uleb128 0x2117
+ 657 00ea 19       		.uleb128 0x19
+ 658 00eb 01       		.uleb128 0x1
+ 659 00ec 13       		.uleb128 0x13
+ 660 00ed 00       		.byte	0
+ 661 00ee 00       		.byte	0
+ 662 00ef 11       		.uleb128 0x11
+ 663 00f0 34       		.uleb128 0x34
+ 664 00f1 00       		.byte	0
+ 665 00f2 03       		.uleb128 0x3
+ 666 00f3 0E       		.uleb128 0xe
+ 667 00f4 3A       		.uleb128 0x3a
+ 668 00f5 0B       		.uleb128 0xb
+ 669 00f6 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 14
+
+
+ 670 00f7 0B       		.uleb128 0xb
+ 671 00f8 49       		.uleb128 0x49
+ 672 00f9 13       		.uleb128 0x13
+ 673 00fa 02       		.uleb128 0x2
+ 674 00fb 17       		.uleb128 0x17
+ 675 00fc 00       		.byte	0
+ 676 00fd 00       		.byte	0
+ 677 00fe 12       		.uleb128 0x12
+ 678 00ff 898201   		.uleb128 0x4109
+ 679 0102 01       		.byte	0x1
+ 680 0103 11       		.uleb128 0x11
+ 681 0104 01       		.uleb128 0x1
+ 682 0105 31       		.uleb128 0x31
+ 683 0106 13       		.uleb128 0x13
+ 684 0107 00       		.byte	0
+ 685 0108 00       		.byte	0
+ 686 0109 13       		.uleb128 0x13
+ 687 010a 8A8201   		.uleb128 0x410a
+ 688 010d 00       		.byte	0
+ 689 010e 02       		.uleb128 0x2
+ 690 010f 18       		.uleb128 0x18
+ 691 0110 9142     		.uleb128 0x2111
+ 692 0112 18       		.uleb128 0x18
+ 693 0113 00       		.byte	0
+ 694 0114 00       		.byte	0
+ 695 0115 14       		.uleb128 0x14
+ 696 0116 34       		.uleb128 0x34
+ 697 0117 00       		.byte	0
+ 698 0118 03       		.uleb128 0x3
+ 699 0119 0E       		.uleb128 0xe
+ 700 011a 3A       		.uleb128 0x3a
+ 701 011b 0B       		.uleb128 0xb
+ 702 011c 3B       		.uleb128 0x3b
+ 703 011d 0B       		.uleb128 0xb
+ 704 011e 49       		.uleb128 0x49
+ 705 011f 13       		.uleb128 0x13
+ 706 0120 02       		.uleb128 0x2
+ 707 0121 18       		.uleb128 0x18
+ 708 0122 00       		.byte	0
+ 709 0123 00       		.byte	0
+ 710 0124 15       		.uleb128 0x15
+ 711 0125 34       		.uleb128 0x34
+ 712 0126 00       		.byte	0
+ 713 0127 03       		.uleb128 0x3
+ 714 0128 0E       		.uleb128 0xe
+ 715 0129 3A       		.uleb128 0x3a
+ 716 012a 0B       		.uleb128 0xb
+ 717 012b 3B       		.uleb128 0x3b
+ 718 012c 0B       		.uleb128 0xb
+ 719 012d 49       		.uleb128 0x49
+ 720 012e 13       		.uleb128 0x13
+ 721 012f 3F       		.uleb128 0x3f
+ 722 0130 19       		.uleb128 0x19
+ 723 0131 02       		.uleb128 0x2
+ 724 0132 18       		.uleb128 0x18
+ 725 0133 00       		.byte	0
+ 726 0134 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 15
+
+
+ 727 0135 16       		.uleb128 0x16
+ 728 0136 2E       		.uleb128 0x2e
+ 729 0137 00       		.byte	0
+ 730 0138 3F       		.uleb128 0x3f
+ 731 0139 19       		.uleb128 0x19
+ 732 013a 3C       		.uleb128 0x3c
+ 733 013b 19       		.uleb128 0x19
+ 734 013c 6E       		.uleb128 0x6e
+ 735 013d 0E       		.uleb128 0xe
+ 736 013e 03       		.uleb128 0x3
+ 737 013f 0E       		.uleb128 0xe
+ 738 0140 3A       		.uleb128 0x3a
+ 739 0141 0B       		.uleb128 0xb
+ 740 0142 3B       		.uleb128 0x3b
+ 741 0143 0B       		.uleb128 0xb
+ 742 0144 00       		.byte	0
+ 743 0145 00       		.byte	0
+ 744 0146 00       		.byte	0
+ 745              		.section	.debug_loc,"",%progbits
+ 746              	.Ldebug_loc0:
+ 747              	.LLST0:
+ 748 0000 14000000 		.4byte	.LVL2
+ 749 0004 18000000 		.4byte	.LVL3
+ 750 0008 0100     		.2byte	0x1
+ 751 000a 50       		.byte	0x50
+ 752 000b 00000000 		.4byte	0
+ 753 000f 00000000 		.4byte	0
+ 754              		.section	.debug_aranges,"",%progbits
+ 755 0000 2C000000 		.4byte	0x2c
+ 756 0004 0200     		.2byte	0x2
+ 757 0006 00000000 		.4byte	.Ldebug_info0
+ 758 000a 04       		.byte	0x4
+ 759 000b 00       		.byte	0
+ 760 000c 0000     		.2byte	0
+ 761 000e 0000     		.2byte	0
+ 762 0010 00000000 		.4byte	.LFB2
+ 763 0014 58000000 		.4byte	.LFE2-.LFB2
+ 764 0018 00000000 		.4byte	.LFB3
+ 765 001c 02000000 		.4byte	.LFE3-.LFB3
+ 766 0020 00000000 		.4byte	.LFB4
+ 767 0024 20000000 		.4byte	.LFE4-.LFB4
+ 768 0028 00000000 		.4byte	0
+ 769 002c 00000000 		.4byte	0
+ 770              		.section	.debug_ranges,"",%progbits
+ 771              	.Ldebug_ranges0:
+ 772 0000 00000000 		.4byte	.LFB2
+ 773 0004 58000000 		.4byte	.LFE2
+ 774 0008 00000000 		.4byte	.LFB3
+ 775 000c 02000000 		.4byte	.LFE3
+ 776 0010 00000000 		.4byte	.LFB4
+ 777 0014 20000000 		.4byte	.LFE4
+ 778 0018 00000000 		.4byte	0
+ 779 001c 00000000 		.4byte	0
+ 780              		.section	.debug_line,"",%progbits
+ 781              	.Ldebug_line0:
+ 782 0000 C1000000 		.section	.debug_str,"MS",%progbits,1
+ 782      02007D00 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 16
+
+
+ 782      00000201 
+ 782      FB0E0D00 
+ 782      01010101 
+ 783              	.LASF31:
+ 784 0000 70616765 		.ascii	"page\000"
+ 784      00
+ 785              	.LASF33:
+ 786 0005 43616C69 		.ascii	"Calibration.c\000"
+ 786      62726174 
+ 786      696F6E2E 
+ 786      6300
+ 787              	.LASF21:
+ 788 0013 7369676E 		.ascii	"signature\000"
+ 788      61747572 
+ 788      6500
+ 789              	.LASF36:
+ 790 001d 43616C69 		.ascii	"CalibrationRun\000"
+ 790      62726174 
+ 790      696F6E52 
+ 790      756E00
+ 791              	.LASF3:
+ 792 002c 73686F72 		.ascii	"short unsigned int\000"
+ 792      7420756E 
+ 792      7369676E 
+ 792      65642069 
+ 792      6E7400
+ 793              	.LASF13:
+ 794 003f 646F7562 		.ascii	"double\000"
+ 794      6C6500
+ 795              	.LASF25:
+ 796 0046 6C65645F 		.ascii	"led_max_brightness\000"
+ 796      6D61785F 
+ 796      62726967 
+ 796      68746E65 
+ 796      737300
+ 797              	.LASF12:
+ 798 0059 666C6F61 		.ascii	"float\000"
+ 798      7400
+ 799              	.LASF22:
+ 800 005f 636F756E 		.ascii	"counter\000"
+ 800      74657200 
+ 801              	.LASF1:
+ 802 0067 756E7369 		.ascii	"unsigned char\000"
+ 802      676E6564 
+ 802      20636861 
+ 802      7200
+ 803              	.LASF29:
+ 804 0075 72657475 		.ascii	"returnValue\000"
+ 804      726E5661 
+ 804      6C756500 
+ 805              	.LASF35:
+ 806 0081 43616C69 		.ascii	"CalibrationInit\000"
+ 806      62726174 
+ 806      696F6E49 
+ 806      6E697400 
+ 807              	.LASF11:
+ 808 0091 696E7431 		.ascii	"int16\000"
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 17
+
+
+ 808      3600
+ 809              	.LASF5:
+ 810 0097 6C6F6E67 		.ascii	"long unsigned int\000"
+ 810      20756E73 
+ 810      69676E65 
+ 810      6420696E 
+ 810      7400
+ 811              	.LASF9:
+ 812 00a9 75696E74 		.ascii	"uint8\000"
+ 812      3800
+ 813              	.LASF20:
+ 814 00af 766F6C5F 		.ascii	"vol_ctrl_both\000"
+ 814      6374726C 
+ 814      5F626F74 
+ 814      6800
+ 815              	.LASF26:
+ 816 00bd 64656275 		.ascii	"debug_mask\000"
+ 816      675F6D61 
+ 816      736B00
+ 817              	.LASF39:
+ 818 00c8 43795379 		.ascii	"CySysFlashWriteRow\000"
+ 818      73466C61 
+ 818      73685772 
+ 818      69746552 
+ 818      6F7700
+ 819              	.LASF28:
+ 820 00db 7043616C 		.ascii	"pCal\000"
+ 820      00
+ 821              	.LASF15:
+ 822 00e0 63797374 		.ascii	"cystatus\000"
+ 822      61747573 
+ 822      00
+ 823              	.LASF38:
+ 824 00e9 63616C5F 		.ascii	"cal_data\000"
+ 824      64617461 
+ 824      00
+ 825              	.LASF10:
+ 826 00f2 75696E74 		.ascii	"uint32\000"
+ 826      333200
+ 827              	.LASF8:
+ 828 00f9 756E7369 		.ascii	"unsigned int\000"
+ 828      676E6564 
+ 828      20696E74 
+ 828      00
+ 829              	.LASF7:
+ 830 0106 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 830      206C6F6E 
+ 830      6720756E 
+ 830      7369676E 
+ 830      65642069 
+ 831              	.LASF24:
+ 832 011d 6164635F 		.ascii	"adc_max\000"
+ 832      6D617800 
+ 833              	.LASF32:
+ 834 0125 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 834      43313120 
+ 834      352E342E 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 18
+
+
+ 834      31203230 
+ 834      31363036 
+ 835 0158 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 835      20726576 
+ 835      6973696F 
+ 835      6E203233 
+ 835      37373135 
+ 836 018b 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 836      66756E63 
+ 836      74696F6E 
+ 836      2D736563 
+ 836      74696F6E 
+ 837              	.LASF37:
+ 838 01b3 43616C69 		.ascii	"CalibrationSave\000"
+ 838      62726174 
+ 838      696F6E53 
+ 838      61766500 
+ 839              	.LASF17:
+ 840 01c3 73697A65 		.ascii	"sizetype\000"
+ 840      74797065 
+ 840      00
+ 841              	.LASF6:
+ 842 01cc 6C6F6E67 		.ascii	"long long int\000"
+ 842      206C6F6E 
+ 842      6720696E 
+ 842      7400
+ 843              	.LASF14:
+ 844 01da 63686172 		.ascii	"char\000"
+ 844      00
+ 845              	.LASF34:
+ 846 01df 433A5C64 		.ascii	"C:\\dev\\git\\Icebreaker\\Icebreaker.cydsn\000"
+ 846      65765C67 
+ 846      69745C49 
+ 846      63656272 
+ 846      65616B65 
+ 847              	.LASF23:
+ 848 0206 6164635F 		.ascii	"adc_min\000"
+ 848      6D696E00 
+ 849              	.LASF2:
+ 850 020e 73686F72 		.ascii	"short int\000"
+ 850      7420696E 
+ 850      7400
+ 851              	.LASF18:
+ 852 0218 766F6C5F 		.ascii	"vol_ctrl_right\000"
+ 852      6374726C 
+ 852      5F726967 
+ 852      687400
+ 853              	.LASF19:
+ 854 0227 766F6C5F 		.ascii	"vol_ctrl_left\000"
+ 854      6374726C 
+ 854      5F6C6566 
+ 854      7400
+ 855              	.LASF27:
+ 856 0235 63616C69 		.ascii	"calibration_data_s\000"
+ 856      62726174 
+ 856      696F6E5F 
+ 856      64617461 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccB5ix9t.s 			page 19
+
+
+ 856      5F7300
+ 857              	.LASF4:
+ 858 0248 6C6F6E67 		.ascii	"long int\000"
+ 858      20696E74 
+ 858      00
+ 859              	.LASF16:
+ 860 0251 6C6F6E67 		.ascii	"long double\000"
+ 860      20646F75 
+ 860      626C6500 
+ 861              	.LASF0:
+ 862 025d 7369676E 		.ascii	"signed char\000"
+ 862      65642063 
+ 862      68617200 
+ 863              	.LASF30:
+ 864 0269 5F426F6F 		.ascii	"_Bool\000"
+ 864      6C00
+ 865              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

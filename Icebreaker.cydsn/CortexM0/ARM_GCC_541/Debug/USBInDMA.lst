@@ -1,0 +1,1790 @@
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"USBInDMA.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.USBInDMA_Init,"ax",%progbits
+  20              		.align	2
+  21              		.global	USBInDMA_Init
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	USBInDMA_Init, %function
+  25              	USBInDMA_Init:
+  26              	.LFB33:
+  27              		.file 1 "Generated_Source\\PSoC4\\USBInDMA.c"
+   1:Generated_Source\PSoC4/USBInDMA.c **** /*******************************************************************************
+   2:Generated_Source\PSoC4/USBInDMA.c **** * File Name: USBInDMA.h
+   3:Generated_Source\PSoC4/USBInDMA.c **** * Version 1.0
+   4:Generated_Source\PSoC4/USBInDMA.c **** *
+   5:Generated_Source\PSoC4/USBInDMA.c **** * Description:
+   6:Generated_Source\PSoC4/USBInDMA.c **** *  This file contains all of the channel DMA API functions.
+   7:Generated_Source\PSoC4/USBInDMA.c **** *
+   8:Generated_Source\PSoC4/USBInDMA.c **** ********************************************************************************
+   9:Generated_Source\PSoC4/USBInDMA.c **** * Copyright 2015, Cypress Semiconductor Corporation. All rights reserved.
+  10:Generated_Source\PSoC4/USBInDMA.c **** * You may use this file only in accordance with the license, terms, conditions,
+  11:Generated_Source\PSoC4/USBInDMA.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  12:Generated_Source\PSoC4/USBInDMA.c **** * the software package with which this file was provided.
+  13:Generated_Source\PSoC4/USBInDMA.c **** *******************************************************************************/
+  14:Generated_Source\PSoC4/USBInDMA.c **** 
+  15:Generated_Source\PSoC4/USBInDMA.c **** #include "USBInDMA.h"
+  16:Generated_Source\PSoC4/USBInDMA.c **** 
+  17:Generated_Source\PSoC4/USBInDMA.c **** uint8 USBInDMA_initVar = 0u;
+  18:Generated_Source\PSoC4/USBInDMA.c **** 
+  19:Generated_Source\PSoC4/USBInDMA.c **** 
+  20:Generated_Source\PSoC4/USBInDMA.c **** /*******************************************************************************
+  21:Generated_Source\PSoC4/USBInDMA.c **** * Function Name: USBInDMA_Start
+  22:Generated_Source\PSoC4/USBInDMA.c **** ********************************************************************************
+  23:Generated_Source\PSoC4/USBInDMA.c **** *
+  24:Generated_Source\PSoC4/USBInDMA.c **** * Summary:
+  25:Generated_Source\PSoC4/USBInDMA.c **** *  Calls Init() to configure the DMA channel based on the customizer settings if
+  26:Generated_Source\PSoC4/USBInDMA.c **** *  the channel has not been initialized before.
+  27:Generated_Source\PSoC4/USBInDMA.c **** *  Sets source and destination address, validates descriptor 0 and enables the
+  28:Generated_Source\PSoC4/USBInDMA.c **** *  channel. After calling this function the DMA channel is active and waiting
+  29:Generated_Source\PSoC4/USBInDMA.c **** *  for a trigger.
+  30:Generated_Source\PSoC4/USBInDMA.c **** *
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 2
+
+
+  31:Generated_Source\PSoC4/USBInDMA.c **** * Parameters:
+  32:Generated_Source\PSoC4/USBInDMA.c **** *  srcAddress: Address of DMA transfer source for descriptor 0.
+  33:Generated_Source\PSoC4/USBInDMA.c **** *  dstAddress: Address of DMA transfer destination for descriptor 0.
+  34:Generated_Source\PSoC4/USBInDMA.c **** *                   
+  35:Generated_Source\PSoC4/USBInDMA.c **** * Return:
+  36:Generated_Source\PSoC4/USBInDMA.c **** *  None.
+  37:Generated_Source\PSoC4/USBInDMA.c **** *
+  38:Generated_Source\PSoC4/USBInDMA.c **** *******************************************************************************/
+  39:Generated_Source\PSoC4/USBInDMA.c **** void USBInDMA_Start(void * srcAddress, void * dstAddress)
+  40:Generated_Source\PSoC4/USBInDMA.c **** {
+  41:Generated_Source\PSoC4/USBInDMA.c ****     if(0u == USBInDMA_initVar)
+  42:Generated_Source\PSoC4/USBInDMA.c ****     {
+  43:Generated_Source\PSoC4/USBInDMA.c ****         USBInDMA_Init();
+  44:Generated_Source\PSoC4/USBInDMA.c ****         USBInDMA_initVar = 1u;
+  45:Generated_Source\PSoC4/USBInDMA.c ****     }
+  46:Generated_Source\PSoC4/USBInDMA.c ****     CyDmaEnable();
+  47:Generated_Source\PSoC4/USBInDMA.c ****     USBInDMA_SetSrcAddress(0, srcAddress);
+  48:Generated_Source\PSoC4/USBInDMA.c ****     USBInDMA_SetDstAddress(0, dstAddress);
+  49:Generated_Source\PSoC4/USBInDMA.c ****     USBInDMA_ValidateDescriptor(0);
+  50:Generated_Source\PSoC4/USBInDMA.c ****     USBInDMA_ChEnable();
+  51:Generated_Source\PSoC4/USBInDMA.c **** }
+  52:Generated_Source\PSoC4/USBInDMA.c **** 
+  53:Generated_Source\PSoC4/USBInDMA.c **** 
+  54:Generated_Source\PSoC4/USBInDMA.c **** /*******************************************************************************
+  55:Generated_Source\PSoC4/USBInDMA.c **** * Function Name: USBInDMA_Init
+  56:Generated_Source\PSoC4/USBInDMA.c **** ********************************************************************************
+  57:Generated_Source\PSoC4/USBInDMA.c **** *
+  58:Generated_Source\PSoC4/USBInDMA.c **** * Summary:
+  59:Generated_Source\PSoC4/USBInDMA.c **** *  Initializes the DMA channel based on the parameters set in the component
+  60:Generated_Source\PSoC4/USBInDMA.c **** *  customizer. It is not necessary to call USBInDMA_Init() because the
+  61:Generated_Source\PSoC4/USBInDMA.c **** *  USBInDMA_Start() API calls this function, which is the preferred method
+  62:Generated_Source\PSoC4/USBInDMA.c **** *  to begin component operation.
+  63:Generated_Source\PSoC4/USBInDMA.c **** *
+  64:Generated_Source\PSoC4/USBInDMA.c **** * Parameters:
+  65:Generated_Source\PSoC4/USBInDMA.c **** *  None.
+  66:Generated_Source\PSoC4/USBInDMA.c **** *                   
+  67:Generated_Source\PSoC4/USBInDMA.c **** * Return:
+  68:Generated_Source\PSoC4/USBInDMA.c **** *  None.
+  69:Generated_Source\PSoC4/USBInDMA.c **** *
+  70:Generated_Source\PSoC4/USBInDMA.c **** * Side effect:
+  71:Generated_Source\PSoC4/USBInDMA.c **** *  The first descriptor is set to descriptor 0. This function should not be
+  72:Generated_Source\PSoC4/USBInDMA.c **** *  called while the channel is enabled. All settings will be reset to their
+  73:Generated_Source\PSoC4/USBInDMA.c **** *  initial values.
+  74:Generated_Source\PSoC4/USBInDMA.c **** *
+  75:Generated_Source\PSoC4/USBInDMA.c **** *******************************************************************************/
+  76:Generated_Source\PSoC4/USBInDMA.c **** void USBInDMA_Init(void)
+  77:Generated_Source\PSoC4/USBInDMA.c **** {
+  28              		.loc 1 77 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  78:Generated_Source\PSoC4/USBInDMA.c ****     CYDMA_CH_CTL_BASE.ctl[USBInDMA_CHANNEL] = USBInDMA_CHANNEL_CFG;
+  33              		.loc 1 78 0
+  34 0000 C022     		movs	r2, #192
+  35 0002 9205     		lsls	r2, r2, #22
+  36 0004 074B     		ldr	r3, .L2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 3
+
+
+  37 0006 5A63     		str	r2, [r3, #52]
+  79:Generated_Source\PSoC4/USBInDMA.c ****     CYDMA_DESCR_BASE.descriptor[USBInDMA_CHANNEL][0].ctl = USBInDMA_DESCR0_CFG;
+  38              		.loc 1 79 0
+  39 0008 074B     		ldr	r3, .L2+4
+  40 000a 084A     		ldr	r2, .L2+8
+  41 000c D421     		movs	r1, #212
+  42 000e 4900     		lsls	r1, r1, #1
+  43 0010 5A50     		str	r2, [r3, r1]
+  80:Generated_Source\PSoC4/USBInDMA.c ****     CYDMA_DESCR_BASE.descriptor[USBInDMA_CHANNEL][1].ctl = USBInDMA_DESCR1_CFG;
+  44              		.loc 1 80 0
+  45 0012 1031     		adds	r1, r1, #16
+  46 0014 5A50     		str	r2, [r3, r1]
+  81:Generated_Source\PSoC4/USBInDMA.c **** 
+  82:Generated_Source\PSoC4/USBInDMA.c ****     /* If the Generate IRQ option is selected for descriptor 0 or 1, set the
+  83:Generated_Source\PSoC4/USBInDMA.c ****     * channel bit field in the DMA interrupt mask register.
+  84:Generated_Source\PSoC4/USBInDMA.c ****     */
+  85:Generated_Source\PSoC4/USBInDMA.c ****     #if (0u != ((USBInDMA_DESCR0_CFG | USBInDMA_DESCR1_CFG) & CYDMA_GENERATE_IRQ))
+  86:Generated_Source\PSoC4/USBInDMA.c ****         CYDMA_INTR_MASK_REG |= USBInDMA_CHANNEL_MASK;
+  47              		.loc 1 86 0
+  48 0016 064A     		ldr	r2, .L2+12
+  49 0018 1368     		ldr	r3, [r2]
+  50 001a 8021     		movs	r1, #128
+  51 001c 8901     		lsls	r1, r1, #6
+  52 001e 0B43     		orrs	r3, r1
+  53 0020 1360     		str	r3, [r2]
+  87:Generated_Source\PSoC4/USBInDMA.c ****     #endif /* (0u != ((USBInDMA_DESCR0_CFG | USBInDMA_DESCR1_CFG) & CYDMA_GENERATE_IRQ)) */
+  88:Generated_Source\PSoC4/USBInDMA.c **** }
+  54              		.loc 1 88 0
+  55              		@ sp needed
+  56 0022 7047     		bx	lr
+  57              	.L3:
+  58              		.align	2
+  59              	.L2:
+  60 0024 80101040 		.word	1074794624
+  61 0028 00181040 		.word	1074796544
+  62 002c BB00A058 		.word	1486880955
+  63 0030 F8171040 		.word	1074796536
+  64              		.cfi_endproc
+  65              	.LFE33:
+  66              		.size	USBInDMA_Init, .-USBInDMA_Init
+  67              		.section	.text.USBInDMA_Start,"ax",%progbits
+  68              		.align	2
+  69              		.global	USBInDMA_Start
+  70              		.code	16
+  71              		.thumb_func
+  72              		.type	USBInDMA_Start, %function
+  73              	USBInDMA_Start:
+  74              	.LFB32:
+  40:Generated_Source\PSoC4/USBInDMA.c ****     if(0u == USBInDMA_initVar)
+  75              		.loc 1 40 0
+  76              		.cfi_startproc
+  77              		@ args = 0, pretend = 0, frame = 0
+  78              		@ frame_needed = 0, uses_anonymous_args = 0
+  79              	.LVL0:
+  80 0000 70B5     		push	{r4, r5, r6, lr}
+  81              		.cfi_def_cfa_offset 16
+  82              		.cfi_offset 4, -16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 4
+
+
+  83              		.cfi_offset 5, -12
+  84              		.cfi_offset 6, -8
+  85              		.cfi_offset 14, -4
+  86 0002 0500     		movs	r5, r0
+  87 0004 0C00     		movs	r4, r1
+  41:Generated_Source\PSoC4/USBInDMA.c ****     {
+  88              		.loc 1 41 0
+  89 0006 0E4B     		ldr	r3, .L6
+  90 0008 1B78     		ldrb	r3, [r3]
+  91 000a 002B     		cmp	r3, #0
+  92 000c 04D1     		bne	.L5
+  43:Generated_Source\PSoC4/USBInDMA.c ****         USBInDMA_initVar = 1u;
+  93              		.loc 1 43 0
+  94 000e FFF7FEFF 		bl	USBInDMA_Init
+  95              	.LVL1:
+  44:Generated_Source\PSoC4/USBInDMA.c ****     }
+  96              		.loc 1 44 0
+  97 0012 0122     		movs	r2, #1
+  98 0014 0A4B     		ldr	r3, .L6
+  99 0016 1A70     		strb	r2, [r3]
+ 100              	.L5:
+  46:Generated_Source\PSoC4/USBInDMA.c ****     USBInDMA_SetSrcAddress(0, srcAddress);
+ 101              		.loc 1 46 0
+ 102 0018 FFF7FEFF 		bl	CyDmaEnable
+ 103              	.LVL2:
+ 104              	.LBB10:
+ 105              	.LBB11:
+ 106              		.file 2 "Generated_Source\\PSoC4\\USBInDMA.h"
+   1:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+   2:Generated_Source\PSoC4/USBInDMA.h **** * File Name: USBInDMA.h
+   3:Generated_Source\PSoC4/USBInDMA.h **** * Version 1.0
+   4:Generated_Source\PSoC4/USBInDMA.h **** *
+   5:Generated_Source\PSoC4/USBInDMA.h **** * Description:
+   6:Generated_Source\PSoC4/USBInDMA.h **** *  This file provides DMA channel defines and API function definitions.
+   7:Generated_Source\PSoC4/USBInDMA.h **** *
+   8:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+   9:Generated_Source\PSoC4/USBInDMA.h **** * Copyright 2015, Cypress Semiconductor Corporation. All rights reserved.
+  10:Generated_Source\PSoC4/USBInDMA.h **** * You may use this file only in accordance with the license, terms, conditions,
+  11:Generated_Source\PSoC4/USBInDMA.h **** * disclaimers, and limitations in the end user license agreement accompanying
+  12:Generated_Source\PSoC4/USBInDMA.h **** * the software package with which this file was provided.
+  13:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+  14:Generated_Source\PSoC4/USBInDMA.h **** 
+  15:Generated_Source\PSoC4/USBInDMA.h **** #ifndef CY_DMA_CHANNEL_USBInDMA_H
+  16:Generated_Source\PSoC4/USBInDMA.h **** #define CY_DMA_CHANNEL_USBInDMA_H
+  17:Generated_Source\PSoC4/USBInDMA.h **** 
+  18:Generated_Source\PSoC4/USBInDMA.h **** #include "CyDMA.h"
+  19:Generated_Source\PSoC4/USBInDMA.h **** 
+  20:Generated_Source\PSoC4/USBInDMA.h ****     
+  21:Generated_Source\PSoC4/USBInDMA.h **** /***************************************
+  22:Generated_Source\PSoC4/USBInDMA.h **** *   Conditional Compilation Parameters
+  23:Generated_Source\PSoC4/USBInDMA.h **** ***************************************/
+  24:Generated_Source\PSoC4/USBInDMA.h **** 
+  25:Generated_Source\PSoC4/USBInDMA.h **** #define USBInDMA_CHANNEL           (USBInDMA__CHANNEL_NUMBER)
+  26:Generated_Source\PSoC4/USBInDMA.h **** #define USBInDMA_CHANNEL_MASK      ((uint32)(1UL << USBInDMA_CHANNEL))
+  27:Generated_Source\PSoC4/USBInDMA.h **** 
+  28:Generated_Source\PSoC4/USBInDMA.h **** 
+  29:Generated_Source\PSoC4/USBInDMA.h **** /***************************************
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 5
+
+
+  30:Generated_Source\PSoC4/USBInDMA.h **** *        Function Prototypes
+  31:Generated_Source\PSoC4/USBInDMA.h **** ***************************************/
+  32:Generated_Source\PSoC4/USBInDMA.h **** 
+  33:Generated_Source\PSoC4/USBInDMA.h **** /* Functions specific to this DMA channel */
+  34:Generated_Source\PSoC4/USBInDMA.h **** void USBInDMA_Init(void);
+  35:Generated_Source\PSoC4/USBInDMA.h **** void USBInDMA_Start(void * srcAddress, void * dstAddress);
+  36:Generated_Source\PSoC4/USBInDMA.h **** 
+  37:Generated_Source\PSoC4/USBInDMA.h **** /* Inline functions that call global API functions */
+  38:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_ChEnable(void);
+  39:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_ChDisable(void);
+  40:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_Trigger(void);
+  41:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_SetPriority(int32 priority);
+  42:Generated_Source\PSoC4/USBInDMA.h **** static int32  USBInDMA_GetPriority(void);
+  43:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_SetNextDescriptor(int32 descriptor);
+  44:Generated_Source\PSoC4/USBInDMA.h **** static int32  USBInDMA_GetNextDescriptor(void);
+  45:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_SetConfiguration(int32 descriptor, const cydma_init_struct * config);
+  46:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_ValidateDescriptor(int32 descriptor);
+  47:Generated_Source\PSoC4/USBInDMA.h **** static uint32 USBInDMA_GetDescriptorStatus(int32 descriptor);
+  48:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_SetSrcAddress(int32 descriptor, void * srcAddress);
+  49:Generated_Source\PSoC4/USBInDMA.h **** static void * USBInDMA_GetSrcAddress(int32 descriptor);
+  50:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_SetDstAddress(int32 descriptor, void * dstAddress);
+  51:Generated_Source\PSoC4/USBInDMA.h **** static void * USBInDMA_GetDstAddress(int32 descriptor);
+  52:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_SetDataElementSize(int32 descriptor, uint32 dataElementSize);
+  53:Generated_Source\PSoC4/USBInDMA.h **** static uint32 USBInDMA_GetDataElementSize(int32 descriptor);
+  54:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_SetNumDataElements(int32 descriptor, int32 numDataElements);
+  55:Generated_Source\PSoC4/USBInDMA.h **** static int32  USBInDMA_GetNumDataElements(int32 descriptor);
+  56:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_SetSrcDstTransferWidth(int32 descriptor, uint32 transferWidth);
+  57:Generated_Source\PSoC4/USBInDMA.h **** static uint32 USBInDMA_GetSrcDstTransferWidth(int32 descriptor);
+  58:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_SetAddressIncrement(int32 descriptor, uint32 addressIncrement);
+  59:Generated_Source\PSoC4/USBInDMA.h **** static uint32 USBInDMA_GetAddressIncrement(int32 descriptor);
+  60:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_SetTriggerType(int32 descriptor, uint32 triggerType);
+  61:Generated_Source\PSoC4/USBInDMA.h **** static uint32 USBInDMA_GetTriggerType(int32 descriptor);
+  62:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_SetTransferMode(int32 descriptor, uint32 transferMode);
+  63:Generated_Source\PSoC4/USBInDMA.h **** static uint32 USBInDMA_GetTransferMode(int32 descriptor);
+  64:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_SetPreemptable(int32 descriptor, uint32 preemptable);
+  65:Generated_Source\PSoC4/USBInDMA.h **** static uint32 USBInDMA_GetPreemptable(int32 descriptor);
+  66:Generated_Source\PSoC4/USBInDMA.h **** static void   USBInDMA_SetPostCompletionActions(int32 descriptor, uint32 actions);
+  67:Generated_Source\PSoC4/USBInDMA.h **** static uint32 USBInDMA_GetPostCompletionAction(int32 descriptor);
+  68:Generated_Source\PSoC4/USBInDMA.h **** static cydma_callback_t USBInDMA_SetInterruptCallback(cydma_callback_t callback);
+  69:Generated_Source\PSoC4/USBInDMA.h **** static cydma_callback_t USBInDMA_GetInterruptCallback(void);
+  70:Generated_Source\PSoC4/USBInDMA.h **** 
+  71:Generated_Source\PSoC4/USBInDMA.h **** 
+  72:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+  73:Generated_Source\PSoC4/USBInDMA.h **** * Function Name: USBInDMA_ChEnable
+  74:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+  75:Generated_Source\PSoC4/USBInDMA.h **** *
+  76:Generated_Source\PSoC4/USBInDMA.h **** * Summary:
+  77:Generated_Source\PSoC4/USBInDMA.h **** *  Enables the DMA channel. It is not necessary to call USBInDMA_ChEnable()
+  78:Generated_Source\PSoC4/USBInDMA.h **** *  because the USBInDMA_Start() API calls this function, which is the
+  79:Generated_Source\PSoC4/USBInDMA.h **** *  preferred method to begin the component operation.
+  80:Generated_Source\PSoC4/USBInDMA.h **** *
+  81:Generated_Source\PSoC4/USBInDMA.h **** * Parameters:
+  82:Generated_Source\PSoC4/USBInDMA.h **** *  None.
+  83:Generated_Source\PSoC4/USBInDMA.h **** *                   
+  84:Generated_Source\PSoC4/USBInDMA.h **** * Return:
+  85:Generated_Source\PSoC4/USBInDMA.h **** *  None.
+  86:Generated_Source\PSoC4/USBInDMA.h **** *
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 6
+
+
+  87:Generated_Source\PSoC4/USBInDMA.h **** * Side effect:
+  88:Generated_Source\PSoC4/USBInDMA.h **** *  If this function is called before USBInDMA_Start(), or USBInDMA_Init()
+  89:Generated_Source\PSoC4/USBInDMA.h **** *  or USBInDMA_SetConfiguration(), and USBInDMA_SetSrcAddress()
+  90:Generated_Source\PSoC4/USBInDMA.h **** *  and USBInDMA_SetDstAddress the operation of the DMA is 
+  91:Generated_Source\PSoC4/USBInDMA.h **** *  undefined and could result in system data corruption. 
+  92:Generated_Source\PSoC4/USBInDMA.h **** *
+  93:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+  94:Generated_Source\PSoC4/USBInDMA.h **** static CY_INLINE void USBInDMA_ChEnable(void)
+  95:Generated_Source\PSoC4/USBInDMA.h **** {
+  96:Generated_Source\PSoC4/USBInDMA.h ****     CyDmaChEnable(USBInDMA_CHANNEL);
+  97:Generated_Source\PSoC4/USBInDMA.h **** }
+  98:Generated_Source\PSoC4/USBInDMA.h **** 
+  99:Generated_Source\PSoC4/USBInDMA.h **** 
+ 100:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+ 101:Generated_Source\PSoC4/USBInDMA.h **** * Function Name: USBInDMA_ChDisable
+ 102:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+ 103:Generated_Source\PSoC4/USBInDMA.h **** *
+ 104:Generated_Source\PSoC4/USBInDMA.h **** * Summary:
+ 105:Generated_Source\PSoC4/USBInDMA.h **** *  Disables the DMA channel.
+ 106:Generated_Source\PSoC4/USBInDMA.h **** *
+ 107:Generated_Source\PSoC4/USBInDMA.h **** * Parameters:
+ 108:Generated_Source\PSoC4/USBInDMA.h **** *  None.
+ 109:Generated_Source\PSoC4/USBInDMA.h **** *                   
+ 110:Generated_Source\PSoC4/USBInDMA.h **** * Return:
+ 111:Generated_Source\PSoC4/USBInDMA.h **** *  None.
+ 112:Generated_Source\PSoC4/USBInDMA.h **** *
+ 113:Generated_Source\PSoC4/USBInDMA.h **** * Side effect:
+ 114:Generated_Source\PSoC4/USBInDMA.h **** *  If this function is called during a DMA transfer the transfer is aborted. 
+ 115:Generated_Source\PSoC4/USBInDMA.h **** *
+ 116:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+ 117:Generated_Source\PSoC4/USBInDMA.h **** static CY_INLINE void USBInDMA_ChDisable(void)
+ 118:Generated_Source\PSoC4/USBInDMA.h **** {
+ 119:Generated_Source\PSoC4/USBInDMA.h ****     CyDmaChDisable(USBInDMA_CHANNEL);
+ 120:Generated_Source\PSoC4/USBInDMA.h **** }
+ 121:Generated_Source\PSoC4/USBInDMA.h **** 
+ 122:Generated_Source\PSoC4/USBInDMA.h **** 
+ 123:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+ 124:Generated_Source\PSoC4/USBInDMA.h **** * Function Name: USBInDMA_Trigger
+ 125:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+ 126:Generated_Source\PSoC4/USBInDMA.h **** *
+ 127:Generated_Source\PSoC4/USBInDMA.h **** * Summary:
+ 128:Generated_Source\PSoC4/USBInDMA.h **** *  Triggers the DMA channel, this is useful only for software triggers. This is
+ 129:Generated_Source\PSoC4/USBInDMA.h **** *  not needed when hardware triggers are used.
+ 130:Generated_Source\PSoC4/USBInDMA.h **** *
+ 131:Generated_Source\PSoC4/USBInDMA.h **** * Parameters:
+ 132:Generated_Source\PSoC4/USBInDMA.h **** *  None.
+ 133:Generated_Source\PSoC4/USBInDMA.h **** *                   
+ 134:Generated_Source\PSoC4/USBInDMA.h **** * Return:
+ 135:Generated_Source\PSoC4/USBInDMA.h **** *  None. 
+ 136:Generated_Source\PSoC4/USBInDMA.h **** *
+ 137:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+ 138:Generated_Source\PSoC4/USBInDMA.h **** static CY_INLINE void USBInDMA_Trigger(void)
+ 139:Generated_Source\PSoC4/USBInDMA.h **** {
+ 140:Generated_Source\PSoC4/USBInDMA.h ****     CyDmaTrigger(USBInDMA_CHANNEL);
+ 141:Generated_Source\PSoC4/USBInDMA.h **** }
+ 142:Generated_Source\PSoC4/USBInDMA.h **** 
+ 143:Generated_Source\PSoC4/USBInDMA.h **** 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 7
+
+
+ 144:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+ 145:Generated_Source\PSoC4/USBInDMA.h **** * Function Name: USBInDMA_SetPriority
+ 146:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+ 147:Generated_Source\PSoC4/USBInDMA.h **** *
+ 148:Generated_Source\PSoC4/USBInDMA.h **** * Summary:
+ 149:Generated_Source\PSoC4/USBInDMA.h **** *  Sets the priority for the channel.
+ 150:Generated_Source\PSoC4/USBInDMA.h **** *
+ 151:Generated_Source\PSoC4/USBInDMA.h **** * Parameters:
+ 152:Generated_Source\PSoC4/USBInDMA.h **** *  priority: Priority for channel. Priority can be 0,1,2, or 3.
+ 153:Generated_Source\PSoC4/USBInDMA.h **** *            0 is the highest priority.
+ 154:Generated_Source\PSoC4/USBInDMA.h **** *                   
+ 155:Generated_Source\PSoC4/USBInDMA.h **** * Return:
+ 156:Generated_Source\PSoC4/USBInDMA.h **** *  None.
+ 157:Generated_Source\PSoC4/USBInDMA.h **** *
+ 158:Generated_Source\PSoC4/USBInDMA.h **** * Side effect:
+ 159:Generated_Source\PSoC4/USBInDMA.h **** *  This function should not be called while the channel is enabled.
+ 160:Generated_Source\PSoC4/USBInDMA.h **** *
+ 161:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+ 162:Generated_Source\PSoC4/USBInDMA.h **** static CY_INLINE void USBInDMA_SetPriority(int32 priority)
+ 163:Generated_Source\PSoC4/USBInDMA.h **** {
+ 164:Generated_Source\PSoC4/USBInDMA.h ****     CyDmaSetPriority(USBInDMA_CHANNEL, priority);
+ 165:Generated_Source\PSoC4/USBInDMA.h **** }
+ 166:Generated_Source\PSoC4/USBInDMA.h **** 
+ 167:Generated_Source\PSoC4/USBInDMA.h **** 
+ 168:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+ 169:Generated_Source\PSoC4/USBInDMA.h **** * Function Name: USBInDMA_GetPriority
+ 170:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+ 171:Generated_Source\PSoC4/USBInDMA.h **** *
+ 172:Generated_Source\PSoC4/USBInDMA.h **** * Summary:
+ 173:Generated_Source\PSoC4/USBInDMA.h **** *  Gets the priority for the channel.
+ 174:Generated_Source\PSoC4/USBInDMA.h **** *
+ 175:Generated_Source\PSoC4/USBInDMA.h **** * Parameters:
+ 176:Generated_Source\PSoC4/USBInDMA.h **** *  None.
+ 177:Generated_Source\PSoC4/USBInDMA.h **** *                   
+ 178:Generated_Source\PSoC4/USBInDMA.h **** * Return:
+ 179:Generated_Source\PSoC4/USBInDMA.h **** *  Priority for channel. Priority can be 0,1,2, or 3. 0 is the highest priority.
+ 180:Generated_Source\PSoC4/USBInDMA.h **** *
+ 181:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+ 182:Generated_Source\PSoC4/USBInDMA.h **** static CY_INLINE int32 USBInDMA_GetPriority(void)
+ 183:Generated_Source\PSoC4/USBInDMA.h **** {
+ 184:Generated_Source\PSoC4/USBInDMA.h ****     return (CyDmaGetPriority(USBInDMA_CHANNEL));
+ 185:Generated_Source\PSoC4/USBInDMA.h **** }
+ 186:Generated_Source\PSoC4/USBInDMA.h **** 
+ 187:Generated_Source\PSoC4/USBInDMA.h **** 
+ 188:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+ 189:Generated_Source\PSoC4/USBInDMA.h **** * Function Name: USBInDMA_SetNextDescriptor
+ 190:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+ 191:Generated_Source\PSoC4/USBInDMA.h **** *
+ 192:Generated_Source\PSoC4/USBInDMA.h **** * Summary:
+ 193:Generated_Source\PSoC4/USBInDMA.h **** *  Sets the descriptor that should be run the next time the channel is
+ 194:Generated_Source\PSoC4/USBInDMA.h **** *  triggered.
+ 195:Generated_Source\PSoC4/USBInDMA.h **** *
+ 196:Generated_Source\PSoC4/USBInDMA.h **** * Parameters:
+ 197:Generated_Source\PSoC4/USBInDMA.h **** *  descriptor: Next Descriptor to run (0 or 1).
+ 198:Generated_Source\PSoC4/USBInDMA.h **** *                   
+ 199:Generated_Source\PSoC4/USBInDMA.h **** * Side effect:
+ 200:Generated_Source\PSoC4/USBInDMA.h **** *  This function should not be called while the channel is enabled.
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 8
+
+
+ 201:Generated_Source\PSoC4/USBInDMA.h **** *
+ 202:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+ 203:Generated_Source\PSoC4/USBInDMA.h **** static CY_INLINE void USBInDMA_SetNextDescriptor(int32 descriptor)
+ 204:Generated_Source\PSoC4/USBInDMA.h **** {
+ 205:Generated_Source\PSoC4/USBInDMA.h ****     CyDmaSetNextDescriptor(USBInDMA_CHANNEL, descriptor);
+ 206:Generated_Source\PSoC4/USBInDMA.h **** }
+ 207:Generated_Source\PSoC4/USBInDMA.h **** 
+ 208:Generated_Source\PSoC4/USBInDMA.h **** 
+ 209:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+ 210:Generated_Source\PSoC4/USBInDMA.h **** * Function Name: USBInDMA_GetNextDescriptor
+ 211:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+ 212:Generated_Source\PSoC4/USBInDMA.h **** *
+ 213:Generated_Source\PSoC4/USBInDMA.h **** * Summary:
+ 214:Generated_Source\PSoC4/USBInDMA.h **** *  Returns the next descriptor that should be run, as set by 
+ 215:Generated_Source\PSoC4/USBInDMA.h **** *  USBInDMA_SetNextDescriptor().
+ 216:Generated_Source\PSoC4/USBInDMA.h **** *
+ 217:Generated_Source\PSoC4/USBInDMA.h **** * Parameters:
+ 218:Generated_Source\PSoC4/USBInDMA.h **** *  None.
+ 219:Generated_Source\PSoC4/USBInDMA.h **** *                   
+ 220:Generated_Source\PSoC4/USBInDMA.h **** * Return:
+ 221:Generated_Source\PSoC4/USBInDMA.h **** *  Next Descriptor to run (0 or 1).
+ 222:Generated_Source\PSoC4/USBInDMA.h **** *
+ 223:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+ 224:Generated_Source\PSoC4/USBInDMA.h **** static CY_INLINE int32 USBInDMA_GetNextDescriptor(void)
+ 225:Generated_Source\PSoC4/USBInDMA.h **** {
+ 226:Generated_Source\PSoC4/USBInDMA.h ****     return (CyDmaGetNextDescriptor(USBInDMA_CHANNEL));
+ 227:Generated_Source\PSoC4/USBInDMA.h **** }
+ 228:Generated_Source\PSoC4/USBInDMA.h **** 
+ 229:Generated_Source\PSoC4/USBInDMA.h **** 
+ 230:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+ 231:Generated_Source\PSoC4/USBInDMA.h **** * Function Name: USBInDMA_SetConfiguration
+ 232:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+ 233:Generated_Source\PSoC4/USBInDMA.h **** *
+ 234:Generated_Source\PSoC4/USBInDMA.h **** * Summary:
+ 235:Generated_Source\PSoC4/USBInDMA.h **** *  Sets configuration information for the specified descriptor.
+ 236:Generated_Source\PSoC4/USBInDMA.h **** *
+ 237:Generated_Source\PSoC4/USBInDMA.h **** * Parameters:
+ 238:Generated_Source\PSoC4/USBInDMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 239:Generated_Source\PSoC4/USBInDMA.h **** *  config: Pointer to a configuration structure. Refer to cydma_init_struct
+ 240:Generated_Source\PSoC4/USBInDMA.h **** *          structure definition in CyDMA_P4.h or the component datasheet.
+ 241:Generated_Source\PSoC4/USBInDMA.h **** *                   
+ 242:Generated_Source\PSoC4/USBInDMA.h **** * Return:
+ 243:Generated_Source\PSoC4/USBInDMA.h **** *  None.
+ 244:Generated_Source\PSoC4/USBInDMA.h **** *
+ 245:Generated_Source\PSoC4/USBInDMA.h **** * Side effect:
+ 246:Generated_Source\PSoC4/USBInDMA.h **** *  The status register associated with the specified descriptor is reset to
+ 247:Generated_Source\PSoC4/USBInDMA.h **** *  zero after this function call. This function also validates the descriptor.
+ 248:Generated_Source\PSoC4/USBInDMA.h **** *  This function should not be called while the descriptor is active.
+ 249:Generated_Source\PSoC4/USBInDMA.h **** *  This can be checked by calling CyDmaGetStatus().
+ 250:Generated_Source\PSoC4/USBInDMA.h **** *
+ 251:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+ 252:Generated_Source\PSoC4/USBInDMA.h **** static CY_INLINE void USBInDMA_SetConfiguration(int32 descriptor, const cydma_init_struct * config)
+ 253:Generated_Source\PSoC4/USBInDMA.h **** {
+ 254:Generated_Source\PSoC4/USBInDMA.h ****     CyDmaSetConfiguration(USBInDMA_CHANNEL, descriptor, config);
+ 255:Generated_Source\PSoC4/USBInDMA.h **** }
+ 256:Generated_Source\PSoC4/USBInDMA.h **** 
+ 257:Generated_Source\PSoC4/USBInDMA.h **** 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 9
+
+
+ 258:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+ 259:Generated_Source\PSoC4/USBInDMA.h **** * Function Name: USBInDMA_ValidateDescriptor
+ 260:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+ 261:Generated_Source\PSoC4/USBInDMA.h **** *
+ 262:Generated_Source\PSoC4/USBInDMA.h **** * Summary:
+ 263:Generated_Source\PSoC4/USBInDMA.h **** *  Validates the specified descriptor after it has been invalidated.
+ 264:Generated_Source\PSoC4/USBInDMA.h **** *
+ 265:Generated_Source\PSoC4/USBInDMA.h **** * Parameters:
+ 266:Generated_Source\PSoC4/USBInDMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 267:Generated_Source\PSoC4/USBInDMA.h **** *                   
+ 268:Generated_Source\PSoC4/USBInDMA.h **** * Return:
+ 269:Generated_Source\PSoC4/USBInDMA.h **** *  None. 
+ 270:Generated_Source\PSoC4/USBInDMA.h **** *
+ 271:Generated_Source\PSoC4/USBInDMA.h **** * Side effect:
+ 272:Generated_Source\PSoC4/USBInDMA.h **** *  The status register associated with the specified descriptor is reset to
+ 273:Generated_Source\PSoC4/USBInDMA.h **** *  zero after this function call. This function should not be called while the
+ 274:Generated_Source\PSoC4/USBInDMA.h **** *  descriptor is active. This can be checked by calling CyDmaGetStatus().
+ 275:Generated_Source\PSoC4/USBInDMA.h **** *
+ 276:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+ 277:Generated_Source\PSoC4/USBInDMA.h **** static CY_INLINE void USBInDMA_ValidateDescriptor(int32 descriptor)
+ 278:Generated_Source\PSoC4/USBInDMA.h **** {
+ 279:Generated_Source\PSoC4/USBInDMA.h ****     CyDmaValidateDescriptor(USBInDMA_CHANNEL, descriptor);
+ 280:Generated_Source\PSoC4/USBInDMA.h **** }
+ 281:Generated_Source\PSoC4/USBInDMA.h **** 
+ 282:Generated_Source\PSoC4/USBInDMA.h **** 
+ 283:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+ 284:Generated_Source\PSoC4/USBInDMA.h **** * Function Name: USBInDMA_GetDescriptorStatus
+ 285:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+ 286:Generated_Source\PSoC4/USBInDMA.h **** *
+ 287:Generated_Source\PSoC4/USBInDMA.h **** * Summary:
+ 288:Generated_Source\PSoC4/USBInDMA.h **** *  Returns the status of the specified descriptor.
+ 289:Generated_Source\PSoC4/USBInDMA.h **** *
+ 290:Generated_Source\PSoC4/USBInDMA.h **** * Parameters:
+ 291:Generated_Source\PSoC4/USBInDMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 292:Generated_Source\PSoC4/USBInDMA.h **** *                   
+ 293:Generated_Source\PSoC4/USBInDMA.h **** * Return:
+ 294:Generated_Source\PSoC4/USBInDMA.h **** *  Returns the contents of the specified descriptors status register. Refer to 
+ 295:Generated_Source\PSoC4/USBInDMA.h **** *  descriptor status register bit definitions in CyDMA_P4.h or the API
+ 296:Generated_Source\PSoC4/USBInDMA.h **** *  description in the DMA channel datasheet for more information.
+ 297:Generated_Source\PSoC4/USBInDMA.h **** *
+ 298:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+ 299:Generated_Source\PSoC4/USBInDMA.h **** static CY_INLINE uint32 USBInDMA_GetDescriptorStatus(int32 descriptor)
+ 300:Generated_Source\PSoC4/USBInDMA.h **** {
+ 301:Generated_Source\PSoC4/USBInDMA.h ****     return (CyDmaGetDescriptorStatus(USBInDMA_CHANNEL, descriptor));
+ 302:Generated_Source\PSoC4/USBInDMA.h **** }
+ 303:Generated_Source\PSoC4/USBInDMA.h **** 
+ 304:Generated_Source\PSoC4/USBInDMA.h **** 
+ 305:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+ 306:Generated_Source\PSoC4/USBInDMA.h **** * Function Name: USBInDMA_SetSrcAddress
+ 307:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+ 308:Generated_Source\PSoC4/USBInDMA.h **** *
+ 309:Generated_Source\PSoC4/USBInDMA.h **** * Summary:
+ 310:Generated_Source\PSoC4/USBInDMA.h **** *  Configures the source address for the specified descriptor.
+ 311:Generated_Source\PSoC4/USBInDMA.h **** *
+ 312:Generated_Source\PSoC4/USBInDMA.h **** * Parameters:
+ 313:Generated_Source\PSoC4/USBInDMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 314:Generated_Source\PSoC4/USBInDMA.h **** *  srcAddress: Address of DMA transfer source.
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 10
+
+
+ 315:Generated_Source\PSoC4/USBInDMA.h **** *                   
+ 316:Generated_Source\PSoC4/USBInDMA.h **** * Return:
+ 317:Generated_Source\PSoC4/USBInDMA.h **** *  None.
+ 318:Generated_Source\PSoC4/USBInDMA.h **** *
+ 319:Generated_Source\PSoC4/USBInDMA.h **** * Side effect:
+ 320:Generated_Source\PSoC4/USBInDMA.h **** *  This function should not be called when the specified descriptor is active
+ 321:Generated_Source\PSoC4/USBInDMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
+ 322:Generated_Source\PSoC4/USBInDMA.h **** *
+ 323:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+ 324:Generated_Source\PSoC4/USBInDMA.h **** static CY_INLINE void USBInDMA_SetSrcAddress(int32 descriptor, void * srcAddress)
+ 325:Generated_Source\PSoC4/USBInDMA.h **** {
+ 326:Generated_Source\PSoC4/USBInDMA.h ****     CyDmaSetSrcAddress(USBInDMA_CHANNEL, descriptor, srcAddress);
+ 107              		.loc 2 326 0
+ 108 001c 2A00     		movs	r2, r5
+ 109 001e 0021     		movs	r1, #0
+ 110 0020 0D20     		movs	r0, #13
+ 111 0022 FFF7FEFF 		bl	CyDmaSetSrcAddress
+ 112              	.LVL3:
+ 113              	.LBE11:
+ 114              	.LBE10:
+ 115              	.LBB12:
+ 116              	.LBB13:
+ 327:Generated_Source\PSoC4/USBInDMA.h **** }
+ 328:Generated_Source\PSoC4/USBInDMA.h **** 
+ 329:Generated_Source\PSoC4/USBInDMA.h **** 
+ 330:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+ 331:Generated_Source\PSoC4/USBInDMA.h **** * Function Name: USBInDMA_GetSrcAddress
+ 332:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+ 333:Generated_Source\PSoC4/USBInDMA.h **** *
+ 334:Generated_Source\PSoC4/USBInDMA.h **** * Summary:
+ 335:Generated_Source\PSoC4/USBInDMA.h **** *  Returns the source address for the specified descriptor, set by either 
+ 336:Generated_Source\PSoC4/USBInDMA.h **** *  USBInDMA_Start() or USBInDMA_SetSrcAddress().
+ 337:Generated_Source\PSoC4/USBInDMA.h **** *
+ 338:Generated_Source\PSoC4/USBInDMA.h **** * Parameters:
+ 339:Generated_Source\PSoC4/USBInDMA.h **** *  descriptor: Specifies descriptor (0 or 1) used by this function.
+ 340:Generated_Source\PSoC4/USBInDMA.h **** *                   
+ 341:Generated_Source\PSoC4/USBInDMA.h **** * Return:
+ 342:Generated_Source\PSoC4/USBInDMA.h **** *  Source address written to specified descriptor.
+ 343:Generated_Source\PSoC4/USBInDMA.h **** *
+ 344:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+ 345:Generated_Source\PSoC4/USBInDMA.h **** static CY_INLINE void * USBInDMA_GetSrcAddress(int32 descriptor)
+ 346:Generated_Source\PSoC4/USBInDMA.h **** {
+ 347:Generated_Source\PSoC4/USBInDMA.h ****     return (CyDmaGetSrcAddress(USBInDMA_CHANNEL, descriptor));
+ 348:Generated_Source\PSoC4/USBInDMA.h **** }
+ 349:Generated_Source\PSoC4/USBInDMA.h **** 
+ 350:Generated_Source\PSoC4/USBInDMA.h **** 
+ 351:Generated_Source\PSoC4/USBInDMA.h **** /*******************************************************************************
+ 352:Generated_Source\PSoC4/USBInDMA.h **** * Function Name: USBInDMA_SetDstAddress
+ 353:Generated_Source\PSoC4/USBInDMA.h **** ********************************************************************************
+ 354:Generated_Source\PSoC4/USBInDMA.h **** *
+ 355:Generated_Source\PSoC4/USBInDMA.h **** * Summary:
+ 356:Generated_Source\PSoC4/USBInDMA.h **** *  Configures the destination address for the specified descriptor.
+ 357:Generated_Source\PSoC4/USBInDMA.h **** *
+ 358:Generated_Source\PSoC4/USBInDMA.h **** * Parameters:
+ 359:Generated_Source\PSoC4/USBInDMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
+ 360:Generated_Source\PSoC4/USBInDMA.h **** *  dstAddress: Address of DMA transfer destination.
+ 361:Generated_Source\PSoC4/USBInDMA.h **** *                   
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 11
+
+
+ 362:Generated_Source\PSoC4/USBInDMA.h **** * Return:
+ 363:Generated_Source\PSoC4/USBInDMA.h **** *  None.
+ 364:Generated_Source\PSoC4/USBInDMA.h **** *
+ 365:Generated_Source\PSoC4/USBInDMA.h **** * Side effect:
+ 366:Generated_Source\PSoC4/USBInDMA.h **** *  This function should not be called when the specified descriptor is active
+ 367:Generated_Source\PSoC4/USBInDMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
+ 368:Generated_Source\PSoC4/USBInDMA.h **** *
+ 369:Generated_Source\PSoC4/USBInDMA.h **** *******************************************************************************/
+ 370:Generated_Source\PSoC4/USBInDMA.h **** static CY_INLINE void USBInDMA_SetDstAddress(int32 descriptor, void * dstAddress)
+ 371:Generated_Source\PSoC4/USBInDMA.h **** {
+ 372:Generated_Source\PSoC4/USBInDMA.h ****     CyDmaSetDstAddress(USBInDMA_CHANNEL, descriptor, dstAddress);
+ 117              		.loc 2 372 0
+ 118 0026 2200     		movs	r2, r4
+ 119 0028 0021     		movs	r1, #0
+ 120 002a 0D20     		movs	r0, #13
+ 121 002c FFF7FEFF 		bl	CyDmaSetDstAddress
+ 122              	.LVL4:
+ 123              	.LBE13:
+ 124              	.LBE12:
+ 125              	.LBB14:
+ 126              	.LBB15:
+ 279:Generated_Source\PSoC4/USBInDMA.h **** }
+ 127              		.loc 2 279 0
+ 128 0030 0021     		movs	r1, #0
+ 129 0032 0D20     		movs	r0, #13
+ 130 0034 FFF7FEFF 		bl	CyDmaValidateDescriptor
+ 131              	.LVL5:
+ 132              	.LBE15:
+ 133              	.LBE14:
+ 134              	.LBB16:
+ 135              	.LBB17:
+  96:Generated_Source\PSoC4/USBInDMA.h **** }
+ 136              		.loc 2 96 0
+ 137 0038 0D20     		movs	r0, #13
+ 138 003a FFF7FEFF 		bl	CyDmaChEnable
+ 139              	.LVL6:
+ 140              	.LBE17:
+ 141              	.LBE16:
+  51:Generated_Source\PSoC4/USBInDMA.c **** 
+ 142              		.loc 1 51 0
+ 143              		@ sp needed
+ 144              	.LVL7:
+ 145              	.LVL8:
+ 146 003e 70BD     		pop	{r4, r5, r6, pc}
+ 147              	.L7:
+ 148              		.align	2
+ 149              	.L6:
+ 150 0040 00000000 		.word	.LANCHOR0
+ 151              		.cfi_endproc
+ 152              	.LFE32:
+ 153              		.size	USBInDMA_Start, .-USBInDMA_Start
+ 154              		.global	USBInDMA_initVar
+ 155              		.bss
+ 156              		.set	.LANCHOR0,. + 0
+ 157              		.type	USBInDMA_initVar, %object
+ 158              		.size	USBInDMA_initVar, 1
+ 159              	USBInDMA_initVar:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 12
+
+
+ 160 0000 00       		.space	1
+ 161              		.text
+ 162              	.Letext0:
+ 163              		.file 3 "Generated_Source\\PSoC4\\cytypes.h"
+ 164              		.file 4 "Generated_Source\\PSoC4\\CyDMA.h"
+ 165              		.section	.debug_info,"",%progbits
+ 166              	.Ldebug_info0:
+ 167 0000 47030000 		.4byte	0x347
+ 168 0004 0400     		.2byte	0x4
+ 169 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 170 000a 04       		.byte	0x4
+ 171 000b 01       		.uleb128 0x1
+ 172 000c 91000000 		.4byte	.LASF32
+ 173 0010 0C       		.byte	0xc
+ 174 0011 6F000000 		.4byte	.LASF33
+ 175 0015 77010000 		.4byte	.LASF34
+ 176 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 177 001d 00000000 		.4byte	0
+ 178 0021 00000000 		.4byte	.Ldebug_line0
+ 179 0025 02       		.uleb128 0x2
+ 180 0026 01       		.byte	0x1
+ 181 0027 06       		.byte	0x6
+ 182 0028 D6010000 		.4byte	.LASF0
+ 183 002c 02       		.uleb128 0x2
+ 184 002d 01       		.byte	0x1
+ 185 002e 08       		.byte	0x8
+ 186 002f C8010000 		.4byte	.LASF1
+ 187 0033 02       		.uleb128 0x2
+ 188 0034 02       		.byte	0x2
+ 189 0035 05       		.byte	0x5
+ 190 0036 4D000000 		.4byte	.LASF2
+ 191 003a 02       		.uleb128 0x2
+ 192 003b 02       		.byte	0x2
+ 193 003c 07       		.byte	0x7
+ 194 003d 0C020000 		.4byte	.LASF3
+ 195 0041 02       		.uleb128 0x2
+ 196 0042 04       		.byte	0x4
+ 197 0043 05       		.byte	0x5
+ 198 0044 6E010000 		.4byte	.LASF4
+ 199 0048 02       		.uleb128 0x2
+ 200 0049 04       		.byte	0x4
+ 201 004a 07       		.byte	0x7
+ 202 004b 71020000 		.4byte	.LASF5
+ 203 004f 02       		.uleb128 0x2
+ 204 0050 08       		.byte	0x8
+ 205 0051 05       		.byte	0x5
+ 206 0052 60010000 		.4byte	.LASF6
+ 207 0056 02       		.uleb128 0x2
+ 208 0057 08       		.byte	0x8
+ 209 0058 07       		.byte	0x7
+ 210 0059 E2010000 		.4byte	.LASF7
+ 211 005d 03       		.uleb128 0x3
+ 212 005e 04       		.byte	0x4
+ 213 005f 05       		.byte	0x5
+ 214 0060 696E7400 		.ascii	"int\000"
+ 215 0064 02       		.uleb128 0x2
+ 216 0065 04       		.byte	0x4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 13
+
+
+ 217 0066 07       		.byte	0x7
+ 218 0067 F9010000 		.4byte	.LASF8
+ 219 006b 04       		.uleb128 0x4
+ 220 006c 38010000 		.4byte	.LASF9
+ 221 0070 03       		.byte	0x3
+ 222 0071 E401     		.2byte	0x1e4
+ 223 0073 2C000000 		.4byte	0x2c
+ 224 0077 04       		.uleb128 0x4
+ 225 0078 6A020000 		.4byte	.LASF10
+ 226 007c 03       		.byte	0x3
+ 227 007d E601     		.2byte	0x1e6
+ 228 007f 48000000 		.4byte	0x48
+ 229 0083 04       		.uleb128 0x4
+ 230 0084 83020000 		.4byte	.LASF11
+ 231 0088 03       		.byte	0x3
+ 232 0089 E901     		.2byte	0x1e9
+ 233 008b 41000000 		.4byte	0x41
+ 234 008f 02       		.uleb128 0x2
+ 235 0090 04       		.byte	0x4
+ 236 0091 04       		.byte	0x4
+ 237 0092 5A010000 		.4byte	.LASF12
+ 238 0096 02       		.uleb128 0x2
+ 239 0097 08       		.byte	0x8
+ 240 0098 04       		.byte	0x4
+ 241 0099 89020000 		.4byte	.LASF13
+ 242 009d 02       		.uleb128 0x2
+ 243 009e 01       		.byte	0x1
+ 244 009f 08       		.byte	0x8
+ 245 00a0 42020000 		.4byte	.LASF14
+ 246 00a4 04       		.uleb128 0x4
+ 247 00a5 06020000 		.4byte	.LASF15
+ 248 00a9 03       		.byte	0x3
+ 249 00aa 9002     		.2byte	0x290
+ 250 00ac B0000000 		.4byte	0xb0
+ 251 00b0 05       		.uleb128 0x5
+ 252 00b1 77000000 		.4byte	0x77
+ 253 00b5 06       		.uleb128 0x6
+ 254 00b6 80       		.byte	0x80
+ 255 00b7 04       		.byte	0x4
+ 256 00b8 26       		.byte	0x26
+ 257 00b9 CA000000 		.4byte	0xca
+ 258 00bd 07       		.uleb128 0x7
+ 259 00be 63746C00 		.ascii	"ctl\000"
+ 260 00c2 04       		.byte	0x4
+ 261 00c3 28       		.byte	0x28
+ 262 00c4 CA000000 		.4byte	0xca
+ 263 00c8 00       		.byte	0
+ 264 00c9 00       		.byte	0
+ 265 00ca 08       		.uleb128 0x8
+ 266 00cb 77000000 		.4byte	0x77
+ 267 00cf DA000000 		.4byte	0xda
+ 268 00d3 09       		.uleb128 0x9
+ 269 00d4 DA000000 		.4byte	0xda
+ 270 00d8 1F       		.byte	0x1f
+ 271 00d9 00       		.byte	0
+ 272 00da 02       		.uleb128 0x2
+ 273 00db 04       		.byte	0x4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 14
+
+
+ 274 00dc 07       		.byte	0x7
+ 275 00dd 57000000 		.4byte	.LASF16
+ 276 00e1 0A       		.uleb128 0xa
+ 277 00e2 1F010000 		.4byte	.LASF17
+ 278 00e6 04       		.byte	0x4
+ 279 00e7 29       		.byte	0x29
+ 280 00e8 B5000000 		.4byte	0xb5
+ 281 00ec 06       		.uleb128 0x6
+ 282 00ed 10       		.byte	0x10
+ 283 00ee 04       		.byte	0x4
+ 284 00ef 2C       		.byte	0x2c
+ 285 00f0 25010000 		.4byte	0x125
+ 286 00f4 07       		.uleb128 0x7
+ 287 00f5 73726300 		.ascii	"src\000"
+ 288 00f9 04       		.byte	0x4
+ 289 00fa 2E       		.byte	0x2e
+ 290 00fb 25010000 		.4byte	0x125
+ 291 00ff 00       		.byte	0
+ 292 0100 07       		.uleb128 0x7
+ 293 0101 64737400 		.ascii	"dst\000"
+ 294 0105 04       		.byte	0x4
+ 295 0106 2F       		.byte	0x2f
+ 296 0107 25010000 		.4byte	0x125
+ 297 010b 04       		.byte	0x4
+ 298 010c 07       		.uleb128 0x7
+ 299 010d 63746C00 		.ascii	"ctl\000"
+ 300 0111 04       		.byte	0x4
+ 301 0112 30       		.byte	0x30
+ 302 0113 77000000 		.4byte	0x77
+ 303 0117 08       		.byte	0x8
+ 304 0118 0B       		.uleb128 0xb
+ 305 0119 1F020000 		.4byte	.LASF18
+ 306 011d 04       		.byte	0x4
+ 307 011e 31       		.byte	0x31
+ 308 011f 77000000 		.4byte	0x77
+ 309 0123 0C       		.byte	0xc
+ 310 0124 00       		.byte	0
+ 311 0125 0C       		.uleb128 0xc
+ 312 0126 04       		.byte	0x4
+ 313 0127 0A       		.uleb128 0xa
+ 314 0128 47020000 		.4byte	.LASF19
+ 315 012c 04       		.byte	0x4
+ 316 012d 32       		.byte	0x32
+ 317 012e EC000000 		.4byte	0xec
+ 318 0132 0D       		.uleb128 0xd
+ 319 0133 0004     		.2byte	0x400
+ 320 0135 04       		.byte	0x4
+ 321 0136 38       		.byte	0x38
+ 322 0137 48010000 		.4byte	0x148
+ 323 013b 0B       		.uleb128 0xb
+ 324 013c DB020000 		.4byte	.LASF20
+ 325 0140 04       		.byte	0x4
+ 326 0141 3A       		.byte	0x3a
+ 327 0142 48010000 		.4byte	0x148
+ 328 0146 00       		.byte	0
+ 329 0147 00       		.byte	0
+ 330 0148 08       		.uleb128 0x8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 15
+
+
+ 331 0149 27010000 		.4byte	0x127
+ 332 014d 5E010000 		.4byte	0x15e
+ 333 0151 09       		.uleb128 0x9
+ 334 0152 DA000000 		.4byte	0xda
+ 335 0156 1F       		.byte	0x1f
+ 336 0157 09       		.uleb128 0x9
+ 337 0158 DA000000 		.4byte	0xda
+ 338 015c 01       		.byte	0x1
+ 339 015d 00       		.byte	0
+ 340 015e 0A       		.uleb128 0xa
+ 341 015f 26020000 		.4byte	.LASF21
+ 342 0163 04       		.byte	0x4
+ 343 0164 3B       		.byte	0x3b
+ 344 0165 32010000 		.4byte	0x132
+ 345 0169 0E       		.uleb128 0xe
+ 346 016a 9E020000 		.4byte	.LASF35
+ 347 016e 02       		.byte	0x2
+ 348 016f 5E       		.byte	0x5e
+ 349 0170 03       		.byte	0x3
+ 350 0171 0F       		.uleb128 0xf
+ 351 0172 3E010000 		.4byte	.LASF22
+ 352 0176 02       		.byte	0x2
+ 353 0177 1501     		.2byte	0x115
+ 354 0179 03       		.byte	0x3
+ 355 017a 8B010000 		.4byte	0x18b
+ 356 017e 10       		.uleb128 0x10
+ 357 017f DB020000 		.4byte	.LASF20
+ 358 0183 02       		.byte	0x2
+ 359 0184 1501     		.2byte	0x115
+ 360 0186 83000000 		.4byte	0x83
+ 361 018a 00       		.byte	0
+ 362 018b 0F       		.uleb128 0xf
+ 363 018c 00000000 		.4byte	.LASF23
+ 364 0190 02       		.byte	0x2
+ 365 0191 7201     		.2byte	0x172
+ 366 0193 03       		.byte	0x3
+ 367 0194 B1010000 		.4byte	0x1b1
+ 368 0198 10       		.uleb128 0x10
+ 369 0199 DB020000 		.4byte	.LASF20
+ 370 019d 02       		.byte	0x2
+ 371 019e 7201     		.2byte	0x172
+ 372 01a0 83000000 		.4byte	0x83
+ 373 01a4 10       		.uleb128 0x10
+ 374 01a5 17000000 		.4byte	.LASF24
+ 375 01a9 02       		.byte	0x2
+ 376 01aa 7201     		.2byte	0x172
+ 377 01ac 25010000 		.4byte	0x125
+ 378 01b0 00       		.byte	0
+ 379 01b1 0F       		.uleb128 0xf
+ 380 01b2 9E010000 		.4byte	.LASF25
+ 381 01b6 02       		.byte	0x2
+ 382 01b7 4401     		.2byte	0x144
+ 383 01b9 03       		.byte	0x3
+ 384 01ba D7010000 		.4byte	0x1d7
+ 385 01be 10       		.uleb128 0x10
+ 386 01bf DB020000 		.4byte	.LASF20
+ 387 01c3 02       		.byte	0x2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 16
+
+
+ 388 01c4 4401     		.2byte	0x144
+ 389 01c6 83000000 		.4byte	0x83
+ 390 01ca 10       		.uleb128 0x10
+ 391 01cb 5F020000 		.4byte	.LASF26
+ 392 01cf 02       		.byte	0x2
+ 393 01d0 4401     		.2byte	0x144
+ 394 01d2 25010000 		.4byte	0x125
+ 395 01d6 00       		.byte	0
+ 396 01d7 11       		.uleb128 0x11
+ 397 01d8 90020000 		.4byte	.LASF36
+ 398 01dc 01       		.byte	0x1
+ 399 01dd 4C       		.byte	0x4c
+ 400 01de 00000000 		.4byte	.LFB33
+ 401 01e2 34000000 		.4byte	.LFE33-.LFB33
+ 402 01e6 01       		.uleb128 0x1
+ 403 01e7 9C       		.byte	0x9c
+ 404 01e8 12       		.uleb128 0x12
+ 405 01e9 60000000 		.4byte	.LASF37
+ 406 01ed 01       		.byte	0x1
+ 407 01ee 27       		.byte	0x27
+ 408 01ef 00000000 		.4byte	.LFB32
+ 409 01f3 44000000 		.4byte	.LFE32-.LFB32
+ 410 01f7 01       		.uleb128 0x1
+ 411 01f8 9C       		.byte	0x9c
+ 412 01f9 02030000 		.4byte	0x302
+ 413 01fd 13       		.uleb128 0x13
+ 414 01fe 5F020000 		.4byte	.LASF26
+ 415 0202 01       		.byte	0x1
+ 416 0203 27       		.byte	0x27
+ 417 0204 25010000 		.4byte	0x125
+ 418 0208 00000000 		.4byte	.LLST0
+ 419 020c 13       		.uleb128 0x13
+ 420 020d 17000000 		.4byte	.LASF24
+ 421 0211 01       		.byte	0x1
+ 422 0212 27       		.byte	0x27
+ 423 0213 25010000 		.4byte	0x125
+ 424 0217 2C000000 		.4byte	.LLST1
+ 425 021b 14       		.uleb128 0x14
+ 426 021c B1010000 		.4byte	0x1b1
+ 427 0220 1C000000 		.4byte	.LBB10
+ 428 0224 0A000000 		.4byte	.LBE10-.LBB10
+ 429 0228 01       		.byte	0x1
+ 430 0229 2F       		.byte	0x2f
+ 431 022a 5B020000 		.4byte	0x25b
+ 432 022e 15       		.uleb128 0x15
+ 433 022f CA010000 		.4byte	0x1ca
+ 434 0233 58000000 		.4byte	.LLST2
+ 435 0237 15       		.uleb128 0x15
+ 436 0238 BE010000 		.4byte	0x1be
+ 437 023c 6B000000 		.4byte	.LLST3
+ 438 0240 16       		.uleb128 0x16
+ 439 0241 26000000 		.4byte	.LVL3
+ 440 0245 13030000 		.4byte	0x313
+ 441 0249 17       		.uleb128 0x17
+ 442 024a 01       		.uleb128 0x1
+ 443 024b 50       		.byte	0x50
+ 444 024c 01       		.uleb128 0x1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 17
+
+
+ 445 024d 3D       		.byte	0x3d
+ 446 024e 17       		.uleb128 0x17
+ 447 024f 01       		.uleb128 0x1
+ 448 0250 51       		.byte	0x51
+ 449 0251 01       		.uleb128 0x1
+ 450 0252 30       		.byte	0x30
+ 451 0253 17       		.uleb128 0x17
+ 452 0254 01       		.uleb128 0x1
+ 453 0255 52       		.byte	0x52
+ 454 0256 02       		.uleb128 0x2
+ 455 0257 75       		.byte	0x75
+ 456 0258 00       		.sleb128 0
+ 457 0259 00       		.byte	0
+ 458 025a 00       		.byte	0
+ 459 025b 14       		.uleb128 0x14
+ 460 025c 8B010000 		.4byte	0x18b
+ 461 0260 26000000 		.4byte	.LBB12
+ 462 0264 0A000000 		.4byte	.LBE12-.LBB12
+ 463 0268 01       		.byte	0x1
+ 464 0269 30       		.byte	0x30
+ 465 026a 9B020000 		.4byte	0x29b
+ 466 026e 15       		.uleb128 0x15
+ 467 026f A4010000 		.4byte	0x1a4
+ 468 0273 7F000000 		.4byte	.LLST4
+ 469 0277 15       		.uleb128 0x15
+ 470 0278 98010000 		.4byte	0x198
+ 471 027c 92000000 		.4byte	.LLST5
+ 472 0280 16       		.uleb128 0x16
+ 473 0281 30000000 		.4byte	.LVL4
+ 474 0285 1E030000 		.4byte	0x31e
+ 475 0289 17       		.uleb128 0x17
+ 476 028a 01       		.uleb128 0x1
+ 477 028b 50       		.byte	0x50
+ 478 028c 01       		.uleb128 0x1
+ 479 028d 3D       		.byte	0x3d
+ 480 028e 17       		.uleb128 0x17
+ 481 028f 01       		.uleb128 0x1
+ 482 0290 51       		.byte	0x51
+ 483 0291 01       		.uleb128 0x1
+ 484 0292 30       		.byte	0x30
+ 485 0293 17       		.uleb128 0x17
+ 486 0294 01       		.uleb128 0x1
+ 487 0295 52       		.byte	0x52
+ 488 0296 02       		.uleb128 0x2
+ 489 0297 74       		.byte	0x74
+ 490 0298 00       		.sleb128 0
+ 491 0299 00       		.byte	0
+ 492 029a 00       		.byte	0
+ 493 029b 14       		.uleb128 0x14
+ 494 029c 71010000 		.4byte	0x171
+ 495 02a0 30000000 		.4byte	.LBB14
+ 496 02a4 08000000 		.4byte	.LBE14-.LBB14
+ 497 02a8 01       		.byte	0x1
+ 498 02a9 31       		.byte	0x31
+ 499 02aa CC020000 		.4byte	0x2cc
+ 500 02ae 15       		.uleb128 0x15
+ 501 02af 7E010000 		.4byte	0x17e
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 18
+
+
+ 502 02b3 A6000000 		.4byte	.LLST6
+ 503 02b7 16       		.uleb128 0x16
+ 504 02b8 38000000 		.4byte	.LVL5
+ 505 02bc 29030000 		.4byte	0x329
+ 506 02c0 17       		.uleb128 0x17
+ 507 02c1 01       		.uleb128 0x1
+ 508 02c2 50       		.byte	0x50
+ 509 02c3 01       		.uleb128 0x1
+ 510 02c4 3D       		.byte	0x3d
+ 511 02c5 17       		.uleb128 0x17
+ 512 02c6 01       		.uleb128 0x1
+ 513 02c7 51       		.byte	0x51
+ 514 02c8 01       		.uleb128 0x1
+ 515 02c9 30       		.byte	0x30
+ 516 02ca 00       		.byte	0
+ 517 02cb 00       		.byte	0
+ 518 02cc 14       		.uleb128 0x14
+ 519 02cd 69010000 		.4byte	0x169
+ 520 02d1 38000000 		.4byte	.LBB16
+ 521 02d5 06000000 		.4byte	.LBE16-.LBB16
+ 522 02d9 01       		.byte	0x1
+ 523 02da 32       		.byte	0x32
+ 524 02db EF020000 		.4byte	0x2ef
+ 525 02df 16       		.uleb128 0x16
+ 526 02e0 3E000000 		.4byte	.LVL6
+ 527 02e4 34030000 		.4byte	0x334
+ 528 02e8 17       		.uleb128 0x17
+ 529 02e9 01       		.uleb128 0x1
+ 530 02ea 50       		.byte	0x50
+ 531 02eb 01       		.uleb128 0x1
+ 532 02ec 3D       		.byte	0x3d
+ 533 02ed 00       		.byte	0
+ 534 02ee 00       		.byte	0
+ 535 02ef 18       		.uleb128 0x18
+ 536 02f0 12000000 		.4byte	.LVL1
+ 537 02f4 D7010000 		.4byte	0x1d7
+ 538 02f8 18       		.uleb128 0x18
+ 539 02f9 1C000000 		.4byte	.LVL2
+ 540 02fd 3F030000 		.4byte	0x33f
+ 541 0301 00       		.byte	0
+ 542 0302 19       		.uleb128 0x19
+ 543 0303 B0020000 		.4byte	.LASF38
+ 544 0307 01       		.byte	0x1
+ 545 0308 11       		.byte	0x11
+ 546 0309 6B000000 		.4byte	0x6b
+ 547 030d 05       		.uleb128 0x5
+ 548 030e 03       		.byte	0x3
+ 549 030f 00000000 		.4byte	USBInDMA_initVar
+ 550 0313 1A       		.uleb128 0x1a
+ 551 0314 3A000000 		.4byte	.LASF27
+ 552 0318 3A000000 		.4byte	.LASF27
+ 553 031c 04       		.byte	0x4
+ 554 031d 93       		.byte	0x93
+ 555 031e 1A       		.uleb128 0x1a
+ 556 031f B5010000 		.4byte	.LASF28
+ 557 0323 B5010000 		.4byte	.LASF28
+ 558 0327 04       		.byte	0x4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 19
+
+
+ 559 0328 96       		.byte	0x96
+ 560 0329 1A       		.uleb128 0x1a
+ 561 032a 22000000 		.4byte	.LASF29
+ 562 032e 22000000 		.4byte	.LASF29
+ 563 0332 04       		.byte	0x4
+ 564 0333 8F       		.byte	0x8f
+ 565 0334 1A       		.uleb128 0x1a
+ 566 0335 C1020000 		.4byte	.LASF30
+ 567 0339 C1020000 		.4byte	.LASF30
+ 568 033d 04       		.byte	0x4
+ 569 033e 82       		.byte	0x82
+ 570 033f 1A       		.uleb128 0x1a
+ 571 0340 CF020000 		.4byte	.LASF31
+ 572 0344 CF020000 		.4byte	.LASF31
+ 573 0348 04       		.byte	0x4
+ 574 0349 6D       		.byte	0x6d
+ 575 034a 00       		.byte	0
+ 576              		.section	.debug_abbrev,"",%progbits
+ 577              	.Ldebug_abbrev0:
+ 578 0000 01       		.uleb128 0x1
+ 579 0001 11       		.uleb128 0x11
+ 580 0002 01       		.byte	0x1
+ 581 0003 25       		.uleb128 0x25
+ 582 0004 0E       		.uleb128 0xe
+ 583 0005 13       		.uleb128 0x13
+ 584 0006 0B       		.uleb128 0xb
+ 585 0007 03       		.uleb128 0x3
+ 586 0008 0E       		.uleb128 0xe
+ 587 0009 1B       		.uleb128 0x1b
+ 588 000a 0E       		.uleb128 0xe
+ 589 000b 55       		.uleb128 0x55
+ 590 000c 17       		.uleb128 0x17
+ 591 000d 11       		.uleb128 0x11
+ 592 000e 01       		.uleb128 0x1
+ 593 000f 10       		.uleb128 0x10
+ 594 0010 17       		.uleb128 0x17
+ 595 0011 00       		.byte	0
+ 596 0012 00       		.byte	0
+ 597 0013 02       		.uleb128 0x2
+ 598 0014 24       		.uleb128 0x24
+ 599 0015 00       		.byte	0
+ 600 0016 0B       		.uleb128 0xb
+ 601 0017 0B       		.uleb128 0xb
+ 602 0018 3E       		.uleb128 0x3e
+ 603 0019 0B       		.uleb128 0xb
+ 604 001a 03       		.uleb128 0x3
+ 605 001b 0E       		.uleb128 0xe
+ 606 001c 00       		.byte	0
+ 607 001d 00       		.byte	0
+ 608 001e 03       		.uleb128 0x3
+ 609 001f 24       		.uleb128 0x24
+ 610 0020 00       		.byte	0
+ 611 0021 0B       		.uleb128 0xb
+ 612 0022 0B       		.uleb128 0xb
+ 613 0023 3E       		.uleb128 0x3e
+ 614 0024 0B       		.uleb128 0xb
+ 615 0025 03       		.uleb128 0x3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 20
+
+
+ 616 0026 08       		.uleb128 0x8
+ 617 0027 00       		.byte	0
+ 618 0028 00       		.byte	0
+ 619 0029 04       		.uleb128 0x4
+ 620 002a 16       		.uleb128 0x16
+ 621 002b 00       		.byte	0
+ 622 002c 03       		.uleb128 0x3
+ 623 002d 0E       		.uleb128 0xe
+ 624 002e 3A       		.uleb128 0x3a
+ 625 002f 0B       		.uleb128 0xb
+ 626 0030 3B       		.uleb128 0x3b
+ 627 0031 05       		.uleb128 0x5
+ 628 0032 49       		.uleb128 0x49
+ 629 0033 13       		.uleb128 0x13
+ 630 0034 00       		.byte	0
+ 631 0035 00       		.byte	0
+ 632 0036 05       		.uleb128 0x5
+ 633 0037 35       		.uleb128 0x35
+ 634 0038 00       		.byte	0
+ 635 0039 49       		.uleb128 0x49
+ 636 003a 13       		.uleb128 0x13
+ 637 003b 00       		.byte	0
+ 638 003c 00       		.byte	0
+ 639 003d 06       		.uleb128 0x6
+ 640 003e 13       		.uleb128 0x13
+ 641 003f 01       		.byte	0x1
+ 642 0040 0B       		.uleb128 0xb
+ 643 0041 0B       		.uleb128 0xb
+ 644 0042 3A       		.uleb128 0x3a
+ 645 0043 0B       		.uleb128 0xb
+ 646 0044 3B       		.uleb128 0x3b
+ 647 0045 0B       		.uleb128 0xb
+ 648 0046 01       		.uleb128 0x1
+ 649 0047 13       		.uleb128 0x13
+ 650 0048 00       		.byte	0
+ 651 0049 00       		.byte	0
+ 652 004a 07       		.uleb128 0x7
+ 653 004b 0D       		.uleb128 0xd
+ 654 004c 00       		.byte	0
+ 655 004d 03       		.uleb128 0x3
+ 656 004e 08       		.uleb128 0x8
+ 657 004f 3A       		.uleb128 0x3a
+ 658 0050 0B       		.uleb128 0xb
+ 659 0051 3B       		.uleb128 0x3b
+ 660 0052 0B       		.uleb128 0xb
+ 661 0053 49       		.uleb128 0x49
+ 662 0054 13       		.uleb128 0x13
+ 663 0055 38       		.uleb128 0x38
+ 664 0056 0B       		.uleb128 0xb
+ 665 0057 00       		.byte	0
+ 666 0058 00       		.byte	0
+ 667 0059 08       		.uleb128 0x8
+ 668 005a 01       		.uleb128 0x1
+ 669 005b 01       		.byte	0x1
+ 670 005c 49       		.uleb128 0x49
+ 671 005d 13       		.uleb128 0x13
+ 672 005e 01       		.uleb128 0x1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 21
+
+
+ 673 005f 13       		.uleb128 0x13
+ 674 0060 00       		.byte	0
+ 675 0061 00       		.byte	0
+ 676 0062 09       		.uleb128 0x9
+ 677 0063 21       		.uleb128 0x21
+ 678 0064 00       		.byte	0
+ 679 0065 49       		.uleb128 0x49
+ 680 0066 13       		.uleb128 0x13
+ 681 0067 2F       		.uleb128 0x2f
+ 682 0068 0B       		.uleb128 0xb
+ 683 0069 00       		.byte	0
+ 684 006a 00       		.byte	0
+ 685 006b 0A       		.uleb128 0xa
+ 686 006c 16       		.uleb128 0x16
+ 687 006d 00       		.byte	0
+ 688 006e 03       		.uleb128 0x3
+ 689 006f 0E       		.uleb128 0xe
+ 690 0070 3A       		.uleb128 0x3a
+ 691 0071 0B       		.uleb128 0xb
+ 692 0072 3B       		.uleb128 0x3b
+ 693 0073 0B       		.uleb128 0xb
+ 694 0074 49       		.uleb128 0x49
+ 695 0075 13       		.uleb128 0x13
+ 696 0076 00       		.byte	0
+ 697 0077 00       		.byte	0
+ 698 0078 0B       		.uleb128 0xb
+ 699 0079 0D       		.uleb128 0xd
+ 700 007a 00       		.byte	0
+ 701 007b 03       		.uleb128 0x3
+ 702 007c 0E       		.uleb128 0xe
+ 703 007d 3A       		.uleb128 0x3a
+ 704 007e 0B       		.uleb128 0xb
+ 705 007f 3B       		.uleb128 0x3b
+ 706 0080 0B       		.uleb128 0xb
+ 707 0081 49       		.uleb128 0x49
+ 708 0082 13       		.uleb128 0x13
+ 709 0083 38       		.uleb128 0x38
+ 710 0084 0B       		.uleb128 0xb
+ 711 0085 00       		.byte	0
+ 712 0086 00       		.byte	0
+ 713 0087 0C       		.uleb128 0xc
+ 714 0088 0F       		.uleb128 0xf
+ 715 0089 00       		.byte	0
+ 716 008a 0B       		.uleb128 0xb
+ 717 008b 0B       		.uleb128 0xb
+ 718 008c 00       		.byte	0
+ 719 008d 00       		.byte	0
+ 720 008e 0D       		.uleb128 0xd
+ 721 008f 13       		.uleb128 0x13
+ 722 0090 01       		.byte	0x1
+ 723 0091 0B       		.uleb128 0xb
+ 724 0092 05       		.uleb128 0x5
+ 725 0093 3A       		.uleb128 0x3a
+ 726 0094 0B       		.uleb128 0xb
+ 727 0095 3B       		.uleb128 0x3b
+ 728 0096 0B       		.uleb128 0xb
+ 729 0097 01       		.uleb128 0x1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 22
+
+
+ 730 0098 13       		.uleb128 0x13
+ 731 0099 00       		.byte	0
+ 732 009a 00       		.byte	0
+ 733 009b 0E       		.uleb128 0xe
+ 734 009c 2E       		.uleb128 0x2e
+ 735 009d 00       		.byte	0
+ 736 009e 03       		.uleb128 0x3
+ 737 009f 0E       		.uleb128 0xe
+ 738 00a0 3A       		.uleb128 0x3a
+ 739 00a1 0B       		.uleb128 0xb
+ 740 00a2 3B       		.uleb128 0x3b
+ 741 00a3 0B       		.uleb128 0xb
+ 742 00a4 27       		.uleb128 0x27
+ 743 00a5 19       		.uleb128 0x19
+ 744 00a6 20       		.uleb128 0x20
+ 745 00a7 0B       		.uleb128 0xb
+ 746 00a8 00       		.byte	0
+ 747 00a9 00       		.byte	0
+ 748 00aa 0F       		.uleb128 0xf
+ 749 00ab 2E       		.uleb128 0x2e
+ 750 00ac 01       		.byte	0x1
+ 751 00ad 03       		.uleb128 0x3
+ 752 00ae 0E       		.uleb128 0xe
+ 753 00af 3A       		.uleb128 0x3a
+ 754 00b0 0B       		.uleb128 0xb
+ 755 00b1 3B       		.uleb128 0x3b
+ 756 00b2 05       		.uleb128 0x5
+ 757 00b3 27       		.uleb128 0x27
+ 758 00b4 19       		.uleb128 0x19
+ 759 00b5 20       		.uleb128 0x20
+ 760 00b6 0B       		.uleb128 0xb
+ 761 00b7 01       		.uleb128 0x1
+ 762 00b8 13       		.uleb128 0x13
+ 763 00b9 00       		.byte	0
+ 764 00ba 00       		.byte	0
+ 765 00bb 10       		.uleb128 0x10
+ 766 00bc 05       		.uleb128 0x5
+ 767 00bd 00       		.byte	0
+ 768 00be 03       		.uleb128 0x3
+ 769 00bf 0E       		.uleb128 0xe
+ 770 00c0 3A       		.uleb128 0x3a
+ 771 00c1 0B       		.uleb128 0xb
+ 772 00c2 3B       		.uleb128 0x3b
+ 773 00c3 05       		.uleb128 0x5
+ 774 00c4 49       		.uleb128 0x49
+ 775 00c5 13       		.uleb128 0x13
+ 776 00c6 00       		.byte	0
+ 777 00c7 00       		.byte	0
+ 778 00c8 11       		.uleb128 0x11
+ 779 00c9 2E       		.uleb128 0x2e
+ 780 00ca 00       		.byte	0
+ 781 00cb 3F       		.uleb128 0x3f
+ 782 00cc 19       		.uleb128 0x19
+ 783 00cd 03       		.uleb128 0x3
+ 784 00ce 0E       		.uleb128 0xe
+ 785 00cf 3A       		.uleb128 0x3a
+ 786 00d0 0B       		.uleb128 0xb
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 23
+
+
+ 787 00d1 3B       		.uleb128 0x3b
+ 788 00d2 0B       		.uleb128 0xb
+ 789 00d3 27       		.uleb128 0x27
+ 790 00d4 19       		.uleb128 0x19
+ 791 00d5 11       		.uleb128 0x11
+ 792 00d6 01       		.uleb128 0x1
+ 793 00d7 12       		.uleb128 0x12
+ 794 00d8 06       		.uleb128 0x6
+ 795 00d9 40       		.uleb128 0x40
+ 796 00da 18       		.uleb128 0x18
+ 797 00db 9742     		.uleb128 0x2117
+ 798 00dd 19       		.uleb128 0x19
+ 799 00de 00       		.byte	0
+ 800 00df 00       		.byte	0
+ 801 00e0 12       		.uleb128 0x12
+ 802 00e1 2E       		.uleb128 0x2e
+ 803 00e2 01       		.byte	0x1
+ 804 00e3 3F       		.uleb128 0x3f
+ 805 00e4 19       		.uleb128 0x19
+ 806 00e5 03       		.uleb128 0x3
+ 807 00e6 0E       		.uleb128 0xe
+ 808 00e7 3A       		.uleb128 0x3a
+ 809 00e8 0B       		.uleb128 0xb
+ 810 00e9 3B       		.uleb128 0x3b
+ 811 00ea 0B       		.uleb128 0xb
+ 812 00eb 27       		.uleb128 0x27
+ 813 00ec 19       		.uleb128 0x19
+ 814 00ed 11       		.uleb128 0x11
+ 815 00ee 01       		.uleb128 0x1
+ 816 00ef 12       		.uleb128 0x12
+ 817 00f0 06       		.uleb128 0x6
+ 818 00f1 40       		.uleb128 0x40
+ 819 00f2 18       		.uleb128 0x18
+ 820 00f3 9742     		.uleb128 0x2117
+ 821 00f5 19       		.uleb128 0x19
+ 822 00f6 01       		.uleb128 0x1
+ 823 00f7 13       		.uleb128 0x13
+ 824 00f8 00       		.byte	0
+ 825 00f9 00       		.byte	0
+ 826 00fa 13       		.uleb128 0x13
+ 827 00fb 05       		.uleb128 0x5
+ 828 00fc 00       		.byte	0
+ 829 00fd 03       		.uleb128 0x3
+ 830 00fe 0E       		.uleb128 0xe
+ 831 00ff 3A       		.uleb128 0x3a
+ 832 0100 0B       		.uleb128 0xb
+ 833 0101 3B       		.uleb128 0x3b
+ 834 0102 0B       		.uleb128 0xb
+ 835 0103 49       		.uleb128 0x49
+ 836 0104 13       		.uleb128 0x13
+ 837 0105 02       		.uleb128 0x2
+ 838 0106 17       		.uleb128 0x17
+ 839 0107 00       		.byte	0
+ 840 0108 00       		.byte	0
+ 841 0109 14       		.uleb128 0x14
+ 842 010a 1D       		.uleb128 0x1d
+ 843 010b 01       		.byte	0x1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 24
+
+
+ 844 010c 31       		.uleb128 0x31
+ 845 010d 13       		.uleb128 0x13
+ 846 010e 11       		.uleb128 0x11
+ 847 010f 01       		.uleb128 0x1
+ 848 0110 12       		.uleb128 0x12
+ 849 0111 06       		.uleb128 0x6
+ 850 0112 58       		.uleb128 0x58
+ 851 0113 0B       		.uleb128 0xb
+ 852 0114 59       		.uleb128 0x59
+ 853 0115 0B       		.uleb128 0xb
+ 854 0116 01       		.uleb128 0x1
+ 855 0117 13       		.uleb128 0x13
+ 856 0118 00       		.byte	0
+ 857 0119 00       		.byte	0
+ 858 011a 15       		.uleb128 0x15
+ 859 011b 05       		.uleb128 0x5
+ 860 011c 00       		.byte	0
+ 861 011d 31       		.uleb128 0x31
+ 862 011e 13       		.uleb128 0x13
+ 863 011f 02       		.uleb128 0x2
+ 864 0120 17       		.uleb128 0x17
+ 865 0121 00       		.byte	0
+ 866 0122 00       		.byte	0
+ 867 0123 16       		.uleb128 0x16
+ 868 0124 898201   		.uleb128 0x4109
+ 869 0127 01       		.byte	0x1
+ 870 0128 11       		.uleb128 0x11
+ 871 0129 01       		.uleb128 0x1
+ 872 012a 31       		.uleb128 0x31
+ 873 012b 13       		.uleb128 0x13
+ 874 012c 00       		.byte	0
+ 875 012d 00       		.byte	0
+ 876 012e 17       		.uleb128 0x17
+ 877 012f 8A8201   		.uleb128 0x410a
+ 878 0132 00       		.byte	0
+ 879 0133 02       		.uleb128 0x2
+ 880 0134 18       		.uleb128 0x18
+ 881 0135 9142     		.uleb128 0x2111
+ 882 0137 18       		.uleb128 0x18
+ 883 0138 00       		.byte	0
+ 884 0139 00       		.byte	0
+ 885 013a 18       		.uleb128 0x18
+ 886 013b 898201   		.uleb128 0x4109
+ 887 013e 00       		.byte	0
+ 888 013f 11       		.uleb128 0x11
+ 889 0140 01       		.uleb128 0x1
+ 890 0141 31       		.uleb128 0x31
+ 891 0142 13       		.uleb128 0x13
+ 892 0143 00       		.byte	0
+ 893 0144 00       		.byte	0
+ 894 0145 19       		.uleb128 0x19
+ 895 0146 34       		.uleb128 0x34
+ 896 0147 00       		.byte	0
+ 897 0148 03       		.uleb128 0x3
+ 898 0149 0E       		.uleb128 0xe
+ 899 014a 3A       		.uleb128 0x3a
+ 900 014b 0B       		.uleb128 0xb
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 25
+
+
+ 901 014c 3B       		.uleb128 0x3b
+ 902 014d 0B       		.uleb128 0xb
+ 903 014e 49       		.uleb128 0x49
+ 904 014f 13       		.uleb128 0x13
+ 905 0150 3F       		.uleb128 0x3f
+ 906 0151 19       		.uleb128 0x19
+ 907 0152 02       		.uleb128 0x2
+ 908 0153 18       		.uleb128 0x18
+ 909 0154 00       		.byte	0
+ 910 0155 00       		.byte	0
+ 911 0156 1A       		.uleb128 0x1a
+ 912 0157 2E       		.uleb128 0x2e
+ 913 0158 00       		.byte	0
+ 914 0159 3F       		.uleb128 0x3f
+ 915 015a 19       		.uleb128 0x19
+ 916 015b 3C       		.uleb128 0x3c
+ 917 015c 19       		.uleb128 0x19
+ 918 015d 6E       		.uleb128 0x6e
+ 919 015e 0E       		.uleb128 0xe
+ 920 015f 03       		.uleb128 0x3
+ 921 0160 0E       		.uleb128 0xe
+ 922 0161 3A       		.uleb128 0x3a
+ 923 0162 0B       		.uleb128 0xb
+ 924 0163 3B       		.uleb128 0x3b
+ 925 0164 0B       		.uleb128 0xb
+ 926 0165 00       		.byte	0
+ 927 0166 00       		.byte	0
+ 928 0167 00       		.byte	0
+ 929              		.section	.debug_loc,"",%progbits
+ 930              	.Ldebug_loc0:
+ 931              	.LLST0:
+ 932 0000 00000000 		.4byte	.LVL0
+ 933 0004 11000000 		.4byte	.LVL1-1
+ 934 0008 0100     		.2byte	0x1
+ 935 000a 50       		.byte	0x50
+ 936 000b 11000000 		.4byte	.LVL1-1
+ 937 000f 3E000000 		.4byte	.LVL8
+ 938 0013 0100     		.2byte	0x1
+ 939 0015 55       		.byte	0x55
+ 940 0016 3E000000 		.4byte	.LVL8
+ 941 001a 44000000 		.4byte	.LFE32
+ 942 001e 0400     		.2byte	0x4
+ 943 0020 F3       		.byte	0xf3
+ 944 0021 01       		.uleb128 0x1
+ 945 0022 50       		.byte	0x50
+ 946 0023 9F       		.byte	0x9f
+ 947 0024 00000000 		.4byte	0
+ 948 0028 00000000 		.4byte	0
+ 949              	.LLST1:
+ 950 002c 00000000 		.4byte	.LVL0
+ 951 0030 11000000 		.4byte	.LVL1-1
+ 952 0034 0100     		.2byte	0x1
+ 953 0036 51       		.byte	0x51
+ 954 0037 11000000 		.4byte	.LVL1-1
+ 955 003b 3E000000 		.4byte	.LVL7
+ 956 003f 0100     		.2byte	0x1
+ 957 0041 54       		.byte	0x54
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 26
+
+
+ 958 0042 3E000000 		.4byte	.LVL7
+ 959 0046 44000000 		.4byte	.LFE32
+ 960 004a 0400     		.2byte	0x4
+ 961 004c F3       		.byte	0xf3
+ 962 004d 01       		.uleb128 0x1
+ 963 004e 51       		.byte	0x51
+ 964 004f 9F       		.byte	0x9f
+ 965 0050 00000000 		.4byte	0
+ 966 0054 00000000 		.4byte	0
+ 967              	.LLST2:
+ 968 0058 1C000000 		.4byte	.LVL2
+ 969 005c 26000000 		.4byte	.LVL3
+ 970 0060 0100     		.2byte	0x1
+ 971 0062 55       		.byte	0x55
+ 972 0063 00000000 		.4byte	0
+ 973 0067 00000000 		.4byte	0
+ 974              	.LLST3:
+ 975 006b 1C000000 		.4byte	.LVL2
+ 976 006f 26000000 		.4byte	.LVL3
+ 977 0073 0200     		.2byte	0x2
+ 978 0075 30       		.byte	0x30
+ 979 0076 9F       		.byte	0x9f
+ 980 0077 00000000 		.4byte	0
+ 981 007b 00000000 		.4byte	0
+ 982              	.LLST4:
+ 983 007f 26000000 		.4byte	.LVL3
+ 984 0083 30000000 		.4byte	.LVL4
+ 985 0087 0100     		.2byte	0x1
+ 986 0089 54       		.byte	0x54
+ 987 008a 00000000 		.4byte	0
+ 988 008e 00000000 		.4byte	0
+ 989              	.LLST5:
+ 990 0092 26000000 		.4byte	.LVL3
+ 991 0096 30000000 		.4byte	.LVL4
+ 992 009a 0200     		.2byte	0x2
+ 993 009c 30       		.byte	0x30
+ 994 009d 9F       		.byte	0x9f
+ 995 009e 00000000 		.4byte	0
+ 996 00a2 00000000 		.4byte	0
+ 997              	.LLST6:
+ 998 00a6 30000000 		.4byte	.LVL4
+ 999 00aa 38000000 		.4byte	.LVL5
+ 1000 00ae 0200     		.2byte	0x2
+ 1001 00b0 30       		.byte	0x30
+ 1002 00b1 9F       		.byte	0x9f
+ 1003 00b2 00000000 		.4byte	0
+ 1004 00b6 00000000 		.4byte	0
+ 1005              		.section	.debug_aranges,"",%progbits
+ 1006 0000 24000000 		.4byte	0x24
+ 1007 0004 0200     		.2byte	0x2
+ 1008 0006 00000000 		.4byte	.Ldebug_info0
+ 1009 000a 04       		.byte	0x4
+ 1010 000b 00       		.byte	0
+ 1011 000c 0000     		.2byte	0
+ 1012 000e 0000     		.2byte	0
+ 1013 0010 00000000 		.4byte	.LFB33
+ 1014 0014 34000000 		.4byte	.LFE33-.LFB33
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 27
+
+
+ 1015 0018 00000000 		.4byte	.LFB32
+ 1016 001c 44000000 		.4byte	.LFE32-.LFB32
+ 1017 0020 00000000 		.4byte	0
+ 1018 0024 00000000 		.4byte	0
+ 1019              		.section	.debug_ranges,"",%progbits
+ 1020              	.Ldebug_ranges0:
+ 1021 0000 00000000 		.4byte	.LFB33
+ 1022 0004 34000000 		.4byte	.LFE33
+ 1023 0008 00000000 		.4byte	.LFB32
+ 1024 000c 44000000 		.4byte	.LFE32
+ 1025 0010 00000000 		.4byte	0
+ 1026 0014 00000000 		.4byte	0
+ 1027              		.section	.debug_line,"",%progbits
+ 1028              	.Ldebug_line0:
+ 1029 0000 A2000000 		.section	.debug_str,"MS",%progbits,1
+ 1029      02005E00 
+ 1029      00000201 
+ 1029      FB0E0D00 
+ 1029      01010101 
+ 1030              	.LASF23:
+ 1031 0000 55534249 		.ascii	"USBInDMA_SetDstAddress\000"
+ 1031      6E444D41 
+ 1031      5F536574 
+ 1031      44737441 
+ 1031      64647265 
+ 1032              	.LASF24:
+ 1033 0017 64737441 		.ascii	"dstAddress\000"
+ 1033      64647265 
+ 1033      737300
+ 1034              	.LASF29:
+ 1035 0022 4379446D 		.ascii	"CyDmaValidateDescriptor\000"
+ 1035      6156616C 
+ 1035      69646174 
+ 1035      65446573 
+ 1035      63726970 
+ 1036              	.LASF27:
+ 1037 003a 4379446D 		.ascii	"CyDmaSetSrcAddress\000"
+ 1037      61536574 
+ 1037      53726341 
+ 1037      64647265 
+ 1037      737300
+ 1038              	.LASF2:
+ 1039 004d 73686F72 		.ascii	"short int\000"
+ 1039      7420696E 
+ 1039      7400
+ 1040              	.LASF16:
+ 1041 0057 73697A65 		.ascii	"sizetype\000"
+ 1041      74797065 
+ 1041      00
+ 1042              	.LASF37:
+ 1043 0060 55534249 		.ascii	"USBInDMA_Start\000"
+ 1043      6E444D41 
+ 1043      5F537461 
+ 1043      727400
+ 1044              	.LASF33:
+ 1045 006f 47656E65 		.ascii	"Generated_Source\\PSoC4\\USBInDMA.c\000"
+ 1045      72617465 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 28
+
+
+ 1045      645F536F 
+ 1045      75726365 
+ 1045      5C50536F 
+ 1046              	.LASF32:
+ 1047 0091 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1047      43313120 
+ 1047      352E342E 
+ 1047      31203230 
+ 1047      31363036 
+ 1048 00c4 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1048      20726576 
+ 1048      6973696F 
+ 1048      6E203233 
+ 1048      37373135 
+ 1049 00f7 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1049      66756E63 
+ 1049      74696F6E 
+ 1049      2D736563 
+ 1049      74696F6E 
+ 1050              	.LASF17:
+ 1051 011f 6379646D 		.ascii	"cydma_channel_ctl_struct\000"
+ 1051      615F6368 
+ 1051      616E6E65 
+ 1051      6C5F6374 
+ 1051      6C5F7374 
+ 1052              	.LASF9:
+ 1053 0138 75696E74 		.ascii	"uint8\000"
+ 1053      3800
+ 1054              	.LASF22:
+ 1055 013e 55534249 		.ascii	"USBInDMA_ValidateDescriptor\000"
+ 1055      6E444D41 
+ 1055      5F56616C 
+ 1055      69646174 
+ 1055      65446573 
+ 1056              	.LASF12:
+ 1057 015a 666C6F61 		.ascii	"float\000"
+ 1057      7400
+ 1058              	.LASF6:
+ 1059 0160 6C6F6E67 		.ascii	"long long int\000"
+ 1059      206C6F6E 
+ 1059      6720696E 
+ 1059      7400
+ 1060              	.LASF4:
+ 1061 016e 6C6F6E67 		.ascii	"long int\000"
+ 1061      20696E74 
+ 1061      00
+ 1062              	.LASF34:
+ 1063 0177 433A5C64 		.ascii	"C:\\dev\\git\\Icebreaker\\Icebreaker.cydsn\000"
+ 1063      65765C67 
+ 1063      69745C49 
+ 1063      63656272 
+ 1063      65616B65 
+ 1064              	.LASF25:
+ 1065 019e 55534249 		.ascii	"USBInDMA_SetSrcAddress\000"
+ 1065      6E444D41 
+ 1065      5F536574 
+ 1065      53726341 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 29
+
+
+ 1065      64647265 
+ 1066              	.LASF28:
+ 1067 01b5 4379446D 		.ascii	"CyDmaSetDstAddress\000"
+ 1067      61536574 
+ 1067      44737441 
+ 1067      64647265 
+ 1067      737300
+ 1068              	.LASF1:
+ 1069 01c8 756E7369 		.ascii	"unsigned char\000"
+ 1069      676E6564 
+ 1069      20636861 
+ 1069      7200
+ 1070              	.LASF0:
+ 1071 01d6 7369676E 		.ascii	"signed char\000"
+ 1071      65642063 
+ 1071      68617200 
+ 1072              	.LASF7:
+ 1073 01e2 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1073      206C6F6E 
+ 1073      6720756E 
+ 1073      7369676E 
+ 1073      65642069 
+ 1074              	.LASF8:
+ 1075 01f9 756E7369 		.ascii	"unsigned int\000"
+ 1075      676E6564 
+ 1075      20696E74 
+ 1075      00
+ 1076              	.LASF15:
+ 1077 0206 72656733 		.ascii	"reg32\000"
+ 1077      3200
+ 1078              	.LASF3:
+ 1079 020c 73686F72 		.ascii	"short unsigned int\000"
+ 1079      7420756E 
+ 1079      7369676E 
+ 1079      65642069 
+ 1079      6E7400
+ 1080              	.LASF18:
+ 1081 021f 73746174 		.ascii	"status\000"
+ 1081      757300
+ 1082              	.LASF21:
+ 1083 0226 6379646D 		.ascii	"cydma_descriptor_ram_struct\000"
+ 1083      615F6465 
+ 1083      73637269 
+ 1083      70746F72 
+ 1083      5F72616D 
+ 1084              	.LASF14:
+ 1085 0242 63686172 		.ascii	"char\000"
+ 1085      00
+ 1086              	.LASF19:
+ 1087 0247 6379646D 		.ascii	"cydma_descriptor_struct\000"
+ 1087      615F6465 
+ 1087      73637269 
+ 1087      70746F72 
+ 1087      5F737472 
+ 1088              	.LASF26:
+ 1089 025f 73726341 		.ascii	"srcAddress\000"
+ 1089      64647265 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVvxQiY.s 			page 30
+
+
+ 1089      737300
+ 1090              	.LASF10:
+ 1091 026a 75696E74 		.ascii	"uint32\000"
+ 1091      333200
+ 1092              	.LASF5:
+ 1093 0271 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1093      20756E73 
+ 1093      69676E65 
+ 1093      6420696E 
+ 1093      7400
+ 1094              	.LASF11:
+ 1095 0283 696E7433 		.ascii	"int32\000"
+ 1095      3200
+ 1096              	.LASF13:
+ 1097 0289 646F7562 		.ascii	"double\000"
+ 1097      6C6500
+ 1098              	.LASF36:
+ 1099 0290 55534249 		.ascii	"USBInDMA_Init\000"
+ 1099      6E444D41 
+ 1099      5F496E69 
+ 1099      7400
+ 1100              	.LASF35:
+ 1101 029e 55534249 		.ascii	"USBInDMA_ChEnable\000"
+ 1101      6E444D41 
+ 1101      5F436845 
+ 1101      6E61626C 
+ 1101      6500
+ 1102              	.LASF38:
+ 1103 02b0 55534249 		.ascii	"USBInDMA_initVar\000"
+ 1103      6E444D41 
+ 1103      5F696E69 
+ 1103      74566172 
+ 1103      00
+ 1104              	.LASF30:
+ 1105 02c1 4379446D 		.ascii	"CyDmaChEnable\000"
+ 1105      61436845 
+ 1105      6E61626C 
+ 1105      6500
+ 1106              	.LASF31:
+ 1107 02cf 4379446D 		.ascii	"CyDmaEnable\000"
+ 1107      61456E61 
+ 1107      626C6500 
+ 1108              	.LASF20:
+ 1109 02db 64657363 		.ascii	"descriptor\000"
+ 1109      72697074 
+ 1109      6F7200
+ 1110              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

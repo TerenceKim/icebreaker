@@ -1,0 +1,1974 @@
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"AudioControl.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.InitAudioPath,"ax",%progbits
+  20              		.align	2
+  21              		.global	InitAudioPath
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	InitAudioPath, %function
+  25              	InitAudioPath:
+  26              	.LFB355:
+  27              		.file 1 "AudioControl.c"
+   1:AudioControl.c **** /*******************************************************************************
+   2:AudioControl.c **** * File Name: AudioControl.c
+   3:AudioControl.c **** *
+   4:AudioControl.c **** * Version 1.0
+   5:AudioControl.c **** *
+   6:AudioControl.c **** *  Description: This file contains the Audio signal path configuration and 
+   7:AudioControl.c **** *               processing code
+   8:AudioControl.c **** *
+   9:AudioControl.c **** *******************************************************************************
+  10:AudioControl.c **** * Copyright (2018), Cypress Semiconductor Corporation. All rights reserved.
+  11:AudioControl.c **** *******************************************************************************
+  12:AudioControl.c **** * This software, including source code, documentation and related materials
+  13:AudioControl.c **** * (“Software”), is owned by Cypress Semiconductor Corporation or one of its
+  14:AudioControl.c **** * subsidiaries (“Cypress”) and is protected by and subject to worldwide patent
+  15:AudioControl.c **** * protection (United States and foreign), United States copyright laws and
+  16:AudioControl.c **** * international treaty provisions. Therefore, you may use this Software only
+  17:AudioControl.c **** * as provided in the license agreement accompanying the software package from
+  18:AudioControl.c **** * which you obtained this Software (“EULA”).
+  19:AudioControl.c **** *
+  20:AudioControl.c **** * If no EULA applies, Cypress hereby grants you a personal, nonexclusive,
+  21:AudioControl.c **** * non-transferable license to copy, modify, and compile the Software source
+  22:AudioControl.c **** * code solely for use in connection with Cypress’s integrated circuit products.
+  23:AudioControl.c **** * Any reproduction, modification, translation, compilation, or representation
+  24:AudioControl.c **** * of this Software except as specified above is prohibited without the express
+  25:AudioControl.c **** * written permission of Cypress.
+  26:AudioControl.c **** *
+  27:AudioControl.c **** * Disclaimer: THIS SOFTWARE IS PROVIDED AS-IS, WITH NO WARRANTY OF ANY KIND, 
+  28:AudioControl.c **** * EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, NONINFRINGEMENT, IMPLIED 
+  29:AudioControl.c **** * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. Cypress 
+  30:AudioControl.c **** * reserves the right to make changes to the Software without notice. Cypress 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 2
+
+
+  31:AudioControl.c **** * does not assume any liability arising out of the application or use of the 
+  32:AudioControl.c **** * Software or any product or circuit described in the Software. Cypress does 
+  33:AudioControl.c **** * not authorize its products for use in any products where a malfunction or 
+  34:AudioControl.c **** * failure of the Cypress product may reasonably be expected to result in 
+  35:AudioControl.c **** * significant property damage, injury or death (“High Risk Product”). By 
+  36:AudioControl.c **** * including Cypress’s product in a High Risk Product, the manufacturer of such 
+  37:AudioControl.c **** * system or application assumes all risk of such use and in doing so agrees to 
+  38:AudioControl.c **** * indemnify Cypress against all liability.
+  39:AudioControl.c **** *******************************************************************************/
+  40:AudioControl.c **** #include <Application.h>
+  41:AudioControl.c **** #include <AudioControl.h>
+  42:AudioControl.c **** #include <AudioOut.h>
+  43:AudioControl.c **** #include <AudioIn.h>
+  44:AudioControl.c **** #include <Codec.h>
+  45:AudioControl.c **** #include <Config.h>
+  46:AudioControl.c **** #include <project.h>
+  47:AudioControl.c **** #include <Interrupts.h>
+  48:AudioControl.c **** #include <USBInterface.h>
+  49:AudioControl.c **** 
+  50:AudioControl.c **** uint8 newRate = RATE_48KHZ;
+  51:AudioControl.c **** extern uint8 asyncready;
+  52:AudioControl.c **** 
+  53:AudioControl.c **** 
+  54:AudioControl.c **** extern CYBIT outPlaying;
+  55:AudioControl.c **** 
+  56:AudioControl.c **** extern CYBIT inPlaying;
+  57:AudioControl.c **** 
+  58:AudioControl.c **** 
+  59:AudioControl.c **** 
+  60:AudioControl.c **** uint8 audioClkConfigured = FALSE;
+  61:AudioControl.c **** uint8 setRate = FREQUENCY_NOT_SET; 
+  62:AudioControl.c **** uint8 newRate;
+  63:AudioControl.c **** 
+  64:AudioControl.c **** /*******************************************************************************
+  65:AudioControl.c **** * Function Name: InitAudioPath
+  66:AudioControl.c **** ********************************************************************************
+  67:AudioControl.c **** * Summary:
+  68:AudioControl.c **** *       This function sets up the XTAL, DMA and starts USB, I2S and interrupts
+  69:AudioControl.c **** *        to get the part configured for the audio signal paths
+  70:AudioControl.c **** *
+  71:AudioControl.c **** * Parameters:
+  72:AudioControl.c **** *  void
+  73:AudioControl.c **** *
+  74:AudioControl.c **** * Return:
+  75:AudioControl.c **** *  void
+  76:AudioControl.c **** *
+  77:AudioControl.c **** *******************************************************************************/
+  78:AudioControl.c **** void InitAudioPath(void)
+  79:AudioControl.c **** {    
+  28              		.loc 1 79 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 10B5     		push	{r4, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 3
+
+
+  80:AudioControl.c ****     /* Set the default Audio clock rate to 48 kHz */
+  81:AudioControl.c **** 	AudioClkSel_Write(RATE_48KHZ);
+  36              		.loc 1 81 0
+  37 0002 0020     		movs	r0, #0
+  38 0004 FFF7FEFF 		bl	AudioClkSel_Write
+  39              	.LVL0:
+  82:AudioControl.c ****     
+  83:AudioControl.c **** 	/* Enable DMA */
+  84:AudioControl.c **** 	CyDmaEnable();
+  40              		.loc 1 84 0
+  41 0008 FFF7FEFF 		bl	CyDmaEnable
+  42              	.LVL1:
+  85:AudioControl.c **** 	
+  86:AudioControl.c **** 	InitializeAudioInPath();
+  43              		.loc 1 86 0
+  44 000c FFF7FEFF 		bl	InitializeAudioInPath
+  45              	.LVL2:
+  87:AudioControl.c **** 	InitializeAudioOutPath();
+  46              		.loc 1 87 0
+  47 0010 FFF7FEFF 		bl	InitializeAudioOutPath
+  48              	.LVL3:
+  88:AudioControl.c **** 
+  89:AudioControl.c **** 	/* Set TX FIFO trigger to 2 bytes (half-empty) to increase timing margin */
+  90:AudioControl.c ****     I2S_TX_AUX_CONTROL_REG = I2S_TX_AUX_CONTROL_REG | FIFO_HALF_EMPTY_MASK;
+  49              		.loc 1 90 0
+  50 0014 0549     		ldr	r1, .L2
+  51 0016 0A78     		ldrb	r2, [r1]
+  52 0018 0C23     		movs	r3, #12
+  53 001a 1A43     		orrs	r2, r3
+  54 001c D2B2     		uxtb	r2, r2
+  55 001e 0A70     		strb	r2, [r1]
+  91:AudioControl.c ****     
+  92:AudioControl.c ****     /* Set RX FIFO trigger to 2 bytes (half-empty) to increase timing margin */
+  93:AudioControl.c ****     I2S_RX_AUX_CONTROL_REG = I2S_RX_AUX_CONTROL_REG | FIFO_HALF_EMPTY_MASK;
+  56              		.loc 1 93 0
+  57 0020 034A     		ldr	r2, .L2+4
+  58 0022 1178     		ldrb	r1, [r2]
+  59 0024 0B43     		orrs	r3, r1
+  60 0026 DBB2     		uxtb	r3, r3
+  61 0028 1370     		strb	r3, [r2]
+  94:AudioControl.c **** }
+  62              		.loc 1 94 0
+  63              		@ sp needed
+  64 002a 10BD     		pop	{r4, pc}
+  65              	.L3:
+  66              		.align	2
+  67              	.L2:
+  68 002c 93000F40 		.word	1074725011
+  69 0030 96000F40 		.word	1074725014
+  70              		.cfi_endproc
+  71              	.LFE355:
+  72              		.size	InitAudioPath, .-InitAudioPath
+  73              		.section	.text.SetClockRate,"ax",%progbits
+  74              		.align	2
+  75              		.global	SetClockRate
+  76              		.code	16
+  77              		.thumb_func
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 4
+
+
+  78              		.type	SetClockRate, %function
+  79              	SetClockRate:
+  80              	.LFB356:
+  95:AudioControl.c **** 
+  96:AudioControl.c **** 
+  97:AudioControl.c **** 
+  98:AudioControl.c **** /*******************************************************************************
+  99:AudioControl.c **** * Function Name: SetClockRate
+ 100:AudioControl.c **** ********************************************************************************
+ 101:AudioControl.c **** * Summary:
+ 102:AudioControl.c **** *        This function changes the audio clocking to generate clocks for a desired 
+ 103:AudioControl.c **** *        sample rate.
+ 104:AudioControl.c **** *
+ 105:AudioControl.c **** * Parameters:
+ 106:AudioControl.c **** *  newRate: audio sample rate to be set
+ 107:AudioControl.c **** *
+ 108:AudioControl.c **** * Return:
+ 109:AudioControl.c **** *  void
+ 110:AudioControl.c **** *
+ 111:AudioControl.c **** *******************************************************************************/
+ 112:AudioControl.c **** void SetClockRate(uint8 newRate) 
+ 113:AudioControl.c **** {
+  81              		.loc 1 113 0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 0
+  84              		@ frame_needed = 0, uses_anonymous_args = 0
+  85              	.LVL4:
+  86 0000 10B5     		push	{r4, lr}
+  87              		.cfi_def_cfa_offset 8
+  88              		.cfi_offset 4, -8
+  89              		.cfi_offset 14, -4
+  90 0002 0400     		movs	r4, r0
+ 114:AudioControl.c **** 	/* Stop I2S before changing PLL clock */
+ 115:AudioControl.c **** 	Stop_I2S_Tx();    
+  91              		.loc 1 115 0
+  92 0004 FFF7FEFF 		bl	Stop_I2S_Tx
+  93              	.LVL5:
+ 116:AudioControl.c ****     Stop_I2S_Rx();
+  94              		.loc 1 116 0
+  95 0008 FFF7FEFF 		bl	Stop_I2S_Rx
+  96              	.LVL6:
+ 117:AudioControl.c ****     
+ 118:AudioControl.c **** 	  
+ 119:AudioControl.c **** 	/* Configure Codec and Audio clock */
+ 120:AudioControl.c **** 	Codec_Deactivate();
+  97              		.loc 1 120 0
+  98 000c FFF7FEFF 		bl	Codec_Deactivate
+  99              	.LVL7:
+ 121:AudioControl.c **** 	
+ 122:AudioControl.c **** 	if(newRate == RATE_48KHZ)
+ 100              		.loc 1 122 0
+ 101 0010 002C     		cmp	r4, #0
+ 102 0012 0DD1     		bne	.L5
+ 123:AudioControl.c **** 	{
+ 124:AudioControl.c **** 		CySysClkPllStart(RATE_48KHZ, 1);
+ 103              		.loc 1 124 0
+ 104 0014 0121     		movs	r1, #1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 5
+
+
+ 105 0016 0020     		movs	r0, #0
+ 106 0018 FFF7FEFF 		bl	CySysClkPllStart
+ 107              	.LVL8:
+ 125:AudioControl.c **** 		CySysClkPllStop(RATE_44KHZ);
+ 108              		.loc 1 125 0
+ 109 001c 0120     		movs	r0, #1
+ 110 001e FFF7FEFF 		bl	CySysClkPllStop
+ 111              	.LVL9:
+ 126:AudioControl.c **** 		AudioClkSel_Write(RATE_48KHZ);
+ 112              		.loc 1 126 0
+ 113 0022 0020     		movs	r0, #0
+ 114 0024 FFF7FEFF 		bl	AudioClkSel_Write
+ 115              	.LVL10:
+ 127:AudioControl.c **** 		Codec_SetSamplingRate(CODEC_SRATE_NORMAL_48KHZ_256FS);
+ 116              		.loc 1 127 0
+ 117 0028 0020     		movs	r0, #0
+ 118 002a FFF7FEFF 		bl	Codec_SetSamplingRate
+ 119              	.LVL11:
+ 120 002e 18E0     		b	.L6
+ 121              	.L5:
+ 128:AudioControl.c **** 		
+ 129:AudioControl.c **** 	}
+ 130:AudioControl.c **** 	else if(newRate == RATE_44KHZ)
+ 122              		.loc 1 130 0
+ 123 0030 012C     		cmp	r4, #1
+ 124 0032 0DD1     		bne	.L7
+ 131:AudioControl.c **** 	{
+ 132:AudioControl.c **** 		CySysClkPllStart(RATE_44KHZ, 1);
+ 125              		.loc 1 132 0
+ 126 0034 0121     		movs	r1, #1
+ 127 0036 0120     		movs	r0, #1
+ 128 0038 FFF7FEFF 		bl	CySysClkPllStart
+ 129              	.LVL12:
+ 133:AudioControl.c **** 		CySysClkPllStop(RATE_48KHZ);
+ 130              		.loc 1 133 0
+ 131 003c 0020     		movs	r0, #0
+ 132 003e FFF7FEFF 		bl	CySysClkPllStop
+ 133              	.LVL13:
+ 134:AudioControl.c **** 		AudioClkSel_Write(RATE_44KHZ);
+ 134              		.loc 1 134 0
+ 135 0042 0120     		movs	r0, #1
+ 136 0044 FFF7FEFF 		bl	AudioClkSel_Write
+ 137              	.LVL14:
+ 135:AudioControl.c **** 		Codec_SetSamplingRate(CODEC_SRATE_NORMAL_44KHZ_256FS);		
+ 138              		.loc 1 135 0
+ 139 0048 2020     		movs	r0, #32
+ 140 004a FFF7FEFF 		bl	Codec_SetSamplingRate
+ 141              	.LVL15:
+ 142 004e 08E0     		b	.L6
+ 143              	.L7:
+ 136:AudioControl.c **** 	}
+ 137:AudioControl.c **** 	else
+ 138:AudioControl.c **** 	{
+ 139:AudioControl.c **** 		CySysClkPllStop(RATE_48KHZ);
+ 144              		.loc 1 139 0
+ 145 0050 0020     		movs	r0, #0
+ 146 0052 FFF7FEFF 		bl	CySysClkPllStop
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 6
+
+
+ 147              	.LVL16:
+ 140:AudioControl.c **** 		CySysClkPllStop(RATE_44KHZ);		
+ 148              		.loc 1 140 0
+ 149 0056 0120     		movs	r0, #1
+ 150 0058 FFF7FEFF 		bl	CySysClkPllStop
+ 151              	.LVL17:
+ 141:AudioControl.c **** 		Codec_SetSamplingRate(CODEC_SRATE_NORMAL_48KHZ_256FS);
+ 152              		.loc 1 141 0
+ 153 005c 0020     		movs	r0, #0
+ 154 005e FFF7FEFF 		bl	Codec_SetSamplingRate
+ 155              	.LVL18:
+ 156              	.L6:
+ 142:AudioControl.c **** 	}
+ 143:AudioControl.c **** 	
+ 144:AudioControl.c **** 	Codec_Activate();	 
+ 157              		.loc 1 144 0
+ 158 0062 FFF7FEFF 		bl	Codec_Activate
+ 159              	.LVL19:
+ 145:AudioControl.c **** 	
+ 146:AudioControl.c ****     /* flag to indicate audio clock active */
+ 147:AudioControl.c ****     audioClkConfigured = TRUE;    
+ 160              		.loc 1 147 0
+ 161 0066 0122     		movs	r2, #1
+ 162 0068 014B     		ldr	r3, .L8
+ 163 006a 1A70     		strb	r2, [r3]
+ 148:AudioControl.c **** }
+ 164              		.loc 1 148 0
+ 165              		@ sp needed
+ 166 006c 10BD     		pop	{r4, pc}
+ 167              	.L9:
+ 168 006e C046     		.align	2
+ 169              	.L8:
+ 170 0070 00000000 		.word	.LANCHOR0
+ 171              		.cfi_endproc
+ 172              	.LFE356:
+ 173              		.size	SetClockRate, .-SetClockRate
+ 174              		.section	.text.HandleSamplingFrequencyChangeRequest,"ax",%progbits
+ 175              		.align	2
+ 176              		.global	HandleSamplingFrequencyChangeRequest
+ 177              		.code	16
+ 178              		.thumb_func
+ 179              		.type	HandleSamplingFrequencyChangeRequest, %function
+ 180              	HandleSamplingFrequencyChangeRequest:
+ 181              	.LFB357:
+ 149:AudioControl.c ****  
+ 150:AudioControl.c **** /*******************************************************************************
+ 151:AudioControl.c **** * Function Name: HandleSamplingFrequencyChangeRequest
+ 152:AudioControl.c **** ********************************************************************************
+ 153:AudioControl.c **** * Summary:
+ 154:AudioControl.c **** *       This function processes the sampling frequency change request from USB
+ 155:AudioControl.c **** *       host and updates the accessory playback sampling frequency accordingly
+ 156:AudioControl.c **** *
+ 157:AudioControl.c **** * Parameters:
+ 158:AudioControl.c **** *  void
+ 159:AudioControl.c **** *
+ 160:AudioControl.c **** * Return:
+ 161:AudioControl.c **** *  void
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 7
+
+
+ 162:AudioControl.c **** *
+ 163:AudioControl.c **** *******************************************************************************/
+ 164:AudioControl.c **** void HandleSamplingFrequencyChangeRequest(void)
+ 165:AudioControl.c **** {
+ 182              		.loc 1 165 0
+ 183              		.cfi_startproc
+ 184              		@ args = 0, pretend = 0, frame = 0
+ 185              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186 0000 10B5     		push	{r4, lr}
+ 187              		.cfi_def_cfa_offset 8
+ 188              		.cfi_offset 4, -8
+ 189              		.cfi_offset 14, -4
+ 166:AudioControl.c ****     /* USBFS_frequencyChanged is set by the USB component when a setup token for Sampling frequency
+ 167:AudioControl.c ****      * It takes sometime for the host to actually send the Out token containing the updated samplin
+ 168:AudioControl.c ****      * Wait for USBFS_transferState to be equal to USBFS_TRANS_STATE_IDLE to make sure the updated 
+ 169:AudioControl.c ****      * is used for setting audio clocks */
+ 170:AudioControl.c ****      
+ 171:AudioControl.c ****     if((USBFS_TRANS_STATE_IDLE == USBFS_transferState) && USBFS_frequencyChanged)
+ 190              		.loc 1 171 0
+ 191 0002 394B     		ldr	r3, .L16
+ 192 0004 1B78     		ldrb	r3, [r3]
+ 193 0006 002B     		cmp	r3, #0
+ 194 0008 6DD1     		bne	.L10
+ 195              		.loc 1 171 0 is_stmt 0 discriminator 1
+ 196 000a 384B     		ldr	r3, .L16+4
+ 197 000c 1B78     		ldrb	r3, [r3]
+ 198 000e 002B     		cmp	r3, #0
+ 199 0010 69D0     		beq	.L10
+ 172:AudioControl.c ****     {		
+ 173:AudioControl.c ****         if(((!inPlaying) && (!outPlaying)) && ((AUDIO_OUT_ENDPOINT == USBFS_frequencyChanged)		
+ 200              		.loc 1 173 0 is_stmt 1
+ 201 0012 374B     		ldr	r3, .L16+8
+ 202 0014 1B78     		ldrb	r3, [r3]
+ 203 0016 002B     		cmp	r3, #0
+ 204 0018 62D1     		bne	.L12
+ 205              		.loc 1 173 0 is_stmt 0 discriminator 1
+ 206 001a 364B     		ldr	r3, .L16+12
+ 207 001c 1B78     		ldrb	r3, [r3]
+ 208 001e 002B     		cmp	r3, #0
+ 209 0020 5ED1     		bne	.L12
+ 210              		.loc 1 173 0 discriminator 2
+ 211 0022 324B     		ldr	r3, .L16+4
+ 212 0024 1B78     		ldrb	r3, [r3]
+ 213 0026 012B     		cmp	r3, #1
+ 214 0028 03D0     		beq	.L13
+ 174:AudioControl.c ****              || (AUDIO_IN_ENDPOINT == USBFS_frequencyChanged)))
+ 215              		.loc 1 174 0 is_stmt 1
+ 216 002a 304B     		ldr	r3, .L16+4
+ 217 002c 1B78     		ldrb	r3, [r3]
+ 218 002e 022B     		cmp	r3, #2
+ 219 0030 56D1     		bne	.L12
+ 220              	.L13:
+ 221              	.LBB2:
+ 175:AudioControl.c ****         {
+ 176:AudioControl.c ****             uint32 newFrequency;
+ 177:AudioControl.c ****                         
+ 178:AudioControl.c ****             newFrequency = (((uint32)USBFS_currentSampleFrequency[USBFS_frequencyChanged][2] << 16)
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 8
+
+
+ 222              		.loc 1 178 0
+ 223 0032 2E49     		ldr	r1, .L16+4
+ 224 0034 0B78     		ldrb	r3, [r1]
+ 225 0036 DBB2     		uxtb	r3, r3
+ 226 0038 2F48     		ldr	r0, .L16+16
+ 227 003a 5A00     		lsls	r2, r3, #1
+ 228 003c D318     		adds	r3, r2, r3
+ 229 003e C318     		adds	r3, r0, r3
+ 230 0040 9A78     		ldrb	r2, [r3, #2]
+ 231 0042 1204     		lsls	r2, r2, #16
+ 179:AudioControl.c ****                               ((uint32)USBFS_currentSampleFrequency[USBFS_frequencyChanged][1] << 8
+ 232              		.loc 1 179 0
+ 233 0044 0B78     		ldrb	r3, [r1]
+ 234 0046 DBB2     		uxtb	r3, r3
+ 235 0048 5C00     		lsls	r4, r3, #1
+ 236 004a E318     		adds	r3, r4, r3
+ 237 004c C318     		adds	r3, r0, r3
+ 238 004e 5B78     		ldrb	r3, [r3, #1]
+ 239 0050 1B02     		lsls	r3, r3, #8
+ 178:AudioControl.c ****                               ((uint32)USBFS_currentSampleFrequency[USBFS_frequencyChanged][1] << 8
+ 240              		.loc 1 178 0
+ 241 0052 1A43     		orrs	r2, r3
+ 180:AudioControl.c ****                               ((uint32)USBFS_currentSampleFrequency[USBFS_frequencyChanged][0]));
+ 242              		.loc 1 180 0
+ 243 0054 0B78     		ldrb	r3, [r1]
+ 244 0056 DBB2     		uxtb	r3, r3
+ 245 0058 5C00     		lsls	r4, r3, #1
+ 246 005a E318     		adds	r3, r4, r3
+ 247 005c 1B5C     		ldrb	r3, [r3, r0]
+ 178:AudioControl.c ****                               ((uint32)USBFS_currentSampleFrequency[USBFS_frequencyChanged][1] << 8
+ 248              		.loc 1 178 0
+ 249 005e 1A43     		orrs	r2, r3
+ 250              	.LVL20:
+ 181:AudioControl.c **** 
+ 182:AudioControl.c **** 			USBFS_frequencyChanged = 0;
+ 251              		.loc 1 182 0
+ 252 0060 0023     		movs	r3, #0
+ 253 0062 0B70     		strb	r3, [r1]
+ 183:AudioControl.c **** 			
+ 184:AudioControl.c ****             if(SAMPLING_RATE_48KHZ == newFrequency)
+ 254              		.loc 1 184 0
+ 255 0064 254B     		ldr	r3, .L16+20
+ 256 0066 9A42     		cmp	r2, r3
+ 257 0068 12D1     		bne	.L14
+ 185:AudioControl.c ****             {
+ 186:AudioControl.c ****                 newRate = RATE_48KHZ;
+ 258              		.loc 1 186 0
+ 259 006a 0021     		movs	r1, #0
+ 260 006c 244B     		ldr	r3, .L16+24
+ 261 006e 5970     		strb	r1, [r3, #1]
+ 187:AudioControl.c **** 				D_PRINTF(INFO, "Sampling Rate Change Request: 48 ksps: %lu\r\n", newFrequency);
+ 262              		.loc 1 187 0
+ 263 0070 244B     		ldr	r3, .L16+28
+ 264 0072 1B68     		ldr	r3, [r3]
+ 265 0074 002B     		cmp	r3, #0
+ 266 0076 21D0     		beq	.L15
+ 267              		.loc 1 187 0 is_stmt 0 discriminator 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 9
+
+
+ 268 0078 5B7C     		ldrb	r3, [r3, #17]
+ 269 007a 9B07     		lsls	r3, r3, #30
+ 270 007c 1ED5     		bpl	.L15
+ 271              		.loc 1 187 0 discriminator 2
+ 272 007e 224C     		ldr	r4, .L16+32
+ 273 0080 2249     		ldr	r1, .L16+36
+ 274 0082 2000     		movs	r0, r4
+ 275 0084 FFF7FEFF 		bl	sprintf
+ 276              	.LVL21:
+ 277 0088 2000     		movs	r0, r4
+ 278 008a FFF7FEFF 		bl	UART_UartPutString
+ 279              	.LVL22:
+ 280 008e 15E0     		b	.L15
+ 281              	.LVL23:
+ 282              	.L14:
+ 188:AudioControl.c ****             }
+ 189:AudioControl.c ****             else if(SAMPLING_RATE_44KHZ == newFrequency)
+ 283              		.loc 1 189 0 is_stmt 1
+ 284 0090 1F4B     		ldr	r3, .L16+40
+ 285 0092 9A42     		cmp	r2, r3
+ 286 0094 12D1     		bne	.L15
+ 190:AudioControl.c ****             {
+ 191:AudioControl.c ****                 newRate = RATE_44KHZ;
+ 287              		.loc 1 191 0
+ 288 0096 0122     		movs	r2, #1
+ 289              	.LVL24:
+ 290 0098 194B     		ldr	r3, .L16+24
+ 291 009a 5A70     		strb	r2, [r3, #1]
+ 192:AudioControl.c **** 				D_PRINTF(INFO, "Sampling Rate Change Request: 44.1 ksps \r\n");
+ 292              		.loc 1 192 0
+ 293 009c 194B     		ldr	r3, .L16+28
+ 294 009e 1B68     		ldr	r3, [r3]
+ 295 00a0 002B     		cmp	r3, #0
+ 296 00a2 0BD0     		beq	.L15
+ 297              		.loc 1 192 0 is_stmt 0 discriminator 1
+ 298 00a4 5B7C     		ldrb	r3, [r3, #17]
+ 299 00a6 9B07     		lsls	r3, r3, #30
+ 300 00a8 08D5     		bpl	.L15
+ 301              		.loc 1 192 0 discriminator 2
+ 302 00aa 174C     		ldr	r4, .L16+32
+ 303 00ac 2A32     		adds	r2, r2, #42
+ 304 00ae 1949     		ldr	r1, .L16+44
+ 305 00b0 2000     		movs	r0, r4
+ 306 00b2 FFF7FEFF 		bl	memcpy
+ 307              	.LVL25:
+ 308 00b6 2000     		movs	r0, r4
+ 309 00b8 FFF7FEFF 		bl	UART_UartPutString
+ 310              	.LVL26:
+ 311              	.L15:
+ 193:AudioControl.c ****             }
+ 194:AudioControl.c ****                 
+ 195:AudioControl.c ****             if(setRate != newRate)
+ 312              		.loc 1 195 0 is_stmt 1
+ 313 00bc 164B     		ldr	r3, .L16+48
+ 314 00be 1A78     		ldrb	r2, [r3]
+ 315 00c0 0F4B     		ldr	r3, .L16+24
+ 316 00c2 5B78     		ldrb	r3, [r3, #1]
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 10
+
+
+ 317 00c4 9A42     		cmp	r2, r3
+ 318 00c6 0ED0     		beq	.L10
+ 196:AudioControl.c ****             {   
+ 197:AudioControl.c ****                 setRate = newRate;				
+ 319              		.loc 1 197 0
+ 320 00c8 134C     		ldr	r4, .L16+48
+ 321 00ca 2370     		strb	r3, [r4]
+ 198:AudioControl.c **** 				processAsyncFeedbackTransfer(DO_NOT_CLEAR_UPDATE_FLAG);
+ 322              		.loc 1 198 0
+ 323 00cc 0020     		movs	r0, #0
+ 324 00ce FFF7FEFF 		bl	processAsyncFeedbackTransfer
+ 325              	.LVL27:
+ 199:AudioControl.c ****                 
+ 200:AudioControl.c ****                 SetClockRate(setRate);
+ 326              		.loc 1 200 0
+ 327 00d2 2078     		ldrb	r0, [r4]
+ 328 00d4 FFF7FEFF 		bl	SetClockRate
+ 329              	.LVL28:
+ 201:AudioControl.c ****                                 
+ 202:AudioControl.c **** 				asyncready = TRUE;
+ 330              		.loc 1 202 0
+ 331 00d8 0122     		movs	r2, #1
+ 332 00da 104B     		ldr	r3, .L16+52
+ 333 00dc 1A70     		strb	r2, [r3]
+ 334 00de 02E0     		b	.L10
+ 335              	.L12:
+ 336              	.LBE2:
+ 203:AudioControl.c ****             }            
+ 204:AudioControl.c ****         }        
+ 205:AudioControl.c ****         else
+ 206:AudioControl.c ****         {
+ 207:AudioControl.c ****             /* If another frequency change request is received when one of the audio stream is stil
+ 208:AudioControl.c ****              * frequency change request */
+ 209:AudioControl.c ****             USBFS_frequencyChanged = 0;
+ 337              		.loc 1 209 0
+ 338 00e0 0022     		movs	r2, #0
+ 339 00e2 024B     		ldr	r3, .L16+4
+ 340 00e4 1A70     		strb	r2, [r3]
+ 341              	.L10:
+ 210:AudioControl.c ****         }
+ 211:AudioControl.c ****         
+ 212:AudioControl.c ****     }
+ 213:AudioControl.c **** }
+ 342              		.loc 1 213 0
+ 343              		@ sp needed
+ 344 00e6 10BD     		pop	{r4, pc}
+ 345              	.L17:
+ 346              		.align	2
+ 347              	.L16:
+ 348 00e8 00000000 		.word	USBFS_transferState
+ 349 00ec 00000000 		.word	USBFS_frequencyChanged
+ 350 00f0 00000000 		.word	inPlaying
+ 351 00f4 00000000 		.word	outPlaying
+ 352 00f8 00000000 		.word	USBFS_currentSampleFrequency
+ 353 00fc 80BB0000 		.word	48000
+ 354 0100 00000000 		.word	.LANCHOR0
+ 355 0104 00000000 		.word	cal_data
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 11
+
+
+ 356 0108 00000000 		.word	gbuf
+ 357 010c 00000000 		.word	.LC8
+ 358 0110 44AC0000 		.word	44100
+ 359 0114 30000000 		.word	.LC11
+ 360 0118 00000000 		.word	.LANCHOR1
+ 361 011c 00000000 		.word	asyncready
+ 362              		.cfi_endproc
+ 363              	.LFE357:
+ 364              		.size	HandleSamplingFrequencyChangeRequest, .-HandleSamplingFrequencyChangeRequest
+ 365              		.global	setRate
+ 366              		.global	audioClkConfigured
+ 367              		.global	newRate
+ 368              		.data
+ 369              		.set	.LANCHOR1,. + 0
+ 370              		.type	setRate, %object
+ 371              		.size	setRate, 1
+ 372              	setRate:
+ 373 0000 FF       		.byte	-1
+ 374              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 375              		.align	2
+ 376              	.LC8:
+ 377 0000 53616D70 		.ascii	"Sampling Rate Change Request: 48 ksps: %lu\015\012\000"
+ 377      6C696E67 
+ 377      20526174 
+ 377      65204368 
+ 377      616E6765 
+ 378 002d 000000   		.space	3
+ 379              	.LC11:
+ 380 0030 53616D70 		.ascii	"Sampling Rate Change Request: 44.1 ksps \015\012\000"
+ 380      6C696E67 
+ 380      20526174 
+ 380      65204368 
+ 380      616E6765 
+ 381              		.bss
+ 382              		.set	.LANCHOR0,. + 0
+ 383              		.type	audioClkConfigured, %object
+ 384              		.size	audioClkConfigured, 1
+ 385              	audioClkConfigured:
+ 386 0000 00       		.space	1
+ 387              		.type	newRate, %object
+ 388              		.size	newRate, 1
+ 389              	newRate:
+ 390 0001 00       		.space	1
+ 391              		.text
+ 392              	.Letext0:
+ 393              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 394              		.file 3 "./Calibration.h"
+ 395              		.file 4 "./Application.h"
+ 396              		.file 5 "Generated_Source\\PSoC4/USBFS.h"
+ 397              		.file 6 "Generated_Source\\PSoC4/USBFS_audio.h"
+ 398              		.file 7 "Generated_Source\\PSoC4/AudioClkSel.h"
+ 399              		.file 8 "Generated_Source\\PSoC4/CyDMA.h"
+ 400              		.file 9 "./AudioIn.h"
+ 401              		.file 10 "./AudioOut.h"
+ 402              		.file 11 "./Codec.h"
+ 403              		.file 12 "Generated_Source\\PSoC4/CyLib.h"
+ 404              		.file 13 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 12
+
+
+ 405              		.file 14 "Generated_Source\\PSoC4/UART_SPI_UART.h"
+ 406              		.file 15 "./USBInterface.h"
+ 407              		.section	.debug_info,"",%progbits
+ 408              	.Ldebug_info0:
+ 409 0000 A4040000 		.4byte	0x4a4
+ 410 0004 0400     		.2byte	0x4
+ 411 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 412 000a 04       		.byte	0x4
+ 413 000b 01       		.uleb128 0x1
+ 414 000c 14020000 		.4byte	.LASF53
+ 415 0010 0C       		.byte	0xc
+ 416 0011 94030000 		.4byte	.LASF54
+ 417 0015 DF020000 		.4byte	.LASF55
+ 418 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 419 001d 00000000 		.4byte	0
+ 420 0021 00000000 		.4byte	.Ldebug_line0
+ 421 0025 02       		.uleb128 0x2
+ 422 0026 01       		.byte	0x1
+ 423 0027 06       		.byte	0x6
+ 424 0028 77030000 		.4byte	.LASF0
+ 425 002c 02       		.uleb128 0x2
+ 426 002d 01       		.byte	0x1
+ 427 002e 08       		.byte	0x8
+ 428 002f E6000000 		.4byte	.LASF1
+ 429 0033 02       		.uleb128 0x2
+ 430 0034 02       		.byte	0x2
+ 431 0035 05       		.byte	0x5
+ 432 0036 15030000 		.4byte	.LASF2
+ 433 003a 02       		.uleb128 0x2
+ 434 003b 02       		.byte	0x2
+ 435 003c 07       		.byte	0x7
+ 436 003d 11010000 		.4byte	.LASF3
+ 437 0041 02       		.uleb128 0x2
+ 438 0042 04       		.byte	0x4
+ 439 0043 05       		.byte	0x5
+ 440 0044 37000000 		.4byte	.LASF4
+ 441 0048 02       		.uleb128 0x2
+ 442 0049 04       		.byte	0x4
+ 443 004a 07       		.byte	0x7
+ 444 004b FF000000 		.4byte	.LASF5
+ 445 004f 02       		.uleb128 0x2
+ 446 0050 08       		.byte	0x8
+ 447 0051 05       		.byte	0x5
+ 448 0052 CC020000 		.4byte	.LASF6
+ 449 0056 02       		.uleb128 0x2
+ 450 0057 08       		.byte	0x8
+ 451 0058 07       		.byte	0x7
+ 452 0059 CF010000 		.4byte	.LASF7
+ 453 005d 03       		.uleb128 0x3
+ 454 005e 04       		.byte	0x4
+ 455 005f 05       		.byte	0x5
+ 456 0060 696E7400 		.ascii	"int\000"
+ 457 0064 02       		.uleb128 0x2
+ 458 0065 04       		.byte	0x4
+ 459 0066 07       		.byte	0x7
+ 460 0067 9D010000 		.4byte	.LASF8
+ 461 006b 04       		.uleb128 0x4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 13
+
+
+ 462 006c D5000000 		.4byte	.LASF9
+ 463 0070 02       		.byte	0x2
+ 464 0071 E401     		.2byte	0x1e4
+ 465 0073 2C000000 		.4byte	0x2c
+ 466 0077 04       		.uleb128 0x4
+ 467 0078 96010000 		.4byte	.LASF10
+ 468 007c 02       		.byte	0x2
+ 469 007d E601     		.2byte	0x1e6
+ 470 007f 48000000 		.4byte	0x48
+ 471 0083 04       		.uleb128 0x4
+ 472 0084 F9000000 		.4byte	.LASF11
+ 473 0088 02       		.byte	0x2
+ 474 0089 E801     		.2byte	0x1e8
+ 475 008b 33000000 		.4byte	0x33
+ 476 008f 02       		.uleb128 0x2
+ 477 0090 04       		.byte	0x4
+ 478 0091 04       		.byte	0x4
+ 479 0092 1E000000 		.4byte	.LASF12
+ 480 0096 02       		.uleb128 0x2
+ 481 0097 08       		.byte	0x8
+ 482 0098 04       		.byte	0x4
+ 483 0099 64010000 		.4byte	.LASF13
+ 484 009d 02       		.uleb128 0x2
+ 485 009e 01       		.byte	0x1
+ 486 009f 08       		.byte	0x8
+ 487 00a0 DA020000 		.4byte	.LASF14
+ 488 00a4 04       		.uleb128 0x4
+ 489 00a5 F4000000 		.4byte	.LASF15
+ 490 00a9 02       		.byte	0x2
+ 491 00aa 8E02     		.2byte	0x28e
+ 492 00ac B0000000 		.4byte	0xb0
+ 493 00b0 05       		.uleb128 0x5
+ 494 00b1 6B000000 		.4byte	0x6b
+ 495 00b5 02       		.uleb128 0x2
+ 496 00b6 08       		.byte	0x8
+ 497 00b7 04       		.byte	0x4
+ 498 00b8 B6000000 		.4byte	.LASF16
+ 499 00bc 02       		.uleb128 0x2
+ 500 00bd 04       		.byte	0x4
+ 501 00be 07       		.byte	0x7
+ 502 00bf C3020000 		.4byte	.LASF17
+ 503 00c3 06       		.uleb128 0x6
+ 504 00c4 14       		.byte	0x14
+ 505 00c5 03       		.byte	0x3
+ 506 00c6 12       		.byte	0x12
+ 507 00c7 14010000 		.4byte	0x114
+ 508 00cb 07       		.uleb128 0x7
+ 509 00cc 14000000 		.4byte	.LASF18
+ 510 00d0 03       		.byte	0x3
+ 511 00d1 14       		.byte	0x14
+ 512 00d2 77000000 		.4byte	0x77
+ 513 00d6 00       		.byte	0
+ 514 00d7 07       		.uleb128 0x7
+ 515 00d8 CD000000 		.4byte	.LASF19
+ 516 00dc 03       		.byte	0x3
+ 517 00dd 15       		.byte	0x15
+ 518 00de 77000000 		.4byte	0x77
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 14
+
+
+ 519 00e2 04       		.byte	0x4
+ 520 00e3 07       		.uleb128 0x7
+ 521 00e4 06030000 		.4byte	.LASF20
+ 522 00e8 03       		.byte	0x3
+ 523 00e9 16       		.byte	0x16
+ 524 00ea 14010000 		.4byte	0x114
+ 525 00ee 08       		.byte	0x8
+ 526 00ef 07       		.uleb128 0x7
+ 527 00f0 EE010000 		.4byte	.LASF21
+ 528 00f4 03       		.byte	0x3
+ 529 00f5 17       		.byte	0x17
+ 530 00f6 14010000 		.4byte	0x114
+ 531 00fa 0C       		.byte	0xc
+ 532 00fb 07       		.uleb128 0x7
+ 533 00fc 24000000 		.4byte	.LASF22
+ 534 0100 03       		.byte	0x3
+ 535 0101 19       		.byte	0x19
+ 536 0102 6B000000 		.4byte	0x6b
+ 537 0106 10       		.byte	0x10
+ 538 0107 07       		.uleb128 0x7
+ 539 0108 6B010000 		.4byte	.LASF23
+ 540 010c 03       		.byte	0x3
+ 541 010d 1A       		.byte	0x1a
+ 542 010e 6B000000 		.4byte	0x6b
+ 543 0112 11       		.byte	0x11
+ 544 0113 00       		.byte	0
+ 545 0114 08       		.uleb128 0x8
+ 546 0115 83000000 		.4byte	0x83
+ 547 0119 24010000 		.4byte	0x124
+ 548 011d 09       		.uleb128 0x9
+ 549 011e BC000000 		.4byte	0xbc
+ 550 0122 01       		.byte	0x1
+ 551 0123 00       		.byte	0
+ 552 0124 0A       		.uleb128 0xa
+ 553 0125 51010000 		.4byte	.LASF24
+ 554 0129 03       		.byte	0x3
+ 555 012a 1B       		.byte	0x1b
+ 556 012b C3000000 		.4byte	0xc3
+ 557 012f 0B       		.uleb128 0xb
+ 558 0130 40000000 		.4byte	.LASF25
+ 559 0134 01       		.byte	0x1
+ 560 0135 4E       		.byte	0x4e
+ 561 0136 00000000 		.4byte	.LFB355
+ 562 013a 34000000 		.4byte	.LFE355-.LFB355
+ 563 013e 01       		.uleb128 0x1
+ 564 013f 9C       		.byte	0x9c
+ 565 0140 73010000 		.4byte	0x173
+ 566 0144 0C       		.uleb128 0xc
+ 567 0145 08000000 		.4byte	.LVL0
+ 568 0149 03040000 		.4byte	0x403
+ 569 014d 57010000 		.4byte	0x157
+ 570 0151 0D       		.uleb128 0xd
+ 571 0152 01       		.uleb128 0x1
+ 572 0153 50       		.byte	0x50
+ 573 0154 01       		.uleb128 0x1
+ 574 0155 30       		.byte	0x30
+ 575 0156 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 15
+
+
+ 576 0157 0E       		.uleb128 0xe
+ 577 0158 0C000000 		.4byte	.LVL1
+ 578 015c 0E040000 		.4byte	0x40e
+ 579 0160 0E       		.uleb128 0xe
+ 580 0161 10000000 		.4byte	.LVL2
+ 581 0165 19040000 		.4byte	0x419
+ 582 0169 0E       		.uleb128 0xe
+ 583 016a 14000000 		.4byte	.LVL3
+ 584 016e 24040000 		.4byte	0x424
+ 585 0172 00       		.byte	0
+ 586 0173 0B       		.uleb128 0xb
+ 587 0174 76010000 		.4byte	.LASF26
+ 588 0178 01       		.byte	0x1
+ 589 0179 70       		.byte	0x70
+ 590 017a 00000000 		.4byte	.LFB356
+ 591 017e 74000000 		.4byte	.LFE356-.LFB356
+ 592 0182 01       		.uleb128 0x1
+ 593 0183 9C       		.byte	0x9c
+ 594 0184 98020000 		.4byte	0x298
+ 595 0188 0F       		.uleb128 0xf
+ 596 0189 E6010000 		.4byte	.LASF34
+ 597 018d 01       		.byte	0x1
+ 598 018e 70       		.byte	0x70
+ 599 018f 6B000000 		.4byte	0x6b
+ 600 0193 00000000 		.4byte	.LLST0
+ 601 0197 0E       		.uleb128 0xe
+ 602 0198 08000000 		.4byte	.LVL5
+ 603 019c 2F040000 		.4byte	0x42f
+ 604 01a0 0E       		.uleb128 0xe
+ 605 01a1 0C000000 		.4byte	.LVL6
+ 606 01a5 3A040000 		.4byte	0x43a
+ 607 01a9 0E       		.uleb128 0xe
+ 608 01aa 10000000 		.4byte	.LVL7
+ 609 01ae 45040000 		.4byte	0x445
+ 610 01b2 0C       		.uleb128 0xc
+ 611 01b3 1C000000 		.4byte	.LVL8
+ 612 01b7 50040000 		.4byte	0x450
+ 613 01bb CA010000 		.4byte	0x1ca
+ 614 01bf 0D       		.uleb128 0xd
+ 615 01c0 01       		.uleb128 0x1
+ 616 01c1 50       		.byte	0x50
+ 617 01c2 01       		.uleb128 0x1
+ 618 01c3 30       		.byte	0x30
+ 619 01c4 0D       		.uleb128 0xd
+ 620 01c5 01       		.uleb128 0x1
+ 621 01c6 51       		.byte	0x51
+ 622 01c7 01       		.uleb128 0x1
+ 623 01c8 31       		.byte	0x31
+ 624 01c9 00       		.byte	0
+ 625 01ca 0C       		.uleb128 0xc
+ 626 01cb 22000000 		.4byte	.LVL9
+ 627 01cf 5B040000 		.4byte	0x45b
+ 628 01d3 DD010000 		.4byte	0x1dd
+ 629 01d7 0D       		.uleb128 0xd
+ 630 01d8 01       		.uleb128 0x1
+ 631 01d9 50       		.byte	0x50
+ 632 01da 01       		.uleb128 0x1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 16
+
+
+ 633 01db 31       		.byte	0x31
+ 634 01dc 00       		.byte	0
+ 635 01dd 0C       		.uleb128 0xc
+ 636 01de 28000000 		.4byte	.LVL10
+ 637 01e2 03040000 		.4byte	0x403
+ 638 01e6 F0010000 		.4byte	0x1f0
+ 639 01ea 0D       		.uleb128 0xd
+ 640 01eb 01       		.uleb128 0x1
+ 641 01ec 50       		.byte	0x50
+ 642 01ed 01       		.uleb128 0x1
+ 643 01ee 30       		.byte	0x30
+ 644 01ef 00       		.byte	0
+ 645 01f0 0C       		.uleb128 0xc
+ 646 01f1 2E000000 		.4byte	.LVL11
+ 647 01f5 66040000 		.4byte	0x466
+ 648 01f9 03020000 		.4byte	0x203
+ 649 01fd 0D       		.uleb128 0xd
+ 650 01fe 01       		.uleb128 0x1
+ 651 01ff 50       		.byte	0x50
+ 652 0200 01       		.uleb128 0x1
+ 653 0201 30       		.byte	0x30
+ 654 0202 00       		.byte	0
+ 655 0203 0C       		.uleb128 0xc
+ 656 0204 3C000000 		.4byte	.LVL12
+ 657 0208 50040000 		.4byte	0x450
+ 658 020c 1B020000 		.4byte	0x21b
+ 659 0210 0D       		.uleb128 0xd
+ 660 0211 01       		.uleb128 0x1
+ 661 0212 50       		.byte	0x50
+ 662 0213 01       		.uleb128 0x1
+ 663 0214 31       		.byte	0x31
+ 664 0215 0D       		.uleb128 0xd
+ 665 0216 01       		.uleb128 0x1
+ 666 0217 51       		.byte	0x51
+ 667 0218 01       		.uleb128 0x1
+ 668 0219 31       		.byte	0x31
+ 669 021a 00       		.byte	0
+ 670 021b 0C       		.uleb128 0xc
+ 671 021c 42000000 		.4byte	.LVL13
+ 672 0220 5B040000 		.4byte	0x45b
+ 673 0224 2E020000 		.4byte	0x22e
+ 674 0228 0D       		.uleb128 0xd
+ 675 0229 01       		.uleb128 0x1
+ 676 022a 50       		.byte	0x50
+ 677 022b 01       		.uleb128 0x1
+ 678 022c 30       		.byte	0x30
+ 679 022d 00       		.byte	0
+ 680 022e 0C       		.uleb128 0xc
+ 681 022f 48000000 		.4byte	.LVL14
+ 682 0233 03040000 		.4byte	0x403
+ 683 0237 41020000 		.4byte	0x241
+ 684 023b 0D       		.uleb128 0xd
+ 685 023c 01       		.uleb128 0x1
+ 686 023d 50       		.byte	0x50
+ 687 023e 01       		.uleb128 0x1
+ 688 023f 31       		.byte	0x31
+ 689 0240 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 17
+
+
+ 690 0241 0C       		.uleb128 0xc
+ 691 0242 4E000000 		.4byte	.LVL15
+ 692 0246 66040000 		.4byte	0x466
+ 693 024a 55020000 		.4byte	0x255
+ 694 024e 0D       		.uleb128 0xd
+ 695 024f 01       		.uleb128 0x1
+ 696 0250 50       		.byte	0x50
+ 697 0251 02       		.uleb128 0x2
+ 698 0252 08       		.byte	0x8
+ 699 0253 20       		.byte	0x20
+ 700 0254 00       		.byte	0
+ 701 0255 0C       		.uleb128 0xc
+ 702 0256 56000000 		.4byte	.LVL16
+ 703 025a 5B040000 		.4byte	0x45b
+ 704 025e 68020000 		.4byte	0x268
+ 705 0262 0D       		.uleb128 0xd
+ 706 0263 01       		.uleb128 0x1
+ 707 0264 50       		.byte	0x50
+ 708 0265 01       		.uleb128 0x1
+ 709 0266 30       		.byte	0x30
+ 710 0267 00       		.byte	0
+ 711 0268 0C       		.uleb128 0xc
+ 712 0269 5C000000 		.4byte	.LVL17
+ 713 026d 5B040000 		.4byte	0x45b
+ 714 0271 7B020000 		.4byte	0x27b
+ 715 0275 0D       		.uleb128 0xd
+ 716 0276 01       		.uleb128 0x1
+ 717 0277 50       		.byte	0x50
+ 718 0278 01       		.uleb128 0x1
+ 719 0279 31       		.byte	0x31
+ 720 027a 00       		.byte	0
+ 721 027b 0C       		.uleb128 0xc
+ 722 027c 62000000 		.4byte	.LVL18
+ 723 0280 66040000 		.4byte	0x466
+ 724 0284 8E020000 		.4byte	0x28e
+ 725 0288 0D       		.uleb128 0xd
+ 726 0289 01       		.uleb128 0x1
+ 727 028a 50       		.byte	0x50
+ 728 028b 01       		.uleb128 0x1
+ 729 028c 30       		.byte	0x30
+ 730 028d 00       		.byte	0
+ 731 028e 0E       		.uleb128 0xe
+ 732 028f 66000000 		.4byte	.LVL19
+ 733 0293 71040000 		.4byte	0x471
+ 734 0297 00       		.byte	0
+ 735 0298 0B       		.uleb128 0xb
+ 736 0299 6B000000 		.4byte	.LASF27
+ 737 029d 01       		.byte	0x1
+ 738 029e A4       		.byte	0xa4
+ 739 029f 00000000 		.4byte	.LFB357
+ 740 02a3 20010000 		.4byte	.LFE357-.LFB357
+ 741 02a7 01       		.uleb128 0x1
+ 742 02a8 9C       		.byte	0x9c
+ 743 02a9 4B030000 		.4byte	0x34b
+ 744 02ad 10       		.uleb128 0x10
+ 745 02ae 32000000 		.4byte	.LBB2
+ 746 02b2 AE000000 		.4byte	.LBE2-.LBB2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 18
+
+
+ 747 02b6 11       		.uleb128 0x11
+ 748 02b7 30030000 		.4byte	.LASF56
+ 749 02bb 01       		.byte	0x1
+ 750 02bc B0       		.byte	0xb0
+ 751 02bd 77000000 		.4byte	0x77
+ 752 02c1 21000000 		.4byte	.LLST1
+ 753 02c5 0C       		.uleb128 0xc
+ 754 02c6 88000000 		.4byte	.LVL21
+ 755 02ca 7C040000 		.4byte	0x47c
+ 756 02ce E2020000 		.4byte	0x2e2
+ 757 02d2 0D       		.uleb128 0xd
+ 758 02d3 01       		.uleb128 0x1
+ 759 02d4 50       		.byte	0x50
+ 760 02d5 02       		.uleb128 0x2
+ 761 02d6 74       		.byte	0x74
+ 762 02d7 00       		.sleb128 0
+ 763 02d8 0D       		.uleb128 0xd
+ 764 02d9 01       		.uleb128 0x1
+ 765 02da 51       		.byte	0x51
+ 766 02db 05       		.uleb128 0x5
+ 767 02dc 03       		.byte	0x3
+ 768 02dd 00000000 		.4byte	.LC8
+ 769 02e1 00       		.byte	0
+ 770 02e2 0C       		.uleb128 0xc
+ 771 02e3 8E000000 		.4byte	.LVL22
+ 772 02e7 87040000 		.4byte	0x487
+ 773 02eb F6020000 		.4byte	0x2f6
+ 774 02ef 0D       		.uleb128 0xd
+ 775 02f0 01       		.uleb128 0x1
+ 776 02f1 50       		.byte	0x50
+ 777 02f2 02       		.uleb128 0x2
+ 778 02f3 74       		.byte	0x74
+ 779 02f4 00       		.sleb128 0
+ 780 02f5 00       		.byte	0
+ 781 02f6 0C       		.uleb128 0xc
+ 782 02f7 B6000000 		.4byte	.LVL25
+ 783 02fb 93040000 		.4byte	0x493
+ 784 02ff 19030000 		.4byte	0x319
+ 785 0303 0D       		.uleb128 0xd
+ 786 0304 01       		.uleb128 0x1
+ 787 0305 50       		.byte	0x50
+ 788 0306 02       		.uleb128 0x2
+ 789 0307 74       		.byte	0x74
+ 790 0308 00       		.sleb128 0
+ 791 0309 0D       		.uleb128 0xd
+ 792 030a 01       		.uleb128 0x1
+ 793 030b 51       		.byte	0x51
+ 794 030c 05       		.uleb128 0x5
+ 795 030d 03       		.byte	0x3
+ 796 030e 30000000 		.4byte	.LC11
+ 797 0312 0D       		.uleb128 0xd
+ 798 0313 01       		.uleb128 0x1
+ 799 0314 52       		.byte	0x52
+ 800 0315 02       		.uleb128 0x2
+ 801 0316 08       		.byte	0x8
+ 802 0317 2B       		.byte	0x2b
+ 803 0318 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 19
+
+
+ 804 0319 0C       		.uleb128 0xc
+ 805 031a BC000000 		.4byte	.LVL26
+ 806 031e 87040000 		.4byte	0x487
+ 807 0322 2D030000 		.4byte	0x32d
+ 808 0326 0D       		.uleb128 0xd
+ 809 0327 01       		.uleb128 0x1
+ 810 0328 50       		.byte	0x50
+ 811 0329 02       		.uleb128 0x2
+ 812 032a 74       		.byte	0x74
+ 813 032b 00       		.sleb128 0
+ 814 032c 00       		.byte	0
+ 815 032d 0C       		.uleb128 0xc
+ 816 032e D2000000 		.4byte	.LVL27
+ 817 0332 9C040000 		.4byte	0x49c
+ 818 0336 40030000 		.4byte	0x340
+ 819 033a 0D       		.uleb128 0xd
+ 820 033b 01       		.uleb128 0x1
+ 821 033c 50       		.byte	0x50
+ 822 033d 01       		.uleb128 0x1
+ 823 033e 30       		.byte	0x30
+ 824 033f 00       		.byte	0
+ 825 0340 0E       		.uleb128 0xe
+ 826 0341 D8000000 		.4byte	.LVL28
+ 827 0345 73010000 		.4byte	0x173
+ 828 0349 00       		.byte	0
+ 829 034a 00       		.byte	0
+ 830 034b 12       		.uleb128 0x12
+ 831 034c 83010000 		.4byte	.LASF28
+ 832 0350 03       		.byte	0x3
+ 833 0351 1D       		.byte	0x1d
+ 834 0352 56030000 		.4byte	0x356
+ 835 0356 13       		.uleb128 0x13
+ 836 0357 04       		.byte	0x4
+ 837 0358 24010000 		.4byte	0x124
+ 838 035c 08       		.uleb128 0x8
+ 839 035d 9D000000 		.4byte	0x9d
+ 840 0361 67030000 		.4byte	0x367
+ 841 0365 14       		.uleb128 0x14
+ 842 0366 00       		.byte	0
+ 843 0367 12       		.uleb128 0x12
+ 844 0368 1F030000 		.4byte	.LASF29
+ 845 036c 04       		.byte	0x4
+ 846 036d 3A       		.byte	0x3a
+ 847 036e 5C030000 		.4byte	0x35c
+ 848 0372 15       		.uleb128 0x15
+ 849 0373 90000000 		.4byte	.LASF30
+ 850 0377 01       		.byte	0x1
+ 851 0378 3C       		.byte	0x3c
+ 852 0379 6B000000 		.4byte	0x6b
+ 853 037d 05       		.uleb128 0x5
+ 854 037e 03       		.byte	0x3
+ 855 037f 00000000 		.4byte	audioClkConfigured
+ 856 0383 16       		.uleb128 0x16
+ 857 0384 00000000 		.4byte	.LASF31
+ 858 0388 05       		.byte	0x5
+ 859 0389 DB02     		.2byte	0x2db
+ 860 038b B0000000 		.4byte	0xb0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 20
+
+
+ 861 038f 08       		.uleb128 0x8
+ 862 0390 B0000000 		.4byte	0xb0
+ 863 0394 A5030000 		.4byte	0x3a5
+ 864 0398 09       		.uleb128 0x9
+ 865 0399 BC000000 		.4byte	0xbc
+ 866 039d 08       		.byte	0x8
+ 867 039e 09       		.uleb128 0x9
+ 868 039f BC000000 		.4byte	0xbc
+ 869 03a3 02       		.byte	0x2
+ 870 03a4 00       		.byte	0
+ 871 03a5 12       		.uleb128 0x12
+ 872 03a6 B2010000 		.4byte	.LASF32
+ 873 03aa 06       		.byte	0x6
+ 874 03ab 5B       		.byte	0x5b
+ 875 03ac B0030000 		.4byte	0x3b0
+ 876 03b0 05       		.uleb128 0x5
+ 877 03b1 8F030000 		.4byte	0x38f
+ 878 03b5 12       		.uleb128 0x12
+ 879 03b6 3D030000 		.4byte	.LASF33
+ 880 03ba 06       		.byte	0x6
+ 881 03bb 5C       		.byte	0x5c
+ 882 03bc B0000000 		.4byte	0xb0
+ 883 03c0 15       		.uleb128 0x15
+ 884 03c1 E6010000 		.4byte	.LASF34
+ 885 03c5 01       		.byte	0x1
+ 886 03c6 32       		.byte	0x32
+ 887 03c7 6B000000 		.4byte	0x6b
+ 888 03cb 05       		.uleb128 0x5
+ 889 03cc 03       		.byte	0x3
+ 890 03cd 00000000 		.4byte	newRate
+ 891 03d1 12       		.uleb128 0x12
+ 892 03d2 C2000000 		.4byte	.LASF35
+ 893 03d6 01       		.byte	0x1
+ 894 03d7 33       		.byte	0x33
+ 895 03d8 6B000000 		.4byte	0x6b
+ 896 03dc 12       		.uleb128 0x12
+ 897 03dd DB000000 		.4byte	.LASF36
+ 898 03e1 01       		.byte	0x1
+ 899 03e2 36       		.byte	0x36
+ 900 03e3 6B000000 		.4byte	0x6b
+ 901 03e7 12       		.uleb128 0x12
+ 902 03e8 8C010000 		.4byte	.LASF37
+ 903 03ec 01       		.byte	0x1
+ 904 03ed 38       		.byte	0x38
+ 905 03ee 6B000000 		.4byte	0x6b
+ 906 03f2 15       		.uleb128 0x15
+ 907 03f3 AA010000 		.4byte	.LASF38
+ 908 03f7 01       		.byte	0x1
+ 909 03f8 3D       		.byte	0x3d
+ 910 03f9 6B000000 		.4byte	0x6b
+ 911 03fd 05       		.uleb128 0x5
+ 912 03fe 03       		.byte	0x3
+ 913 03ff 00000000 		.4byte	setRate
+ 914 0403 17       		.uleb128 0x17
+ 915 0404 B1020000 		.4byte	.LASF39
+ 916 0408 B1020000 		.4byte	.LASF39
+ 917 040c 07       		.byte	0x7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 21
+
+
+ 918 040d 2F       		.byte	0x2f
+ 919 040e 17       		.uleb128 0x17
+ 920 040f 5F000000 		.4byte	.LASF40
+ 921 0413 5F000000 		.4byte	.LASF40
+ 922 0417 08       		.byte	0x8
+ 923 0418 6D       		.byte	0x6d
+ 924 0419 17       		.uleb128 0x17
+ 925 041a A3030000 		.4byte	.LASF41
+ 926 041e A3030000 		.4byte	.LASF41
+ 927 0422 09       		.byte	0x9
+ 928 0423 32       		.byte	0x32
+ 929 0424 17       		.uleb128 0x17
+ 930 0425 54030000 		.4byte	.LASF42
+ 931 0429 54030000 		.4byte	.LASF42
+ 932 042d 0A       		.byte	0xa
+ 933 042e 29       		.byte	0x29
+ 934 042f 17       		.uleb128 0x17
+ 935 0430 6B030000 		.4byte	.LASF43
+ 936 0434 6B030000 		.4byte	.LASF43
+ 937 0438 0A       		.byte	0xa
+ 938 0439 2B       		.byte	0x2b
+ 939 043a 17       		.uleb128 0x17
+ 940 043b 24030000 		.4byte	.LASF44
+ 941 043f 24030000 		.4byte	.LASF44
+ 942 0443 09       		.byte	0x9
+ 943 0444 34       		.byte	0x34
+ 944 0445 17       		.uleb128 0x17
+ 945 0446 83030000 		.4byte	.LASF45
+ 946 044a 83030000 		.4byte	.LASF45
+ 947 044e 0B       		.byte	0xb
+ 948 044f B3       		.byte	0xb3
+ 949 0450 17       		.uleb128 0x17
+ 950 0451 4E000000 		.4byte	.LASF46
+ 951 0455 4E000000 		.4byte	.LASF46
+ 952 0459 0C       		.byte	0xc
+ 953 045a 9A       		.byte	0x9a
+ 954 045b 17       		.uleb128 0x17
+ 955 045c 41010000 		.4byte	.LASF47
+ 956 0460 41010000 		.4byte	.LASF47
+ 957 0464 0C       		.byte	0xc
+ 958 0465 9B       		.byte	0x9b
+ 959 0466 17       		.uleb128 0x17
+ 960 0467 FE010000 		.4byte	.LASF48
+ 961 046b FE010000 		.4byte	.LASF48
+ 962 046f 0B       		.byte	0xb
+ 963 0470 B1       		.byte	0xb1
+ 964 0471 17       		.uleb128 0x17
+ 965 0472 A2020000 		.4byte	.LASF49
+ 966 0476 A2020000 		.4byte	.LASF49
+ 967 047a 0B       		.byte	0xb
+ 968 047b B2       		.byte	0xb2
+ 969 047c 17       		.uleb128 0x17
+ 970 047d F6010000 		.4byte	.LASF50
+ 971 0481 F6010000 		.4byte	.LASF50
+ 972 0485 0D       		.byte	0xd
+ 973 0486 E7       		.byte	0xe7
+ 974 0487 18       		.uleb128 0x18
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 22
+
+
+ 975 0488 A3000000 		.4byte	.LASF51
+ 976 048c A3000000 		.4byte	.LASF51
+ 977 0490 0E       		.byte	0xe
+ 978 0491 2A03     		.2byte	0x32a
+ 979 0493 19       		.uleb128 0x19
+ 980 0494 0E030000 		.4byte	.LASF57
+ 981 0498 0E030000 		.4byte	.LASF57
+ 982 049c 17       		.uleb128 0x17
+ 983 049d 24010000 		.4byte	.LASF52
+ 984 04a1 24010000 		.4byte	.LASF52
+ 985 04a5 0F       		.byte	0xf
+ 986 04a6 46       		.byte	0x46
+ 987 04a7 00       		.byte	0
+ 988              		.section	.debug_abbrev,"",%progbits
+ 989              	.Ldebug_abbrev0:
+ 990 0000 01       		.uleb128 0x1
+ 991 0001 11       		.uleb128 0x11
+ 992 0002 01       		.byte	0x1
+ 993 0003 25       		.uleb128 0x25
+ 994 0004 0E       		.uleb128 0xe
+ 995 0005 13       		.uleb128 0x13
+ 996 0006 0B       		.uleb128 0xb
+ 997 0007 03       		.uleb128 0x3
+ 998 0008 0E       		.uleb128 0xe
+ 999 0009 1B       		.uleb128 0x1b
+ 1000 000a 0E       		.uleb128 0xe
+ 1001 000b 55       		.uleb128 0x55
+ 1002 000c 17       		.uleb128 0x17
+ 1003 000d 11       		.uleb128 0x11
+ 1004 000e 01       		.uleb128 0x1
+ 1005 000f 10       		.uleb128 0x10
+ 1006 0010 17       		.uleb128 0x17
+ 1007 0011 00       		.byte	0
+ 1008 0012 00       		.byte	0
+ 1009 0013 02       		.uleb128 0x2
+ 1010 0014 24       		.uleb128 0x24
+ 1011 0015 00       		.byte	0
+ 1012 0016 0B       		.uleb128 0xb
+ 1013 0017 0B       		.uleb128 0xb
+ 1014 0018 3E       		.uleb128 0x3e
+ 1015 0019 0B       		.uleb128 0xb
+ 1016 001a 03       		.uleb128 0x3
+ 1017 001b 0E       		.uleb128 0xe
+ 1018 001c 00       		.byte	0
+ 1019 001d 00       		.byte	0
+ 1020 001e 03       		.uleb128 0x3
+ 1021 001f 24       		.uleb128 0x24
+ 1022 0020 00       		.byte	0
+ 1023 0021 0B       		.uleb128 0xb
+ 1024 0022 0B       		.uleb128 0xb
+ 1025 0023 3E       		.uleb128 0x3e
+ 1026 0024 0B       		.uleb128 0xb
+ 1027 0025 03       		.uleb128 0x3
+ 1028 0026 08       		.uleb128 0x8
+ 1029 0027 00       		.byte	0
+ 1030 0028 00       		.byte	0
+ 1031 0029 04       		.uleb128 0x4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 23
+
+
+ 1032 002a 16       		.uleb128 0x16
+ 1033 002b 00       		.byte	0
+ 1034 002c 03       		.uleb128 0x3
+ 1035 002d 0E       		.uleb128 0xe
+ 1036 002e 3A       		.uleb128 0x3a
+ 1037 002f 0B       		.uleb128 0xb
+ 1038 0030 3B       		.uleb128 0x3b
+ 1039 0031 05       		.uleb128 0x5
+ 1040 0032 49       		.uleb128 0x49
+ 1041 0033 13       		.uleb128 0x13
+ 1042 0034 00       		.byte	0
+ 1043 0035 00       		.byte	0
+ 1044 0036 05       		.uleb128 0x5
+ 1045 0037 35       		.uleb128 0x35
+ 1046 0038 00       		.byte	0
+ 1047 0039 49       		.uleb128 0x49
+ 1048 003a 13       		.uleb128 0x13
+ 1049 003b 00       		.byte	0
+ 1050 003c 00       		.byte	0
+ 1051 003d 06       		.uleb128 0x6
+ 1052 003e 13       		.uleb128 0x13
+ 1053 003f 01       		.byte	0x1
+ 1054 0040 0B       		.uleb128 0xb
+ 1055 0041 0B       		.uleb128 0xb
+ 1056 0042 3A       		.uleb128 0x3a
+ 1057 0043 0B       		.uleb128 0xb
+ 1058 0044 3B       		.uleb128 0x3b
+ 1059 0045 0B       		.uleb128 0xb
+ 1060 0046 01       		.uleb128 0x1
+ 1061 0047 13       		.uleb128 0x13
+ 1062 0048 00       		.byte	0
+ 1063 0049 00       		.byte	0
+ 1064 004a 07       		.uleb128 0x7
+ 1065 004b 0D       		.uleb128 0xd
+ 1066 004c 00       		.byte	0
+ 1067 004d 03       		.uleb128 0x3
+ 1068 004e 0E       		.uleb128 0xe
+ 1069 004f 3A       		.uleb128 0x3a
+ 1070 0050 0B       		.uleb128 0xb
+ 1071 0051 3B       		.uleb128 0x3b
+ 1072 0052 0B       		.uleb128 0xb
+ 1073 0053 49       		.uleb128 0x49
+ 1074 0054 13       		.uleb128 0x13
+ 1075 0055 38       		.uleb128 0x38
+ 1076 0056 0B       		.uleb128 0xb
+ 1077 0057 00       		.byte	0
+ 1078 0058 00       		.byte	0
+ 1079 0059 08       		.uleb128 0x8
+ 1080 005a 01       		.uleb128 0x1
+ 1081 005b 01       		.byte	0x1
+ 1082 005c 49       		.uleb128 0x49
+ 1083 005d 13       		.uleb128 0x13
+ 1084 005e 01       		.uleb128 0x1
+ 1085 005f 13       		.uleb128 0x13
+ 1086 0060 00       		.byte	0
+ 1087 0061 00       		.byte	0
+ 1088 0062 09       		.uleb128 0x9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 24
+
+
+ 1089 0063 21       		.uleb128 0x21
+ 1090 0064 00       		.byte	0
+ 1091 0065 49       		.uleb128 0x49
+ 1092 0066 13       		.uleb128 0x13
+ 1093 0067 2F       		.uleb128 0x2f
+ 1094 0068 0B       		.uleb128 0xb
+ 1095 0069 00       		.byte	0
+ 1096 006a 00       		.byte	0
+ 1097 006b 0A       		.uleb128 0xa
+ 1098 006c 16       		.uleb128 0x16
+ 1099 006d 00       		.byte	0
+ 1100 006e 03       		.uleb128 0x3
+ 1101 006f 0E       		.uleb128 0xe
+ 1102 0070 3A       		.uleb128 0x3a
+ 1103 0071 0B       		.uleb128 0xb
+ 1104 0072 3B       		.uleb128 0x3b
+ 1105 0073 0B       		.uleb128 0xb
+ 1106 0074 49       		.uleb128 0x49
+ 1107 0075 13       		.uleb128 0x13
+ 1108 0076 00       		.byte	0
+ 1109 0077 00       		.byte	0
+ 1110 0078 0B       		.uleb128 0xb
+ 1111 0079 2E       		.uleb128 0x2e
+ 1112 007a 01       		.byte	0x1
+ 1113 007b 3F       		.uleb128 0x3f
+ 1114 007c 19       		.uleb128 0x19
+ 1115 007d 03       		.uleb128 0x3
+ 1116 007e 0E       		.uleb128 0xe
+ 1117 007f 3A       		.uleb128 0x3a
+ 1118 0080 0B       		.uleb128 0xb
+ 1119 0081 3B       		.uleb128 0x3b
+ 1120 0082 0B       		.uleb128 0xb
+ 1121 0083 27       		.uleb128 0x27
+ 1122 0084 19       		.uleb128 0x19
+ 1123 0085 11       		.uleb128 0x11
+ 1124 0086 01       		.uleb128 0x1
+ 1125 0087 12       		.uleb128 0x12
+ 1126 0088 06       		.uleb128 0x6
+ 1127 0089 40       		.uleb128 0x40
+ 1128 008a 18       		.uleb128 0x18
+ 1129 008b 9742     		.uleb128 0x2117
+ 1130 008d 19       		.uleb128 0x19
+ 1131 008e 01       		.uleb128 0x1
+ 1132 008f 13       		.uleb128 0x13
+ 1133 0090 00       		.byte	0
+ 1134 0091 00       		.byte	0
+ 1135 0092 0C       		.uleb128 0xc
+ 1136 0093 898201   		.uleb128 0x4109
+ 1137 0096 01       		.byte	0x1
+ 1138 0097 11       		.uleb128 0x11
+ 1139 0098 01       		.uleb128 0x1
+ 1140 0099 31       		.uleb128 0x31
+ 1141 009a 13       		.uleb128 0x13
+ 1142 009b 01       		.uleb128 0x1
+ 1143 009c 13       		.uleb128 0x13
+ 1144 009d 00       		.byte	0
+ 1145 009e 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 25
+
+
+ 1146 009f 0D       		.uleb128 0xd
+ 1147 00a0 8A8201   		.uleb128 0x410a
+ 1148 00a3 00       		.byte	0
+ 1149 00a4 02       		.uleb128 0x2
+ 1150 00a5 18       		.uleb128 0x18
+ 1151 00a6 9142     		.uleb128 0x2111
+ 1152 00a8 18       		.uleb128 0x18
+ 1153 00a9 00       		.byte	0
+ 1154 00aa 00       		.byte	0
+ 1155 00ab 0E       		.uleb128 0xe
+ 1156 00ac 898201   		.uleb128 0x4109
+ 1157 00af 00       		.byte	0
+ 1158 00b0 11       		.uleb128 0x11
+ 1159 00b1 01       		.uleb128 0x1
+ 1160 00b2 31       		.uleb128 0x31
+ 1161 00b3 13       		.uleb128 0x13
+ 1162 00b4 00       		.byte	0
+ 1163 00b5 00       		.byte	0
+ 1164 00b6 0F       		.uleb128 0xf
+ 1165 00b7 05       		.uleb128 0x5
+ 1166 00b8 00       		.byte	0
+ 1167 00b9 03       		.uleb128 0x3
+ 1168 00ba 0E       		.uleb128 0xe
+ 1169 00bb 3A       		.uleb128 0x3a
+ 1170 00bc 0B       		.uleb128 0xb
+ 1171 00bd 3B       		.uleb128 0x3b
+ 1172 00be 0B       		.uleb128 0xb
+ 1173 00bf 49       		.uleb128 0x49
+ 1174 00c0 13       		.uleb128 0x13
+ 1175 00c1 02       		.uleb128 0x2
+ 1176 00c2 17       		.uleb128 0x17
+ 1177 00c3 00       		.byte	0
+ 1178 00c4 00       		.byte	0
+ 1179 00c5 10       		.uleb128 0x10
+ 1180 00c6 0B       		.uleb128 0xb
+ 1181 00c7 01       		.byte	0x1
+ 1182 00c8 11       		.uleb128 0x11
+ 1183 00c9 01       		.uleb128 0x1
+ 1184 00ca 12       		.uleb128 0x12
+ 1185 00cb 06       		.uleb128 0x6
+ 1186 00cc 00       		.byte	0
+ 1187 00cd 00       		.byte	0
+ 1188 00ce 11       		.uleb128 0x11
+ 1189 00cf 34       		.uleb128 0x34
+ 1190 00d0 00       		.byte	0
+ 1191 00d1 03       		.uleb128 0x3
+ 1192 00d2 0E       		.uleb128 0xe
+ 1193 00d3 3A       		.uleb128 0x3a
+ 1194 00d4 0B       		.uleb128 0xb
+ 1195 00d5 3B       		.uleb128 0x3b
+ 1196 00d6 0B       		.uleb128 0xb
+ 1197 00d7 49       		.uleb128 0x49
+ 1198 00d8 13       		.uleb128 0x13
+ 1199 00d9 02       		.uleb128 0x2
+ 1200 00da 17       		.uleb128 0x17
+ 1201 00db 00       		.byte	0
+ 1202 00dc 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 26
+
+
+ 1203 00dd 12       		.uleb128 0x12
+ 1204 00de 34       		.uleb128 0x34
+ 1205 00df 00       		.byte	0
+ 1206 00e0 03       		.uleb128 0x3
+ 1207 00e1 0E       		.uleb128 0xe
+ 1208 00e2 3A       		.uleb128 0x3a
+ 1209 00e3 0B       		.uleb128 0xb
+ 1210 00e4 3B       		.uleb128 0x3b
+ 1211 00e5 0B       		.uleb128 0xb
+ 1212 00e6 49       		.uleb128 0x49
+ 1213 00e7 13       		.uleb128 0x13
+ 1214 00e8 3F       		.uleb128 0x3f
+ 1215 00e9 19       		.uleb128 0x19
+ 1216 00ea 3C       		.uleb128 0x3c
+ 1217 00eb 19       		.uleb128 0x19
+ 1218 00ec 00       		.byte	0
+ 1219 00ed 00       		.byte	0
+ 1220 00ee 13       		.uleb128 0x13
+ 1221 00ef 0F       		.uleb128 0xf
+ 1222 00f0 00       		.byte	0
+ 1223 00f1 0B       		.uleb128 0xb
+ 1224 00f2 0B       		.uleb128 0xb
+ 1225 00f3 49       		.uleb128 0x49
+ 1226 00f4 13       		.uleb128 0x13
+ 1227 00f5 00       		.byte	0
+ 1228 00f6 00       		.byte	0
+ 1229 00f7 14       		.uleb128 0x14
+ 1230 00f8 21       		.uleb128 0x21
+ 1231 00f9 00       		.byte	0
+ 1232 00fa 00       		.byte	0
+ 1233 00fb 00       		.byte	0
+ 1234 00fc 15       		.uleb128 0x15
+ 1235 00fd 34       		.uleb128 0x34
+ 1236 00fe 00       		.byte	0
+ 1237 00ff 03       		.uleb128 0x3
+ 1238 0100 0E       		.uleb128 0xe
+ 1239 0101 3A       		.uleb128 0x3a
+ 1240 0102 0B       		.uleb128 0xb
+ 1241 0103 3B       		.uleb128 0x3b
+ 1242 0104 0B       		.uleb128 0xb
+ 1243 0105 49       		.uleb128 0x49
+ 1244 0106 13       		.uleb128 0x13
+ 1245 0107 3F       		.uleb128 0x3f
+ 1246 0108 19       		.uleb128 0x19
+ 1247 0109 02       		.uleb128 0x2
+ 1248 010a 18       		.uleb128 0x18
+ 1249 010b 00       		.byte	0
+ 1250 010c 00       		.byte	0
+ 1251 010d 16       		.uleb128 0x16
+ 1252 010e 34       		.uleb128 0x34
+ 1253 010f 00       		.byte	0
+ 1254 0110 03       		.uleb128 0x3
+ 1255 0111 0E       		.uleb128 0xe
+ 1256 0112 3A       		.uleb128 0x3a
+ 1257 0113 0B       		.uleb128 0xb
+ 1258 0114 3B       		.uleb128 0x3b
+ 1259 0115 05       		.uleb128 0x5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 27
+
+
+ 1260 0116 49       		.uleb128 0x49
+ 1261 0117 13       		.uleb128 0x13
+ 1262 0118 3F       		.uleb128 0x3f
+ 1263 0119 19       		.uleb128 0x19
+ 1264 011a 3C       		.uleb128 0x3c
+ 1265 011b 19       		.uleb128 0x19
+ 1266 011c 00       		.byte	0
+ 1267 011d 00       		.byte	0
+ 1268 011e 17       		.uleb128 0x17
+ 1269 011f 2E       		.uleb128 0x2e
+ 1270 0120 00       		.byte	0
+ 1271 0121 3F       		.uleb128 0x3f
+ 1272 0122 19       		.uleb128 0x19
+ 1273 0123 3C       		.uleb128 0x3c
+ 1274 0124 19       		.uleb128 0x19
+ 1275 0125 6E       		.uleb128 0x6e
+ 1276 0126 0E       		.uleb128 0xe
+ 1277 0127 03       		.uleb128 0x3
+ 1278 0128 0E       		.uleb128 0xe
+ 1279 0129 3A       		.uleb128 0x3a
+ 1280 012a 0B       		.uleb128 0xb
+ 1281 012b 3B       		.uleb128 0x3b
+ 1282 012c 0B       		.uleb128 0xb
+ 1283 012d 00       		.byte	0
+ 1284 012e 00       		.byte	0
+ 1285 012f 18       		.uleb128 0x18
+ 1286 0130 2E       		.uleb128 0x2e
+ 1287 0131 00       		.byte	0
+ 1288 0132 3F       		.uleb128 0x3f
+ 1289 0133 19       		.uleb128 0x19
+ 1290 0134 3C       		.uleb128 0x3c
+ 1291 0135 19       		.uleb128 0x19
+ 1292 0136 6E       		.uleb128 0x6e
+ 1293 0137 0E       		.uleb128 0xe
+ 1294 0138 03       		.uleb128 0x3
+ 1295 0139 0E       		.uleb128 0xe
+ 1296 013a 3A       		.uleb128 0x3a
+ 1297 013b 0B       		.uleb128 0xb
+ 1298 013c 3B       		.uleb128 0x3b
+ 1299 013d 05       		.uleb128 0x5
+ 1300 013e 00       		.byte	0
+ 1301 013f 00       		.byte	0
+ 1302 0140 19       		.uleb128 0x19
+ 1303 0141 2E       		.uleb128 0x2e
+ 1304 0142 00       		.byte	0
+ 1305 0143 3F       		.uleb128 0x3f
+ 1306 0144 19       		.uleb128 0x19
+ 1307 0145 3C       		.uleb128 0x3c
+ 1308 0146 19       		.uleb128 0x19
+ 1309 0147 6E       		.uleb128 0x6e
+ 1310 0148 0E       		.uleb128 0xe
+ 1311 0149 03       		.uleb128 0x3
+ 1312 014a 0E       		.uleb128 0xe
+ 1313 014b 00       		.byte	0
+ 1314 014c 00       		.byte	0
+ 1315 014d 00       		.byte	0
+ 1316              		.section	.debug_loc,"",%progbits
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 28
+
+
+ 1317              	.Ldebug_loc0:
+ 1318              	.LLST0:
+ 1319 0000 00000000 		.4byte	.LVL4
+ 1320 0004 07000000 		.4byte	.LVL5-1
+ 1321 0008 0100     		.2byte	0x1
+ 1322 000a 50       		.byte	0x50
+ 1323 000b 07000000 		.4byte	.LVL5-1
+ 1324 000f 74000000 		.4byte	.LFE356
+ 1325 0013 0400     		.2byte	0x4
+ 1326 0015 F3       		.byte	0xf3
+ 1327 0016 01       		.uleb128 0x1
+ 1328 0017 50       		.byte	0x50
+ 1329 0018 9F       		.byte	0x9f
+ 1330 0019 00000000 		.4byte	0
+ 1331 001d 00000000 		.4byte	0
+ 1332              	.LLST1:
+ 1333 0021 60000000 		.4byte	.LVL20
+ 1334 0025 87000000 		.4byte	.LVL21-1
+ 1335 0029 0100     		.2byte	0x1
+ 1336 002b 52       		.byte	0x52
+ 1337 002c 90000000 		.4byte	.LVL23
+ 1338 0030 98000000 		.4byte	.LVL24
+ 1339 0034 0100     		.2byte	0x1
+ 1340 0036 52       		.byte	0x52
+ 1341 0037 00000000 		.4byte	0
+ 1342 003b 00000000 		.4byte	0
+ 1343              		.section	.debug_aranges,"",%progbits
+ 1344 0000 2C000000 		.4byte	0x2c
+ 1345 0004 0200     		.2byte	0x2
+ 1346 0006 00000000 		.4byte	.Ldebug_info0
+ 1347 000a 04       		.byte	0x4
+ 1348 000b 00       		.byte	0
+ 1349 000c 0000     		.2byte	0
+ 1350 000e 0000     		.2byte	0
+ 1351 0010 00000000 		.4byte	.LFB355
+ 1352 0014 34000000 		.4byte	.LFE355-.LFB355
+ 1353 0018 00000000 		.4byte	.LFB356
+ 1354 001c 74000000 		.4byte	.LFE356-.LFB356
+ 1355 0020 00000000 		.4byte	.LFB357
+ 1356 0024 20010000 		.4byte	.LFE357-.LFB357
+ 1357 0028 00000000 		.4byte	0
+ 1358 002c 00000000 		.4byte	0
+ 1359              		.section	.debug_ranges,"",%progbits
+ 1360              	.Ldebug_ranges0:
+ 1361 0000 00000000 		.4byte	.LFB355
+ 1362 0004 34000000 		.4byte	.LFE355
+ 1363 0008 00000000 		.4byte	.LFB356
+ 1364 000c 74000000 		.4byte	.LFE356
+ 1365 0010 00000000 		.4byte	.LFB357
+ 1366 0014 20010000 		.4byte	.LFE357
+ 1367 0018 00000000 		.4byte	0
+ 1368 001c 00000000 		.4byte	0
+ 1369              		.section	.debug_line,"",%progbits
+ 1370              	.Ldebug_line0:
+ 1371 0000 09020000 		.section	.debug_str,"MS",%progbits,1
+ 1371      02007801 
+ 1371      00000201 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 29
+
+
+ 1371      FB0E0D00 
+ 1371      01010101 
+ 1372              	.LASF31:
+ 1373 0000 55534246 		.ascii	"USBFS_transferState\000"
+ 1373      535F7472 
+ 1373      616E7366 
+ 1373      65725374 
+ 1373      61746500 
+ 1374              	.LASF18:
+ 1375 0014 7369676E 		.ascii	"signature\000"
+ 1375      61747572 
+ 1375      6500
+ 1376              	.LASF12:
+ 1377 001e 666C6F61 		.ascii	"float\000"
+ 1377      7400
+ 1378              	.LASF22:
+ 1379 0024 6C65645F 		.ascii	"led_max_brightness\000"
+ 1379      6D61785F 
+ 1379      62726967 
+ 1379      68746E65 
+ 1379      737300
+ 1380              	.LASF4:
+ 1381 0037 6C6F6E67 		.ascii	"long int\000"
+ 1381      20696E74 
+ 1381      00
+ 1382              	.LASF25:
+ 1383 0040 496E6974 		.ascii	"InitAudioPath\000"
+ 1383      41756469 
+ 1383      6F506174 
+ 1383      6800
+ 1384              	.LASF46:
+ 1385 004e 43795379 		.ascii	"CySysClkPllStart\000"
+ 1385      73436C6B 
+ 1385      506C6C53 
+ 1385      74617274 
+ 1385      00
+ 1386              	.LASF40:
+ 1387 005f 4379446D 		.ascii	"CyDmaEnable\000"
+ 1387      61456E61 
+ 1387      626C6500 
+ 1388              	.LASF27:
+ 1389 006b 48616E64 		.ascii	"HandleSamplingFrequencyChangeRequest\000"
+ 1389      6C655361 
+ 1389      6D706C69 
+ 1389      6E674672 
+ 1389      65717565 
+ 1390              	.LASF30:
+ 1391 0090 61756469 		.ascii	"audioClkConfigured\000"
+ 1391      6F436C6B 
+ 1391      436F6E66 
+ 1391      69677572 
+ 1391      656400
+ 1392              	.LASF51:
+ 1393 00a3 55415254 		.ascii	"UART_UartPutString\000"
+ 1393      5F556172 
+ 1393      74507574 
+ 1393      53747269 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 30
+
+
+ 1393      6E6700
+ 1394              	.LASF16:
+ 1395 00b6 6C6F6E67 		.ascii	"long double\000"
+ 1395      20646F75 
+ 1395      626C6500 
+ 1396              	.LASF35:
+ 1397 00c2 6173796E 		.ascii	"asyncready\000"
+ 1397      63726561 
+ 1397      647900
+ 1398              	.LASF19:
+ 1399 00cd 636F756E 		.ascii	"counter\000"
+ 1399      74657200 
+ 1400              	.LASF9:
+ 1401 00d5 75696E74 		.ascii	"uint8\000"
+ 1401      3800
+ 1402              	.LASF36:
+ 1403 00db 6F757450 		.ascii	"outPlaying\000"
+ 1403      6C617969 
+ 1403      6E6700
+ 1404              	.LASF1:
+ 1405 00e6 756E7369 		.ascii	"unsigned char\000"
+ 1405      676E6564 
+ 1405      20636861 
+ 1405      7200
+ 1406              	.LASF15:
+ 1407 00f4 72656738 		.ascii	"reg8\000"
+ 1407      00
+ 1408              	.LASF11:
+ 1409 00f9 696E7431 		.ascii	"int16\000"
+ 1409      3600
+ 1410              	.LASF5:
+ 1411 00ff 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1411      20756E73 
+ 1411      69676E65 
+ 1411      6420696E 
+ 1411      7400
+ 1412              	.LASF3:
+ 1413 0111 73686F72 		.ascii	"short unsigned int\000"
+ 1413      7420756E 
+ 1413      7369676E 
+ 1413      65642069 
+ 1413      6E7400
+ 1414              	.LASF52:
+ 1415 0124 70726F63 		.ascii	"processAsyncFeedbackTransfer\000"
+ 1415      65737341 
+ 1415      73796E63 
+ 1415      46656564 
+ 1415      6261636B 
+ 1416              	.LASF47:
+ 1417 0141 43795379 		.ascii	"CySysClkPllStop\000"
+ 1417      73436C6B 
+ 1417      506C6C53 
+ 1417      746F7000 
+ 1418              	.LASF24:
+ 1419 0151 63616C69 		.ascii	"calibration_data_s\000"
+ 1419      62726174 
+ 1419      696F6E5F 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 31
+
+
+ 1419      64617461 
+ 1419      5F7300
+ 1420              	.LASF13:
+ 1421 0164 646F7562 		.ascii	"double\000"
+ 1421      6C6500
+ 1422              	.LASF23:
+ 1423 016b 64656275 		.ascii	"debug_mask\000"
+ 1423      675F6D61 
+ 1423      736B00
+ 1424              	.LASF26:
+ 1425 0176 53657443 		.ascii	"SetClockRate\000"
+ 1425      6C6F636B 
+ 1425      52617465 
+ 1425      00
+ 1426              	.LASF28:
+ 1427 0183 63616C5F 		.ascii	"cal_data\000"
+ 1427      64617461 
+ 1427      00
+ 1428              	.LASF37:
+ 1429 018c 696E506C 		.ascii	"inPlaying\000"
+ 1429      6179696E 
+ 1429      6700
+ 1430              	.LASF10:
+ 1431 0196 75696E74 		.ascii	"uint32\000"
+ 1431      333200
+ 1432              	.LASF8:
+ 1433 019d 756E7369 		.ascii	"unsigned int\000"
+ 1433      676E6564 
+ 1433      20696E74 
+ 1433      00
+ 1434              	.LASF38:
+ 1435 01aa 73657452 		.ascii	"setRate\000"
+ 1435      61746500 
+ 1436              	.LASF32:
+ 1437 01b2 55534246 		.ascii	"USBFS_currentSampleFrequency\000"
+ 1437      535F6375 
+ 1437      7272656E 
+ 1437      7453616D 
+ 1437      706C6546 
+ 1438              	.LASF7:
+ 1439 01cf 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1439      206C6F6E 
+ 1439      6720756E 
+ 1439      7369676E 
+ 1439      65642069 
+ 1440              	.LASF34:
+ 1441 01e6 6E657752 		.ascii	"newRate\000"
+ 1441      61746500 
+ 1442              	.LASF21:
+ 1443 01ee 6164635F 		.ascii	"adc_max\000"
+ 1443      6D617800 
+ 1444              	.LASF50:
+ 1445 01f6 73707269 		.ascii	"sprintf\000"
+ 1445      6E746600 
+ 1446              	.LASF48:
+ 1447 01fe 436F6465 		.ascii	"Codec_SetSamplingRate\000"
+ 1447      635F5365 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 32
+
+
+ 1447      7453616D 
+ 1447      706C696E 
+ 1447      67526174 
+ 1448              	.LASF53:
+ 1449 0214 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1449      43313120 
+ 1449      352E342E 
+ 1449      31203230 
+ 1449      31363036 
+ 1450 0247 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1450      20726576 
+ 1450      6973696F 
+ 1450      6E203233 
+ 1450      37373135 
+ 1451 027a 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1451      66756E63 
+ 1451      74696F6E 
+ 1451      2D736563 
+ 1451      74696F6E 
+ 1452              	.LASF49:
+ 1453 02a2 436F6465 		.ascii	"Codec_Activate\000"
+ 1453      635F4163 
+ 1453      74697661 
+ 1453      746500
+ 1454              	.LASF39:
+ 1455 02b1 41756469 		.ascii	"AudioClkSel_Write\000"
+ 1455      6F436C6B 
+ 1455      53656C5F 
+ 1455      57726974 
+ 1455      6500
+ 1456              	.LASF17:
+ 1457 02c3 73697A65 		.ascii	"sizetype\000"
+ 1457      74797065 
+ 1457      00
+ 1458              	.LASF6:
+ 1459 02cc 6C6F6E67 		.ascii	"long long int\000"
+ 1459      206C6F6E 
+ 1459      6720696E 
+ 1459      7400
+ 1460              	.LASF14:
+ 1461 02da 63686172 		.ascii	"char\000"
+ 1461      00
+ 1462              	.LASF55:
+ 1463 02df 433A5C64 		.ascii	"C:\\dev\\git\\Icebreaker\\Icebreaker.cydsn\000"
+ 1463      65765C67 
+ 1463      69745C49 
+ 1463      63656272 
+ 1463      65616B65 
+ 1464              	.LASF20:
+ 1465 0306 6164635F 		.ascii	"adc_min\000"
+ 1465      6D696E00 
+ 1466              	.LASF57:
+ 1467 030e 6D656D63 		.ascii	"memcpy\000"
+ 1467      707900
+ 1468              	.LASF2:
+ 1469 0315 73686F72 		.ascii	"short int\000"
+ 1469      7420696E 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccX6NCjZ.s 			page 33
+
+
+ 1469      7400
+ 1470              	.LASF29:
+ 1471 031f 67627566 		.ascii	"gbuf\000"
+ 1471      00
+ 1472              	.LASF44:
+ 1473 0324 53746F70 		.ascii	"Stop_I2S_Rx\000"
+ 1473      5F493253 
+ 1473      5F527800 
+ 1474              	.LASF56:
+ 1475 0330 6E657746 		.ascii	"newFrequency\000"
+ 1475      72657175 
+ 1475      656E6379 
+ 1475      00
+ 1476              	.LASF33:
+ 1477 033d 55534246 		.ascii	"USBFS_frequencyChanged\000"
+ 1477      535F6672 
+ 1477      65717565 
+ 1477      6E637943 
+ 1477      68616E67 
+ 1478              	.LASF42:
+ 1479 0354 496E6974 		.ascii	"InitializeAudioOutPath\000"
+ 1479      69616C69 
+ 1479      7A654175 
+ 1479      64696F4F 
+ 1479      75745061 
+ 1480              	.LASF43:
+ 1481 036b 53746F70 		.ascii	"Stop_I2S_Tx\000"
+ 1481      5F493253 
+ 1481      5F547800 
+ 1482              	.LASF0:
+ 1483 0377 7369676E 		.ascii	"signed char\000"
+ 1483      65642063 
+ 1483      68617200 
+ 1484              	.LASF45:
+ 1485 0383 436F6465 		.ascii	"Codec_Deactivate\000"
+ 1485      635F4465 
+ 1485      61637469 
+ 1485      76617465 
+ 1485      00
+ 1486              	.LASF54:
+ 1487 0394 41756469 		.ascii	"AudioControl.c\000"
+ 1487      6F436F6E 
+ 1487      74726F6C 
+ 1487      2E6300
+ 1488              	.LASF41:
+ 1489 03a3 496E6974 		.ascii	"InitializeAudioInPath\000"
+ 1489      69616C69 
+ 1489      7A654175 
+ 1489      64696F49 
+ 1489      6E506174 
+ 1490              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
