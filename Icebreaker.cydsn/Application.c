@@ -50,6 +50,9 @@
 #include <pcm1770.h>
 #include <Calibration.h>
 
+#define USBFS_DEVICE    (0u)
+#define USBUART_BUFFER_SIZE (64u)
+
 extern CYPDATA uint8 audioSource;
 extern CYDATA uint8 auxConfigured;
 
@@ -83,6 +86,7 @@ extern CYPDATA uint8 newRate;
 *******************************************************************************/
 void InitApp(void)
 {
+#if 0    
     /* Configure CPU/DMA to be in round robin mode while accessing memory */
 	CY_SET_REG32((void *) 0x40100038, CY_GET_REG32((void *) 0x40100038) | 0x22222222);     
 	
@@ -142,6 +146,16 @@ void InitApp(void)
     
     /* Start SPI Master */
     pcm1770_init();
+ #else
+    CyGlobalIntEnable;
+
+    CalibrationInit();
+    
+    /* Start USBFS operation with 5-V operation. */
+    USBUART_Start(USBFS_DEVICE, USBUART_5V_OPERATION);
+    
+    TkShellInit();
+ #endif
 }
 
 
@@ -160,7 +174,8 @@ void InitApp(void)
 *
 *******************************************************************************/
 void RunApplication(void)
-{  
+{
+#if 0
 	if(USBFS_GetConfiguration() == TRUE)
 	{
 		/* Update the volume data */
@@ -169,6 +184,35 @@ void RunApplication(void)
     
     TkShellService();
     VolumeControlService();
+#else
+    //uint16 count;
+    
+
+    for(;;)
+    {
+        /* Host can send double SET_INTERFACE request. */
+        if (0u != USBUART_IsConfigurationChanged())
+        {
+            /* Initialize IN endpoints when device is configured. */
+            if (0u != USBUART_GetConfiguration())
+            {
+                /* Enumeration is done, enable OUT endpoint to receive data 
+                 * from host. */
+                USBUART_CDC_Init();
+            }
+        }
+
+        /* Service USB CDC when device is configured. */
+        if (0u != USBUART_GetConfiguration())
+        {
+            /* Check for input data from host. */
+            if (0u != USBUART_DataIsReady())
+            {
+                TkShellService();
+            }
+        }
+    }
+#endif
 }
 
 /*******************************************************************************
@@ -203,7 +247,7 @@ uint8 Update_VolumeAudioOut(void)
 #endif
 
 	/* Process volume control only when USB bus is idle */
-	if(USBFS_TRANS_STATE_IDLE == USBFS_transferState)
+	//if(USBFS_TRANS_STATE_IDLE == USBFS_transferState)
 	{
 #if 0
 		/* If there is a change in volume, update codec */

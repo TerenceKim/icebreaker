@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
   27:Generated_Source\PSoC4/ADC.c **** 
   28:Generated_Source\PSoC4/ADC.c **** 
   29:Generated_Source\PSoC4/ADC.c **** /***************************************
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 2
 
 
   30:Generated_Source\PSoC4/ADC.c **** * Local data allocation
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
   84:Generated_Source\PSoC4/ADC.c **** * Parameters:
   85:Generated_Source\PSoC4/ADC.c **** *  None.
   86:Generated_Source\PSoC4/ADC.c **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 3
 
 
   87:Generated_Source\PSoC4/ADC.c **** * Return:
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  133:Generated_Source\PSoC4/ADC.c ****                  (uint8)ADC_cy_psoc4_sarmux_8__CH_8_PIN
  134:Generated_Source\PSoC4/ADC.c ****             #endif /* End ADC_TOTAL_CHANNELS_NUM > 8u */
  135:Generated_Source\PSoC4/ADC.c ****             #if(ADC_TOTAL_CHANNELS_NUM > 9u)
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 4
 
 
  136:Generated_Source\PSoC4/ADC.c ****                 ,(uint8)(ADC_cy_psoc4_sarmux_8__CH_9_PORT << 4u) |
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
   49 0014 404B     		ldr	r3, .L12+4
   50 0016 1A60     		str	r2, [r3]
  178:Generated_Source\PSoC4/ADC.c ****     ADC_SAR_CTRL_REG |= ADC_DEFAULT_CTRL_REG_CFG | 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 5
 
 
  179:Generated_Source\PSoC4/ADC.c ****         /* Enable the SAR internal pump when global pump is enabled */
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
   91 0052 0143     		orrs	r1, r0
   92 0054 1160     		str	r1, [r2]
  191:Generated_Source\PSoC4/ADC.c ****         /* Set MUX_HW_CTRL_VSSA in MUX_SWITCH_HW_CTRL when multiple channels enabled */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 6
 
 
  192:Generated_Source\PSoC4/ADC.c ****         #if(ADC_TOTAL_CHANNELS_NUM > 1u)
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  117 0076 8905     		lsls	r1, r1, #22
  118 0078 0B43     		orrs	r3, r1
  119              	.LVL4:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 7
 
 
  222:Generated_Source\PSoC4/ADC.c ****         #endif /* ((ADC_DEFAULT_VREF_SEL == ADC__INTERNAL1024) || \
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  142 0092 3649     		ldr	r1, .L12+88
  143 0094 8C46     		mov	ip, r1
  144 0096 6244     		add	r2, r2, ip
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 8
 
 
  145 0098 1360     		str	r3, [r2]
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  273:Generated_Source\PSoC4/ADC.c ****                 }
  274:Generated_Source\PSoC4/ADC.c **** 
  275:Generated_Source\PSoC4/ADC.c ****                 if((ADC_channelsConfig[chNum] & ADC_IS_RANGE_CTRL_EN_MASK) != 0u)
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 9
 
 
  276:Generated_Source\PSoC4/ADC.c ****                 {
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  299:Generated_Source\PSoC4/ADC.c ****             #endif /* end DEFAULT_SE_RESULT_FORMAT_SEL == ADC__FSIGNED */
  300:Generated_Source\PSoC4/ADC.c ****         }
  301:Generated_Source\PSoC4/ADC.c ****         else    /* Differential channel */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 10
 
 
  302:Generated_Source\PSoC4/ADC.c ****         {
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  249 011c 80033A40 		.word	1077543808
  250 0120 70201013 		.word	319823984
  251 0124 70200013 		.word	318775408
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 11
 
 
  252 0128 00003A40 		.word	1077542912
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  289              		@ frame_needed = 0, uses_anonymous_args = 0
  290 0000 10B5     		push	{r4, lr}
  291              		.cfi_def_cfa_offset 8
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 12
 
 
  292              		.cfi_offset 4, -8
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  330              		.global	ADC_Start
  331              		.code	16
  332              		.thumb_func
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 13
 
 
  333              		.type	ADC_Start, %function
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  351:Generated_Source\PSoC4/ADC.c **** * Function Name: ADC_Stop
  352:Generated_Source\PSoC4/ADC.c **** ********************************************************************************
  353:Generated_Source\PSoC4/ADC.c **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 14
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 14
 
 
  354:Generated_Source\PSoC4/ADC.c **** * Summary:
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  379:Generated_Source\PSoC4/ADC.c **** *
  380:Generated_Source\PSoC4/ADC.c **** *  In a triggered mode, this routine triggers every conversion by
  381:Generated_Source\PSoC4/ADC.c **** *  writing into the FW_TRIGGER bit in SAR_START_CTRL reg. In triggered mode,
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 15
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 15
 
 
  382:Generated_Source\PSoC4/ADC.c **** *  every conversion has to start by this API.
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  406:Generated_Source\PSoC4/ADC.c **** * Summary:
  407:Generated_Source\PSoC4/ADC.c **** *  Forces the ADC to stop all conversions.
  408:Generated_Source\PSoC4/ADC.c **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 16
 
 
  409:Generated_Source\PSoC4/ADC.c **** * Parameters:
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  433:Generated_Source\PSoC4/ADC.c **** *  immediately returns with the conversion status. In the other mode,
  434:Generated_Source\PSoC4/ADC.c **** *  the function does not return (blocking) until the conversion has
  435:Generated_Source\PSoC4/ADC.c **** *  completed.
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 17
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 17
 
 
  436:Generated_Source\PSoC4/ADC.c **** *
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  462:Generated_Source\PSoC4/ADC.c ****         {
  463:Generated_Source\PSoC4/ADC.c ****             /* Clear EOS bit */
  464:Generated_Source\PSoC4/ADC.c ****             ADC_SAR_INTR_REG = ADC_EOS_MASK;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 18
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 18
 
 
  495              		.loc 1 464 0
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  488:Generated_Source\PSoC4/ADC.c **** 
  489:Generated_Source\PSoC4/ADC.c **** /*******************************************************************************
  490:Generated_Source\PSoC4/ADC.c **** * Function Name: ADC_GetResult16
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 19
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 19
 
 
  491:Generated_Source\PSoC4/ADC.c **** ********************************************************************************
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  556              	.LVL38:
  557 0020 00E0     		b	.L41
  558              	.LVL39:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 20
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 20
 
 
  559              	.L42:
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  542:Generated_Source\PSoC4/ADC.c **** *  Examples: If the component is setup to sequence through 8
  543:Generated_Source\PSoC4/ADC.c **** *  channels, a mask of 0x000F would enable channels 0, 1, 2, and 3.
  544:Generated_Source\PSoC4/ADC.c **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 21
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 21
 
 
  545:Generated_Source\PSoC4/ADC.c **** * Return:
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  569:Generated_Source\PSoC4/ADC.c ****     *
  570:Generated_Source\PSoC4/ADC.c ****     *******************************************************************************/
  571:Generated_Source\PSoC4/ADC.c ****     void ADC_EnableInjection(void)
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 22
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 22
 
 
  572:Generated_Source\PSoC4/ADC.c ****     {
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  643              		.size	ADC_SetLowLimit, .-ADC_SetLowLimit
  644              		.section	.text.ADC_SetHighLimit,"ax",%progbits
  645              		.align	2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 23
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 23
 
 
  646              		.global	ADC_SetHighLimit
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  679              		.size	ADC_SetHighLimit, .-ADC_SetHighLimit
  680              		.section	.text.ADC_SetLimitMask,"ax",%progbits
  681              		.align	2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 24
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 24
 
 
  682              		.global	ADC_SetLimitMask
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  713              		.code	16
  714              		.thumb_func
  715              		.type	ADC_SetSatMask, %function
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 25
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 25
 
 
  716              	ADC_SetSatMask:
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  747              	.LFB14:
  665:Generated_Source\PSoC4/ADC.c **** 
  666:Generated_Source\PSoC4/ADC.c **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 26
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 26
 
 
  667:Generated_Source\PSoC4/ADC.c **** /*******************************************************************************
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  774 0014 E552     		strh	r5, [r4, r3]
  695:Generated_Source\PSoC4/ADC.c **** }
  775              		.loc 1 695 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 27
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 27
 
 
  776              		@ sp needed
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  801              		.cfi_offset 5, -12
  802              		.cfi_offset 6, -8
  803              		.cfi_offset 14, -4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 28
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 28
 
 
  804 0002 0400     		movs	r4, r0
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  744:Generated_Source\PSoC4/ADC.c ****     *  chan: The ADC channel number.
  745:Generated_Source\PSoC4/ADC.c ****     *  adcCounts: Result from the ADC conversion
  746:Generated_Source\PSoC4/ADC.c ****     *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 29
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 29
 
 
  747:Generated_Source\PSoC4/ADC.c ****     * Return:
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  867 001a 09B2     		sxth	r1, r1
  868              	.LVL64:
  773:Generated_Source\PSoC4/ADC.c **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 30
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 30
 
 
  774:Generated_Source\PSoC4/ADC.c ****         mVolts = (int16)((((int32)adcCounts * ADC_10MV_COUNTS) + ( (adcCounts > 0) ?
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  915              		.cfi_endproc
  916              	.LFE16:
  917              		.size	ADC_CountsTo_mVolts, .-ADC_CountsTo_mVolts
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 31
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 31
 
 
  918              		.global	__aeabi_lmul
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  940 0004 0C00     		movs	r4, r1
  812:Generated_Source\PSoC4/ADC.c ****         int64 uVolts;
  813:Generated_Source\PSoC4/ADC.c **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 32
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 32
 
 
  814:Generated_Source\PSoC4/ADC.c ****         /* Halt CPU in debug mode if channel is out of valid range */
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  977 0034 00000000 		.word	ADC_offset
  978 0038 80969800 		.word	10000000
  979 003c 00000000 		.word	ADC_countsPer10Volt
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 33
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 33
 
 
  980              		.cfi_endproc
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  859:Generated_Source\PSoC4/ADC.c ****         /* Halt CPU in debug mode if channel is out of valid range */
  860:Generated_Source\PSoC4/ADC.c ****         CYASSERT(chan < ADC_TOTAL_CHANNELS_NUM);
  1007              		.loc 1 860 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 34
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 34
 
 
  1008 0006 0128     		cmp	r0, #1
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1046              	.L80:
  1047 003c 00000000 		.word	ADC_offset
  1048 0040 00002041 		.word	1092616192
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 35
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 35
 
 
  1049 0044 00000000 		.word	ADC_countsPer10Volt
@@ -2080,8 +2080,8 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1085 000b 01       		.uleb128 0x1
  1086 000c 32000000 		.4byte	.LASF64
  1087 0010 0C       		.byte	0xc
- 1088 0011 9C020000 		.4byte	.LASF65
- 1089 0015 37030000 		.4byte	.LASF66
+ 1088 0011 C3020000 		.4byte	.LASF65
+ 1089 0015 EB010000 		.4byte	.LASF66
  1090 0019 00000000 		.4byte	.Ldebug_ranges0+0
  1091 001d 00000000 		.4byte	0
  1092 0021 00000000 		.4byte	.Ldebug_line0
@@ -2092,18 +2092,18 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1097 002c 02       		.uleb128 0x2
  1098 002d 01       		.byte	0x1
  1099 002e 08       		.byte	0x8
- 1100 002f 00030000 		.4byte	.LASF1
+ 1100 002f 27030000 		.4byte	.LASF1
  1101 0033 02       		.uleb128 0x2
  1102 0034 02       		.byte	0x2
  1103 0035 05       		.byte	0x5
- 1104 0036 19030000 		.4byte	.LASF2
+ 1104 0036 40030000 		.4byte	.LASF2
  1105 003a 02       		.uleb128 0x2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 36
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 36
 
 
  1106 003b 02       		.byte	0x2
  1107 003c 07       		.byte	0x7
- 1108 003d EB010000 		.4byte	.LASF3
+ 1108 003d 12020000 		.4byte	.LASF3
  1109 0041 02       		.uleb128 0x2
  1110 0042 04       		.byte	0x4
  1111 0043 05       		.byte	0x5
@@ -2154,23 +2154,23 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1156 00a1 E901     		.2byte	0x1e9
  1157 00a3 41000000 		.4byte	0x41
  1158 00a7 04       		.uleb128 0x4
- 1159 00a8 2A020000 		.4byte	.LASF14
+ 1159 00a8 51020000 		.4byte	.LASF14
  1160 00ac 02       		.byte	0x2
  1161 00ad EA01     		.2byte	0x1ea
  1162 00af B3000000 		.4byte	0xb3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 37
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 37
 
 
  1163 00b3 02       		.uleb128 0x2
  1164 00b4 04       		.byte	0x4
  1165 00b5 04       		.byte	0x4
- 1166 00b6 C5020000 		.4byte	.LASF15
+ 1166 00b6 EC020000 		.4byte	.LASF15
  1167 00ba 02       		.uleb128 0x2
  1168 00bb 08       		.byte	0x8
  1169 00bc 04       		.byte	0x4
  1170 00bd 6E010000 		.4byte	.LASF16
  1171 00c1 04       		.uleb128 0x4
- 1172 00c2 75020000 		.4byte	.LASF17
+ 1172 00c2 9C020000 		.4byte	.LASF17
  1173 00c6 02       		.byte	0x2
  1174 00c7 EF01     		.2byte	0x1ef
  1175 00c9 4F000000 		.4byte	0x4f
@@ -2179,7 +2179,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1178 00cf 08       		.byte	0x8
  1179 00d0 5E030000 		.4byte	.LASF18
  1180 00d4 04       		.uleb128 0x4
- 1181 00d5 24020000 		.4byte	.LASF19
+ 1181 00d5 4B020000 		.4byte	.LASF19
  1182 00d9 02       		.byte	0x2
  1183 00da 9002     		.2byte	0x290
  1184 00dc E0000000 		.4byte	0xe0
@@ -2188,11 +2188,11 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1187 00e5 02       		.uleb128 0x2
  1188 00e6 08       		.byte	0x8
  1189 00e7 04       		.byte	0x4
- 1190 00e8 44020000 		.4byte	.LASF20
+ 1190 00e8 6B020000 		.4byte	.LASF20
  1191 00ec 02       		.uleb128 0x2
  1192 00ed 04       		.byte	0x4
  1193 00ee 07       		.byte	0x7
- 1194 00ef 32020000 		.4byte	.LASF21
+ 1194 00ef 59020000 		.4byte	.LASF21
  1195 00f3 06       		.uleb128 0x6
  1196 00f4 29000000 		.4byte	.LASF26
  1197 00f8 01       		.byte	0x1
@@ -2203,7 +2203,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1202 0103 9C       		.byte	0x9c
  1203 0104 6E010000 		.4byte	0x16e
  1204 0108 07       		.uleb128 0x7
- 1205 0109 2C030000 		.4byte	.LASF22
+ 1205 0109 53030000 		.4byte	.LASF22
  1206 010d 01       		.byte	0x1
  1207 010e 60       		.byte	0x60
  1208 010f 83000000 		.4byte	0x83
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1217 0127 0F000000 		.4byte	.LASF24
  1218 012b 01       		.byte	0x1
  1219 012c 62       		.byte	0x62
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 38
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 38
 
 
  1220 012d 9B000000 		.4byte	0x9b
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1274 019a AE010000 		.4byte	0x1ae
  1275 019e 0B       		.uleb128 0xb
  1276 019f 24000000 		.4byte	.LVL24
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 39
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 39
 
 
  1277 01a3 8E050000 		.4byte	0x58e
@@ -2306,7 +2306,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1299 01d1 88010000 		.4byte	0x188
  1300 01d5 00       		.byte	0
  1301 01d6 12       		.uleb128 0x12
- 1302 01d7 23030000 		.4byte	.LASF29
+ 1302 01d7 4A030000 		.4byte	.LASF29
  1303 01db 01       		.byte	0x1
  1304 01dc 6D01     		.2byte	0x16d
  1305 01de 00000000 		.4byte	.LFB4
@@ -2322,7 +2322,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1315 01f8 01       		.uleb128 0x1
  1316 01f9 9C       		.byte	0x9c
  1317 01fa 12       		.uleb128 0x12
- 1318 01fb 0D020000 		.4byte	.LASF31
+ 1318 01fb 34020000 		.4byte	.LASF31
  1319 01ff 01       		.byte	0x1
  1320 0200 A001     		.2byte	0x1a0
  1321 0202 00000000 		.4byte	.LFB6
@@ -2330,7 +2330,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1323 020a 01       		.uleb128 0x1
  1324 020b 9C       		.byte	0x9c
  1325 020c 13       		.uleb128 0x13
- 1326 020d 61020000 		.4byte	.LASF33
+ 1326 020d 88020000 		.4byte	.LASF33
  1327 0211 01       		.byte	0x1
  1328 0212 C201     		.2byte	0x1c2
  1329 0214 83000000 		.4byte	0x83
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1331 021c 28000000 		.4byte	.LFE7-.LFB7
  1332 0220 01       		.uleb128 0x1
  1333 0221 9C       		.byte	0x9c
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 40
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 40
 
 
  1334 0222 47020000 		.4byte	0x247
@@ -2366,7 +2366,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1356 025c 9C       		.byte	0x9c
  1357 025d 91020000 		.4byte	0x291
  1358 0261 14       		.uleb128 0x14
- 1359 0262 32030000 		.4byte	.LASF36
+ 1359 0262 59030000 		.4byte	.LASF36
  1360 0266 01       		.byte	0x1
  1361 0267 F801     		.2byte	0x1f8
  1362 0269 83000000 		.4byte	0x83
@@ -2388,7 +2388,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1378 028f 00       		.byte	0
  1379 0290 00       		.byte	0
  1380 0291 0F       		.uleb128 0xf
- 1381 0292 8C020000 		.4byte	.LASF38
+ 1381 0292 B3020000 		.4byte	.LASF38
  1382 0296 01       		.byte	0x1
  1383 0297 2502     		.2byte	0x225
  1384 0299 00000000 		.4byte	.LFB9
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1388 02a3 B8020000 		.4byte	0x2b8
  1389 02a7 14       		.uleb128 0x14
  1390 02a8 7C010000 		.4byte	.LASF39
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 41
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 41
 
 
  1391 02ac 01       		.byte	0x1
@@ -2407,7 +2407,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1394 02b3 64020000 		.4byte	.LLST7
  1395 02b7 00       		.byte	0
  1396 02b8 0F       		.uleb128 0xf
- 1397 02b9 E9020000 		.4byte	.LASF40
+ 1397 02b9 10030000 		.4byte	.LASF40
  1398 02bd 01       		.byte	0x1
  1399 02be 5102     		.2byte	0x251
  1400 02c0 00000000 		.4byte	.LFB10
@@ -2416,14 +2416,14 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1403 02c9 9C       		.byte	0x9c
  1404 02ca DF020000 		.4byte	0x2df
  1405 02ce 14       		.uleb128 0x14
- 1406 02cf 3B020000 		.4byte	.LASF41
+ 1406 02cf 62020000 		.4byte	.LASF41
  1407 02d3 01       		.byte	0x1
  1408 02d4 5102     		.2byte	0x251
  1409 02d6 83000000 		.4byte	0x83
  1410 02da 85020000 		.4byte	.LLST8
  1411 02de 00       		.byte	0
  1412 02df 0F       		.uleb128 0xf
- 1413 02e0 50020000 		.4byte	.LASF42
+ 1413 02e0 77020000 		.4byte	.LASF42
  1414 02e4 01       		.byte	0x1
  1415 02e5 6602     		.2byte	0x266
  1416 02e7 00000000 		.4byte	.LFB11
@@ -2432,7 +2432,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1419 02f0 9C       		.byte	0x9c
  1420 02f1 06030000 		.4byte	0x306
  1421 02f5 14       		.uleb128 0x14
- 1422 02f6 CB020000 		.4byte	.LASF43
+ 1422 02f6 F2020000 		.4byte	.LASF43
  1423 02fa 01       		.byte	0x1
  1424 02fb 6602     		.2byte	0x266
  1425 02fd 83000000 		.4byte	0x83
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1445 032e CC010000 		.4byte	.LASF45
  1446 0332 01       		.byte	0x1
  1447 0333 9502     		.2byte	0x295
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 42
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 42
 
 
  1448 0335 00000000 		.4byte	.LFB13
@@ -2483,7 +2483,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1467 0365 9C       		.byte	0x9c
  1468 0366 9A030000 		.4byte	0x39a
  1469 036a 14       		.uleb128 0x14
- 1470 036b 32030000 		.4byte	.LASF36
+ 1470 036b 59030000 		.4byte	.LASF36
  1471 036f 01       		.byte	0x1
  1472 0370 B102     		.2byte	0x2b1
  1473 0372 83000000 		.4byte	0x83
@@ -2505,7 +2505,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1489 0398 00       		.byte	0
  1490 0399 00       		.byte	0
  1491 039a 0F       		.uleb128 0xf
- 1492 039b B9020000 		.4byte	.LASF48
+ 1492 039b E0020000 		.4byte	.LASF48
  1493 039f 01       		.byte	0x1
  1494 03a0 D302     		.2byte	0x2d3
  1495 03a2 00000000 		.4byte	.LFB15
@@ -2514,11 +2514,11 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1498 03ab 9C       		.byte	0x9c
  1499 03ac E0030000 		.4byte	0x3e0
  1500 03b0 14       		.uleb128 0x14
- 1501 03b1 32030000 		.4byte	.LASF36
+ 1501 03b1 59030000 		.4byte	.LASF36
  1502 03b5 01       		.byte	0x1
  1503 03b6 D302     		.2byte	0x2d3
  1504 03b8 83000000 		.4byte	0x83
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 43
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 43
 
 
  1505 03bc 56030000 		.4byte	.LLST14
@@ -2539,7 +2539,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1520 03de 00       		.byte	0
  1521 03df 00       		.byte	0
  1522 03e0 16       		.uleb128 0x16
- 1523 03e1 D5020000 		.4byte	.LASF50
+ 1523 03e1 FC020000 		.4byte	.LASF50
  1524 03e5 01       		.byte	0x1
  1525 03e6 F402     		.2byte	0x2f4
  1526 03e8 8F000000 		.4byte	0x8f
@@ -2549,7 +2549,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1530 03f5 9C       		.byte	0x9c
  1531 03f6 38040000 		.4byte	0x438
  1532 03fa 14       		.uleb128 0x14
- 1533 03fb 32030000 		.4byte	.LASF36
+ 1533 03fb 59030000 		.4byte	.LASF36
  1534 03ff 01       		.byte	0x1
  1535 0400 F402     		.2byte	0x2f4
  1536 0402 83000000 		.4byte	0x83
@@ -2561,7 +2561,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1542 0412 8F000000 		.4byte	0x8f
  1543 0416 DE030000 		.4byte	.LLST17
  1544 041a 17       		.uleb128 0x17
- 1545 041b 1D020000 		.4byte	.LASF52
+ 1545 041b 44020000 		.4byte	.LASF52
  1546 041f 01       		.byte	0x1
  1547 0420 F602     		.2byte	0x2f6
  1548 0422 8F000000 		.4byte	0x8f
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1559 0436 00       		.byte	0
  1560 0437 00       		.byte	0
  1561 0438 16       		.uleb128 0x16
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 44
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 44
 
 
  1562 0439 36010000 		.4byte	.LASF53
@@ -2591,7 +2591,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1569 044d 9C       		.byte	0x9c
  1570 044e 8E040000 		.4byte	0x48e
  1571 0452 14       		.uleb128 0x14
- 1572 0453 32030000 		.4byte	.LASF36
+ 1572 0453 59030000 		.4byte	.LASF36
  1573 0457 01       		.byte	0x1
  1574 0458 2A03     		.2byte	0x32a
  1575 045a 83000000 		.4byte	0x83
@@ -2628,7 +2628,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1606 04a3 9C       		.byte	0x9c
  1607 04a4 E6040000 		.4byte	0x4e6
  1608 04a8 14       		.uleb128 0x14
- 1609 04a9 32030000 		.4byte	.LASF36
+ 1609 04a9 59030000 		.4byte	.LASF36
  1610 04ad 01       		.byte	0x1
  1611 04ae 5703     		.2byte	0x357
  1612 04b0 83000000 		.4byte	0x83
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1616 04bd 01       		.byte	0x1
  1617 04be 5703     		.2byte	0x357
  1618 04c0 8F000000 		.4byte	0x8f
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 45
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 45
 
 
  1619 04c4 8E040000 		.4byte	.LLST21
@@ -2696,9 +2696,9 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1671 0532 05       		.uleb128 0x5
  1672 0533 8F000000 		.4byte	0x8f
  1673 0537 19       		.uleb128 0x19
- 1674 0538 0E030000 		.4byte	.LASF58
+ 1674 0538 35030000 		.4byte	.LASF58
  1675 053c 01       		.byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 46
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 46
 
 
  1676 053d 19       		.byte	0x19
@@ -2728,13 +2728,13 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1700 0573 05       		.uleb128 0x5
  1701 0574 4D050000 		.4byte	0x54d
  1702 0578 1A       		.uleb128 0x1a
- 1703 0579 7B020000 		.4byte	.LASF60
- 1704 057d 7B020000 		.4byte	.LASF60
+ 1703 0579 A2020000 		.4byte	.LASF60
+ 1704 057d A2020000 		.4byte	.LASF60
  1705 0581 03       		.byte	0x3
  1706 0582 C0       		.byte	0xc0
  1707 0583 1A       		.uleb128 0x1a
- 1708 0584 FE010000 		.4byte	.LASF61
- 1709 0588 FE010000 		.4byte	.LASF61
+ 1708 0584 25020000 		.4byte	.LASF61
+ 1709 0588 25020000 		.4byte	.LASF61
  1710 058c 03       		.byte	0x3
  1711 058d BD       		.byte	0xbd
  1712 058e 1A       		.uleb128 0x1a
@@ -2743,8 +2743,8 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1715 0597 03       		.byte	0x3
  1716 0598 DA       		.byte	0xda
  1717 0599 1A       		.uleb128 0x1a
- 1718 059a F9020000 		.4byte	.LASF63
- 1719 059e F9020000 		.4byte	.LASF63
+ 1718 059a 20030000 		.4byte	.LASF63
+ 1719 059e 20030000 		.4byte	.LASF63
  1720 05a2 03       		.byte	0x3
  1721 05a3 E7       		.byte	0xe7
  1722 05a4 00       		.byte	0
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1730 0005 13       		.uleb128 0x13
  1731 0006 0B       		.uleb128 0xb
  1732 0007 03       		.uleb128 0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 47
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 47
 
 
  1733 0008 0E       		.uleb128 0xe
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1787 003e 2E       		.uleb128 0x2e
  1788 003f 01       		.byte	0x1
  1789 0040 3F       		.uleb128 0x3f
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 48
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 48
 
 
  1790 0041 19       		.uleb128 0x19
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1844 007a 11       		.uleb128 0x11
  1845 007b 01       		.uleb128 0x1
  1846 007c 31       		.uleb128 0x31
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 49
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 49
 
 
  1847 007d 13       		.uleb128 0x13
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1901 00b8 0E       		.uleb128 0xe
  1902 00b9 3A       		.uleb128 0x3a
  1903 00ba 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 50
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 50
 
 
  1904 00bb 3B       		.uleb128 0x3b
@@ -2998,7 +2998,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  1958 00f5 19       		.uleb128 0x19
  1959 00f6 03       		.uleb128 0x3
  1960 00f7 0E       		.uleb128 0xe
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 51
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 51
 
 
  1961 00f8 3A       		.uleb128 0x3a
@@ -3058,7 +3058,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2015 0130 02       		.uleb128 0x2
  2016 0131 17       		.uleb128 0x17
  2017 0132 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 52
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 52
 
 
  2018 0133 00       		.byte	0
@@ -3118,7 +3118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2072 016a 02       		.uleb128 0x2
  2073 016b 18       		.uleb128 0x18
  2074 016c 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 53
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 53
 
 
  2075 016d 00       		.byte	0
@@ -3178,7 +3178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2129 0008 0200     		.2byte	0x2
  2130 000a 30       		.byte	0x30
  2131 000b 9F       		.byte	0x9f
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 54
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 54
 
 
  2132 000c 80000000 		.4byte	.LVL6
@@ -3238,7 +3238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2186 007c 01       		.byte	0x1
  2187 007d 08       		.byte	0x8
  2188 007e FF       		.byte	0xff
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 55
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 55
 
 
  2189 007f 1A       		.byte	0x1a
@@ -3298,7 +3298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2243 00d0 00       		.sleb128 0
  2244 00d1 74       		.byte	0x74
  2245 00d2 00       		.sleb128 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 56
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 56
 
 
  2246 00d3 22       		.byte	0x22
@@ -3358,7 +3358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2300 0122 21       		.byte	0x21
  2301 0123 9F       		.byte	0x9f
  2302 0124 D8000000 		.4byte	.LVL17
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 57
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 57
 
 
  2303 0128 DA000000 		.4byte	.LVL18
@@ -3418,7 +3418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2357              	.LLST3:
  2358 0186 00000000 		.4byte	.LVL27
  2359 018a 06000000 		.4byte	.LVL29
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 58
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 58
 
 
  2360 018e 0100     		.2byte	0x1
@@ -3478,7 +3478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2414 0214 0100     		.2byte	0x1
  2415 0216 54       		.byte	0x54
  2416 0217 14000000 		.4byte	.LVL37
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 59
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 59
 
 
  2417 021b 22000000 		.4byte	.LVL39
@@ -3538,7 +3538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2471 029c 50       		.byte	0x50
  2472 029d 9F       		.byte	0x9f
  2473 029e 00000000 		.4byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 60
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 60
 
 
  2474 02a2 00000000 		.4byte	0
@@ -3598,7 +3598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2528 0327 0400     		.2byte	0x4
  2529 0329 F3       		.byte	0xf3
  2530 032a 01       		.uleb128 0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 61
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 61
 
 
  2531 032b 50       		.byte	0x50
@@ -3658,7 +3658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2585 03a8 00       		.sleb128 0
  2586 03a9 22       		.byte	0x22
  2587 03aa 00000000 		.4byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 62
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 62
 
 
  2588 03ae 00000000 		.4byte	0
@@ -3718,7 +3718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2642 0432 00000000 		.4byte	0
  2643              	.LLST19:
  2644 0436 00000000 		.4byte	.LVL69
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 63
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 63
 
 
  2645 043a 0F000000 		.4byte	.LVL71-1
@@ -3778,7 +3778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2699 0004 0200     		.2byte	0x2
  2700 0006 00000000 		.4byte	.Ldebug_info0
  2701 000a 04       		.byte	0x4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 64
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 64
 
 
  2702 000b 00       		.byte	0
@@ -3838,7 +3838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2756 002c 14000000 		.4byte	.LFE6
  2757 0030 00000000 		.4byte	.LFB7
  2758 0034 28000000 		.4byte	.LFE7
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 65
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 65
 
 
  2759 0038 00000000 		.4byte	.LFB8
@@ -3898,7 +3898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2797      31203230 
  2797      31363036 
  2798 0065 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 66
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 66
 
 
  2798      20726576 
@@ -3958,7 +3958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2819      5F75566F 
  2819      6C747300 
  2820              	.LASF59:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 67
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 67
 
 
  2821 014a 4144435F 		.ascii	"ADC_countsPer10Volt\000"
@@ -4018,141 +4018,141 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 1
  2847 01db 766F6C74 		.ascii	"volts\000"
  2847      7300
  2848              	.LASF23:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 68
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 68
 
 
  2849 01e1 746D7052 		.ascii	"tmpRegVal\000"
  2849      65675661 
  2849      6C00
- 2850              	.LASF3:
- 2851 01eb 73686F72 		.ascii	"short unsigned int\000"
- 2851      7420756E 
- 2851      7369676E 
- 2851      65642069 
- 2851      6E7400
- 2852              	.LASF61:
- 2853 01fe 4379496E 		.ascii	"CyIntSetVector\000"
- 2853      74536574 
- 2853      56656374 
- 2853      6F7200
- 2854              	.LASF31:
- 2855 020d 4144435F 		.ascii	"ADC_StopConvert\000"
- 2855      53746F70 
- 2855      436F6E76 
- 2855      65727400 
- 2856              	.LASF52:
- 2857 021d 6D566F6C 		.ascii	"mVolts\000"
- 2857      747300
- 2858              	.LASF19:
- 2859 0224 72656733 		.ascii	"reg32\000"
- 2859      3200
- 2860              	.LASF14:
- 2861 022a 666C6F61 		.ascii	"float32\000"
- 2861      74333200 
- 2862              	.LASF21:
- 2863 0232 73697A65 		.ascii	"sizetype\000"
- 2863      74797065 
- 2863      00
- 2864              	.LASF41:
- 2865 023b 6C6F774C 		.ascii	"lowLimit\000"
- 2865      696D6974 
+ 2850              	.LASF66:
+ 2851 01eb 433A5C64 		.ascii	"C:\\dev\\git\\icebreaker\\Icebreaker.cydsn\000"
+ 2851      65765C67 
+ 2851      69745C69 
+ 2851      63656272 
+ 2851      65616B65 
+ 2852              	.LASF3:
+ 2853 0212 73686F72 		.ascii	"short unsigned int\000"
+ 2853      7420756E 
+ 2853      7369676E 
+ 2853      65642069 
+ 2853      6E7400
+ 2854              	.LASF61:
+ 2855 0225 4379496E 		.ascii	"CyIntSetVector\000"
+ 2855      74536574 
+ 2855      56656374 
+ 2855      6F7200
+ 2856              	.LASF31:
+ 2857 0234 4144435F 		.ascii	"ADC_StopConvert\000"
+ 2857      53746F70 
+ 2857      436F6E76 
+ 2857      65727400 
+ 2858              	.LASF52:
+ 2859 0244 6D566F6C 		.ascii	"mVolts\000"
+ 2859      747300
+ 2860              	.LASF19:
+ 2861 024b 72656733 		.ascii	"reg32\000"
+ 2861      3200
+ 2862              	.LASF14:
+ 2863 0251 666C6F61 		.ascii	"float32\000"
+ 2863      74333200 
+ 2864              	.LASF21:
+ 2865 0259 73697A65 		.ascii	"sizetype\000"
+ 2865      74797065 
  2865      00
- 2866              	.LASF20:
- 2867 0244 6C6F6E67 		.ascii	"long double\000"
- 2867      20646F75 
- 2867      626C6500 
- 2868              	.LASF42:
- 2869 0250 4144435F 		.ascii	"ADC_SetHighLimit\000"
- 2869      53657448 
- 2869      6967684C 
- 2869      696D6974 
- 2869      00
- 2870              	.LASF33:
- 2871 0261 4144435F 		.ascii	"ADC_IsEndConversion\000"
- 2871      4973456E 
- 2871      64436F6E 
- 2871      76657273 
- 2871      696F6E00 
- 2872              	.LASF17:
- 2873 0275 696E7436 		.ascii	"int64\000"
- 2873      3400
- 2874              	.LASF60:
- 2875 027b 4379496E 		.ascii	"CyIntSetPriority\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 69
+ 2866              	.LASF41:
+ 2867 0262 6C6F774C 		.ascii	"lowLimit\000"
+ 2867      696D6974 
+ 2867      00
+ 2868              	.LASF20:
+ 2869 026b 6C6F6E67 		.ascii	"long double\000"
+ 2869      20646F75 
+ 2869      626C6500 
+ 2870              	.LASF42:
+ 2871 0277 4144435F 		.ascii	"ADC_SetHighLimit\000"
+ 2871      53657448 
+ 2871      6967684C 
+ 2871      696D6974 
+ 2871      00
+ 2872              	.LASF33:
+ 2873 0288 4144435F 		.ascii	"ADC_IsEndConversion\000"
+ 2873      4973456E 
+ 2873      64436F6E 
+ 2873      76657273 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 69
 
 
- 2875      74536574 
- 2875      5072696F 
- 2875      72697479 
- 2875      00
- 2876              	.LASF38:
- 2877 028c 4144435F 		.ascii	"ADC_SetChanMask\000"
- 2877      53657443 
- 2877      68616E4D 
- 2877      61736B00 
- 2878              	.LASF65:
- 2879 029c 47656E65 		.ascii	"Generated_Source\\PSoC4\\ADC.c\000"
- 2879      72617465 
- 2879      645F536F 
- 2879      75726365 
- 2879      5C50536F 
- 2880              	.LASF48:
- 2881 02b9 4144435F 		.ascii	"ADC_SetGain\000"
- 2881      53657447 
- 2881      61696E00 
- 2882              	.LASF15:
- 2883 02c5 666C6F61 		.ascii	"float\000"
- 2883      7400
- 2884              	.LASF43:
- 2885 02cb 68696768 		.ascii	"highLimit\000"
- 2885      4C696D69 
+ 2873      696F6E00 
+ 2874              	.LASF17:
+ 2875 029c 696E7436 		.ascii	"int64\000"
+ 2875      3400
+ 2876              	.LASF60:
+ 2877 02a2 4379496E 		.ascii	"CyIntSetPriority\000"
+ 2877      74536574 
+ 2877      5072696F 
+ 2877      72697479 
+ 2877      00
+ 2878              	.LASF38:
+ 2879 02b3 4144435F 		.ascii	"ADC_SetChanMask\000"
+ 2879      53657443 
+ 2879      68616E4D 
+ 2879      61736B00 
+ 2880              	.LASF65:
+ 2881 02c3 47656E65 		.ascii	"Generated_Source\\PSoC4\\ADC.c\000"
+ 2881      72617465 
+ 2881      645F536F 
+ 2881      75726365 
+ 2881      5C50536F 
+ 2882              	.LASF48:
+ 2883 02e0 4144435F 		.ascii	"ADC_SetGain\000"
+ 2883      53657447 
+ 2883      61696E00 
+ 2884              	.LASF15:
+ 2885 02ec 666C6F61 		.ascii	"float\000"
  2885      7400
- 2886              	.LASF50:
- 2887 02d5 4144435F 		.ascii	"ADC_CountsTo_mVolts\000"
- 2887      436F756E 
- 2887      7473546F 
- 2887      5F6D566F 
- 2887      6C747300 
- 2888              	.LASF40:
- 2889 02e9 4144435F 		.ascii	"ADC_SetLowLimit\000"
- 2889      5365744C 
- 2889      6F774C69 
- 2889      6D697400 
- 2890              	.LASF63:
- 2891 02f9 43794861 		.ascii	"CyHalt\000"
- 2891      6C7400
- 2892              	.LASF1:
- 2893 0300 756E7369 		.ascii	"unsigned char\000"
- 2893      676E6564 
- 2893      20636861 
- 2893      7200
- 2894              	.LASF58:
- 2895 030e 4144435F 		.ascii	"ADC_offset\000"
- 2895      6F666673 
- 2895      657400
- 2896              	.LASF2:
- 2897 0319 73686F72 		.ascii	"short int\000"
- 2897      7420696E 
- 2897      7400
- 2898              	.LASF29:
- 2899 0323 4144435F 		.ascii	"ADC_Stop\000"
- 2899      53746F70 
- 2899      00
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccFuZufh.s 			page 70
+ 2886              	.LASF43:
+ 2887 02f2 68696768 		.ascii	"highLimit\000"
+ 2887      4C696D69 
+ 2887      7400
+ 2888              	.LASF50:
+ 2889 02fc 4144435F 		.ascii	"ADC_CountsTo_mVolts\000"
+ 2889      436F756E 
+ 2889      7473546F 
+ 2889      5F6D566F 
+ 2889      6C747300 
+ 2890              	.LASF40:
+ 2891 0310 4144435F 		.ascii	"ADC_SetLowLimit\000"
+ 2891      5365744C 
+ 2891      6F774C69 
+ 2891      6D697400 
+ 2892              	.LASF63:
+ 2893 0320 43794861 		.ascii	"CyHalt\000"
+ 2893      6C7400
+ 2894              	.LASF1:
+ 2895 0327 756E7369 		.ascii	"unsigned char\000"
+ 2895      676E6564 
+ 2895      20636861 
+ 2895      7200
+ 2896              	.LASF58:
+ 2897 0335 4144435F 		.ascii	"ADC_offset\000"
+ 2897      6F666673 
+ 2897      657400
+ 2898              	.LASF2:
+ 2899 0340 73686F72 		.ascii	"short int\000"
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrsuxKb.s 			page 70
 
 
- 2900              	.LASF22:
- 2901 032c 63684E75 		.ascii	"chNum\000"
- 2901      6D00
- 2902              	.LASF36:
- 2903 0332 6368616E 		.ascii	"chan\000"
- 2903      00
- 2904              	.LASF66:
- 2905 0337 433A5C64 		.ascii	"C:\\dev\\git\\Icebreaker\\Icebreaker.cydsn\000"
- 2905      65765C67 
- 2905      69745C49 
- 2905      63656272 
- 2905      65616B65 
+ 2899      7420696E 
+ 2899      7400
+ 2900              	.LASF29:
+ 2901 034a 4144435F 		.ascii	"ADC_Stop\000"
+ 2901      53746F70 
+ 2901      00
+ 2902              	.LASF22:
+ 2903 0353 63684E75 		.ascii	"chNum\000"
+ 2903      6D00
+ 2904              	.LASF36:
+ 2905 0359 6368616E 		.ascii	"chan\000"
+ 2905      00
  2906              	.LASF18:
  2907 035e 63686172 		.ascii	"char\000"
  2907      00

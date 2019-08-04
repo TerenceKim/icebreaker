@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccON5HPa.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
   28:Generated_Source\PSoC4/USBFS_Dm_PM.c **** *  deep-sleep/hibernate modes. This function applies only to SIO and USBIO pins.
   29:Generated_Source\PSoC4/USBFS_Dm_PM.c **** *  It should not be called for GPIO or GPIO_OVT pins.
   30:Generated_Source\PSoC4/USBFS_Dm_PM.c **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccON5HPa.s 			page 2
 
 
   31:Generated_Source\PSoC4/USBFS_Dm_PM.c **** * <b>Note</b> This function is available in PSoC 4 only.
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
   51 001a 7047     		bx	lr
   52              	.L3:
   53              		.align	2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccON5HPa.s 			page 3
 
 
   54              	.L2:
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
   90:Generated_Source\PSoC4/USBFS_Dm_PM.c ****             USBFS_Dm_CR1_REG = USBFS_Dm_backup.usbState;
   80              		.loc 1 90 0
   81 000a 054A     		ldr	r2, .L5+4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccON5HPa.s 			page 4
 
 
   82 000c 9168     		ldr	r1, [r2, #8]
@@ -228,24 +228,24 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
  117 0006 00000000 		.4byte	.Ldebug_abbrev0
  118 000a 04       		.byte	0x4
  119 000b 01       		.uleb128 0x1
- 120 000c AE000000 		.4byte	.LASF20
+ 120 000c D5000000 		.4byte	.LASF20
  121 0010 0C       		.byte	0xc
- 122 0011 89000000 		.4byte	.LASF21
- 123 0015 6F010000 		.4byte	.LASF22
+ 122 0011 B0000000 		.4byte	.LASF21
+ 123 0015 2A000000 		.4byte	.LASF22
  124 0019 00000000 		.4byte	.Ldebug_ranges0+0
  125 001d 00000000 		.4byte	0
  126 0021 00000000 		.4byte	.Ldebug_line0
  127 0025 02       		.uleb128 0x2
  128 0026 01       		.byte	0x1
  129 0027 06       		.byte	0x6
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccON5HPa.s 			page 5
 
 
  130 0028 C1010000 		.4byte	.LASF0
  131 002c 02       		.uleb128 0x2
  132 002d 01       		.byte	0x1
  133 002e 08       		.byte	0x8
- 134 002f 15000000 		.4byte	.LASF1
+ 134 002f 1C000000 		.4byte	.LASF1
  135 0033 02       		.uleb128 0x2
  136 0034 02       		.byte	0x2
  137 0035 05       		.byte	0x5
@@ -253,7 +253,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
  139 003a 02       		.uleb128 0x2
  140 003b 02       		.byte	0x2
  141 003c 07       		.byte	0x7
- 142 003d 35000000 		.4byte	.LASF3
+ 142 003d 51000000 		.4byte	.LASF3
  143 0041 02       		.uleb128 0x2
  144 0042 04       		.byte	0x4
  145 0043 05       		.byte	0x5
@@ -261,15 +261,15 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
  147 0048 02       		.uleb128 0x2
  148 0049 04       		.byte	0x4
  149 004a 07       		.byte	0x7
- 150 004b 23000000 		.4byte	.LASF5
+ 150 004b 73000000 		.4byte	.LASF5
  151 004f 02       		.uleb128 0x2
  152 0050 08       		.byte	0x8
  153 0051 05       		.byte	0x5
- 154 0052 45010000 		.4byte	.LASF6
+ 154 0052 6C010000 		.4byte	.LASF6
  155 0056 02       		.uleb128 0x2
  156 0057 08       		.byte	0x8
  157 0058 07       		.byte	0x7
- 158 0059 72000000 		.4byte	.LASF7
+ 158 0059 99000000 		.4byte	.LASF7
  159 005d 03       		.uleb128 0x3
  160 005e 04       		.byte	0x4
  161 005f 05       		.byte	0x5
@@ -277,28 +277,28 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
  163 0064 02       		.uleb128 0x2
  164 0065 04       		.byte	0x4
  165 0066 07       		.byte	0x7
- 166 0067 65000000 		.4byte	.LASF8
+ 166 0067 8C000000 		.4byte	.LASF8
  167 006b 04       		.uleb128 0x4
- 168 006c 5E000000 		.4byte	.LASF12
+ 168 006c 85000000 		.4byte	.LASF12
  169 0070 02       		.byte	0x2
  170 0071 E601     		.2byte	0x1e6
  171 0073 48000000 		.4byte	0x48
  172 0077 02       		.uleb128 0x2
  173 0078 04       		.byte	0x4
  174 0079 04       		.byte	0x4
- 175 007a 0F000000 		.4byte	.LASF9
+ 175 007a 16000000 		.4byte	.LASF9
  176 007e 02       		.uleb128 0x2
  177 007f 08       		.byte	0x8
  178 0080 04       		.byte	0x4
- 179 0081 57000000 		.4byte	.LASF10
+ 179 0081 0F000000 		.4byte	.LASF10
  180 0085 02       		.uleb128 0x2
  181 0086 01       		.byte	0x1
  182 0087 08       		.byte	0x8
- 183 0088 6A010000 		.4byte	.LASF11
+ 183 0088 91010000 		.4byte	.LASF11
  184 008c 04       		.uleb128 0x4
  185 008d 00000000 		.4byte	.LASF13
  186 0091 02       		.byte	0x2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccON5HPa.s 			page 6
 
 
  187 0092 9002     		.2byte	0x290
@@ -317,7 +317,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
  200 00ac 6B000000 		.4byte	0x6b
  201 00b0 00       		.byte	0
  202 00b1 07       		.uleb128 0x7
- 203 00b2 3C010000 		.4byte	.LASF15
+ 203 00b2 63010000 		.4byte	.LASF15
  204 00b6 03       		.byte	0x3
  205 00b7 24       		.byte	0x24
  206 00b8 6B000000 		.4byte	0x6b
@@ -330,12 +330,12 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
  213 00c8 08       		.byte	0x8
  214 00c9 00       		.byte	0
  215 00ca 08       		.uleb128 0x8
- 216 00cb 53010000 		.4byte	.LASF17
+ 216 00cb 7A010000 		.4byte	.LASF17
  217 00cf 03       		.byte	0x3
  218 00d0 26       		.byte	0x26
  219 00d1 9D000000 		.4byte	0x9d
  220 00d5 09       		.uleb128 0x9
- 221 00d6 48000000 		.4byte	.LASF18
+ 221 00d6 64000000 		.4byte	.LASF18
  222 00da 01       		.byte	0x1
  223 00db 2C       		.byte	0x2c
  224 00dc 00000000 		.4byte	.LFB0
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
  241 0102 05       		.uleb128 0x5
  242 0103 03       		.byte	0x3
  243 0104 00000000 		.4byte	USBFS_Dm_backup
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccON5HPa.s 			page 7
 
 
  244 0108 00       		.byte	0
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
  298 0033 13       		.uleb128 0x13
  299 0034 00       		.byte	0
  300 0035 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccON5HPa.s 			page 8
 
 
  301 0036 05       		.uleb128 0x5
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
  355 006c 0E       		.uleb128 0xe
  356 006d 3A       		.uleb128 0x3a
  357 006e 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccON5HPa.s 			page 9
 
 
  358 006f 3B       		.uleb128 0x3b
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
  412 0000 83000000 		.section	.debug_str,"MS",%progbits,1
  412      02005600 
  412      00000201 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccON5HPa.s 			page 10
 
 
  412      FB0E0D00 
@@ -550,97 +550,97 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
  416 0006 75736253 		.ascii	"usbState\000"
  416      74617465 
  416      00
- 417              	.LASF9:
- 418 000f 666C6F61 		.ascii	"float\000"
- 418      7400
- 419              	.LASF1:
- 420 0015 756E7369 		.ascii	"unsigned char\000"
- 420      676E6564 
- 420      20636861 
- 420      7200
- 421              	.LASF5:
- 422 0023 6C6F6E67 		.ascii	"long unsigned int\000"
- 422      20756E73 
- 422      69676E65 
- 422      6420696E 
- 422      7400
- 423              	.LASF3:
- 424 0035 73686F72 		.ascii	"short unsigned int\000"
- 424      7420756E 
- 424      7369676E 
- 424      65642069 
- 424      6E7400
- 425              	.LASF18:
- 426 0048 55534246 		.ascii	"USBFS_Dm_Sleep\000"
- 426      535F446D 
- 426      5F536C65 
- 426      657000
- 427              	.LASF10:
- 428 0057 646F7562 		.ascii	"double\000"
- 428      6C6500
- 429              	.LASF12:
- 430 005e 75696E74 		.ascii	"uint32\000"
- 430      333200
- 431              	.LASF8:
- 432 0065 756E7369 		.ascii	"unsigned int\000"
- 432      676E6564 
- 432      20696E74 
- 432      00
- 433              	.LASF7:
- 434 0072 6C6F6E67 		.ascii	"long long unsigned int\000"
- 434      206C6F6E 
- 434      6720756E 
- 434      7369676E 
- 434      65642069 
- 435              	.LASF21:
- 436 0089 47656E65 		.ascii	"Generated_Source\\PSoC4\\USBFS_Dm_PM.c\000"
- 436      72617465 
- 436      645F536F 
- 436      75726365 
- 436      5C50536F 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 11
+ 417              	.LASF10:
+ 418 000f 646F7562 		.ascii	"double\000"
+ 418      6C6500
+ 419              	.LASF9:
+ 420 0016 666C6F61 		.ascii	"float\000"
+ 420      7400
+ 421              	.LASF1:
+ 422 001c 756E7369 		.ascii	"unsigned char\000"
+ 422      676E6564 
+ 422      20636861 
+ 422      7200
+ 423              	.LASF22:
+ 424 002a 433A5C64 		.ascii	"C:\\dev\\git\\icebreaker\\Icebreaker.cydsn\000"
+ 424      65765C67 
+ 424      69745C69 
+ 424      63656272 
+ 424      65616B65 
+ 425              	.LASF3:
+ 426 0051 73686F72 		.ascii	"short unsigned int\000"
+ 426      7420756E 
+ 426      7369676E 
+ 426      65642069 
+ 426      6E7400
+ 427              	.LASF18:
+ 428 0064 55534246 		.ascii	"USBFS_Dm_Sleep\000"
+ 428      535F446D 
+ 428      5F536C65 
+ 428      657000
+ 429              	.LASF5:
+ 430 0073 6C6F6E67 		.ascii	"long unsigned int\000"
+ 430      20756E73 
+ 430      69676E65 
+ 430      6420696E 
+ 430      7400
+ 431              	.LASF12:
+ 432 0085 75696E74 		.ascii	"uint32\000"
+ 432      333200
+ 433              	.LASF8:
+ 434 008c 756E7369 		.ascii	"unsigned int\000"
+ 434      676E6564 
+ 434      20696E74 
+ 434      00
+ 435              	.LASF7:
+ 436 0099 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 436      206C6F6E 
+ 436      6720756E 
+ 436      7369676E 
+ 436      65642069 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccON5HPa.s 			page 11
 
 
- 437              	.LASF20:
- 438 00ae 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 438      43313120 
- 438      352E342E 
- 438      31203230 
- 438      31363036 
- 439 00e1 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
- 439      20726576 
- 439      6973696F 
- 439      6E203233 
- 439      37373135 
- 440 0114 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 440      66756E63 
- 440      74696F6E 
- 440      2D736563 
- 440      74696F6E 
- 441              	.LASF15:
- 442 013c 73696F53 		.ascii	"sioState\000"
- 442      74617465 
- 442      00
- 443              	.LASF6:
- 444 0145 6C6F6E67 		.ascii	"long long int\000"
- 444      206C6F6E 
- 444      6720696E 
- 444      7400
- 445              	.LASF17:
- 446 0153 55534246 		.ascii	"USBFS_Dm_BACKUP_STRUCT\000"
- 446      535F446D 
- 446      5F424143 
- 446      4B55505F 
- 446      53545255 
- 447              	.LASF11:
- 448 016a 63686172 		.ascii	"char\000"
- 448      00
- 449              	.LASF22:
- 450 016f 433A5C64 		.ascii	"C:\\dev\\git\\Icebreaker\\Icebreaker.cydsn\000"
- 450      65765C67 
- 450      69745C49 
- 450      63656272 
- 450      65616B65 
+ 437              	.LASF21:
+ 438 00b0 47656E65 		.ascii	"Generated_Source\\PSoC4\\USBFS_Dm_PM.c\000"
+ 438      72617465 
+ 438      645F536F 
+ 438      75726365 
+ 438      5C50536F 
+ 439              	.LASF20:
+ 440 00d5 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 440      43313120 
+ 440      352E342E 
+ 440      31203230 
+ 440      31363036 
+ 441 0108 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 441      20726576 
+ 441      6973696F 
+ 441      6E203233 
+ 441      37373135 
+ 442 013b 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 442      66756E63 
+ 442      74696F6E 
+ 442      2D736563 
+ 442      74696F6E 
+ 443              	.LASF15:
+ 444 0163 73696F53 		.ascii	"sioState\000"
+ 444      74617465 
+ 444      00
+ 445              	.LASF6:
+ 446 016c 6C6F6E67 		.ascii	"long long int\000"
+ 446      206C6F6E 
+ 446      6720696E 
+ 446      7400
+ 447              	.LASF17:
+ 448 017a 55534246 		.ascii	"USBFS_Dm_BACKUP_STRUCT\000"
+ 448      535F446D 
+ 448      5F424143 
+ 448      4B55505F 
+ 448      53545255 
+ 449              	.LASF11:
+ 450 0191 63686172 		.ascii	"char\000"
+ 450      00
  451              	.LASF2:
  452 0196 73686F72 		.ascii	"short int\000"
  452      7420696E 
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 1
  458      20696E74 
  458      00
  459              	.LASF0:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccVj0GrE.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccON5HPa.s 			page 12
 
 
  460 01c1 7369676E 		.ascii	"signed char\000"

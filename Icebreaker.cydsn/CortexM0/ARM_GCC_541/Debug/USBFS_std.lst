@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
   28:Generated_Source\PSoC4/USBFS_std.c ****     /***************************************************************************
   29:Generated_Source\PSoC4/USBFS_std.c ****     * Function Name: USBFS_SerialNumString
   30:Generated_Source\PSoC4/USBFS_std.c ****     ************************************************************************//**
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 2
 
 
   31:Generated_Source\PSoC4/USBFS_std.c ****     *
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
   85:Generated_Source\PSoC4/USBFS_std.c **** {
   86:Generated_Source\PSoC4/USBFS_std.c ****     uint8 requestHandled = USBFS_FALSE;
   87:Generated_Source\PSoC4/USBFS_std.c ****     uint32 interfaceNumber;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 3
 
 
   88:Generated_Source\PSoC4/USBFS_std.c ****     uint32 configurationN;
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  142:Generated_Source\PSoC4/USBFS_std.c ****                                                                              (USBFS_currentTD.pData
  143:Generated_Source\PSoC4/USBFS_std.c ****                         requestHandled  = USBFS_InitControlRead();
  144:Generated_Source\PSoC4/USBFS_std.c ****                     }
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 4
 
 
  145:Generated_Source\PSoC4/USBFS_std.c ****                 }
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  199:Generated_Source\PSoC4/USBFS_std.c ****                     if (*pStr != 0u)
  200:Generated_Source\PSoC4/USBFS_std.c ****                     {
  201:Generated_Source\PSoC4/USBFS_std.c ****                         USBFS_currentTD.count = *pStr;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 5
 
 
  202:Generated_Source\PSoC4/USBFS_std.c ****                         USBFS_currentTD.pData = pStr;
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  256:Generated_Source\PSoC4/USBFS_std.c ****         switch (USBFS_bRequestReg)
  257:Generated_Source\PSoC4/USBFS_std.c ****         {
  258:Generated_Source\PSoC4/USBFS_std.c ****             case USBFS_SET_ADDRESS:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 6
 
 
  259:Generated_Source\PSoC4/USBFS_std.c ****                 /* Store address to be set in USBFS_NoDataControlStatusStage(). */
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  313:Generated_Source\PSoC4/USBFS_std.c ****                 {
  314:Generated_Source\PSoC4/USBFS_std.c ****                     case USBFS_RQST_RCPT_EP:
  315:Generated_Source\PSoC4/USBFS_std.c ****                         if (USBFS_wValueLoReg == USBFS_ENDPOINT_HALT)
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 7
 
 
  316:Generated_Source\PSoC4/USBFS_std.c ****                         {
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  370:Generated_Source\PSoC4/USBFS_std.c ****                         break;
  371:Generated_Source\PSoC4/USBFS_std.c ****                 }
  372:Generated_Source\PSoC4/USBFS_std.c ****                 break;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 8
 
 
  373:Generated_Source\PSoC4/USBFS_std.c ****                 
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
   54              	.LVL2:
  401:Generated_Source\PSoC4/USBFS_std.c ****         uint32 i;
  402:Generated_Source\PSoC4/USBFS_std.c ****         uint32 j = 0u;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 9
 
 
  403:Generated_Source\PSoC4/USBFS_std.c ****         uint8 uniqueId[8u];
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
   91 004a AA5C     		ldrb	r2, [r5, r2]
   92 004c 6254     		strb	r2, [r4, r1]
  420:Generated_Source\PSoC4/USBFS_std.c ****                 descr[i + 3u] = 0u;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 10
 
 
   93              		.loc 1 420 0 discriminator 3
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  437:Generated_Source\PSoC4/USBFS_std.c **** void USBFS_ConfigReg(void) 
  438:Generated_Source\PSoC4/USBFS_std.c **** {
  129              		.loc 1 438 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 11
 
 
  130              		.cfi_startproc
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  165 0028 5900     		lsls	r1, r3, #1
  166 002a C918     		adds	r1, r1, r3
  167 002c 8A00     		lsls	r2, r1, #2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 12
 
 
  168 002e 1F49     		ldr	r1, .L13+4
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  477:Generated_Source\PSoC4/USBFS_std.c ****         }
  478:Generated_Source\PSoC4/USBFS_std.c ****         else
  479:Generated_Source\PSoC4/USBFS_std.c ****         {
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 13
 
 
  480:Generated_Source\PSoC4/USBFS_std.c ****             USBFS_SIE_EP_BASE.sieEp[ep].epCr0 = USBFS_MODE_STALL_DATA_EP;
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  227              		.loc 1 507 0
  228 0084 0F32     		adds	r2, r2, #15
  229 0086 0D4B     		ldr	r3, .L13+20
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 14
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 14
 
 
  230 0088 1A60     		str	r2, [r3]
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  271              		.type	USBFS_EpStateInit, %function
  272              	USBFS_EpStateInit:
  273              	.LFB164:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 15
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 15
 
 
  521:Generated_Source\PSoC4/USBFS_std.c **** 
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  544:Generated_Source\PSoC4/USBFS_std.c ****         {
  545:Generated_Source\PSoC4/USBFS_std.c ****             /* OUT Endpoint */
  546:Generated_Source\PSoC4/USBFS_std.c ****             USBFS_EP[i].apiEpState = USBFS_NO_EVENT_PENDING;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 16
 
 
  305              		.loc 1 546 0
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  563:Generated_Source\PSoC4/USBFS_std.c **** *   It is used for handling Class specific requests depend on interface class.
  564:Generated_Source\PSoC4/USBFS_std.c **** *   Different classes in multiple Alternate settings does not supported.
  565:Generated_Source\PSoC4/USBFS_std.c **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 17
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 17
 
 
  566:Generated_Source\PSoC4/USBFS_std.c **** * \reentrant
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  620:Generated_Source\PSoC4/USBFS_std.c ****             USBFS_deviceStatus |= (uint8)  USBFS_DEVICE_STATUS_SELF_POWERED;
  621:Generated_Source\PSoC4/USBFS_std.c ****         }
  622:Generated_Source\PSoC4/USBFS_std.c ****         else
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 18
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 18
 
 
  623:Generated_Source\PSoC4/USBFS_std.c ****         {
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  677:Generated_Source\PSoC4/USBFS_std.c ****                     {
  678:Generated_Source\PSoC4/USBFS_std.c ****                         cdcComNums = USBFS_Cdc_EpInit(pEP, curEp, cdcComNums);
  679:Generated_Source\PSoC4/USBFS_std.c ****                     }
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 19
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 19
 
 
  680:Generated_Source\PSoC4/USBFS_std.c ****                 #endif  /* (USBFS_ENABLE_CDC_CLASS) */
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  734:Generated_Source\PSoC4/USBFS_std.c ****                                     USBFS_midi_out_ep = i;
  735:Generated_Source\PSoC4/USBFS_std.c ****                                 }
  736:Generated_Source\PSoC4/USBFS_std.c ****                             #endif  /* (USBFS_ENABLE_MIDI_STREAMING) */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 20
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 20
 
 
  737:Generated_Source\PSoC4/USBFS_std.c ****                             }
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  791:Generated_Source\PSoC4/USBFS_std.c **** }
  792:Generated_Source\PSoC4/USBFS_std.c **** 
  793:Generated_Source\PSoC4/USBFS_std.c **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 21
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 21
 
 
  794:Generated_Source\PSoC4/USBFS_std.c **** /*******************************************************************************
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  848:Generated_Source\PSoC4/USBFS_std.c ****                 {
  849:Generated_Source\PSoC4/USBFS_std.c ****                     /* IN Endpoint */
  850:Generated_Source\PSoC4/USBFS_std.c ****                     USBFS_EP[curEp].epMode     = USBFS_GET_ACTIVE_IN_EP_CR0_MODE(epType);
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 22
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 22
 
 
  851:Generated_Source\PSoC4/USBFS_std.c ****                     USBFS_EP[curEp].apiEpState = USBFS_EVENT_PENDING;
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  905:Generated_Source\PSoC4/USBFS_std.c **** 
  906:Generated_Source\PSoC4/USBFS_std.c ****             #else
  907:Generated_Source\PSoC4/USBFS_std.c ****                 USBFS_SIE_EP_BASE.sieEp[curEp].epCnt0 = HI8(USBFS_EP[curEp].bufferSize);
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 23
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 23
 
 
  908:Generated_Source\PSoC4/USBFS_std.c ****                 USBFS_SIE_EP_BASE.sieEp[curEp].epCnt1 = LO8(USBFS_EP[curEp].bufferSize);
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  354              	.LVL19:
  949:Generated_Source\PSoC4/USBFS_std.c **** 
  950:Generated_Source\PSoC4/USBFS_std.c ****     /* The first entry points to the Device Descriptor,
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 24
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 24
 
 
  951:Generated_Source\PSoC4/USBFS_std.c ****     *  the second entry point to the BOS Descriptor
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  391              	.LFB166:
  806:Generated_Source\PSoC4/USBFS_std.c ****     uint32 ep;
  392              		.loc 1 806 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 25
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 25
 
 
  393              		.cfi_startproc
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  441              	.L38:
  835:Generated_Source\PSoC4/USBFS_std.c ****                 (USBFS_interfaceSetting[interfaceNum] == pEP->altSetting))
  442              		.loc 1 835 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 26
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 26
 
 
  443 002e 1978     		ldrb	r1, [r3]
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  490 0074 B955     		strb	r1, [r7, r6]
  845:Generated_Source\PSoC4/USBFS_std.c **** 
  491              		.loc 1 845 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 27
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 27
 
 
  492 0076 9E88     		ldrh	r6, [r3, #4]
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  539              		.loc 1 857 0 is_stmt 1 discriminator 4
  540 00ba 0026     		movs	r6, #0
  541 00bc 4E70     		strb	r6, [r1, #1]
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 28
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 28
 
 
  542              	.L33:
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  589 0108 6646     		mov	r6, ip
  590 010a 3160     		str	r1, [r6]
  887:Generated_Source\PSoC4/USBFS_std.c ****                 #endif /* (CY_PSOC4) */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 29
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 29
 
 
  591              		.loc 1 887 0
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  639 014c AA42     		cmp	r2, r5
  640 014e 00D2     		bcs	.LCB618
  641 0150 6DE7     		b	.L38	@long jump
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 30
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 30
 
 
  642              	.LCB618:
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  989:Generated_Source\PSoC4/USBFS_std.c ****         pTmp = (const T_USBFS_LUT CYCODE *) USBFS_TABLE[USBFS_device].p_list;
  990:Generated_Source\PSoC4/USBFS_std.c **** 
  991:Generated_Source\PSoC4/USBFS_std.c ****         /* The first entry points to the Device Descriptor,
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 31
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 31
 
 
  992:Generated_Source\PSoC4/USBFS_std.c ****         *  the second entry points to the BOS Descriptor
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  703              	USBFS_GetInterfaceClassTablePtr:
  704              	.LFB169:
 1017:Generated_Source\PSoC4/USBFS_std.c **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 32
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 32
 
 
 1018:Generated_Source\PSoC4/USBFS_std.c **** 
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  733              	.LVL46:
 1044:Generated_Source\PSoC4/USBFS_std.c ****         pInterfaceClass = (const uint8 CYCODE *) pTmp->p_list;
  734              		.loc 1 1044 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 33
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 33
 
 
  735 001c 4068     		ldr	r0, [r0, #4]
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  780 0008 83B0     		sub	sp, sp, #12
  781              		.cfi_def_cfa_offset 40
  782              	.LVL51:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 34
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 34
 
 
  586:Generated_Source\PSoC4/USBFS_std.c ****     {
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  826              	.L56:
  602:Generated_Source\PSoC4/USBFS_std.c ****             USBFS_interfaceSettingLast[i] = 0u;
  827              		.loc 1 602 0 discriminator 3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 35
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 35
 
 
  828 003e 0022     		movs	r2, #0
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  875 007a DBB2     		uxtb	r3, r3
  876 007c 1370     		strb	r3, [r2]
  877 007e 04E0     		b	.L59
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 36
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 36
 
 
  878              	.L58:
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  924 00ba BA00     		lsls	r2, r7, #2
  925 00bc 3A4F     		ldr	r7, .L75
  926 00be BA18     		adds	r2, r7, r2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 37
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 37
 
 
  927 00c0 1181     		strh	r1, [r2, #8]
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  975              	.LVL70:
  976 010e 9C46     		mov	ip, r3
  977 0110 01E0     		b	.L65
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 38
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 38
 
 
  978              	.LVL71:
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1027 0150 DF19     		adds	r7, r3, r7
  1028 0152 BB00     		lsls	r3, r7, #2
  1029 0154 CB18     		adds	r3, r1, r3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 39
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 39
 
 
  1030 0156 0022     		movs	r2, #0
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1076 0186 8C72     		strb	r4, [r1, #10]
  767:Generated_Source\PSoC4/USBFS_std.c ****         }
  1077              		.loc 1 767 0 discriminator 3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 40
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 40
 
 
  1078 0188 0830     		adds	r0, r0, #8
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
 1055:Generated_Source\PSoC4/USBFS_std.c **** /*******************************************************************************
 1056:Generated_Source\PSoC4/USBFS_std.c **** * Function Name: USBFS_TerminateEP
 1057:Generated_Source\PSoC4/USBFS_std.c **** ****************************************************************************//**
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 41
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 41
 
 
 1058:Generated_Source\PSoC4/USBFS_std.c **** *
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1153 0022 DA70     		strb	r2, [r3, #3]
 1084:Generated_Source\PSoC4/USBFS_std.c ****         USBFS_EP[epNumber].apiEpState = USBFS_NO_EVENT_ALLOWED;
  1154              		.loc 1 1084 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 42
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 42
 
 
  1155 0024 0232     		adds	r2, r2, #2
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1196              		.code	16
  1197              		.thumb_func
  1198              		.type	USBFS_SetEndpointHalt, %function
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 43
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 43
 
 
  1199              	USBFS_SetEndpointHalt:
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1226 001a 9078     		ldrb	r0, [r2, #2]
  1227 001c 0121     		movs	r1, #1
  1228 001e 0143     		orrs	r1, r0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 44
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 44
 
 
  1229 0020 C9B2     		uxtb	r1, r1
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1265              		.loc 1 1142 0
  1266 0054 FFF7FEFF 		bl	USBFS_InitNoDataControlTransfer
  1267              	.LVL103:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 45
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 45
 
 
  1268 0058 00E0     		b	.L83
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1300              		.cfi_def_cfa_offset 16
  1301              		.cfi_offset 4, -16
  1302              		.cfi_offset 5, -12
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 46
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 46
 
 
  1303              		.cfi_offset 6, -8
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1338 0034 0220     		movs	r0, #2
  1339 0036 8143     		bics	r1, r0
  1340 0038 5170     		strb	r1, [r2, #1]
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 47
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 47
 
 
 1183:Generated_Source\PSoC4/USBFS_std.c **** 
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1377              		.loc 1 1200 0
  1378 006e 5900     		lsls	r1, r3, #1
  1379 0070 C918     		adds	r1, r1, r3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 48
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 48
 
 
  1380 0072 8A00     		lsls	r2, r1, #2
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1418 00a0 70BD     		pop	{r4, r5, r6, pc}
  1419              	.L97:
  1420 00a2 C046     		.align	2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 49
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 49
 
 
  1421              	.L96:
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1450 0006 E5B2     		uxtb	r5, r4
  1451              	.LVL119:
 1241:Generated_Source\PSoC4/USBFS_std.c ****     
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 50
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 50
 
 
 1242:Generated_Source\PSoC4/USBFS_std.c ****     /* Get number of interfaces for current configuration. */
@@ -2998,7 +2998,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1491              		.loc 1 1233 0
  1492 003a 0020     		movs	r0, #0
  1493              	.LVL126:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 51
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 51
 
 
  1494              	.L100:
@@ -3058,7 +3058,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1539              		.loc 1 107 0
  1540 0012 AF4A     		ldr	r2, .L158
  1541 0014 5268     		ldr	r2, [r2, #4]
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 52
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 52
 
 
  1542 0016 062A     		cmp	r2, #6
@@ -3118,7 +3118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1589 0058 C0B2     		uxtb	r0, r0
  1590 005a FFF7FEFF 		bl	USBFS_GetConfigTablePtr
  1591              	.LVL134:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 53
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 53
 
 
  123:Generated_Source\PSoC4/USBFS_std.c ****                     {
@@ -3178,7 +3178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1636 0090 01E0     		b	.L114
  1637              	.LVL142:
  1638              	.L140:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 54
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 54
 
 
  1639 0092 0023     		movs	r3, #0
@@ -3238,7 +3238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1684 00cc 8149     		ldr	r1, .L158+4
  1685 00ce 0B80     		strh	r3, [r1]
  202:Generated_Source\PSoC4/USBFS_std.c ****                         requestHandled  = USBFS_InitControlRead();
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 55
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 55
 
 
  1686              		.loc 1 202 0
@@ -3298,7 +3298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1732 010e FFF7FEFF 		bl	USBFS_InitControlRead
  1733              	.LVL152:
  223:Generated_Source\PSoC4/USBFS_std.c ****                     case USBFS_RQST_RCPT_DEV:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 56
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 56
 
 
  1734              		.loc 1 223 0
@@ -3358,7 +3358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1777 0142 0123     		movs	r3, #1
  1778              	.LVL159:
  1779 0144 1380     		strh	r3, [r2]
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 57
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 57
 
 
  245:Generated_Source\PSoC4/USBFS_std.c ****                 requestHandled  = USBFS_InitControlRead();
@@ -3418,7 +3418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1828              		.loc 1 261 0
  1829 0172 FFF7FEFF 		bl	USBFS_InitNoDataControlTransfer
  1830              	.LVL163:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 58
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 58
 
 
  262:Generated_Source\PSoC4/USBFS_std.c ****                 
@@ -3478,7 +3478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1875 01a8 554B     		ldr	r3, .L158+48
  1876 01aa 1A70     		strb	r2, [r3]
  281:Generated_Source\PSoC4/USBFS_std.c ****                     }
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 59
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 59
 
 
  1877              		.loc 1 281 0
@@ -3538,7 +3538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1923 01ea 6FE0     		b	.L106
  1924              	.LVL177:
  1925              	.L121:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 60
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 60
 
 
  312:Generated_Source\PSoC4/USBFS_std.c ****                 {
@@ -3598,7 +3598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  1972 022e 1A69     		ldr	r2, [r3, #16]
  1973 0230 3649     		ldr	r1, .L158+60
  1974 0232 8B5C     		ldrb	r3, [r1, r2]
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 61
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 61
 
 
  1975 0234 8343     		bics	r3, r0
@@ -3658,7 +3658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  362:Generated_Source\PSoC4/USBFS_std.c ****                         {
  2022              		.loc 1 362 0
  2023 0276 164B     		ldr	r3, .L158
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 62
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 62
 
 
  2024 0278 1B69     		ldr	r3, [r3, #16]
@@ -3718,7 +3718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2075 02b4 0AE0     		b	.L106
  2076              	.L148:
  2077 02b6 0020     		movs	r0, #0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 63
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 63
 
 
  2078 02b8 08E0     		b	.L106
@@ -3778,7 +3778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2127              		.type	USBFS_tBuffer.6333, %object
  2128              		.size	USBFS_tBuffer.6333, 2
  2129              	USBFS_tBuffer.6333:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 64
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 64
 
 
  2130 0000 0000     		.space	2
@@ -3798,7 +3798,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2144 000c 52000000 		.4byte	.LASF115
  2145 0010 0C       		.byte	0xc
  2146 0011 37010000 		.4byte	.LASF116
- 2147 0015 A1050000 		.4byte	.LASF117
+ 2147 0015 01030000 		.4byte	.LASF117
  2148 0019 00000000 		.4byte	.Ldebug_ranges0+0
  2149 001d 00000000 		.4byte	0
  2150 0021 00000000 		.4byte	.Ldebug_line0
@@ -3809,15 +3809,15 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2155 002c 02       		.uleb128 0x2
  2156 002d 01       		.byte	0x1
  2157 002e 08       		.byte	0x8
- 2158 002f D3040000 		.4byte	.LASF1
+ 2158 002f FA040000 		.4byte	.LASF1
  2159 0033 02       		.uleb128 0x2
  2160 0034 02       		.byte	0x2
  2161 0035 05       		.byte	0x5
- 2162 0036 F3040000 		.4byte	.LASF2
+ 2162 0036 1A050000 		.4byte	.LASF2
  2163 003a 02       		.uleb128 0x2
  2164 003b 02       		.byte	0x2
  2165 003c 07       		.byte	0x7
- 2166 003d 15030000 		.4byte	.LASF3
+ 2166 003d 3C030000 		.4byte	.LASF3
  2167 0041 02       		.uleb128 0x2
  2168 0042 04       		.byte	0x4
  2169 0043 05       		.byte	0x5
@@ -3838,7 +3838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2184 005e 04       		.byte	0x4
  2185 005f 05       		.byte	0x5
  2186 0060 696E7400 		.ascii	"int\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 65
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 65
 
 
  2187 0064 02       		.uleb128 0x2
@@ -3863,7 +3863,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2206 008f 02       		.uleb128 0x2
  2207 0090 04       		.byte	0x4
  2208 0091 04       		.byte	0x4
- 2209 0092 76040000 		.4byte	.LASF12
+ 2209 0092 9D040000 		.4byte	.LASF12
  2210 0096 02       		.uleb128 0x2
  2211 0097 08       		.byte	0x8
  2212 0098 04       		.byte	0x4
@@ -3880,7 +3880,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2223 00b0 05       		.uleb128 0x5
  2224 00b1 6B000000 		.4byte	0x6b
  2225 00b5 04       		.uleb128 0x4
- 2226 00b6 9D030000 		.4byte	.LASF16
+ 2226 00b6 C4030000 		.4byte	.LASF16
  2227 00ba 02       		.byte	0x2
  2228 00bb 9002     		.2byte	0x290
  2229 00bd C1000000 		.4byte	0xc1
@@ -3889,33 +3889,33 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2232 00c6 02       		.uleb128 0x2
  2233 00c7 08       		.byte	0x8
  2234 00c8 04       		.byte	0x4
- 2235 00c9 DD030000 		.4byte	.LASF17
+ 2235 00c9 04040000 		.4byte	.LASF17
  2236 00cd 02       		.uleb128 0x2
  2237 00ce 04       		.byte	0x4
  2238 00cf 07       		.byte	0x7
- 2239 00d0 D4030000 		.4byte	.LASF18
+ 2239 00d0 FB030000 		.4byte	.LASF18
  2240 00d4 06       		.uleb128 0x6
  2241 00d5 0C       		.byte	0xc
  2242 00d6 03       		.byte	0x3
  2243 00d7 95       		.byte	0x95
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 66
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 66
 
 
  2244 00d8 49010000 		.4byte	0x149
  2245 00dc 07       		.uleb128 0x7
- 2246 00dd F5030000 		.4byte	.LASF19
+ 2246 00dd 1C040000 		.4byte	.LASF19
  2247 00e1 03       		.byte	0x3
  2248 00e2 97       		.byte	0x97
  2249 00e3 6B000000 		.4byte	0x6b
  2250 00e7 00       		.byte	0
  2251 00e8 07       		.uleb128 0x7
- 2252 00e9 95040000 		.4byte	.LASF20
+ 2252 00e9 BC040000 		.4byte	.LASF20
  2253 00ed 03       		.byte	0x3
  2254 00ee 98       		.byte	0x98
  2255 00ef 6B000000 		.4byte	0x6b
  2256 00f3 01       		.byte	0x1
  2257 00f4 07       		.uleb128 0x7
- 2258 00f5 BE030000 		.4byte	.LASF21
+ 2258 00f5 E5030000 		.4byte	.LASF21
  2259 00f9 03       		.byte	0x3
  2260 00fa 99       		.byte	0x99
  2261 00fb 6B000000 		.4byte	0x6b
@@ -3951,17 +3951,17 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2291 0137 77000000 		.4byte	0x77
  2292 013b 08       		.byte	0x8
  2293 013c 07       		.uleb128 0x7
- 2294 013d 59030000 		.4byte	.LASF27
+ 2294 013d 80030000 		.4byte	.LASF27
  2295 0141 03       		.byte	0x3
  2296 0142 9F       		.byte	0x9f
  2297 0143 6B000000 		.4byte	0x6b
  2298 0147 0A       		.byte	0xa
  2299 0148 00       		.byte	0
  2300 0149 08       		.uleb128 0x8
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 67
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 67
 
 
- 2301 014a 3C050000 		.4byte	.LASF28
+ 2301 014a 63050000 		.4byte	.LASF28
  2302 014e 03       		.byte	0x3
  2303 014f A0       		.byte	0xa0
  2304 0150 D4000000 		.4byte	0xd4
@@ -3971,7 +3971,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2308 0157 A2       		.byte	0xa2
  2309 0158 A5010000 		.4byte	0x1a5
  2310 015c 07       		.uleb128 0x7
- 2311 015d 59030000 		.4byte	.LASF27
+ 2311 015d 80030000 		.4byte	.LASF27
  2312 0161 03       		.byte	0x3
  2313 0162 A4       		.byte	0xa4
  2314 0163 6B000000 		.4byte	0x6b
@@ -3989,7 +3989,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2326 017b 6B000000 		.4byte	0x6b
  2327 017f 02       		.byte	0x2
  2328 0180 07       		.uleb128 0x7
- 2329 0181 7E050000 		.4byte	.LASF30
+ 2329 0181 A5050000 		.4byte	.LASF30
  2330 0185 03       		.byte	0x3
  2331 0186 A7       		.byte	0xa7
  2332 0187 6B000000 		.4byte	0x6b
@@ -4018,7 +4018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2355 01b3 AC       		.byte	0xac
  2356 01b4 D1010000 		.4byte	0x1d1
  2357 01b8 07       		.uleb128 0x7
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 68
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 68
 
 
  2358 01b9 75060000 		.4byte	.LASF33
@@ -4034,7 +4034,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2368 01cf 02       		.byte	0x2
  2369 01d0 00       		.byte	0
  2370 01d1 08       		.uleb128 0x8
- 2371 01d2 35040000 		.4byte	.LASF35
+ 2371 01d2 5C040000 		.4byte	.LASF35
  2372 01d6 03       		.byte	0x3
  2373 01d7 B0       		.byte	0xb0
  2374 01d8 B0010000 		.4byte	0x1b0
@@ -4069,7 +4069,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2403 0210 04       		.byte	0x4
  2404 0211 D1010000 		.4byte	0x1d1
  2405 0215 08       		.uleb128 0x8
- 2406 0216 FD040000 		.4byte	.LASF39
+ 2406 0216 24050000 		.4byte	.LASF39
  2407 021a 03       		.byte	0x3
  2408 021b B7       		.byte	0xb7
  2409 021c DC010000 		.4byte	0x1dc
@@ -4078,7 +4078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2412 0222 03       		.byte	0x3
  2413 0223 B9       		.byte	0xb9
  2414 0224 3F020000 		.4byte	0x23f
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 69
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 69
 
 
  2415 0228 0A       		.uleb128 0xa
@@ -4088,7 +4088,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2419 022d 6B000000 		.4byte	0x6b
  2420 0231 00       		.byte	0
  2421 0232 07       		.uleb128 0x7
- 2422 0233 EE030000 		.4byte	.LASF40
+ 2422 0233 15040000 		.4byte	.LASF40
  2423 0237 03       		.byte	0x3
  2424 0238 BC       		.byte	0xbc
  2425 0239 3F020000 		.4byte	0x23f
@@ -4133,22 +4133,22 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2464 0284 DC       		.byte	0xdc
  2465 0285 BA020000 		.4byte	0x2ba
  2466 0289 07       		.uleb128 0x7
- 2467 028a 10040000 		.4byte	.LASF44
+ 2467 028a 37040000 		.4byte	.LASF44
  2468 028e 03       		.byte	0x3
  2469 028f DE       		.byte	0xde
  2470 0290 83000000 		.4byte	0x83
  2471 0294 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 70
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 70
 
 
  2472 0295 07       		.uleb128 0x7
- 2473 0296 17040000 		.4byte	.LASF45
+ 2473 0296 3E040000 		.4byte	.LASF45
  2474 029a 03       		.byte	0x3
  2475 029b DF       		.byte	0xdf
  2476 029c 83000000 		.4byte	0x83
  2477 02a0 04       		.byte	0x4
  2478 02a1 07       		.uleb128 0x7
- 2479 02a2 4F040000 		.4byte	.LASF46
+ 2479 02a2 76040000 		.4byte	.LASF46
  2480 02a6 03       		.byte	0x3
  2481 02a7 E0       		.byte	0xe0
  2482 02a8 83000000 		.4byte	0x83
@@ -4168,7 +4168,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2496 02c8 0C       		.byte	0xc
  2497 02c9 00       		.byte	0
  2498 02ca 08       		.uleb128 0x8
- 2499 02cb 2F030000 		.4byte	.LASF47
+ 2499 02cb 56030000 		.4byte	.LASF47
  2500 02cf 03       		.byte	0x3
  2501 02d0 E2       		.byte	0xe2
  2502 02d1 81020000 		.4byte	0x281
@@ -4198,7 +4198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2526 0301 07       		.uleb128 0x7
  2527 0302 AB020000 		.4byte	.LASF51
  2528 0306 03       		.byte	0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 71
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 71
 
 
  2529 0307 F3       		.byte	0xf3
@@ -4217,13 +4217,13 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2542 0320 83000000 		.4byte	0x83
  2543 0324 14       		.byte	0x14
  2544 0325 07       		.uleb128 0x7
- 2545 0326 20050000 		.4byte	.LASF54
+ 2545 0326 47050000 		.4byte	.LASF54
  2546 032a 03       		.byte	0x3
  2547 032b F6       		.byte	0xf6
  2548 032c 83000000 		.4byte	0x83
  2549 0330 18       		.byte	0x18
  2550 0331 07       		.uleb128 0x7
- 2551 0332 08040000 		.4byte	.LASF55
+ 2551 0332 2F040000 		.4byte	.LASF55
  2552 0336 03       		.byte	0x3
  2553 0337 F7       		.byte	0xf7
  2554 0338 83000000 		.4byte	0x83
@@ -4258,7 +4258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2583 0374 03       		.byte	0x3
  2584 0375 1601     		.2byte	0x116
  2585 0377 89030000 		.4byte	0x389
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 72
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 72
 
 
  2586 037b 0F       		.uleb128 0xf
@@ -4286,7 +4286,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2608 03a9 1C01     		.2byte	0x11c
  2609 03ab BD030000 		.4byte	0x3bd
  2610 03af 0F       		.uleb128 0xf
- 2611 03b0 53030000 		.4byte	.LASF60
+ 2611 03b0 7A030000 		.4byte	.LASF60
  2612 03b4 03       		.byte	0x3
  2613 03b5 1E01     		.2byte	0x11e
  2614 03b7 BD030000 		.4byte	0x3bd
@@ -4314,11 +4314,11 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2636 03ea 9C       		.byte	0x9c
  2637 03eb 4A040000 		.4byte	0x44a
  2638 03ef 11       		.uleb128 0x11
- 2639 03f0 CD040000 		.4byte	.LASF67
+ 2639 03f0 F4040000 		.4byte	.LASF67
  2640 03f4 01       		.byte	0x1
  2641 03f5 8E01     		.2byte	0x18e
  2642 03f7 4A040000 		.4byte	0x44a
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 73
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 73
 
 
  2643 03fb 00000000 		.4byte	.LLST0
@@ -4378,7 +4378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2697 046a 0C       		.uleb128 0xc
  2698 046b 6B000000 		.4byte	0x6b
  2699 046f 7A040000 		.4byte	0x47a
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 74
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 74
 
 
  2700 0473 0D       		.uleb128 0xd
@@ -4408,7 +4408,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2724 04ab 89000000 		.4byte	.LLST4
  2725 04af 00       		.byte	0
  2726 04b0 10       		.uleb128 0x10
- 2727 04b1 E1040000 		.4byte	.LASF66
+ 2727 04b1 08050000 		.4byte	.LASF66
  2728 04b5 01       		.byte	0x1
  2729 04b6 1402     		.2byte	0x214
  2730 04b8 00000000 		.4byte	.LFB164
@@ -4424,7 +4424,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2740 04d0 A8000000 		.4byte	.LLST5
  2741 04d4 00       		.byte	0
  2742 04d5 19       		.uleb128 0x19
- 2743 04d6 08050000 		.4byte	.LASF73
+ 2743 04d6 2F050000 		.4byte	.LASF73
  2744 04da 01       		.byte	0x1
  2745 04db AE03     		.2byte	0x3ae
  2746 04dd 10050000 		.4byte	0x510
@@ -4438,12 +4438,12 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2754 04f4 01       		.byte	0x1
  2755 04f5 AE03     		.2byte	0x3ae
  2756 04f7 6B000000 		.4byte	0x6b
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 75
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 75
 
 
  2757 04fb D2000000 		.4byte	.LLST6
  2758 04ff 18       		.uleb128 0x18
- 2759 0500 E9030000 		.4byte	.LASF69
+ 2759 0500 10040000 		.4byte	.LASF69
  2760 0504 01       		.byte	0x1
  2761 0505 B203     		.2byte	0x3b2
  2762 0507 10050000 		.4byte	0x510
@@ -4455,7 +4455,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2768 0516 17       		.uleb128 0x17
  2769 0517 46020000 		.4byte	0x246
  2770 051b 10       		.uleb128 0x10
- 2771 051c 1E040000 		.4byte	.LASF70
+ 2771 051c 45040000 		.4byte	.LASF70
  2772 0520 01       		.byte	0x1
  2773 0521 2503     		.2byte	0x325
  2774 0523 00000000 		.4byte	.LFB166
@@ -4470,7 +4470,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2783 0538 83000000 		.4byte	0x83
  2784 053c 44010000 		.4byte	.LLST8
  2785 0540 18       		.uleb128 0x18
- 2786 0541 B8030000 		.4byte	.LASF71
+ 2786 0541 DF030000 		.4byte	.LASF71
  2787 0545 01       		.byte	0x1
  2788 0546 2803     		.2byte	0x328
  2789 0548 83000000 		.4byte	0x83
@@ -4488,17 +4488,17 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2801 0566 83000000 		.4byte	0x83
  2802 056a B6010000 		.4byte	.LLST11
  2803 056e 18       		.uleb128 0x18
- 2804 056f 55040000 		.4byte	.LASF72
+ 2804 056f 7C040000 		.4byte	.LASF72
  2805 0573 01       		.byte	0x1
  2806 0574 2B03     		.2byte	0x32b
  2807 0576 6B000000 		.4byte	0x6b
  2808 057a D5010000 		.4byte	.LLST12
  2809 057e 18       		.uleb128 0x18
- 2810 057f E9030000 		.4byte	.LASF69
+ 2810 057f 10040000 		.4byte	.LASF69
  2811 0583 01       		.byte	0x1
  2812 0584 2D03     		.2byte	0x32d
  2813 0586 10050000 		.4byte	0x510
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 76
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 76
 
 
  2814 058a E8010000 		.4byte	.LLST13
@@ -4518,7 +4518,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2828 05ae 17       		.uleb128 0x17
  2829 05af A5010000 		.4byte	0x1a5
  2830 05b3 1B       		.uleb128 0x1b
- 2831 05b4 89050000 		.4byte	.LASF118
+ 2831 05b4 B0050000 		.4byte	.LASF118
  2832 05b8 01       		.byte	0x1
  2833 05b9 F303     		.2byte	0x3f3
  2834 05bb 10050000 		.4byte	0x510
@@ -4537,13 +4537,13 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2847 05de 9C       		.byte	0x9c
  2848 05df 1D060000 		.4byte	0x61d
  2849 05e3 18       		.uleb128 0x18
- 2850 05e4 E9030000 		.4byte	.LASF69
+ 2850 05e4 10040000 		.4byte	.LASF69
  2851 05e8 01       		.byte	0x1
  2852 05e9 0904     		.2byte	0x409
  2853 05eb 10050000 		.4byte	0x510
  2854 05ef 10020000 		.4byte	.LLST15
  2855 05f3 18       		.uleb128 0x18
- 2856 05f4 43030000 		.4byte	.LASF75
+ 2856 05f4 6A030000 		.4byte	.LASF75
  2857 05f8 01       		.byte	0x1
  2858 05f9 0A04     		.2byte	0x40a
  2859 05fb 1D060000 		.4byte	0x61d
@@ -4558,7 +4558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2868 0614 0E000000 		.4byte	.LVL42
  2869 0618 D5040000 		.4byte	0x4d5
  2870 061c 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 77
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 77
 
 
  2871 061d 09       		.uleb128 0x9
@@ -4576,7 +4576,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2883 0639 9C       		.byte	0x9c
  2884 063a D7060000 		.4byte	0x6d7
  2885 063e 11       		.uleb128 0x11
- 2886 063f A0040000 		.4byte	.LASF78
+ 2886 063f C7040000 		.4byte	.LASF78
  2887 0643 01       		.byte	0x1
  2888 0644 3A02     		.2byte	0x23a
  2889 0646 6B000000 		.4byte	0x6b
@@ -4588,7 +4588,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2895 0655 6B000000 		.4byte	0x6b
  2896 0659 9C020000 		.4byte	.LLST19
  2897 065d 18       		.uleb128 0x18
- 2898 065e B8030000 		.4byte	.LASF71
+ 2898 065e DF030000 		.4byte	.LASF71
  2899 0662 01       		.byte	0x1
  2900 0663 3D02     		.2byte	0x23d
  2901 0665 6B000000 		.4byte	0x6b
@@ -4606,19 +4606,19 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2913 0683 6B000000 		.4byte	0x6b
  2914 0687 7E030000 		.4byte	.LLST22
  2915 068b 18       		.uleb128 0x18
- 2916 068c 28030000 		.4byte	.LASF79
+ 2916 068c 4F030000 		.4byte	.LASF79
  2917 0690 01       		.byte	0x1
  2918 0691 4002     		.2byte	0x240
  2919 0693 1D060000 		.4byte	0x61d
  2920 0697 EE030000 		.4byte	.LLST23
  2921 069b 18       		.uleb128 0x18
- 2922 069c E9030000 		.4byte	.LASF69
+ 2922 069c 10040000 		.4byte	.LASF69
  2923 06a0 01       		.byte	0x1
  2924 06a1 4602     		.2byte	0x246
  2925 06a3 10050000 		.4byte	0x510
  2926 06a7 02040000 		.4byte	.LLST24
  2927 06ab 13       		.uleb128 0x13
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 78
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 78
 
 
  2928 06ac 70455000 		.ascii	"pEP\000"
@@ -4678,7 +4678,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  2982 0738 58000000 		.4byte	.LVL103
  2983 073c E50A0000 		.4byte	0xae5
  2984 0740 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 79
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 79
 
 
  2985 0741 19       		.uleb128 0x19
@@ -4708,7 +4708,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3009 077f E50A0000 		.4byte	0xae5
  3010 0783 00       		.byte	0
  3011 0784 19       		.uleb128 0x19
- 3012 0785 63030000 		.4byte	.LASF85
+ 3012 0785 8A030000 		.4byte	.LASF85
  3013 0789 01       		.byte	0x1
  3014 078a CF04     		.2byte	0x4cf
  3015 078c 6B000000 		.4byte	0x6b
@@ -4724,7 +4724,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3025 07a6 6B000000 		.4byte	0x6b
  3026 07aa 53050000 		.4byte	.LLST31
  3027 07ae 18       		.uleb128 0x18
- 3028 07af 55040000 		.4byte	.LASF72
+ 3028 07af 7C040000 		.4byte	.LASF72
  3029 07b3 01       		.byte	0x1
  3030 07b4 D304     		.2byte	0x4d3
  3031 07b6 6B000000 		.4byte	0x6b
@@ -4736,9 +4736,9 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3037 07c6 6B000000 		.4byte	0x6b
  3038 07ca 9D050000 		.4byte	.LLST33
  3039 07ce 18       		.uleb128 0x18
- 3040 07cf E9030000 		.4byte	.LASF69
+ 3040 07cf 10040000 		.4byte	.LASF69
  3041 07d3 01       		.byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 80
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 80
 
 
  3042 07d4 D504     		.2byte	0x4d5
@@ -4771,7 +4771,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3069 0817 83000000 		.4byte	0x83
  3070 081b 8E070000 		.4byte	.LLST36
  3071 081f 1D       		.uleb128 0x1d
- 3072 0820 B0040000 		.4byte	.LASF89
+ 3072 0820 D7040000 		.4byte	.LASF89
  3073 0824 01       		.byte	0x1
  3074 0825 58       		.byte	0x58
  3075 0826 83000000 		.4byte	0x83
@@ -4783,7 +4783,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3081 0835 83000000 		.4byte	0x83
  3082 0839 BF070000 		.4byte	.LLST38
  3083 083d 1D       		.uleb128 0x1d
- 3084 083e C8040000 		.4byte	.LASF91
+ 3084 083e EF040000 		.4byte	.LASF91
  3085 0842 01       		.byte	0x1
  3086 0843 5C       		.byte	0x5c
  3087 0844 09020000 		.4byte	0x209
@@ -4795,10 +4795,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3093 0853 6B000000 		.4byte	0x6b
  3094 0857 A4080000 		.4byte	.LLST40
  3095 085b 1D       		.uleb128 0x1d
- 3096 085c C8030000 		.4byte	.LASF93
+ 3096 085c EF030000 		.4byte	.LASF93
  3097 0860 01       		.byte	0x1
  3098 0861 5F       		.byte	0x5f
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 81
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 81
 
 
  3099 0862 6B000000 		.4byte	0x6b
@@ -4812,7 +4812,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3107 0876 03       		.byte	0x3
  3108 0877 00000000 		.4byte	USBFS_tBuffer.6333
  3109 087b 1D       		.uleb128 0x1d
- 3110 087c E9030000 		.4byte	.LASF69
+ 3110 087c 10040000 		.4byte	.LASF69
  3111 0880 01       		.byte	0x1
  3112 0881 64       		.byte	0x64
  3113 0882 10050000 		.4byte	0x510
@@ -4858,7 +4858,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3153 08ef 1A       		.uleb128 0x1a
  3154 08f0 54010000 		.4byte	.LVL160
  3155 08f4 F00A0000 		.4byte	0xaf0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 82
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 82
 
 
  3156 08f8 1A       		.uleb128 0x1a
@@ -4918,7 +4918,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3210 0982 00       		.byte	0
  3211 0983 0C       		.uleb128 0xc
  3212 0984 B0000000 		.4byte	0xb0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 83
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 83
 
 
  3213 0988 93090000 		.4byte	0x993
@@ -4929,17 +4929,17 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3218 0993 05       		.uleb128 0x5
  3219 0994 83090000 		.4byte	0x983
  3220 0998 20       		.uleb128 0x20
- 3221 0999 71050000 		.4byte	.LASF95
+ 3221 0999 98050000 		.4byte	.LASF95
  3222 099d 03       		.byte	0x3
  3223 099e DA02     		.2byte	0x2da
  3224 09a0 B0000000 		.4byte	0xb0
  3225 09a4 20       		.uleb128 0x20
- 3226 09a5 01030000 		.4byte	.LASF96
+ 3226 09a5 28030000 		.4byte	.LASF96
  3227 09a9 03       		.byte	0x3
  3228 09aa DC02     		.2byte	0x2dc
  3229 09ac B0000000 		.4byte	0xb0
  3230 09b0 20       		.uleb128 0x20
- 3231 09b1 82030000 		.4byte	.LASF97
+ 3231 09b1 A9030000 		.4byte	.LASF97
  3232 09b5 03       		.byte	0x3
  3233 09b6 DD02     		.2byte	0x2dd
  3234 09b8 B0000000 		.4byte	0xb0
@@ -4956,7 +4956,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3245 09d6 11       		.byte	0x11
  3246 09d7 00       		.byte	0
  3247 09d8 21       		.uleb128 0x21
- 3248 09d9 62040000 		.4byte	.LASF99
+ 3248 09d9 89040000 		.4byte	.LASF99
  3249 09dd 04       		.byte	0x4
  3250 09de 61       		.byte	0x61
  3251 09df E3090000 		.4byte	0x9e3
@@ -4970,7 +4970,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3259 09f6 00       		.byte	0
  3260 09f7 00       		.byte	0
  3261 09f8 21       		.uleb128 0x21
- 3262 09f9 FC030000 		.4byte	.LASF100
+ 3262 09f9 23040000 		.4byte	.LASF100
  3263 09fd 04       		.byte	0x4
  3264 09fe 68       		.byte	0x68
  3265 09ff 030A0000 		.4byte	0xa03
@@ -4978,7 +4978,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3267 0a04 E8090000 		.4byte	0x9e8
  3268 0a08 0C       		.uleb128 0xc
  3269 0a09 23060000 		.4byte	0x623
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 84
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 84
 
 
  3270 0a0d 190A0000 		.4byte	0xa19
@@ -4987,7 +4987,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3273 0a16 1A01     		.2byte	0x11a
  3274 0a18 00       		.byte	0
  3275 0a19 21       		.uleb128 0x21
- 3276 0a1a 7C040000 		.4byte	.LASF101
+ 3276 0a1a A3040000 		.4byte	.LASF101
  3277 0a1e 04       		.byte	0x4
  3278 0a1f 6A       		.byte	0x6a
  3279 0a20 240A0000 		.4byte	0xa24
@@ -5018,7 +5018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3304 0a5d 03       		.byte	0x3
  3305 0a5e 00       		.byte	0
  3306 0a5f 21       		.uleb128 0x21
- 3307 0a60 25050000 		.4byte	.LASF104
+ 3307 0a60 4C050000 		.4byte	.LASF104
  3308 0a64 04       		.byte	0x4
  3309 0a65 7A       		.byte	0x7a
  3310 0a66 6A0A0000 		.4byte	0xa6a
@@ -5038,7 +5038,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3324 0a86 B0000000 		.4byte	0xb0
  3325 0a8a 21       		.uleb128 0x21
  3326 0a8b BF060000 		.4byte	.LASF107
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 85
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 85
 
 
  3327 0a8f 04       		.byte	0x4
@@ -5047,7 +5047,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3330 0a95 05       		.uleb128 0x5
  3331 0a96 4F0A0000 		.4byte	0xa4f
  3332 0a9a 21       		.uleb128 0x21
- 3333 0a9b A3030000 		.4byte	.LASF108
+ 3333 0a9b CA030000 		.4byte	.LASF108
  3334 0a9f 04       		.byte	0x4
  3335 0aa0 7E       		.byte	0x7e
  3336 0aa1 1D060000 		.4byte	0x61d
@@ -5061,7 +5061,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3344 0ab5 05       		.uleb128 0x5
  3345 0ab6 49010000 		.4byte	0x149
  3346 0aba 21       		.uleb128 0x21
- 3347 0abb BF040000 		.4byte	.LASF109
+ 3347 0abb E6040000 		.4byte	.LASF109
  3348 0abf 04       		.byte	0x4
  3349 0ac0 80       		.byte	0x80
  3350 0ac1 C50A0000 		.4byte	0xac5
@@ -5080,8 +5080,8 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3363 0ae3 05       		.byte	0x5
  3364 0ae4 E9       		.byte	0xe9
  3365 0ae5 23       		.uleb128 0x23
- 3366 0ae6 51050000 		.4byte	.LASF112
- 3367 0aea 51050000 		.4byte	.LASF112
+ 3366 0ae6 78050000 		.4byte	.LASF112
+ 3367 0aea 78050000 		.4byte	.LASF112
  3368 0aee 04       		.byte	0x4
  3369 0aef BA       		.byte	0xba
  3370 0af0 23       		.uleb128 0x23
@@ -5098,7 +5098,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3381              		.section	.debug_abbrev,"",%progbits
  3382              	.Ldebug_abbrev0:
  3383 0000 01       		.uleb128 0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 86
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 86
 
 
  3384 0001 11       		.uleb128 0x11
@@ -5158,7 +5158,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3438 0037 35       		.uleb128 0x35
  3439 0038 00       		.byte	0
  3440 0039 49       		.uleb128 0x49
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 87
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 87
 
 
  3441 003a 13       		.uleb128 0x13
@@ -5218,7 +5218,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3495 0070 0D       		.uleb128 0xd
  3496 0071 00       		.byte	0
  3497 0072 03       		.uleb128 0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 88
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 88
 
 
  3498 0073 08       		.uleb128 0x8
@@ -5278,7 +5278,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3552 00a9 3B       		.uleb128 0x3b
  3553 00aa 05       		.uleb128 0x5
  3554 00ab 49       		.uleb128 0x49
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 89
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 89
 
 
  3555 00ac 13       		.uleb128 0x13
@@ -5338,7 +5338,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3609 00e3 49       		.uleb128 0x49
  3610 00e4 13       		.uleb128 0x13
  3611 00e5 02       		.uleb128 0x2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 90
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 90
 
 
  3612 00e6 18       		.uleb128 0x18
@@ -5398,7 +5398,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3666 0121 49       		.uleb128 0x49
  3667 0122 13       		.uleb128 0x13
  3668 0123 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 91
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 91
 
 
  3669 0124 00       		.byte	0
@@ -5458,7 +5458,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3723 015d 00       		.byte	0
  3724 015e 3F       		.uleb128 0x3f
  3725 015f 19       		.uleb128 0x19
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 92
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 92
 
 
  3726 0160 03       		.uleb128 0x3
@@ -5518,7 +5518,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3780 0198 3B       		.uleb128 0x3b
  3781 0199 0B       		.uleb128 0xb
  3782 019a 49       		.uleb128 0x49
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 93
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 93
 
 
  3783 019b 13       		.uleb128 0x13
@@ -5578,7 +5578,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3837 01d3 0B       		.uleb128 0xb
  3838 01d4 3B       		.uleb128 0x3b
  3839 01d5 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 94
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 94
 
 
  3840 01d6 49       		.uleb128 0x49
@@ -5638,7 +5638,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3894              	.LLST0:
  3895 0000 00000000 		.4byte	.LVL0
  3896 0004 0E000000 		.4byte	.LVL1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 95
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 95
 
 
  3897 0008 0100     		.2byte	0x1
@@ -5698,7 +5698,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  3951 0091 0200     		.2byte	0x2
  3952 0093 30       		.byte	0x30
  3953 0094 9F       		.byte	0x9f
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 96
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 96
 
 
  3954 0095 08000000 		.4byte	.LVL10
@@ -5758,7 +5758,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4008 0119 1A000000 		.4byte	.LVL21
  4009 011d 1C000000 		.4byte	.LVL22
  4010 0121 0100     		.2byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 97
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 97
 
 
  4011 0123 50       		.byte	0x50
@@ -5818,7 +5818,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4065 01ae 00000000 		.4byte	0
  4066 01b2 00000000 		.4byte	0
  4067              	.LLST11:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 98
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 98
 
 
  4068 01b6 2A000000 		.4byte	.LVL28
@@ -5878,7 +5878,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4122 0244 00000000 		.4byte	0
  4123 0248 00000000 		.4byte	0
  4124              	.LLST17:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 99
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 99
 
 
  4125 024c 16000000 		.4byte	.LVL43
@@ -5938,7 +5938,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4179 02d1 0100     		.2byte	0x1
  4180 02d3 56       		.byte	0x56
  4181 02d4 00000000 		.4byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 100
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 100
 
 
  4182 02d8 00000000 		.4byte	0
@@ -5998,7 +5998,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4236 0368 0100     		.2byte	0x1
  4237 036a 52       		.byte	0x52
  4238 036b 8E010000 		.4byte	.LVL90
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 101
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 101
 
 
  4239 036f 95010000 		.4byte	.LVL91-1
@@ -6058,7 +6058,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4293 03e6 00000000 		.4byte	0
  4294 03ea 00000000 		.4byte	0
  4295              	.LLST23:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 102
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 102
 
 
  4296 03ee 6A000000 		.4byte	.LVL62
@@ -6118,7 +6118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4350              	.LLST27:
  4351 047f 02000000 		.4byte	.LVL98
  4352 0483 58000000 		.4byte	.LVL103
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 103
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 103
 
 
  4353 0487 0200     		.2byte	0x2
@@ -6178,7 +6178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4407              	.LLST30:
  4408 0514 0A000000 		.4byte	.LVL107
  4409 0518 54000000 		.4byte	.LVL108
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 104
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 104
 
 
  4410 051c 0100     		.2byte	0x1
@@ -6238,7 +6238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4464 05a8 22000000 		.4byte	.LVL122
  4465 05ac 2C000000 		.4byte	.LVL123
  4466 05b0 0500     		.2byte	0x5
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 105
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 105
 
 
  4467 05b2 70       		.byte	0x70
@@ -6298,7 +6298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4521 0638 9F       		.byte	0x9f
  4522 0639 DC000000 		.4byte	.LVL149
  4523 063d DE000000 		.4byte	.LVL150
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 106
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 106
 
 
  4524 0641 0100     		.2byte	0x1
@@ -6358,7 +6358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4578 06cb 0100     		.2byte	0x1
  4579 06cd 50       		.byte	0x50
  4580 06ce B8010000 		.4byte	.LVL172
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 107
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 107
 
 
  4581 06d2 EA010000 		.4byte	.LVL176
@@ -6418,7 +6418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4635 075c 90020000 		.4byte	.LVL190
  4636 0760 0200     		.2byte	0x2
  4637 0762 30       		.byte	0x30
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 108
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 108
 
 
  4638 0763 9F       		.byte	0x9f
@@ -6478,7 +6478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4692 07f5 53       		.byte	0x53
  4693 07f6 78010000 		.4byte	.LVL164
  4694 07fa 7A010000 		.4byte	.LVL165
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 109
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 109
 
 
  4695 07fe 0100     		.2byte	0x1
@@ -6538,7 +6538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4749 088d 0100     		.2byte	0x1
  4750 088f 52       		.byte	0x52
  4751 0890 9E020000 		.4byte	.LVL195
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 110
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 110
 
 
  4752 0894 CC020000 		.4byte	.LVL200
@@ -6598,7 +6598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4806 0006 00000000 		.4byte	.Ldebug_info0
  4807 000a 04       		.byte	0x4
  4808 000b 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 111
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 111
 
 
  4809 000c 0000     		.2byte	0
@@ -6658,7 +6658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4863 0058 00000000 		.4byte	.LFB173
  4864 005c 50000000 		.4byte	.LFE173
  4865 0060 00000000 		.4byte	.LFB161
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 112
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 112
 
 
  4866 0064 10030000 		.4byte	.LFE161
@@ -6718,7 +6718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4888              	.LASF68:
  4889 00e0 636F6E66 		.ascii	"confIndex\000"
  4889      496E6465 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 113
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 113
 
 
  4889      7800
@@ -6778,7 +6778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4911      7200
  4912              	.LASF63:
  4913 01a0 55534246 		.ascii	"USBFS_ReadDieID\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 114
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 114
 
 
  4913      535F5265 
@@ -6838,7 +6838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4936              	.LASF50:
  4937 0247 65705372 		.ascii	"epSr\000"
  4937      00
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 115
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 115
 
 
  4938              	.LASF32:
@@ -6898,247 +6898,247 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  4963      535F4765 
  4963      74496E74 
  4963      65726661 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 116
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 116
 
 
  4963      6365436C 
- 4964              	.LASF96:
- 4965 0301 55534246 		.ascii	"USBFS_configuration\000"
- 4965      535F636F 
- 4965      6E666967 
- 4965      75726174 
- 4965      696F6E00 
- 4966              	.LASF3:
- 4967 0315 73686F72 		.ascii	"short unsigned int\000"
- 4967      7420756E 
- 4967      7369676E 
- 4967      65642069 
- 4967      6E7400
- 4968              	.LASF79:
- 4969 0328 70446573 		.ascii	"pDescr\000"
- 4969      637200
- 4970              	.LASF47:
- 4971 032f 55534246 		.ascii	"USBFS_sie_ep_struct\000"
- 4971      535F7369 
- 4971      655F6570 
- 4971      5F737472 
- 4971      75637400 
- 4972              	.LASF75:
- 4973 0343 70496E74 		.ascii	"pInterfaceClass\000"
- 4973      65726661 
- 4973      6365436C 
- 4973      61737300 
- 4974              	.LASF60:
- 4975 0353 61726245 		.ascii	"arbEp\000"
- 4975      7000
- 4976              	.LASF27:
- 4977 0359 696E7465 		.ascii	"interface\000"
- 4977      72666163 
- 4977      6500
- 4978              	.LASF85:
- 4979 0363 55534246 		.ascii	"USBFS_ValidateAlternateSetting\000"
- 4979      535F5661 
- 4979      6C696461 
- 4979      7465416C 
- 4979      7465726E 
- 4980              	.LASF97:
- 4981 0382 55534246 		.ascii	"USBFS_configurationChanged\000"
- 4981      535F636F 
- 4981      6E666967 
- 4981      75726174 
- 4981      696F6E43 
- 4982              	.LASF16:
- 4983 039d 72656733 		.ascii	"reg32\000"
- 4983      3200
- 4984              	.LASF108:
- 4985 03a3 55534246 		.ascii	"USBFS_interfaceClass\000"
- 4985      535F696E 
- 4985      74657266 
- 4985      61636543 
- 4985      6C617373 
- 4986              	.LASF71:
- 4987 03b8 63757245 		.ascii	"curEp\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 117
+ 4964              	.LASF117:
+ 4965 0301 433A5C64 		.ascii	"C:\\dev\\git\\icebreaker\\Icebreaker.cydsn\000"
+ 4965      65765C67 
+ 4965      69745C69 
+ 4965      63656272 
+ 4965      65616B65 
+ 4966              	.LASF96:
+ 4967 0328 55534246 		.ascii	"USBFS_configuration\000"
+ 4967      535F636F 
+ 4967      6E666967 
+ 4967      75726174 
+ 4967      696F6E00 
+ 4968              	.LASF3:
+ 4969 033c 73686F72 		.ascii	"short unsigned int\000"
+ 4969      7420756E 
+ 4969      7369676E 
+ 4969      65642069 
+ 4969      6E7400
+ 4970              	.LASF79:
+ 4971 034f 70446573 		.ascii	"pDescr\000"
+ 4971      637200
+ 4972              	.LASF47:
+ 4973 0356 55534246 		.ascii	"USBFS_sie_ep_struct\000"
+ 4973      535F7369 
+ 4973      655F6570 
+ 4973      5F737472 
+ 4973      75637400 
+ 4974              	.LASF75:
+ 4975 036a 70496E74 		.ascii	"pInterfaceClass\000"
+ 4975      65726661 
+ 4975      6365436C 
+ 4975      61737300 
+ 4976              	.LASF60:
+ 4977 037a 61726245 		.ascii	"arbEp\000"
+ 4977      7000
+ 4978              	.LASF27:
+ 4979 0380 696E7465 		.ascii	"interface\000"
+ 4979      72666163 
+ 4979      6500
+ 4980              	.LASF85:
+ 4981 038a 55534246 		.ascii	"USBFS_ValidateAlternateSetting\000"
+ 4981      535F5661 
+ 4981      6C696461 
+ 4981      7465416C 
+ 4981      7465726E 
+ 4982              	.LASF97:
+ 4983 03a9 55534246 		.ascii	"USBFS_configurationChanged\000"
+ 4983      535F636F 
+ 4983      6E666967 
+ 4983      75726174 
+ 4983      696F6E43 
+ 4984              	.LASF16:
+ 4985 03c4 72656733 		.ascii	"reg32\000"
+ 4985      3200
+ 4986              	.LASF108:
+ 4987 03ca 55534246 		.ascii	"USBFS_interfaceClass\000"
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 117
 
 
- 4987      7000
- 4988              	.LASF21:
- 4989 03be 68774570 		.ascii	"hwEpState\000"
- 4989      53746174 
- 4989      6500
- 4990              	.LASF93:
- 4991 03c8 64657363 		.ascii	"descrLength\000"
- 4991      724C656E 
- 4991      67746800 
- 4992              	.LASF18:
- 4993 03d4 73697A65 		.ascii	"sizetype\000"
- 4993      74797065 
- 4993      00
- 4994              	.LASF17:
- 4995 03dd 6C6F6E67 		.ascii	"long double\000"
- 4995      20646F75 
- 4995      626C6500 
- 4996              	.LASF69:
- 4997 03e9 70546D70 		.ascii	"pTmp\000"
- 4997      00
- 4998              	.LASF40:
- 4999 03ee 705F6C69 		.ascii	"p_list\000"
- 4999      737400
- 5000              	.LASF19:
- 5001 03f5 61747472 		.ascii	"attrib\000"
- 5001      696200
- 5002              	.LASF100:
- 5003 03fc 55534246 		.ascii	"USBFS_TABLE\000"
- 5003      535F5441 
- 5003      424C4500 
- 5004              	.LASF55:
- 5005 0408 72775261 		.ascii	"rwRaMsb\000"
- 5005      4D736200 
- 5006              	.LASF44:
- 5007 0410 6570436E 		.ascii	"epCnt0\000"
- 5007      743000
- 5008              	.LASF45:
- 5009 0417 6570436E 		.ascii	"epCnt1\000"
- 5009      743100
- 5010              	.LASF70:
- 5011 041e 55534246 		.ascii	"USBFS_ConfigAltChanged\000"
- 5011      535F436F 
- 5011      6E666967 
- 5011      416C7443 
- 5011      68616E67 
- 5012              	.LASF35:
- 5013 0435 545F5553 		.ascii	"T_USBFS_XFER_STATUS_BLOCK\000"
- 5013      4246535F 
- 5013      58464552 
- 5013      5F535441 
- 5013      5455535F 
- 5014              	.LASF46:
- 5015 044f 65704372 		.ascii	"epCr0\000"
- 5015      3000
- 5016              	.LASF72:
- 5017 0455 696E7465 		.ascii	"interfaceNum\000"
- 5017      72666163 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 118
+ 4987      535F696E 
+ 4987      74657266 
+ 4987      61636543 
+ 4987      6C617373 
+ 4988              	.LASF71:
+ 4989 03df 63757245 		.ascii	"curEp\000"
+ 4989      7000
+ 4990              	.LASF21:
+ 4991 03e5 68774570 		.ascii	"hwEpState\000"
+ 4991      53746174 
+ 4991      6500
+ 4992              	.LASF93:
+ 4993 03ef 64657363 		.ascii	"descrLength\000"
+ 4993      724C656E 
+ 4993      67746800 
+ 4994              	.LASF18:
+ 4995 03fb 73697A65 		.ascii	"sizetype\000"
+ 4995      74797065 
+ 4995      00
+ 4996              	.LASF17:
+ 4997 0404 6C6F6E67 		.ascii	"long double\000"
+ 4997      20646F75 
+ 4997      626C6500 
+ 4998              	.LASF69:
+ 4999 0410 70546D70 		.ascii	"pTmp\000"
+ 4999      00
+ 5000              	.LASF40:
+ 5001 0415 705F6C69 		.ascii	"p_list\000"
+ 5001      737400
+ 5002              	.LASF19:
+ 5003 041c 61747472 		.ascii	"attrib\000"
+ 5003      696200
+ 5004              	.LASF100:
+ 5005 0423 55534246 		.ascii	"USBFS_TABLE\000"
+ 5005      535F5441 
+ 5005      424C4500 
+ 5006              	.LASF55:
+ 5007 042f 72775261 		.ascii	"rwRaMsb\000"
+ 5007      4D736200 
+ 5008              	.LASF44:
+ 5009 0437 6570436E 		.ascii	"epCnt0\000"
+ 5009      743000
+ 5010              	.LASF45:
+ 5011 043e 6570436E 		.ascii	"epCnt1\000"
+ 5011      743100
+ 5012              	.LASF70:
+ 5013 0445 55534246 		.ascii	"USBFS_ConfigAltChanged\000"
+ 5013      535F436F 
+ 5013      6E666967 
+ 5013      416C7443 
+ 5013      68616E67 
+ 5014              	.LASF35:
+ 5015 045c 545F5553 		.ascii	"T_USBFS_XFER_STATUS_BLOCK\000"
+ 5015      4246535F 
+ 5015      58464552 
+ 5015      5F535441 
+ 5015      5455535F 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 118
 
 
- 5017      654E756D 
- 5017      00
- 5018              	.LASF99:
- 5019 0462 55534246 		.ascii	"USBFS_DEVICE0_DESCR\000"
- 5019      535F4445 
- 5019      56494345 
- 5019      305F4445 
- 5019      53435200 
- 5020              	.LASF12:
- 5021 0476 666C6F61 		.ascii	"float\000"
- 5021      7400
- 5022              	.LASF101:
- 5023 047c 55534246 		.ascii	"USBFS_STRING_DESCRIPTORS\000"
- 5023      535F5354 
- 5023      52494E47 
- 5023      5F444553 
- 5023      43524950 
- 5024              	.LASF20:
- 5025 0495 61706945 		.ascii	"apiEpState\000"
- 5025      70537461 
- 5025      746500
- 5026              	.LASF78:
- 5027 04a0 636C6561 		.ascii	"clearAltSetting\000"
- 5027      72416C74 
- 5027      53657474 
- 5027      696E6700 
- 5028              	.LASF89:
- 5029 04b0 636F6E66 		.ascii	"configurationN\000"
- 5029      69677572 
- 5029      6174696F 
- 5029      6E4E00
- 5030              	.LASF109:
- 5031 04bf 55534246 		.ascii	"USBFS_EP\000"
- 5031      535F4550 
- 5031      00
- 5032              	.LASF91:
- 5033 04c8 70537472 		.ascii	"pStr\000"
+ 5016              	.LASF46:
+ 5017 0476 65704372 		.ascii	"epCr0\000"
+ 5017      3000
+ 5018              	.LASF72:
+ 5019 047c 696E7465 		.ascii	"interfaceNum\000"
+ 5019      72666163 
+ 5019      654E756D 
+ 5019      00
+ 5020              	.LASF99:
+ 5021 0489 55534246 		.ascii	"USBFS_DEVICE0_DESCR\000"
+ 5021      535F4445 
+ 5021      56494345 
+ 5021      305F4445 
+ 5021      53435200 
+ 5022              	.LASF12:
+ 5023 049d 666C6F61 		.ascii	"float\000"
+ 5023      7400
+ 5024              	.LASF101:
+ 5025 04a3 55534246 		.ascii	"USBFS_STRING_DESCRIPTORS\000"
+ 5025      535F5354 
+ 5025      52494E47 
+ 5025      5F444553 
+ 5025      43524950 
+ 5026              	.LASF20:
+ 5027 04bc 61706945 		.ascii	"apiEpState\000"
+ 5027      70537461 
+ 5027      746500
+ 5028              	.LASF78:
+ 5029 04c7 636C6561 		.ascii	"clearAltSetting\000"
+ 5029      72416C74 
+ 5029      53657474 
+ 5029      696E6700 
+ 5030              	.LASF89:
+ 5031 04d7 636F6E66 		.ascii	"configurationN\000"
+ 5031      69677572 
+ 5031      6174696F 
+ 5031      6E4E00
+ 5032              	.LASF109:
+ 5033 04e6 55534246 		.ascii	"USBFS_EP\000"
+ 5033      535F4550 
  5033      00
- 5034              	.LASF67:
- 5035 04cd 64657363 		.ascii	"descr\000"
- 5035      7200
- 5036              	.LASF1:
- 5037 04d3 756E7369 		.ascii	"unsigned char\000"
- 5037      676E6564 
- 5037      20636861 
+ 5034              	.LASF91:
+ 5035 04ef 70537472 		.ascii	"pStr\000"
+ 5035      00
+ 5036              	.LASF67:
+ 5037 04f4 64657363 		.ascii	"descr\000"
  5037      7200
- 5038              	.LASF66:
- 5039 04e1 55534246 		.ascii	"USBFS_EpStateInit\000"
- 5039      535F4570 
- 5039      53746174 
- 5039      65496E69 
- 5039      7400
- 5040              	.LASF2:
- 5041 04f3 73686F72 		.ascii	"short int\000"
- 5041      7420696E 
+ 5038              	.LASF1:
+ 5039 04fa 756E7369 		.ascii	"unsigned char\000"
+ 5039      676E6564 
+ 5039      20636861 
+ 5039      7200
+ 5040              	.LASF66:
+ 5041 0508 55534246 		.ascii	"USBFS_EpStateInit\000"
+ 5041      535F4570 
+ 5041      53746174 
+ 5041      65496E69 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 119
+
+
  5041      7400
- 5042              	.LASF39:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 119
-
-
- 5043 04fd 545F5553 		.ascii	"T_USBFS_TD\000"
- 5043      4246535F 
- 5043      544400
- 5044              	.LASF73:
- 5045 0508 55534246 		.ascii	"USBFS_GetConfigTablePtr\000"
- 5045      535F4765 
- 5045      74436F6E 
- 5045      66696754 
- 5045      61626C65 
- 5046              	.LASF54:
- 5047 0520 72775261 		.ascii	"rwRa\000"
- 5047      00
- 5048              	.LASF104:
- 5049 0525 55534246 		.ascii	"USBFS_interfaceSetting\000"
- 5049      535F696E 
- 5049      74657266 
- 5049      61636553 
- 5049      65747469 
- 5050              	.LASF28:
- 5051 053c 545F5553 		.ascii	"T_USBFS_EP_CTL_BLOCK\000"
- 5051      4246535F 
- 5051      45505F43 
- 5051      544C5F42 
- 5051      4C4F434B 
- 5052              	.LASF112:
- 5053 0551 55534246 		.ascii	"USBFS_InitNoDataControlTransfer\000"
- 5053      535F496E 
- 5053      69744E6F 
- 5053      44617461 
- 5053      436F6E74 
- 5054              	.LASF95:
- 5055 0571 55534246 		.ascii	"USBFS_device\000"
- 5055      535F6465 
- 5055      76696365 
- 5055      00
- 5056              	.LASF30:
- 5057 057e 61747472 		.ascii	"attributes\000"
- 5057      69627574 
- 5057      657300
- 5058              	.LASF118:
- 5059 0589 55534246 		.ascii	"USBFS_GetDeviceTablePtr\000"
- 5059      535F4765 
- 5059      74446576 
- 5059      69636554 
- 5059      61626C65 
- 5060              	.LASF117:
- 5061 05a1 433A5C64 		.ascii	"C:\\dev\\git\\Icebreaker\\Icebreaker.cydsn\000"
- 5061      65765C67 
- 5061      69745C49 
- 5061      63656272 
- 5061      65616B65 
+ 5042              	.LASF2:
+ 5043 051a 73686F72 		.ascii	"short int\000"
+ 5043      7420696E 
+ 5043      7400
+ 5044              	.LASF39:
+ 5045 0524 545F5553 		.ascii	"T_USBFS_TD\000"
+ 5045      4246535F 
+ 5045      544400
+ 5046              	.LASF73:
+ 5047 052f 55534246 		.ascii	"USBFS_GetConfigTablePtr\000"
+ 5047      535F4765 
+ 5047      74436F6E 
+ 5047      66696754 
+ 5047      61626C65 
+ 5048              	.LASF54:
+ 5049 0547 72775261 		.ascii	"rwRa\000"
+ 5049      00
+ 5050              	.LASF104:
+ 5051 054c 55534246 		.ascii	"USBFS_interfaceSetting\000"
+ 5051      535F696E 
+ 5051      74657266 
+ 5051      61636553 
+ 5051      65747469 
+ 5052              	.LASF28:
+ 5053 0563 545F5553 		.ascii	"T_USBFS_EP_CTL_BLOCK\000"
+ 5053      4246535F 
+ 5053      45505F43 
+ 5053      544C5F42 
+ 5053      4C4F434B 
+ 5054              	.LASF112:
+ 5055 0578 55534246 		.ascii	"USBFS_InitNoDataControlTransfer\000"
+ 5055      535F496E 
+ 5055      69744E6F 
+ 5055      44617461 
+ 5055      436F6E74 
+ 5056              	.LASF95:
+ 5057 0598 55534246 		.ascii	"USBFS_device\000"
+ 5057      535F6465 
+ 5057      76696365 
+ 5057      00
+ 5058              	.LASF30:
+ 5059 05a5 61747472 		.ascii	"attributes\000"
+ 5059      69627574 
+ 5059      657300
+ 5060              	.LASF118:
+ 5061 05b0 55534246 		.ascii	"USBFS_GetDeviceTablePtr\000"
+ 5061      535F4765 
+ 5061      74446576 
+ 5061      69636554 
+ 5061      61626C65 
  5062              	.LASF29:
  5063 05c8 616C7453 		.ascii	"altSetting\000"
  5063      65747469 
  5063      6E6700
  5064              	.LASF15:
  5065 05d3 63686172 		.ascii	"char\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 120
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 120
 
 
  5065      00
@@ -7198,7 +7198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 1
  5091 067c 55534246 		.ascii	"USBFS_DispatchClassRqst\000"
  5091      535F4469 
  5091      73706174 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTkKLwu.s 			page 121
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccctY9ht.s 			page 121
 
 
  5091      6368436C 

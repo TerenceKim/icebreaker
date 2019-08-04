@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
   28:Generated_Source\PSoC4/USBFS_cls.c **** 
   29:Generated_Source\PSoC4/USBFS_cls.c **** /*******************************************************************************
   30:Generated_Source\PSoC4/USBFS_cls.c **** * Function Name: USBFS_DispatchClassRqst
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 2
 
 
   31:Generated_Source\PSoC4/USBFS_cls.c **** ****************************************************************************//**
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
   56:Generated_Source\PSoC4/USBFS_cls.c ****         case USBFS_RQST_RCPT_EP:
   57:Generated_Source\PSoC4/USBFS_cls.c ****             /* Class-specific request directed to endpoint: wIndexLoReg contains 
   58:Generated_Source\PSoC4/USBFS_cls.c ****             * endpoint number. Find interface related to endpoint. 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 3
 
 
   59:Generated_Source\PSoC4/USBFS_cls.c ****             */
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
   80:Generated_Source\PSoC4/USBFS_cls.c ****         #if defined(USBFS_ENABLE_HID_CLASS)
   81:Generated_Source\PSoC4/USBFS_cls.c ****             case USBFS_CLASS_HID:
   82:Generated_Source\PSoC4/USBFS_cls.c ****                 requestHandled = USBFS_DispatchHIDClassRqst();
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 4
 
 
   90              		.loc 1 82 0
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  110 0058 0020     		movs	r0, #0
  111              	.LVL12:
  112              	.L5:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 5
 
 
  116:Generated_Source\PSoC4/USBFS_cls.c ****                 break;
@@ -283,10 +283,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  134 0006 00000000 		.4byte	.Ldebug_abbrev0
  135 000a 04       		.byte	0x4
  136 000b 01       		.uleb128 0x1
- 137 000c 89010000 		.4byte	.LASF35
+ 137 000c B0010000 		.4byte	.LASF35
  138 0010 0C       		.byte	0xc
- 139 0011 45010000 		.4byte	.LASF36
- 140 0015 3A020000 		.4byte	.LASF37
+ 139 0011 6C010000 		.4byte	.LASF36
+ 140 0015 2C010000 		.4byte	.LASF37
  141 0019 00000000 		.4byte	.Ldebug_ranges0+0
  142 001d 00000000 		.4byte	0
  143 0021 00000000 		.4byte	.Ldebug_line0
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  149 002d 01       		.byte	0x1
  150 002e 08       		.byte	0x8
  151 002f EF000000 		.4byte	.LASF1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 6
 
 
  152 0033 02       		.uleb128 0x2
@@ -320,11 +320,11 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  168 004f 02       		.uleb128 0x2
  169 0050 08       		.byte	0x8
  170 0051 05       		.byte	0x5
- 171 0052 27020000 		.4byte	.LASF6
+ 171 0052 4E020000 		.4byte	.LASF6
  172 0056 02       		.uleb128 0x2
  173 0057 08       		.byte	0x8
  174 0058 07       		.byte	0x7
- 175 0059 68010000 		.4byte	.LASF7
+ 175 0059 8F010000 		.4byte	.LASF7
  176 005d 03       		.uleb128 0x3
  177 005e 04       		.byte	0x4
  178 005f 05       		.byte	0x5
@@ -339,12 +339,12 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  187 0071 E401     		.2byte	0x1e4
  188 0073 2C000000 		.4byte	0x2c
  189 0077 04       		.uleb128 0x4
- 190 0078 2C010000 		.4byte	.LASF10
+ 190 0078 53010000 		.4byte	.LASF10
  191 007c 02       		.byte	0x2
  192 007d E501     		.2byte	0x1e5
  193 007f 3A000000 		.4byte	0x3a
  194 0083 04       		.uleb128 0x4
- 195 0084 3E010000 		.4byte	.LASF11
+ 195 0084 65010000 		.4byte	.LASF11
  196 0088 02       		.byte	0x2
  197 0089 E601     		.2byte	0x1e6
  198 008b 48000000 		.4byte	0x48
@@ -358,11 +358,11 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  206 0099 13010000 		.4byte	.LASF13
  207 009d 02       		.uleb128 0x2
  208 009e 01       		.byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 7
 
 
  209 009f 08       		.byte	0x8
- 210 00a0 35020000 		.4byte	.LASF14
+ 210 00a0 5C020000 		.4byte	.LASF14
  211 00a4 02       		.uleb128 0x2
  212 00a5 08       		.byte	0x8
  213 00a6 04       		.byte	0x4
@@ -370,7 +370,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  215 00ab 02       		.uleb128 0x2
  216 00ac 04       		.byte	0x4
  217 00ad 07       		.byte	0x7
- 218 00ae 17020000 		.4byte	.LASF16
+ 218 00ae 3E020000 		.4byte	.LASF16
  219 00b2 05       		.uleb128 0x5
  220 00b3 0C       		.byte	0xc
  221 00b4 03       		.byte	0x3
@@ -383,13 +383,13 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  228 00c1 6B000000 		.4byte	0x6b
  229 00c5 00       		.byte	0
  230 00c6 06       		.uleb128 0x6
- 231 00c7 33010000 		.4byte	.LASF18
+ 231 00c7 5A010000 		.4byte	.LASF18
  232 00cb 03       		.byte	0x3
  233 00cc 98       		.byte	0x98
  234 00cd 6B000000 		.4byte	0x6b
  235 00d1 01       		.byte	0x1
  236 00d2 06       		.uleb128 0x6
- 237 00d3 7F010000 		.4byte	.LASF19
+ 237 00d3 A6010000 		.4byte	.LASF19
  238 00d7 03       		.byte	0x3
  239 00d8 99       		.byte	0x99
  240 00d9 6B000000 		.4byte	0x6b
@@ -407,7 +407,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  252 00f1 6B000000 		.4byte	0x6b
  253 00f5 04       		.byte	0x4
  254 00f6 06       		.uleb128 0x6
- 255 00f7 20020000 		.4byte	.LASF22
+ 255 00f7 47020000 		.4byte	.LASF22
  256 00fb 03       		.byte	0x3
  257 00fc 9C       		.byte	0x9c
  258 00fd 6B000000 		.4byte	0x6b
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  263 0108 9D       		.byte	0x9d
  264 0109 77000000 		.4byte	0x77
  265 010d 06       		.byte	0x6
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 8
 
 
  266 010e 06       		.uleb128 0x6
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  320 0180 01       		.byte	0x1
  321 0181 2B       		.byte	0x2b
  322 0182 6B000000 		.4byte	0x6b
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 9
 
 
  323 0186 00000000 		.4byte	.LLST0
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  377 0001 11       		.uleb128 0x11
  378 0002 01       		.byte	0x1
  379 0003 25       		.uleb128 0x25
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 10
 
 
  380 0004 0E       		.uleb128 0xe
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  434 003a 0B       		.uleb128 0xb
  435 003b 3A       		.uleb128 0x3a
  436 003c 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 11
 
 
  437 003d 3B       		.uleb128 0x3b
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  491 0073 01       		.byte	0x1
  492 0074 3F       		.uleb128 0x3f
  493 0075 19       		.uleb128 0x19
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 12
 
 
  494 0076 03       		.uleb128 0x3
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  548 00af 0B       		.uleb128 0xb
  549 00b0 49       		.uleb128 0x49
  550 00b1 13       		.uleb128 0x13
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 13
 
 
  551 00b2 3F       		.uleb128 0x3f
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  605 000b 32000000 		.4byte	.LVL3
  606 000f 34000000 		.4byte	.LVL4
  607 0013 0100     		.2byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 14
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 14
 
 
  608 0015 53       		.byte	0x53
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  662              	.Ldebug_ranges0:
  663 0000 00000000 		.4byte	.LFB161
  664 0004 68000000 		.4byte	.LFE161
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 15
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 15
 
 
  665 0008 00000000 		.4byte	0
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  689 0092 55534246 		.ascii	"USBFS_interfaceClass\000"
  689      535F696E 
  689      74657266 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 16
 
 
  689      61636543 
@@ -948,77 +948,77 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 1
  709 0121 62756666 		.ascii	"buffOffset\000"
  709      4F666673 
  709      657400
- 710              	.LASF10:
- 711 012c 75696E74 		.ascii	"uint16\000"
- 711      313600
- 712              	.LASF18:
- 713 0133 61706945 		.ascii	"apiEpState\000"
- 713      70537461 
- 713      746500
- 714              	.LASF11:
- 715 013e 75696E74 		.ascii	"uint32\000"
- 715      333200
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 17
+ 710              	.LASF37:
+ 711 012c 433A5C64 		.ascii	"C:\\dev\\git\\icebreaker\\Icebreaker.cydsn\000"
+ 711      65765C67 
+ 711      69745C69 
+ 711      63656272 
+ 711      65616B65 
+ 712              	.LASF10:
+ 713 0153 75696E74 		.ascii	"uint16\000"
+ 713      313600
+ 714              	.LASF18:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 17
 
 
- 716              	.LASF36:
- 717 0145 47656E65 		.ascii	"Generated_Source\\PSoC4\\USBFS_cls.c\000"
- 717      72617465 
- 717      645F536F 
- 717      75726365 
- 717      5C50536F 
- 718              	.LASF7:
- 719 0168 6C6F6E67 		.ascii	"long long unsigned int\000"
- 719      206C6F6E 
- 719      6720756E 
- 719      7369676E 
- 719      65642069 
- 720              	.LASF19:
- 721 017f 68774570 		.ascii	"hwEpState\000"
- 721      53746174 
- 721      6500
- 722              	.LASF35:
- 723 0189 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 723      43313120 
- 723      352E342E 
- 723      31203230 
- 723      31363036 
- 724 01bc 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
- 724      20726576 
- 724      6973696F 
- 724      6E203233 
- 724      37373135 
- 725 01ef 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 725      66756E63 
- 725      74696F6E 
- 725      2D736563 
- 725      74696F6E 
- 726              	.LASF16:
- 727 0217 73697A65 		.ascii	"sizetype\000"
- 727      74797065 
- 727      00
- 728              	.LASF22:
- 729 0220 65704D6F 		.ascii	"epMode\000"
- 729      646500
- 730              	.LASF6:
- 731 0227 6C6F6E67 		.ascii	"long long int\000"
- 731      206C6F6E 
- 731      6720696E 
- 731      7400
- 732              	.LASF14:
- 733 0235 63686172 		.ascii	"char\000"
- 733      00
- 734              	.LASF37:
- 735 023a 433A5C64 		.ascii	"C:\\dev\\git\\Icebreaker\\Icebreaker.cydsn\000"
- 735      65765C67 
- 735      69745C49 
- 735      63656272 
- 735      65616B65 
+ 715 015a 61706945 		.ascii	"apiEpState\000"
+ 715      70537461 
+ 715      746500
+ 716              	.LASF11:
+ 717 0165 75696E74 		.ascii	"uint32\000"
+ 717      333200
+ 718              	.LASF36:
+ 719 016c 47656E65 		.ascii	"Generated_Source\\PSoC4\\USBFS_cls.c\000"
+ 719      72617465 
+ 719      645F536F 
+ 719      75726365 
+ 719      5C50536F 
+ 720              	.LASF7:
+ 721 018f 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 721      206C6F6E 
+ 721      6720756E 
+ 721      7369676E 
+ 721      65642069 
+ 722              	.LASF19:
+ 723 01a6 68774570 		.ascii	"hwEpState\000"
+ 723      53746174 
+ 723      6500
+ 724              	.LASF35:
+ 725 01b0 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 725      43313120 
+ 725      352E342E 
+ 725      31203230 
+ 725      31363036 
+ 726 01e3 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 726      20726576 
+ 726      6973696F 
+ 726      6E203233 
+ 726      37373135 
+ 727 0216 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 727      66756E63 
+ 727      74696F6E 
+ 727      2D736563 
+ 727      74696F6E 
+ 728              	.LASF16:
+ 729 023e 73697A65 		.ascii	"sizetype\000"
+ 729      74797065 
+ 729      00
+ 730              	.LASF22:
+ 731 0247 65704D6F 		.ascii	"epMode\000"
+ 731      646500
+ 732              	.LASF6:
+ 733 024e 6C6F6E67 		.ascii	"long long int\000"
+ 733      206C6F6E 
+ 733      6720696E 
+ 733      7400
+ 734              	.LASF14:
+ 735 025c 63686172 		.ascii	"char\000"
+ 735      00
  736              	.LASF24:
  737 0261 62756666 		.ascii	"bufferSize\000"
  737      65725369 
  737      7A6500
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccjfX4W6.s 			page 18
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJkKKxK.s 			page 18
 
 
  738              	.LASF2:

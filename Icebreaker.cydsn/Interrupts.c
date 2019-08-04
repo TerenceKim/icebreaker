@@ -70,7 +70,7 @@ extern uint16 outUsbShadow;
 CY_ISR(InDMADone_Interrupt)
 {
     /* Parameters to this API Call CHANGE DEPENDING ON DATA ENDPOINT MEMORY MODE */
-    USBFS_LoadInEP(AUDIO_IN_ENDPOINT, USBFS_NULL, inCnt);
+    //USBFS_LoadInEP(AUDIO_IN_ENDPOINT, USBFS_NULL, inCnt);
 }
 
 

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
   28:Generated_Source\PSoC4/USBOutDMA.c **** *  channel. After calling this function the DMA channel is active and waiting
   29:Generated_Source\PSoC4/USBOutDMA.c **** *  for a trigger.
   30:Generated_Source\PSoC4/USBOutDMA.c **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 2
 
 
   31:Generated_Source\PSoC4/USBOutDMA.c **** * Parameters:
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
   34 0000 C022     		movs	r2, #192
   35 0002 9205     		lsls	r2, r2, #22
   36 0004 034B     		ldr	r3, .L2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 3
 
 
   37 0006 DA60     		str	r2, [r3, #12]
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
   79 0008 1B78     		ldrb	r3, [r3]
   80 000a 002B     		cmp	r3, #0
   81 000c 04D1     		bne	.L5
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 4
 
 
   43:Generated_Source\PSoC4/USBOutDMA.c ****         USBOutDMA_initVar = 1u;
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
   38:Generated_Source\PSoC4/USBOutDMA.h **** static void   USBOutDMA_ChEnable(void);
   39:Generated_Source\PSoC4/USBOutDMA.h **** static void   USBOutDMA_ChDisable(void);
   40:Generated_Source\PSoC4/USBOutDMA.h **** static void   USBOutDMA_Trigger(void);
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 5
 
 
   41:Generated_Source\PSoC4/USBOutDMA.h **** static void   USBOutDMA_SetPriority(int32 priority);
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
   95:Generated_Source\PSoC4/USBOutDMA.h **** {
   96:Generated_Source\PSoC4/USBOutDMA.h ****     CyDmaChEnable(USBOutDMA_CHANNEL);
   97:Generated_Source\PSoC4/USBOutDMA.h **** }
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 6
 
 
   98:Generated_Source\PSoC4/USBOutDMA.h **** 
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  152:Generated_Source\PSoC4/USBOutDMA.h **** *  priority: Priority for channel. Priority can be 0,1,2, or 3.
  153:Generated_Source\PSoC4/USBOutDMA.h **** *            0 is the highest priority.
  154:Generated_Source\PSoC4/USBOutDMA.h **** *                   
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 7
 
 
  155:Generated_Source\PSoC4/USBOutDMA.h **** * Return:
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  209:Generated_Source\PSoC4/USBOutDMA.h **** /*******************************************************************************
  210:Generated_Source\PSoC4/USBOutDMA.h **** * Function Name: USBOutDMA_GetNextDescriptor
  211:Generated_Source\PSoC4/USBOutDMA.h **** ********************************************************************************
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 8
 
 
  212:Generated_Source\PSoC4/USBOutDMA.h **** *
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  266:Generated_Source\PSoC4/USBOutDMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
  267:Generated_Source\PSoC4/USBOutDMA.h **** *                   
  268:Generated_Source\PSoC4/USBOutDMA.h **** * Return:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 9
 
 
  269:Generated_Source\PSoC4/USBOutDMA.h **** *  None. 
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  323:Generated_Source\PSoC4/USBOutDMA.h **** *******************************************************************************/
  324:Generated_Source\PSoC4/USBOutDMA.h **** static CY_INLINE void USBOutDMA_SetSrcAddress(int32 descriptor, void * srcAddress)
  325:Generated_Source\PSoC4/USBOutDMA.h **** {
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 10
 
 
  326:Generated_Source\PSoC4/USBOutDMA.h ****     CyDmaSetSrcAddress(USBOutDMA_CHANNEL, descriptor, srcAddress);
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  370:Generated_Source\PSoC4/USBOutDMA.h **** static CY_INLINE void USBOutDMA_SetDstAddress(int32 descriptor, void * dstAddress)
  371:Generated_Source\PSoC4/USBOutDMA.h **** {
  372:Generated_Source\PSoC4/USBOutDMA.h ****     CyDmaSetDstAddress(USBOutDMA_CHANNEL, descriptor, dstAddress);
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 11
 
 
  106              		.loc 2 372 0
@@ -658,25 +658,25 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  157 0004 0400     		.2byte	0x4
  158 0006 00000000 		.4byte	.Ldebug_abbrev0
  159 000a 04       		.byte	0x4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 12
 
 
  160 000b 01       		.uleb128 0x1
  161 000c 86000000 		.4byte	.LASF31
  162 0010 0C       		.byte	0xc
  163 0011 39010000 		.4byte	.LASF32
- 164 0015 8B010000 		.4byte	.LASF33
+ 164 0015 2B020000 		.4byte	.LASF33
  165 0019 00000000 		.4byte	.Ldebug_ranges0+0
  166 001d 00000000 		.4byte	0
  167 0021 00000000 		.4byte	.Ldebug_line0
  168 0025 02       		.uleb128 0x2
  169 0026 01       		.byte	0x1
  170 0027 06       		.byte	0x6
- 171 0028 FF010000 		.4byte	.LASF0
+ 171 0028 C5010000 		.4byte	.LASF0
  172 002c 02       		.uleb128 0x2
  173 002d 01       		.byte	0x1
  174 002e 08       		.byte	0x8
- 175 002f F1010000 		.4byte	.LASF1
+ 175 002f B7010000 		.4byte	.LASF1
  176 0033 02       		.uleb128 0x2
  177 0034 02       		.byte	0x2
  178 0035 05       		.byte	0x5
@@ -684,11 +684,11 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  180 003a 02       		.uleb128 0x2
  181 003b 02       		.byte	0x2
  182 003c 07       		.byte	0x7
- 183 003d 2F020000 		.4byte	.LASF3
+ 183 003d F5010000 		.4byte	.LASF3
  184 0041 02       		.uleb128 0x2
  185 0042 04       		.byte	0x4
  186 0043 05       		.byte	0x5
- 187 0044 82010000 		.4byte	.LASF4
+ 187 0044 6F010000 		.4byte	.LASF4
  188 0048 02       		.uleb128 0x2
  189 0049 04       		.byte	0x4
  190 004a 07       		.byte	0x7
@@ -700,7 +700,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  196 0056 02       		.uleb128 0x2
  197 0057 08       		.byte	0x8
  198 0058 07       		.byte	0x7
- 199 0059 0B020000 		.4byte	.LASF7
+ 199 0059 D1010000 		.4byte	.LASF7
  200 005d 03       		.uleb128 0x3
  201 005e 04       		.byte	0x4
  202 005f 05       		.byte	0x5
@@ -708,7 +708,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  204 0064 02       		.uleb128 0x2
  205 0065 04       		.byte	0x4
  206 0066 07       		.byte	0x7
- 207 0067 22020000 		.4byte	.LASF8
+ 207 0067 E8010000 		.4byte	.LASF8
  208 006b 04       		.uleb128 0x4
  209 006c 2D010000 		.4byte	.LASF9
  210 0070 03       		.byte	0x3
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  214 0078 8D020000 		.4byte	.LASF10
  215 007c 03       		.byte	0x3
  216 007d E601     		.2byte	0x1e6
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 13
 
 
  217 007f 48000000 		.4byte	0x48
@@ -738,7 +738,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  231 009d 02       		.uleb128 0x2
  232 009e 01       		.byte	0x1
  233 009f 08       		.byte	0x8
- 234 00a0 65020000 		.4byte	.LASF14
+ 234 00a0 6A010000 		.4byte	.LASF14
  235 00a4 05       		.uleb128 0x5
  236 00a5 80       		.byte	0x80
  237 00a6 04       		.byte	0x4
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  271 00e9 2E       		.byte	0x2e
  272 00ea 14010000 		.4byte	0x114
  273 00ee 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 14
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 14
 
 
  274 00ef 06       		.uleb128 0x6
@@ -794,7 +794,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  284 0102 77000000 		.4byte	0x77
  285 0106 08       		.byte	0x8
  286 0107 0A       		.uleb128 0xa
- 287 0108 42020000 		.4byte	.LASF17
+ 287 0108 08020000 		.4byte	.LASF17
  288 010c 04       		.byte	0x4
  289 010d 31       		.byte	0x31
  290 010e 77000000 		.4byte	0x77
@@ -803,7 +803,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  293 0114 0B       		.uleb128 0xb
  294 0115 04       		.byte	0x4
  295 0116 09       		.uleb128 0x9
- 296 0117 6A020000 		.4byte	.LASF18
+ 296 0117 52020000 		.4byte	.LASF18
  297 011b 04       		.byte	0x4
  298 011c 32       		.byte	0x32
  299 011d DB000000 		.4byte	0xdb
@@ -830,7 +830,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  320 014b 01       		.byte	0x1
  321 014c 00       		.byte	0
  322 014d 09       		.uleb128 0x9
- 323 014e 49020000 		.4byte	.LASF20
+ 323 014e 0F020000 		.4byte	.LASF20
  324 0152 04       		.byte	0x4
  325 0153 3B       		.byte	0x3b
  326 0154 21010000 		.4byte	0x121
@@ -838,12 +838,12 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  328 0159 73000000 		.4byte	.LASF34
  329 015d 02       		.byte	0x2
  330 015e 5E       		.byte	0x5e
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 15
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 15
 
 
  331 015f 03       		.byte	0x3
  332 0160 0E       		.uleb128 0xe
- 333 0161 C5010000 		.4byte	.LASF21
+ 333 0161 8B010000 		.4byte	.LASF21
  334 0165 02       		.byte	0x2
  335 0166 1501     		.2byte	0x115
  336 0168 03       		.byte	0x3
@@ -855,7 +855,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  342 0175 83000000 		.4byte	0x83
  343 0179 00       		.byte	0
  344 017a 0E       		.uleb128 0xe
- 345 017b 6A010000 		.4byte	.LASF22
+ 345 017b 75020000 		.4byte	.LASF22
  346 017f 02       		.byte	0x2
  347 0180 7201     		.2byte	0x172
  348 0182 03       		.byte	0x3
@@ -883,13 +883,13 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  370 01b3 4401     		.2byte	0x144
  371 01b5 83000000 		.4byte	0x83
  372 01b9 0F       		.uleb128 0xf
- 373 01ba 82020000 		.4byte	.LASF25
+ 373 01ba 6A020000 		.4byte	.LASF25
  374 01be 02       		.byte	0x2
  375 01bf 4401     		.2byte	0x144
  376 01c1 14010000 		.4byte	0x114
  377 01c5 00       		.byte	0
  378 01c6 10       		.uleb128 0x10
- 379 01c7 E2010000 		.4byte	.LASF35
+ 379 01c7 A8010000 		.4byte	.LASF35
  380 01cb 01       		.byte	0x1
  381 01cc 4C       		.byte	0x4c
  382 01cd 00000000 		.4byte	.LFB33
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  385 01d6 9C       		.byte	0x9c
  386 01d7 11       		.uleb128 0x11
  387 01d8 B3020000 		.4byte	.LASF36
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 16
 
 
  388 01dc 01       		.byte	0x1
@@ -909,7 +909,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  393 01e7 9C       		.byte	0x9c
  394 01e8 F1020000 		.4byte	0x2f1
  395 01ec 12       		.uleb128 0x12
- 396 01ed 82020000 		.4byte	.LASF25
+ 396 01ed 6A020000 		.4byte	.LASF25
  397 01f1 01       		.byte	0x1
  398 01f2 27       		.byte	0x27
  399 01f3 14010000 		.4byte	0x114
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  442 024b 7A010000 		.4byte	0x17a
  443 024f 26000000 		.4byte	.LBB12
  444 0253 0A000000 		.4byte	.LBE12-.LBB12
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 17
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 17
 
 
  445 0257 01       		.byte	0x1
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  499 02ba 00       		.byte	0
  500 02bb 13       		.uleb128 0x13
  501 02bc 58010000 		.4byte	0x158
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 18
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 18
 
 
  502 02c0 38000000 		.4byte	.LBB16
@@ -1057,8 +1057,8 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  535 030b 04       		.byte	0x4
  536 030c 93       		.byte	0x93
  537 030d 19       		.uleb128 0x19
- 538 030e B2010000 		.4byte	.LASF27
- 539 0312 B2010000 		.4byte	.LASF27
+ 538 030e 78010000 		.4byte	.LASF27
+ 539 0312 78010000 		.4byte	.LASF27
  540 0316 04       		.byte	0x4
  541 0317 96       		.byte	0x96
  542 0318 19       		.uleb128 0x19
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  556 0338 6D       		.byte	0x6d
  557 0339 00       		.byte	0
  558              		.section	.debug_abbrev,"",%progbits
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 19
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 19
 
 
  559              	.Ldebug_abbrev0:
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  613 0035 00       		.byte	0
  614 0036 05       		.uleb128 0x5
  615 0037 13       		.uleb128 0x13
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 20
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 20
 
 
  616 0038 01       		.byte	0x1
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  670 006e 13       		.uleb128 0x13
  671 006f 00       		.byte	0
  672 0070 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 21
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 21
 
 
  673 0071 0A       		.uleb128 0xa
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  727 00a7 0E       		.uleb128 0xe
  728 00a8 3A       		.uleb128 0x3a
  729 00a9 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 22
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 22
 
 
  730 00aa 3B       		.uleb128 0x3b
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  784 00e1 0B       		.uleb128 0xb
  785 00e2 3B       		.uleb128 0x3b
  786 00e3 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 23
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 23
 
 
  787 00e4 27       		.uleb128 0x27
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  841 011b 00       		.byte	0
  842 011c 15       		.uleb128 0x15
  843 011d 898201   		.uleb128 0x4109
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 24
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 24
 
 
  844 0120 01       		.byte	0x1
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  898 015b 0B       		.uleb128 0xb
  899 015c 3B       		.uleb128 0x3b
  900 015d 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 25
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 25
 
 
  901 015e 00       		.byte	0
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  955 0077 00000000 		.4byte	0
  956 007b 00000000 		.4byte	0
  957              	.LLST4:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 26
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 26
 
 
  958 007f 26000000 		.4byte	.LVL3
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  1006      415F5365 
  1006      74537263 
  1006      41646472 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 27
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 27
 
 
  1007              	.LASF23:
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  1026      615F6368 
  1026      616E6E65 
  1026      6C5F6374 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 28
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 28
 
 
  1026      6C5F7374 
@@ -1639,90 +1639,90 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  1034      206C6F6E 
  1034      6720696E 
  1034      7400
- 1035              	.LASF22:
- 1036 016a 5553424F 		.ascii	"USBOutDMA_SetDstAddress\000"
- 1036      7574444D 
- 1036      415F5365 
- 1036      74447374 
- 1036      41646472 
+ 1035              	.LASF14:
+ 1036 016a 63686172 		.ascii	"char\000"
+ 1036      00
  1037              	.LASF4:
- 1038 0182 6C6F6E67 		.ascii	"long int\000"
+ 1038 016f 6C6F6E67 		.ascii	"long int\000"
  1038      20696E74 
  1038      00
- 1039              	.LASF33:
- 1040 018b 433A5C64 		.ascii	"C:\\dev\\git\\Icebreaker\\Icebreaker.cydsn\000"
- 1040      65765C67 
- 1040      69745C49 
- 1040      63656272 
- 1040      65616B65 
- 1041              	.LASF27:
- 1042 01b2 4379446D 		.ascii	"CyDmaSetDstAddress\000"
- 1042      61536574 
- 1042      44737441 
- 1042      64647265 
- 1042      737300
- 1043              	.LASF21:
- 1044 01c5 5553424F 		.ascii	"USBOutDMA_ValidateDescriptor\000"
+ 1039              	.LASF27:
+ 1040 0178 4379446D 		.ascii	"CyDmaSetDstAddress\000"
+ 1040      61536574 
+ 1040      44737441 
+ 1040      64647265 
+ 1040      737300
+ 1041              	.LASF21:
+ 1042 018b 5553424F 		.ascii	"USBOutDMA_ValidateDescriptor\000"
+ 1042      7574444D 
+ 1042      415F5661 
+ 1042      6C696461 
+ 1042      74654465 
+ 1043              	.LASF35:
+ 1044 01a8 5553424F 		.ascii	"USBOutDMA_Init\000"
  1044      7574444D 
- 1044      415F5661 
- 1044      6C696461 
- 1044      74654465 
- 1045              	.LASF35:
- 1046 01e2 5553424F 		.ascii	"USBOutDMA_Init\000"
- 1046      7574444D 
- 1046      415F496E 
- 1046      697400
- 1047              	.LASF1:
- 1048 01f1 756E7369 		.ascii	"unsigned char\000"
- 1048      676E6564 
- 1048      20636861 
- 1048      7200
- 1049              	.LASF0:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 29
+ 1044      415F496E 
+ 1044      697400
+ 1045              	.LASF1:
+ 1046 01b7 756E7369 		.ascii	"unsigned char\000"
+ 1046      676E6564 
+ 1046      20636861 
+ 1046      7200
+ 1047              	.LASF0:
+ 1048 01c5 7369676E 		.ascii	"signed char\000"
+ 1048      65642063 
+ 1048      68617200 
+ 1049              	.LASF7:
+ 1050 01d1 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1050      206C6F6E 
+ 1050      6720756E 
+ 1050      7369676E 
+ 1050      65642069 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 29
 
 
- 1050 01ff 7369676E 		.ascii	"signed char\000"
- 1050      65642063 
- 1050      68617200 
- 1051              	.LASF7:
- 1052 020b 6C6F6E67 		.ascii	"long long unsigned int\000"
- 1052      206C6F6E 
- 1052      6720756E 
- 1052      7369676E 
- 1052      65642069 
- 1053              	.LASF8:
- 1054 0222 756E7369 		.ascii	"unsigned int\000"
- 1054      676E6564 
- 1054      20696E74 
- 1054      00
- 1055              	.LASF3:
- 1056 022f 73686F72 		.ascii	"short unsigned int\000"
- 1056      7420756E 
- 1056      7369676E 
- 1056      65642069 
- 1056      6E7400
- 1057              	.LASF17:
- 1058 0242 73746174 		.ascii	"status\000"
- 1058      757300
- 1059              	.LASF20:
- 1060 0249 6379646D 		.ascii	"cydma_descriptor_ram_struct\000"
- 1060      615F6465 
- 1060      73637269 
- 1060      70746F72 
- 1060      5F72616D 
- 1061              	.LASF14:
- 1062 0265 63686172 		.ascii	"char\000"
- 1062      00
- 1063              	.LASF18:
- 1064 026a 6379646D 		.ascii	"cydma_descriptor_struct\000"
- 1064      615F6465 
- 1064      73637269 
- 1064      70746F72 
- 1064      5F737472 
- 1065              	.LASF25:
- 1066 0282 73726341 		.ascii	"srcAddress\000"
- 1066      64647265 
- 1066      737300
+ 1051              	.LASF8:
+ 1052 01e8 756E7369 		.ascii	"unsigned int\000"
+ 1052      676E6564 
+ 1052      20696E74 
+ 1052      00
+ 1053              	.LASF3:
+ 1054 01f5 73686F72 		.ascii	"short unsigned int\000"
+ 1054      7420756E 
+ 1054      7369676E 
+ 1054      65642069 
+ 1054      6E7400
+ 1055              	.LASF17:
+ 1056 0208 73746174 		.ascii	"status\000"
+ 1056      757300
+ 1057              	.LASF20:
+ 1058 020f 6379646D 		.ascii	"cydma_descriptor_ram_struct\000"
+ 1058      615F6465 
+ 1058      73637269 
+ 1058      70746F72 
+ 1058      5F72616D 
+ 1059              	.LASF33:
+ 1060 022b 433A5C64 		.ascii	"C:\\dev\\git\\icebreaker\\Icebreaker.cydsn\000"
+ 1060      65765C67 
+ 1060      69745C69 
+ 1060      63656272 
+ 1060      65616B65 
+ 1061              	.LASF18:
+ 1062 0252 6379646D 		.ascii	"cydma_descriptor_struct\000"
+ 1062      615F6465 
+ 1062      73637269 
+ 1062      70746F72 
+ 1062      5F737472 
+ 1063              	.LASF25:
+ 1064 026a 73726341 		.ascii	"srcAddress\000"
+ 1064      64647265 
+ 1064      737300
+ 1065              	.LASF22:
+ 1066 0275 5553424F 		.ascii	"USBOutDMA_SetDstAddress\000"
+ 1066      7574444D 
+ 1066      415F5365 
+ 1066      74447374 
+ 1066      41646472 
  1067              	.LASF10:
  1068 028d 75696E74 		.ascii	"uint32\000"
  1068      333200
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 1
  1073              	.LASF13:
  1074 02ac 646F7562 		.ascii	"double\000"
  1074      6C6500
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccgaGcE5.s 			page 30
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccaRZjL6.s 			page 30
 
 
  1075              	.LASF36:

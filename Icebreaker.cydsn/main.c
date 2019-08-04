@@ -76,7 +76,7 @@ CY_ISR(SysTickHandler)
 
 int main()
 {
-	int32 usbEnumFlag = 0;
+	//int32 usbEnumFlag = 0;
     
     CyIntSetSysVector(CY_INT_HARD_FAULT_IRQN, HFI_Handler);
 
@@ -85,7 +85,7 @@ int main()
     CySysTickSetCallback(0, SysTickHandler);
 	
 	/* Setup the Audio pipe from USB to I2S.*/	
-    InitAudioPath();
+    //InitAudioPath();
 	
 	/* Setup the Application part of the firmware */
     InitApp();
@@ -97,6 +97,7 @@ int main()
 	
     for(;;)
     {
+#if 0
         /* Check for USB enumeration with USB host */
         if(USBFS_VBusPresent() == TRUE)
 		{
@@ -136,7 +137,7 @@ int main()
         
 		/* Clear audio IN buffer when IN stream is stopped */
 		HandleAudioInBuffer();             
-        
+#endif
 		/* Runs application layer code for CapSense */
 		RunApplication(); 
     }

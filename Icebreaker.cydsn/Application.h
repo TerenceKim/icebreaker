@@ -44,6 +44,7 @@
 	#include "Config.h"
 	#include <UART.h>
     #include <UART_SPI_UART.h>
+    #include <USBUART_cdc.h>
     #include <stdio.h>
     #include <stdint.h>
     #include <stdbool.h>
@@ -56,12 +57,16 @@
 		
 	#ifdef TXDEBUG
         extern char gbuf[];
-		#define PRINT	UART_UartPutString
+		#define PRINT	USBUART_PutString
         #define PRINTF(...) \
             do \
             { \
-                sprintf(gbuf, __VA_ARGS__); \
-                UART_UartPutString(gbuf); \
+                if (0u != USBUART_GetConfiguration()) \
+                { \
+                    while (0u == USBUART_CDCIsReady()); \
+                    sprintf(gbuf, __VA_ARGS__); \
+                    USBUART_PutString(gbuf); \
+                } \
             } while (0)
         #define DM_LVL_ERROR    0
         #define DM_LVL_WARNING  1

@@ -18,6 +18,9 @@
 #include <pcm1770.h>
 #include <Calibration.h>
 #include <LED.h>
+#include <USBUART_cdc.h>
+
+#define USBUART_BUFFER_SIZE (64u)
 
 #define TK_SHELL_METHOD(c, verb)              int __tk_shell_ ## c ## _ ## verb(int __unused argc, char __unused **argv)
 #define TK_SHELL_COMMAND(name, desc)          {#name, (tk_shell_command_verb_s *)__tk_shell_verbs_ ## name, desc}
@@ -561,20 +564,54 @@ void TkShellInit(void)
 void TkShellService(void)
 {
     char c;
-
-    while ((c = UART_UartGetChar()) != 0)
+    uint8 i = 0;
+    uint16 count;
+    uint8 buffer[USBUART_BUFFER_SIZE];
+//    
+    /* Read received data and re-enable OUT endpoint. */
+    count = USBUART_GetAll(buffer);
+//
+//                if (0u != count)
+//                {
+//                    /* Wait until component is ready to send data to host. */
+//                    while (0u == USBUART_CDCIsReady())
+//                    {
+//                    }
+//
+//                    /* Send data back to host. */
+//                    USBUART_PutData(buffer, count);
+//
+//                    /* If the last sent packet is exactly the maximum packet 
+//                    *  size, it is followed by a zero-length packet to assure
+//                    *  that the end of the segment is properly identified by 
+//                    *  the terminal.
+//                    */
+//                    if (USBUART_BUFFER_SIZE == count)
+//                    {
+//                        /* Wait until component is ready to send data to PC. */
+//                        while (0u == USBUART_CDCIsReady())
+//                        {
+//                        }
+//
+//                        /* Send zero-length packet to PC. */
+//                        USBUART_PutData(NULL, 0u);
+//                    }
+//                }
+//
+    while ((c = buffer[i]) != 0 && i < count)
     {
+        i++;
         switch (c)
         {
             case '\r':
             case '\n':
             case 0x03:
+                PRINTF("%c", c);
                 if (cmd_char_count > 0)
                 {
-                    PRINTF("\n");
                     TkShellProcessCommand();
                 }
-                PRINTF("\n\U00002744 ] ");
+                PRINTF("\U00002744 ] ");
                 cmd_char_count = 0;
                 cmd_buf[0] = '\0';
                 break;

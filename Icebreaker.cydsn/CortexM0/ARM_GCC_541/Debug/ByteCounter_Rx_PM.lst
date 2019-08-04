@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
   28:Generated_Source\PSoC4/ByteCounter_Rx_PM.c **** * Summary:
   29:Generated_Source\PSoC4/ByteCounter_Rx_PM.c **** *  All configuration registers are retention. Nothing to save here.
   30:Generated_Source\PSoC4/ByteCounter_Rx_PM.c **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 2
 
 
   31:Generated_Source\PSoC4/ByteCounter_Rx_PM.c **** * Parameters:
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
   53              		.cfi_offset 4, -8
   54              		.cfi_offset 14, -4
   60:Generated_Source\PSoC4/ByteCounter_Rx_PM.c ****     if(0u != (ByteCounter_Rx_BLOCK_CONTROL_REG & ByteCounter_Rx_MASK))
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 3
 
 
   55              		.loc 1 60 0
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
   77:Generated_Source\PSoC4/ByteCounter_Rx_PM.c **** *
   78:Generated_Source\PSoC4/ByteCounter_Rx_PM.c **** * Summary:
   79:Generated_Source\PSoC4/ByteCounter_Rx_PM.c **** *  All configuration registers are retention. Nothing to restore here.
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 4
 
 
   80:Generated_Source\PSoC4/ByteCounter_Rx_PM.c **** *
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
  117              		.cfi_def_cfa_offset 8
  118              		.cfi_offset 4, -8
  119              		.cfi_offset 14, -4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 5
 
 
  110:Generated_Source\PSoC4/ByteCounter_Rx_PM.c ****     ByteCounter_Rx_RestoreConfig();
@@ -288,7 +288,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
  157 000c 4D010000 		.4byte	.LASF24
  158 0010 0C       		.byte	0xc
  159 0011 ED010000 		.4byte	.LASF25
- 160 0015 DF000000 		.4byte	.LASF26
+ 160 0015 C4000000 		.4byte	.LASF26
  161 0019 00000000 		.4byte	.Ldebug_ranges0+0
  162 001d 00000000 		.4byte	0
  163 0021 00000000 		.4byte	.Ldebug_line0
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
  167 0028 E1010000 		.4byte	.LASF0
  168 002c 02       		.uleb128 0x2
  169 002d 01       		.byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 6
 
 
  170 002e 08       		.byte	0x8
@@ -356,9 +356,9 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
  222 0091 02       		.uleb128 0x2
  223 0092 01       		.byte	0x1
  224 0093 08       		.byte	0x8
- 225 0094 C4000000 		.4byte	.LASF13
+ 225 0094 01010000 		.4byte	.LASF13
  226 0098 04       		.uleb128 0x4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 7
 
 
  227 0099 47010000 		.4byte	.LASF14
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
  281 010c 01       		.byte	0x1
  282 010d 58       		.byte	0x58
  283 010e 00000000 		.4byte	.LFB3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 8
 
 
  284 0112 02000000 		.4byte	.LFE3-.LFB3
@@ -438,7 +438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
  298 0132 54010000 		.4byte	0x154
  299 0136 00       		.byte	0
  300 0137 0C       		.uleb128 0xc
- 301 0138 C9000000 		.4byte	.LASF28
+ 301 0138 EB000000 		.4byte	.LASF28
  302 013c 01       		.byte	0x1
  303 013d 15       		.byte	0x15
  304 013e CC000000 		.4byte	0xcc
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
  338 0011 00       		.byte	0
  339 0012 00       		.byte	0
  340 0013 02       		.uleb128 0x2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 9
 
 
  341 0014 24       		.uleb128 0x24
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
  395 004a 07       		.uleb128 0x7
  396 004b 0D       		.uleb128 0xd
  397 004c 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 10
 
 
  398 004d 03       		.uleb128 0x3
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
  452 0084 0E       		.uleb128 0xe
  453 0085 3A       		.uleb128 0x3a
  454 0086 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 11
 
 
  455 0087 3B       		.uleb128 0x3b
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
  509 00c0 05       		.uleb128 0x5
  510 00c1 00       		.byte	0
  511 00c2 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 12
 
 
  512 00c3 00       		.byte	0
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
  553      00
  554              	.LASF1:
  555 002e 756E7369 		.ascii	"unsigned char\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 13
 
 
  555      676E6564 
@@ -763,22 +763,22 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
  568              	.LASF11:
  569 00be 666C6F61 		.ascii	"float\000"
  569      7400
- 570              	.LASF13:
- 571 00c4 63686172 		.ascii	"char\000"
- 571      00
+ 570              	.LASF26:
+ 571 00c4 433A5C64 		.ascii	"C:\\dev\\git\\icebreaker\\Icebreaker.cydsn\000"
+ 571      65765C67 
+ 571      69745C69 
+ 571      63656272 
+ 571      65616B65 
  572              	.LASF28:
- 573 00c9 42797465 		.ascii	"ByteCounter_Rx_backup\000"
+ 573 00eb 42797465 		.ascii	"ByteCounter_Rx_backup\000"
  573      436F756E 
  573      7465725F 
  573      52785F62 
  573      61636B75 
- 574              	.LASF26:
- 575 00df 433A5C64 		.ascii	"C:\\dev\\git\\Icebreaker\\Icebreaker.cydsn\000"
- 575      65765C67 
- 575      69745C49 
- 575      63656272 
- 575      65616B65 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 14
+ 574              	.LASF13:
+ 575 0101 63686172 		.ascii	"char\000"
+ 575      00
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 14
 
 
  576              	.LASF4:
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 1
  597      7465725F 
  597      52785F52 
  597      6573746F 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc9gry9l.s 			page 15
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccA3qRua.s 			page 15
 
 
  598              	.LASF20:

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
   23:LED.c         ****     led_initialized = true;
   33              		.loc 1 23 0
   34 0000 0122     		movs	r2, #1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 2
 
 
   35 0002 014B     		ldr	r3, .L2
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
   83              	.LFB4:
   30:LED.c         **** 
   31:LED.c         **** void LedIntHandler(void)
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 3
 
 
   32:LED.c         **** {
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  130 0040 02D1     		bne	.L7
   40:LED.c         ****         {
   41:LED.c         ****             LED_BLUE_Write(1);
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 4
 
 
  131              		.loc 1 41 0
@@ -232,13 +232,13 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  176 0006 00000000 		.4byte	.Ldebug_abbrev0
  177 000a 04       		.byte	0x4
  178 000b 01       		.uleb128 0x1
- 179 000c 0A010000 		.4byte	.LASF33
+ 179 000c 2C010000 		.4byte	.LASF33
  180 0010 0C       		.byte	0xc
- 181 0011 B9000000 		.4byte	.LASF34
- 182 0015 BF010000 		.4byte	.LASF35
+ 181 0011 BA010000 		.4byte	.LASF34
+ 182 0015 61000000 		.4byte	.LASF35
  183 0019 00000000 		.4byte	.Ldebug_ranges0+0
  184 001d 00000000 		.4byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 5
 
 
  185 0021 00000000 		.4byte	.Ldebug_line0
@@ -249,36 +249,36 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  190 002c 02       		.uleb128 0x2
  191 002d 01       		.byte	0x1
  192 002e 08       		.byte	0x8
- 193 002f 5F000000 		.4byte	.LASF1
+ 193 002f 4D000000 		.4byte	.LASF1
  194 0033 02       		.uleb128 0x2
  195 0034 02       		.byte	0x2
  196 0035 05       		.byte	0x5
- 197 0036 EE010000 		.4byte	.LASF2
+ 197 0036 F2010000 		.4byte	.LASF2
  198 003a 02       		.uleb128 0x2
  199 003b 02       		.byte	0x2
  200 003c 07       		.byte	0x7
- 201 003d 30000000 		.4byte	.LASF3
+ 201 003d 88000000 		.4byte	.LASF3
  202 0041 02       		.uleb128 0x2
  203 0042 04       		.byte	0x4
  204 0043 05       		.byte	0x5
  205 0044 0B020000 		.4byte	.LASF4
  206 0048 03       		.uleb128 0x3
- 207 0049 AE000000 		.4byte	.LASF9
+ 207 0049 D6000000 		.4byte	.LASF9
  208 004d 02       		.byte	0x2
  209 004e 41       		.byte	0x41
  210 004f 53000000 		.4byte	0x53
  211 0053 02       		.uleb128 0x2
  212 0054 04       		.byte	0x4
  213 0055 07       		.byte	0x7
- 214 0056 73000000 		.4byte	.LASF5
+ 214 0056 B9000000 		.4byte	.LASF5
  215 005a 02       		.uleb128 0x2
  216 005b 08       		.byte	0x8
  217 005c 05       		.byte	0x5
- 218 005d AC010000 		.4byte	.LASF6
+ 218 005d C9010000 		.4byte	.LASF6
  219 0061 02       		.uleb128 0x2
  220 0062 08       		.byte	0x8
  221 0063 07       		.byte	0x7
- 222 0064 EB000000 		.4byte	.LASF7
+ 222 0064 0D010000 		.4byte	.LASF7
  223 0068 04       		.uleb128 0x4
  224 0069 04       		.byte	0x4
  225 006a 05       		.byte	0x5
@@ -286,42 +286,42 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  227 006f 02       		.uleb128 0x2
  228 0070 04       		.byte	0x4
  229 0071 07       		.byte	0x7
- 230 0072 DE000000 		.4byte	.LASF8
+ 230 0072 00010000 		.4byte	.LASF8
  231 0076 03       		.uleb128 0x3
- 232 0077 8B000000 		.4byte	.LASF10
+ 232 0077 02020000 		.4byte	.LASF10
  233 007b 03       		.byte	0x3
  234 007c 30       		.byte	0x30
  235 007d 48000000 		.4byte	0x48
  236 0081 05       		.uleb128 0x5
- 237 0082 85000000 		.4byte	.LASF11
+ 237 0082 FC010000 		.4byte	.LASF11
  238 0086 04       		.byte	0x4
  239 0087 E401     		.2byte	0x1e4
  240 0089 2C000000 		.4byte	0x2c
  241 008d 05       		.uleb128 0x5
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 6
 
 
- 242 008e D7000000 		.4byte	.LASF12
+ 242 008e F9000000 		.4byte	.LASF12
  243 0092 04       		.byte	0x4
  244 0093 E601     		.2byte	0x1e6
  245 0095 53000000 		.4byte	0x53
  246 0099 05       		.uleb128 0x5
- 247 009a 6D000000 		.4byte	.LASF13
+ 247 009a 5B000000 		.4byte	.LASF13
  248 009e 04       		.byte	0x4
  249 009f E801     		.2byte	0x1e8
  250 00a1 33000000 		.4byte	0x33
  251 00a5 02       		.uleb128 0x2
  252 00a6 04       		.byte	0x4
  253 00a7 04       		.byte	0x4
- 254 00a8 4B000000 		.4byte	.LASF14
+ 254 00a8 3F000000 		.4byte	.LASF14
  255 00ac 02       		.uleb128 0x2
  256 00ad 08       		.byte	0x8
  257 00ae 04       		.byte	0x4
- 258 00af 9C000000 		.4byte	.LASF15
+ 258 00af 30000000 		.4byte	.LASF15
  259 00b3 02       		.uleb128 0x2
  260 00b4 01       		.byte	0x1
  261 00b5 08       		.byte	0x8
- 262 00b6 BA010000 		.4byte	.LASF16
+ 262 00b6 D7010000 		.4byte	.LASF16
  263 00ba 02       		.uleb128 0x2
  264 00bb 08       		.byte	0x8
  265 00bc 04       		.byte	0x4
@@ -329,7 +329,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  267 00c1 02       		.uleb128 0x2
  268 00c2 04       		.byte	0x4
  269 00c3 07       		.byte	0x7
- 270 00c4 98010000 		.4byte	.LASF18
+ 270 00c4 C0010000 		.4byte	.LASF18
  271 00c8 06       		.uleb128 0x6
  272 00c9 14       		.byte	0x14
  273 00ca 05       		.byte	0x5
@@ -342,23 +342,23 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  280 00d7 8D000000 		.4byte	0x8d
  281 00db 00       		.byte	0
  282 00dc 07       		.uleb128 0x7
- 283 00dd 94000000 		.4byte	.LASF20
+ 283 00dd 45000000 		.4byte	.LASF20
  284 00e1 05       		.byte	0x5
  285 00e2 15       		.byte	0x15
  286 00e3 8D000000 		.4byte	0x8d
  287 00e7 04       		.byte	0x4
  288 00e8 07       		.uleb128 0x7
- 289 00e9 E6010000 		.4byte	.LASF21
+ 289 00e9 DC010000 		.4byte	.LASF21
  290 00ed 05       		.byte	0x5
  291 00ee 16       		.byte	0x16
  292 00ef 19010000 		.4byte	0x119
  293 00f3 08       		.byte	0x8
  294 00f4 07       		.uleb128 0x7
- 295 00f5 02010000 		.4byte	.LASF22
+ 295 00f5 24010000 		.4byte	.LASF22
  296 00f9 05       		.byte	0x5
  297 00fa 17       		.byte	0x17
  298 00fb 19010000 		.4byte	0x119
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 7
 
 
  299 00ff 0C       		.byte	0xc
@@ -369,7 +369,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  304 0107 81000000 		.4byte	0x81
  305 010b 10       		.byte	0x10
  306 010c 07       		.uleb128 0x7
- 307 010d A3000000 		.4byte	.LASF24
+ 307 010d CB000000 		.4byte	.LASF24
  308 0111 05       		.byte	0x5
  309 0112 1A       		.byte	0x1a
  310 0113 81000000 		.4byte	0x81
@@ -383,12 +383,12 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  318 0127 01       		.byte	0x1
  319 0128 00       		.byte	0
  320 0129 03       		.uleb128 0x3
- 321 012a F8010000 		.4byte	.LASF25
+ 321 012a A6000000 		.4byte	.LASF25
  322 012e 05       		.byte	0x5
  323 012f 1B       		.byte	0x1b
  324 0130 C8000000 		.4byte	0xc8
  325 0134 0A       		.uleb128 0xa
- 326 0135 43000000 		.4byte	.LASF26
+ 326 0135 37000000 		.4byte	.LASF26
  327 0139 01       		.byte	0x1
  328 013a 15       		.byte	0x15
  329 013b 00000000 		.4byte	.LFB2
@@ -404,7 +404,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  339 0154 01       		.uleb128 0x1
  340 0155 9C       		.byte	0x9c
  341 0156 0B       		.uleb128 0xb
- 342 0157 51000000 		.4byte	.LASF36
+ 342 0157 E4010000 		.4byte	.LASF36
  343 015b 01       		.byte	0x1
  344 015c 1F       		.byte	0x1f
  345 015d 00000000 		.4byte	.LFB4
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  353 0174 7E010000 		.4byte	0x17e
  354 0178 0D       		.uleb128 0xd
  355 0179 01       		.uleb128 0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 8
 
 
  356 017a 50       		.byte	0x50
@@ -436,7 +436,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  368 018c 00       		.byte	0
  369 018d 00       		.byte	0
  370 018e 0F       		.uleb128 0xf
- 371 018f A1010000 		.4byte	.LASF28
+ 371 018f 9B000000 		.4byte	.LASF28
  372 0193 01       		.byte	0x1
  373 0194 11       		.byte	0x11
  374 0195 76000000 		.4byte	0x76
@@ -456,7 +456,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  388 01b2 02       		.byte	0x2
  389 01b3 2C020000 		.4byte	.LASF30
  390 01b7 10       		.uleb128 0x10
- 391 01b8 CE000000 		.4byte	.LASF31
+ 391 01b8 F0000000 		.4byte	.LASF31
  392 01bc 05       		.byte	0x5
  393 01bd 1D       		.byte	0x1d
  394 01be C2010000 		.4byte	0x1c2
@@ -466,19 +466,19 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  398 01c8 10       		.uleb128 0x10
  399 01c9 00000000 		.4byte	.LASF32
  400 01cd 06       		.byte	0x6
- 401 01ce 92       		.byte	0x92
+ 401 01ce 97       		.byte	0x97
  402 01cf D3010000 		.4byte	0x1d3
  403 01d3 12       		.uleb128 0x12
  404 01d4 76000000 		.4byte	0x76
  405 01d8 13       		.uleb128 0x13
- 406 01d9 BF000000 		.4byte	.LASF37
- 407 01dd BF000000 		.4byte	.LASF37
+ 406 01d9 E1000000 		.4byte	.LASF37
+ 407 01dd E1000000 		.4byte	.LASF37
  408 01e1 07       		.byte	0x7
  409 01e2 33       		.byte	0x33
  410 01e3 00       		.byte	0
  411              		.section	.debug_abbrev,"",%progbits
  412              	.Ldebug_abbrev0:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 9
 
 
  413 0000 01       		.uleb128 0x1
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  467 0036 05       		.uleb128 0x5
  468 0037 16       		.uleb128 0x16
  469 0038 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 10
 
 
  470 0039 03       		.uleb128 0x3
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  524 006f 00       		.byte	0
  525 0070 00       		.byte	0
  526 0071 0A       		.uleb128 0xa
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 11
 
 
  527 0072 2E       		.uleb128 0x2e
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  581 00ac 01       		.uleb128 0x1
  582 00ad 13       		.uleb128 0x13
  583 00ae 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 12
 
 
  584 00af 00       		.byte	0
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  638 00ea 0F       		.uleb128 0xf
  639 00eb 00       		.byte	0
  640 00ec 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 13
 
 
  641 00ed 0B       		.uleb128 0xb
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  695 0018 00000000 		.4byte	0
  696 001c 00000000 		.4byte	0
  697              		.section	.debug_line,"",%progbits
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 14
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 14
 
 
  698              	.Ldebug_line0:
@@ -805,144 +805,144 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  707      62726967 
  707      68746E65 
  707      737300
- 708              	.LASF3:
- 709 0030 73686F72 		.ascii	"short unsigned int\000"
- 709      7420756E 
- 709      7369676E 
- 709      65642069 
- 709      6E7400
+ 708              	.LASF15:
+ 709 0030 646F7562 		.ascii	"double\000"
+ 709      6C6500
  710              	.LASF26:
- 711 0043 4C656449 		.ascii	"LedInit\000"
+ 711 0037 4C656449 		.ascii	"LedInit\000"
  711      6E697400 
  712              	.LASF14:
- 713 004b 666C6F61 		.ascii	"float\000"
+ 713 003f 666C6F61 		.ascii	"float\000"
  713      7400
- 714              	.LASF36:
- 715 0051 4C656449 		.ascii	"LedIntHandler\000"
- 715      6E744861 
- 715      6E646C65 
- 715      7200
+ 714              	.LASF20:
+ 715 0045 636F756E 		.ascii	"counter\000"
+ 715      74657200 
  716              	.LASF1:
- 717 005f 756E7369 		.ascii	"unsigned char\000"
+ 717 004d 756E7369 		.ascii	"unsigned char\000"
  717      676E6564 
  717      20636861 
  717      7200
  718              	.LASF13:
- 719 006d 696E7431 		.ascii	"int16\000"
+ 719 005b 696E7431 		.ascii	"int16\000"
  719      3600
- 720              	.LASF5:
- 721 0073 6C6F6E67 		.ascii	"long unsigned int\000"
- 721      20756E73 
- 721      69676E65 
- 721      6420696E 
- 721      7400
- 722              	.LASF11:
- 723 0085 75696E74 		.ascii	"uint8\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 15
+ 720              	.LASF35:
+ 721 0061 433A5C64 		.ascii	"C:\\dev\\git\\icebreaker\\Icebreaker.cydsn\000"
+ 721      65765C67 
+ 721      69745C69 
+ 721      63656272 
+ 721      65616B65 
+ 722              	.LASF3:
+ 723 0088 73686F72 		.ascii	"short unsigned int\000"
+ 723      7420756E 
+ 723      7369676E 
+ 723      65642069 
+ 723      6E7400
+ 724              	.LASF28:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 15
 
 
- 723      3800
- 724              	.LASF10:
- 725 008b 75696E74 		.ascii	"uint32_t\000"
- 725      33325F74 
- 725      00
- 726              	.LASF20:
- 727 0094 636F756E 		.ascii	"counter\000"
- 727      74657200 
- 728              	.LASF15:
- 729 009c 646F7562 		.ascii	"double\000"
- 729      6C6500
+ 725 009b 70776D5F 		.ascii	"pwm_period\000"
+ 725      70657269 
+ 725      6F6400
+ 726              	.LASF25:
+ 727 00a6 63616C69 		.ascii	"calibration_data_s\000"
+ 727      62726174 
+ 727      696F6E5F 
+ 727      64617461 
+ 727      5F7300
+ 728              	.LASF5:
+ 729 00b9 6C6F6E67 		.ascii	"long unsigned int\000"
+ 729      20756E73 
+ 729      69676E65 
+ 729      6420696E 
+ 729      7400
  730              	.LASF24:
- 731 00a3 64656275 		.ascii	"debug_mask\000"
+ 731 00cb 64656275 		.ascii	"debug_mask\000"
  731      675F6D61 
  731      736B00
  732              	.LASF9:
- 733 00ae 5F5F7569 		.ascii	"__uint32_t\000"
+ 733 00d6 5F5F7569 		.ascii	"__uint32_t\000"
  733      6E743332 
  733      5F7400
- 734              	.LASF34:
- 735 00b9 4C45442E 		.ascii	"LED.c\000"
- 735      6300
- 736              	.LASF37:
- 737 00bf 4C45445F 		.ascii	"LED_BLUE_Write\000"
- 737      424C5545 
- 737      5F577269 
- 737      746500
- 738              	.LASF31:
- 739 00ce 63616C5F 		.ascii	"cal_data\000"
- 739      64617461 
- 739      00
- 740              	.LASF12:
- 741 00d7 75696E74 		.ascii	"uint32\000"
- 741      333200
- 742              	.LASF8:
- 743 00de 756E7369 		.ascii	"unsigned int\000"
- 743      676E6564 
- 743      20696E74 
- 743      00
- 744              	.LASF7:
- 745 00eb 6C6F6E67 		.ascii	"long long unsigned int\000"
- 745      206C6F6E 
- 745      6720756E 
- 745      7369676E 
- 745      65642069 
- 746              	.LASF22:
- 747 0102 6164635F 		.ascii	"adc_max\000"
- 747      6D617800 
- 748              	.LASF33:
- 749 010a 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 749      43313120 
- 749      352E342E 
- 749      31203230 
- 749      31363036 
- 750 013d 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
- 750      20726576 
- 750      6973696F 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 16
+ 734              	.LASF37:
+ 735 00e1 4C45445F 		.ascii	"LED_BLUE_Write\000"
+ 735      424C5545 
+ 735      5F577269 
+ 735      746500
+ 736              	.LASF31:
+ 737 00f0 63616C5F 		.ascii	"cal_data\000"
+ 737      64617461 
+ 737      00
+ 738              	.LASF12:
+ 739 00f9 75696E74 		.ascii	"uint32\000"
+ 739      333200
+ 740              	.LASF8:
+ 741 0100 756E7369 		.ascii	"unsigned int\000"
+ 741      676E6564 
+ 741      20696E74 
+ 741      00
+ 742              	.LASF7:
+ 743 010d 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 743      206C6F6E 
+ 743      6720756E 
+ 743      7369676E 
+ 743      65642069 
+ 744              	.LASF22:
+ 745 0124 6164635F 		.ascii	"adc_max\000"
+ 745      6D617800 
+ 746              	.LASF33:
+ 747 012c 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 747      43313120 
+ 747      352E342E 
+ 747      31203230 
+ 747      31363036 
+ 748 015f 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 748      20726576 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 16
 
 
- 750      6E203233 
- 750      37373135 
- 751 0170 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 751      66756E63 
- 751      74696F6E 
- 751      2D736563 
- 751      74696F6E 
+ 748      6973696F 
+ 748      6E203233 
+ 748      37373135 
+ 749 0192 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 749      66756E63 
+ 749      74696F6E 
+ 749      2D736563 
+ 749      74696F6E 
+ 750              	.LASF34:
+ 751 01ba 4C45442E 		.ascii	"LED.c\000"
+ 751      6300
  752              	.LASF18:
- 753 0198 73697A65 		.ascii	"sizetype\000"
+ 753 01c0 73697A65 		.ascii	"sizetype\000"
  753      74797065 
  753      00
- 754              	.LASF28:
- 755 01a1 70776D5F 		.ascii	"pwm_period\000"
- 755      70657269 
- 755      6F6400
- 756              	.LASF6:
- 757 01ac 6C6F6E67 		.ascii	"long long int\000"
- 757      206C6F6E 
- 757      6720696E 
- 757      7400
- 758              	.LASF16:
- 759 01ba 63686172 		.ascii	"char\000"
- 759      00
- 760              	.LASF35:
- 761 01bf 433A5C64 		.ascii	"C:\\dev\\git\\Icebreaker\\Icebreaker.cydsn\000"
- 761      65765C67 
- 761      69745C49 
- 761      63656272 
- 761      65616B65 
- 762              	.LASF21:
- 763 01e6 6164635F 		.ascii	"adc_min\000"
- 763      6D696E00 
- 764              	.LASF2:
- 765 01ee 73686F72 		.ascii	"short int\000"
- 765      7420696E 
- 765      7400
- 766              	.LASF25:
- 767 01f8 63616C69 		.ascii	"calibration_data_s\000"
- 767      62726174 
- 767      696F6E5F 
- 767      64617461 
- 767      5F7300
+ 754              	.LASF6:
+ 755 01c9 6C6F6E67 		.ascii	"long long int\000"
+ 755      206C6F6E 
+ 755      6720696E 
+ 755      7400
+ 756              	.LASF16:
+ 757 01d7 63686172 		.ascii	"char\000"
+ 757      00
+ 758              	.LASF21:
+ 759 01dc 6164635F 		.ascii	"adc_min\000"
+ 759      6D696E00 
+ 760              	.LASF36:
+ 761 01e4 4C656449 		.ascii	"LedIntHandler\000"
+ 761      6E744861 
+ 761      6E646C65 
+ 761      7200
+ 762              	.LASF2:
+ 763 01f2 73686F72 		.ascii	"short int\000"
+ 763      7420696E 
+ 763      7400
+ 764              	.LASF11:
+ 765 01fc 75696E74 		.ascii	"uint8\000"
+ 765      3800
+ 766              	.LASF10:
+ 767 0202 75696E74 		.ascii	"uint32_t\000"
+ 767      33325F74 
+ 767      00
  768              	.LASF4:
  769 020b 6C6F6E67 		.ascii	"long int\000"
  769      20696E74 
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 1
  774              	.LASF30:
  775 022c 5F426F6F 		.ascii	"_Bool\000"
  775      6C00
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccDY0ALC.s 			page 17
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc26BZHZ.s 			page 17
 
 
  776              	.LASF29:

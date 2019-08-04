@@ -15,7 +15,7 @@
 #include <ADC.h>
 #include <DMA.h>
 #include <Codec.h>
-#include <USBFS.h>
+//#include <USBFS.h>
 #include <pcm1770.h>
 
 int32 ADC_MIN_READING[vol_ctrl_both] = { -2, -2 };
