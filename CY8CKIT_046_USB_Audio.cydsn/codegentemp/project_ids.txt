@@ -1,5 +1,0 @@
-C:\Program Files (x86)\Cypress\CY8CKIT-046 PSoC 4 L-Series Pioneer Kit\1.0\Firmware\PSoC 4200L\CY8CKIT_046_USB_Audio\CY8CKIT_046_USB_Audio.cydsn\CY8CKIT_046_USB_Audio.cyprj|10f9af4d-9d6b-4dc0-a62a-3fd7bc73e4ef
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|695654bf-b8d7-41c7-8d95-31d3b2661b96
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|5b14d294-f74b-4f90-b57a-e2bb7d08548d
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|7acac40d-3d61-4368-a9fd-26af1f0979a7
-C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|3f32d763-2c64-4c61-a8f3-347623f7af4c
