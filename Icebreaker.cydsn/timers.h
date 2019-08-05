@@ -25,7 +25,8 @@ typedef struct _tmrFuncType
   uint16_t (*func)(void);
 } tmrFuncType;
 
-#define tmrGetCounter_ms() (tmrCounter_ms)
+#define tmrGetCounter_ms()          (tmrCounter_ms)
+#define tmrGetTimeToExpiry(pTmr)    (pTmr->mS)
     
 void tmrInit(void);
 void tmrService(void);

@@ -21,20 +21,17 @@ typedef enum
 static uint16_t button_hold_timeout_callback(void);
 static void buttonManagerHandleButtonEvents(BM_DURATION_e e);
 
+// The values below stack on top of each other
 static const uint32_t bm_durations_ms[] =
 {
-    0,      //    BM_DURATION_NONE,
     1800,   //    BM_DURATION_PRESS,
-    1800,   //    BM_DURATION_PRESS_RELEASE,
-    3000,   //    BM_DURATION_LONG_PRESS,
-    3000,   //    BM_DURATION_LONG_PRESS_RELEASE,
-    5000,   //    BM_DURATION_VLONG_PRESS,
-    5000,   //    BM_DURATION_VLONG_PRESS_RELEASE,
-    15000,  //    BM_DURATION_VVLONG_PRESS,
-    15000,  //    BM_DURATION_VVLONG_PRESS_RELEASE,
+    1200,   //    BM_DURATION_LONG_PRESS,
+    2000,   //    BM_DURATION_VLONG_PRESS,
+    10000,  //    BM_DURATION_VVLONG_PRESS,
     0xFFFFFFFF,  //    BM_DURATION_VVVLONG_PRESS,
-    0xFFFFFFFF,  //    BM_DURATION_VVVLONG_PRESS_RELEASE
 };
+
+#define BM_GET_NEXT_LEVEL_TIMEOUT(b)        (bm_durations_ms[(b-1)/2])
 
 volatile uint32_t buttonEvents;
 static BM_DURATION_e buttonDuration;
@@ -50,7 +47,7 @@ static uint16_t button_hold_timeout_callback(void)
 
     buttonSetEvents(BUTTON_EVENTS_HOLD_TIMEOUT);
     
-    return bm_durations_ms[buttonDuration];   
+    return BM_GET_NEXT_LEVEL_TIMEOUT(buttonDuration);   
 }
 
 static void buttonManagerStartHoldTimer(void)
@@ -58,7 +55,7 @@ static void buttonManagerStartHoldTimer(void)
     // Started by a press, process it
     buttonDuration = BM_DURATION_PRESS;
     buttonManagerHandleButtonEvents(buttonDuration);
-    buttonHoldTimer.mS = bm_durations_ms[buttonDuration];
+    buttonHoldTimer.mS = BM_GET_NEXT_LEVEL_TIMEOUT(buttonDuration);
     tmrFuncAdd(&buttonHoldTimer);
 }
 
@@ -85,18 +82,18 @@ void buttonManagerService(void)
 {
     if (buttonCheckEvents(BUTTON_EVENTS_LL_PRESS))
     {
-        PRINTF("BUTTON_EVENTS_LL_PRESS\n");
+        PRINTF("[%08lu] BUTTON_EVENTS_LL_PRESS\n", tmrGetCounter_ms());
         buttonManagerStartHoldTimer();
         buttonClearEvents(BUTTON_EVENTS_LL_PRESS);
     }
     
     if (buttonCheckEvents(BUTTON_EVENTS_LL_RELEASE))
     {
-        PRINTF("BUTTON_EVENTS_LL_RELEASE\n");
         // Kill timer
         tmrFuncDelete(&buttonHoldTimer);
         // +1 for "Release" version of "press"
         buttonDuration++;
+        PRINTF("[%08lu] BUTTON_EVENTS_LL_RELEASE: %d\n", tmrGetCounter_ms(), buttonDuration);
         // Convert from BM_DURATION_e to BUTTON_EVENTS simply by bit-shifting
         buttonManagerHandleButtonEvents(buttonDuration);
         // Reset button duration
@@ -106,7 +103,7 @@ void buttonManagerService(void)
     
     if (buttonCheckEvents(BUTTON_EVENTS_HOLD_TIMEOUT))
     {
-        PRINTF("BUTTON_EVENTS_HOLD_TIMEOUT: %d\n", buttonDuration);
+        PRINTF("[%08lu] BUTTON_EVENTS_HOLD_TIMEOUT: %d\n", tmrGetCounter_ms(), buttonDuration);
         buttonManagerHandleButtonEvents(buttonDuration);
         buttonClearEvents(BUTTON_EVENTS_HOLD_TIMEOUT);
     }

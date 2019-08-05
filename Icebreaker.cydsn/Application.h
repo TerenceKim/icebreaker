@@ -50,6 +50,7 @@
     #include <stdbool.h>
     #include <stdlib.h>
     #include <Calibration.h>
+    #include <timers.h>
     
     #define FW_VER_MAJOR        1
     #define FW_VER_MINOR        0
@@ -64,7 +65,7 @@
                 if (0u != USBUART_GetConfiguration()) \
                 { \
                     while (0u == USBUART_CDCIsReady()); \
-                    sprintf(gbuf, __VA_ARGS__); \
+                    sprintf(&gbuf[0], __VA_ARGS__); \
                     USBUART_PutString(gbuf); \
                 } \
             } while (0)
