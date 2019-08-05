@@ -149,6 +149,7 @@
 	#endif
     
     extern volatile uint32_t sys_tick;
+    
 
 #endif /* #ifndef APP_H */
 

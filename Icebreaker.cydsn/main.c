@@ -52,8 +52,7 @@
 #include "AudioControl.h"
 #include "USBInterface.h"
 #include <LED.h>
-
-volatile uint32_t sys_tick;
+#include <timers.h>
 
 CY_ISR(HFI_Handler)
 {
@@ -69,7 +68,7 @@ CY_ISR(HFI_Handler)
 
 CY_ISR(SysTickHandler)
 {
-    sys_tick++;
+    tmrService();
     
     LedIntHandler();
 }

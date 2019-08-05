@@ -13,6 +13,7 @@
 #include <LED_BLUE.h>
 #include <Application.h>
 #include <Calibration.h>
+#include <timers.h>
 
 uint32_t pwm_period = 20; // in tenths of milliseconds
 
@@ -32,11 +33,11 @@ void LedIntHandler(void)
 {
     if (led_initialized)
     {
-        if ((sys_tick % pwm_period) == 0)
+        if ((tmrGetCounter_ms() % pwm_period) == 0)
         {
             LED_BLUE_Write(0);
         }
-        else if ((sys_tick % pwm_period) == (cal_data->led_max_brightness * pwm_period / 100))
+        else if ((tmrGetCounter_ms() % pwm_period) == (cal_data->led_max_brightness * pwm_period / 100))
         {
             LED_BLUE_Write(1);
         }

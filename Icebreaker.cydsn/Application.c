@@ -49,6 +49,8 @@
 #include <VolumeControl.h>
 #include <pcm1770.h>
 #include <Calibration.h>
+#include <isr_Button.h>
+#include <ButtonManager.h>
 
 #define USBFS_DEVICE    (0u)
 #define USBUART_BUFFER_SIZE (64u)
@@ -64,6 +66,8 @@ uint8 audioControlStatus;
 uint8 reportClearFlag;
 
 char gbuf[256];
+
+volatile uint32_t evt_mask;
 
 extern volatile uint8 USBFS_currentVolume[];
 extern volatile uint8 USBFS_currentMute;
@@ -151,6 +155,8 @@ void InitApp(void)
 
     CalibrationInit();
     
+    buttonManagerInit();
+    
     /* Start USBFS operation with 5-V operation. */
     USBUART_Start(USBFS_DEVICE, USBUART_5V_OPERATION);
     
@@ -211,6 +217,8 @@ void RunApplication(void)
                 TkShellService();
             }
         }
+        
+        buttonManagerService();
     }
 #endif
 }

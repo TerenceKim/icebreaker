@@ -1,5 +1,5 @@
 -- Project:   Icebreaker
--- Generated: 08/04/2019 01:25:16
+-- Generated: 08/05/2019 00:45:18
 -- PSoC Creator  4.2
 
 ENTITY Icebreaker IS
@@ -19,24 +19,27 @@ ENTITY Icebreaker IS
         SPI_CS(0)_PAD : OUT std_ulogic;
         PD(0)_PAD : OUT std_ulogic;
         \USBUART:Dp(0)_PAD\ : INOUT std_ulogic;
-        \USBUART:Dm(0)_PAD\ : OUT std_ulogic);
-    ATTRIBUTE voltage_VDDIO_A_0 OF __DEFAULT__ : ENTITY IS 3.3e0;
+        \USBUART:Dm(0)_PAD\ : OUT std_ulogic;
+        BTN(0)_PAD : IN std_ulogic);
+    ATTRIBUTE voltage_VDDIO_A_1 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDA_0 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDA_CTB OF __DEFAULT__ : ENTITY IS 3.3e0;
-    ATTRIBUTE voltage_VDDD OF __DEFAULT__ : ENTITY IS 3.3e0;
+    ATTRIBUTE voltage_VDDA_1 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_0 OF __DEFAULT__ : ENTITY IS 3.3e0;
+    ATTRIBUTE voltage_VDDD OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_1 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_2 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_3 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_4 OF __DEFAULT__ : ENTITY IS 3.3e0;
-    ATTRIBUTE voltage_VDDIO OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_A OF __DEFAULT__ : ENTITY IS 3.3e0;
+    ATTRIBUTE voltage_VDDIO OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VBUS OF __DEFAULT__ : ENTITY IS 5e0;
 END Icebreaker;
 
 ARCHITECTURE __DEFAULT__ OF Icebreaker IS
+    SIGNAL BTN(0)__PA : bit;
     SIGNAL Clk_I2S : bit;
-    ATTRIBUTE placement_force OF Clk_I2S : SIGNAL IS "U(1,2,A)0";
+    ATTRIBUTE placement_force OF Clk_I2S : SIGNAL IS "U(1,1,A)0";
     ATTRIBUTE udbclken_assigned OF Clk_I2S : SIGNAL IS "False";
     SIGNAL ClockBlock_ECO : bit;
     SIGNAL ClockBlock_EXTCLK : bit;
@@ -59,7 +62,7 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     SIGNAL Codec_LRC(0)__PA : bit;
     SIGNAL Codec_MCLK(0)__PA : bit;
     SIGNAL I2S_LRCLK : bit;
-    ATTRIBUTE placement_force OF I2S_LRCLK : SIGNAL IS "U(0,1,B)1";
+    ATTRIBUTE placement_force OF I2S_LRCLK : SIGNAL IS "U(0,1,B)0";
     SIGNAL I2S_LRCLK__SYNC_OUT : bit;
     SIGNAL I2S_LRCLK__SYNC_OUT_1 : bit;
     SIGNAL LED_BLUE(0)__PA : bit;
@@ -67,7 +70,7 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     SIGNAL Net_3641 : bit;
     ATTRIBUTE placement_force OF Net_3641 : SIGNAL IS "U(1,3,A)1";
     SIGNAL Net_3651 : bit;
-    ATTRIBUTE placement_force OF Net_3651 : SIGNAL IS "U(1,3,A)0";
+    ATTRIBUTE placement_force OF Net_3651 : SIGNAL IS "U(1,2,B)0";
     SIGNAL Net_3792 : bit;
     SIGNAL Net_3865_ff11 : bit;
     ATTRIBUTE global_signal OF Net_3865_ff11 : SIGNAL IS true;
@@ -75,7 +78,7 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     ATTRIBUTE global_signal OF Net_3865_ff12 : SIGNAL IS true;
     SIGNAL Net_4030 : bit;
     SIGNAL Net_4031_0 : bit;
-    ATTRIBUTE placement_force OF Net_4031_0 : SIGNAL IS "U(0,1,B)0";
+    ATTRIBUTE placement_force OF Net_4031_0 : SIGNAL IS "U(0,1,B)2";
     SIGNAL Net_4032 : bit;
     SIGNAL Net_4612 : bit;
     SIGNAL Net_4634 : bit;
@@ -102,6 +105,7 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     SIGNAL Net_4779 : bit;
     SIGNAL Net_4781 : bit;
     SIGNAL Net_4856 : bit;
+    SIGNAL Net_4874 : bit;
     SIGNAL PD(0)__PA : bit;
     SIGNAL POTL(0)__PA : bit;
     SIGNAL POTR(0)__PA : bit;
@@ -145,7 +149,7 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     SIGNAL \Async_Feedback_Counter:TimerUDB:status_2\ : bit;
     SIGNAL \Async_Feedback_Counter:TimerUDB:status_3\ : bit;
     SIGNAL \Async_Feedback_Counter:TimerUDB:status_tc\ : bit;
-    ATTRIBUTE placement_force OF \Async_Feedback_Counter:TimerUDB:status_tc\ : SIGNAL IS "U(1,3,B)1";
+    ATTRIBUTE placement_force OF \Async_Feedback_Counter:TimerUDB:status_tc\ : SIGNAL IS "U(1,3,A)0";
     SIGNAL \AudioClkSel:control_1\ : bit;
     SIGNAL \AudioClkSel:control_2\ : bit;
     SIGNAL \AudioClkSel:control_3\ : bit;
@@ -167,11 +171,11 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     SIGNAL \CodecI2CM:select_m_wire_3\ : bit;
     SIGNAL \CodecI2CM:tx_wire\ : bit;
     SIGNAL \I2S:bI2S:CtlReg__0__SYNC_OUT\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:CtlReg__0__SYNC_OUT\ : SIGNAL IS "U(0,1,B)3";
+    ATTRIBUTE placement_force OF \I2S:bI2S:CtlReg__0__SYNC_OUT\ : SIGNAL IS "U(0,3,B)3";
     SIGNAL \I2S:bI2S:CtlReg__1__SYNC_OUT\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:CtlReg__1__SYNC_OUT\ : SIGNAL IS "U(1,1,B)3";
+    ATTRIBUTE placement_force OF \I2S:bI2S:CtlReg__1__SYNC_OUT\ : SIGNAL IS "U(0,3,A)1";
     SIGNAL \I2S:bI2S:CtlReg__2__SYNC_OUT\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:CtlReg__2__SYNC_OUT\ : SIGNAL IS "U(0,0,B)1";
+    ATTRIBUTE placement_force OF \I2S:bI2S:CtlReg__2__SYNC_OUT\ : SIGNAL IS "U(0,2,A)2";
     SIGNAL \I2S:bI2S:count_1\ : bit;
     SIGNAL \I2S:bI2S:count_2\ : bit;
     SIGNAL \I2S:bI2S:count_3\ : bit;
@@ -190,46 +194,46 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     SIGNAL \I2S:bI2S:ctrl_reg_out_6\ : bit;
     SIGNAL \I2S:bI2S:ctrl_reg_out_7\ : bit;
     SIGNAL \I2S:bI2S:d0_load\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:d0_load\ : SIGNAL IS "U(0,3,B)0";
+    ATTRIBUTE placement_force OF \I2S:bI2S:d0_load\ : SIGNAL IS "U(0,0,B)3";
     SIGNAL \I2S:bI2S:reset\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:reset\ : SIGNAL IS "U(1,1,B)1";
+    ATTRIBUTE placement_force OF \I2S:bI2S:reset\ : SIGNAL IS "U(0,2,A)0";
     SIGNAL \I2S:bI2S:rx_data_in_0\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:rx_data_in_0\ : SIGNAL IS "U(0,0,B)0";
+    ATTRIBUTE placement_force OF \I2S:bI2S:rx_data_in_0\ : SIGNAL IS "U(1,0,B)0";
     SIGNAL \I2S:bI2S:rx_f0_full_0\ : bit;
     SIGNAL \I2S:bI2S:rx_f0_load\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:rx_f0_load\ : SIGNAL IS "U(1,0,A)1";
+    ATTRIBUTE placement_force OF \I2S:bI2S:rx_f0_load\ : SIGNAL IS "U(0,3,B)1";
     SIGNAL \I2S:bI2S:rx_f1_load\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:rx_f1_load\ : SIGNAL IS "U(1,0,A)0";
+    ATTRIBUTE placement_force OF \I2S:bI2S:rx_f1_load\ : SIGNAL IS "U(0,3,A)2";
     SIGNAL \I2S:bI2S:rx_int_out_0\ : bit;
     SIGNAL \I2S:bI2S:rx_overflow_0\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:rx_overflow_0\ : SIGNAL IS "U(1,1,A)0";
+    ATTRIBUTE placement_force OF \I2S:bI2S:rx_overflow_0\ : SIGNAL IS "U(0,3,A)3";
     SIGNAL \I2S:bI2S:rx_overflow_sticky\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:rx_overflow_sticky\ : SIGNAL IS "U(1,1,A)1";
+    ATTRIBUTE placement_force OF \I2S:bI2S:rx_overflow_sticky\ : SIGNAL IS "U(0,3,B)0";
     SIGNAL \I2S:bI2S:rx_state_0\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:rx_state_0\ : SIGNAL IS "U(0,0,A)1";
+    ATTRIBUTE placement_force OF \I2S:bI2S:rx_state_0\ : SIGNAL IS "U(0,2,B)1";
     SIGNAL \I2S:bI2S:rx_state_1\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:rx_state_1\ : SIGNAL IS "U(0,0,A)2";
+    ATTRIBUTE placement_force OF \I2S:bI2S:rx_state_1\ : SIGNAL IS "U(0,2,B)2";
     SIGNAL \I2S:bI2S:rx_state_2\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:rx_state_2\ : SIGNAL IS "U(0,0,A)0";
+    ATTRIBUTE placement_force OF \I2S:bI2S:rx_state_2\ : SIGNAL IS "U(0,2,B)0";
     SIGNAL \I2S:bI2S:rxenable\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:rxenable\ : SIGNAL IS "U(0,1,A)0";
+    ATTRIBUTE placement_force OF \I2S:bI2S:rxenable\ : SIGNAL IS "U(1,2,A)0";
     SIGNAL \I2S:bI2S:tx_data_out_0\ : bit;
     SIGNAL \I2S:bI2S:tx_f0_empty_0\ : bit;
     SIGNAL \I2S:bI2S:tx_int_out_0\ : bit;
     SIGNAL \I2S:bI2S:tx_state_0\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:tx_state_0\ : SIGNAL IS "U(0,3,A)2";
+    ATTRIBUTE placement_force OF \I2S:bI2S:tx_state_0\ : SIGNAL IS "U(0,1,A)0";
     SIGNAL \I2S:bI2S:tx_state_1\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:tx_state_1\ : SIGNAL IS "U(0,3,B)2";
+    ATTRIBUTE placement_force OF \I2S:bI2S:tx_state_1\ : SIGNAL IS "U(0,0,A)0";
     SIGNAL \I2S:bI2S:tx_state_2\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:tx_state_2\ : SIGNAL IS "U(0,3,A)3";
+    ATTRIBUTE placement_force OF \I2S:bI2S:tx_state_2\ : SIGNAL IS "U(0,1,A)1";
     SIGNAL \I2S:bI2S:tx_swap_done_reg\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:tx_swap_done_reg\ : SIGNAL IS "U(0,2,B)0";
+    ATTRIBUTE placement_force OF \I2S:bI2S:tx_swap_done_reg\ : SIGNAL IS "U(0,0,B)2";
     SIGNAL \I2S:bI2S:tx_underflow_0\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:tx_underflow_0\ : SIGNAL IS "U(0,2,B)1";
+    ATTRIBUTE placement_force OF \I2S:bI2S:tx_underflow_0\ : SIGNAL IS "U(0,0,A)1";
     SIGNAL \I2S:bI2S:tx_underflow_sticky\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:tx_underflow_sticky\ : SIGNAL IS "U(0,2,B)3";
+    ATTRIBUTE placement_force OF \I2S:bI2S:tx_underflow_sticky\ : SIGNAL IS "U(0,0,B)0";
     SIGNAL \I2S:bI2S:txenable\ : bit;
-    ATTRIBUTE placement_force OF \I2S:bI2S:txenable\ : SIGNAL IS "U(0,2,A)0";
+    ATTRIBUTE placement_force OF \I2S:bI2S:txenable\ : SIGNAL IS "U(1,0,A)3";
     SIGNAL \UART:Net_847_ff3\ : bit;
     ATTRIBUTE global_signal OF \UART:Net_847_ff3\ : SIGNAL IS true;
     SIGNAL \UART:miso_s_wire\ : bit;
@@ -261,7 +265,7 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     SIGNAL \USBUART:dma_req_6\ : bit;
     SIGNAL \USBUART:dma_req_7\ : bit;
     SIGNAL __ONE__ : bit;
-    ATTRIBUTE placement_force OF __ONE__ : SIGNAL IS "U(1,2,B)1";
+    ATTRIBUTE placement_force OF __ONE__ : SIGNAL IS "U(1,2,B)3";
     ATTRIBUTE POWER OF __ONE__ : SIGNAL IS true;
     SIGNAL __ZERO__ : bit;
     ATTRIBUTE GROUND OF __ZERO__ : SIGNAL IS true;
@@ -310,53 +314,56 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     ATTRIBUTE Location OF \USBUART:Dp(0)\ : LABEL IS "P13[0]";
     ATTRIBUTE lib_model OF \USBUART:Dm(0)\ : LABEL IS "iocell18";
     ATTRIBUTE Location OF \USBUART:Dm(0)\ : LABEL IS "P13[1]";
+    ATTRIBUTE Location OF BTN : LABEL IS "F(PICU,0)";
+    ATTRIBUTE lib_model OF BTN(0) : LABEL IS "iocell19";
+    ATTRIBUTE Location OF BTN(0) : LABEL IS "P0[3]";
     ATTRIBUTE lib_model OF \I2S:bI2S:tx_underflow_0\ : LABEL IS "macrocell2";
-    ATTRIBUTE Location OF \I2S:bI2S:tx_underflow_0\ : LABEL IS "U(0,2)";
+    ATTRIBUTE Location OF \I2S:bI2S:tx_underflow_0\ : LABEL IS "U(0,0)";
     ATTRIBUTE lib_model OF \I2S:bI2S:rx_overflow_0\ : LABEL IS "macrocell3";
-    ATTRIBUTE Location OF \I2S:bI2S:rx_overflow_0\ : LABEL IS "U(1,1)";
+    ATTRIBUTE Location OF \I2S:bI2S:rx_overflow_0\ : LABEL IS "U(0,3)";
     ATTRIBUTE lib_model OF \Async_Feedback_Counter:TimerUDB:status_tc\ : LABEL IS "macrocell4";
     ATTRIBUTE Location OF \Async_Feedback_Counter:TimerUDB:status_tc\ : LABEL IS "U(1,3)";
     ATTRIBUTE lib_model OF Net_3651 : LABEL IS "macrocell5";
-    ATTRIBUTE Location OF Net_3651 : LABEL IS "U(1,3)";
+    ATTRIBUTE Location OF Net_3651 : LABEL IS "U(1,2)";
     ATTRIBUTE lib_model OF USBOutDMA : LABEL IS "drqcell1";
     ATTRIBUTE Location OF USBOutDMA : LABEL IS "[DrqContainer=(0)][DrqId=(3)]";
     ATTRIBUTE lib_model OF \I2S:bI2S:CtlReg__0__SYNC\ : LABEL IS "macrocell6";
-    ATTRIBUTE Location OF \I2S:bI2S:CtlReg__0__SYNC\ : LABEL IS "U(0,1)";
+    ATTRIBUTE Location OF \I2S:bI2S:CtlReg__0__SYNC\ : LABEL IS "U(0,3)";
     ATTRIBUTE lib_model OF \I2S:bI2S:CtlReg\ : LABEL IS "controlcell1";
-    ATTRIBUTE Location OF \I2S:bI2S:CtlReg\ : LABEL IS "U(0,1)";
-    ATTRIBUTE Location OF \I2S:bI2S:EN_ASYNC:CtlEnSync\ : LABEL IS "U(0,0)";
-    ATTRIBUTE Location OF \I2S:bI2S:BitCounter\ : LABEL IS "U(0,2)";
-    ATTRIBUTE Location OF \I2S:bI2S:Tx:TX_EN_ASYNC:CtlTxEnSync\ : LABEL IS "U(0,0)";
+    ATTRIBUTE Location OF \I2S:bI2S:CtlReg\ : LABEL IS "U(0,3)";
+    ATTRIBUTE Location OF \I2S:bI2S:EN_ASYNC:CtlEnSync\ : LABEL IS "U(0,2)";
+    ATTRIBUTE Location OF \I2S:bI2S:BitCounter\ : LABEL IS "U(0,1)";
+    ATTRIBUTE Location OF \I2S:bI2S:Tx:TX_EN_ASYNC:CtlTxEnSync\ : LABEL IS "U(0,2)";
     ATTRIBUTE lib_model OF \I2S:bI2S:Tx:STS[0]:Sts\ : LABEL IS "statusicell1";
-    ATTRIBUTE Location OF \I2S:bI2S:Tx:STS[0]:Sts\ : LABEL IS "U(0,1)";
+    ATTRIBUTE Location OF \I2S:bI2S:Tx:STS[0]:Sts\ : LABEL IS "U(0,0)";
     ATTRIBUTE lib_model OF \I2S:bI2S:Tx:CH[0]:dpTx:u0\ : LABEL IS "datapathcell1";
-    ATTRIBUTE Location OF \I2S:bI2S:Tx:CH[0]:dpTx:u0\ : LABEL IS "U(0,2)";
-    ATTRIBUTE Location OF \I2S:bI2S:Rx:RX_EN_ASYNC:CtlRxEnSync\ : LABEL IS "U(1,1)";
+    ATTRIBUTE Location OF \I2S:bI2S:Tx:CH[0]:dpTx:u0\ : LABEL IS "U(0,1)";
+    ATTRIBUTE Location OF \I2S:bI2S:Rx:RX_EN_ASYNC:CtlRxEnSync\ : LABEL IS "U(0,2)";
     ATTRIBUTE lib_model OF \I2S:bI2S:Rx:STS[0]:Sts\ : LABEL IS "statusicell2";
-    ATTRIBUTE Location OF \I2S:bI2S:Rx:STS[0]:Sts\ : LABEL IS "U(1,0)";
+    ATTRIBUTE Location OF \I2S:bI2S:Rx:STS[0]:Sts\ : LABEL IS "U(0,3)";
     ATTRIBUTE lib_model OF \I2S:bI2S:Rx:CH[0]:dpRx:u0\ : LABEL IS "datapathcell2";
-    ATTRIBUTE Location OF \I2S:bI2S:Rx:CH[0]:dpRx:u0\ : LABEL IS "U(1,0)";
+    ATTRIBUTE Location OF \I2S:bI2S:Rx:CH[0]:dpRx:u0\ : LABEL IS "U(0,3)";
     ATTRIBUTE lib_model OF \I2S:bI2S:CtlReg__2__SYNC\ : LABEL IS "macrocell7";
-    ATTRIBUTE Location OF \I2S:bI2S:CtlReg__2__SYNC\ : LABEL IS "U(0,0)";
+    ATTRIBUTE Location OF \I2S:bI2S:CtlReg__2__SYNC\ : LABEL IS "U(0,2)";
     ATTRIBUTE lib_model OF \I2S:bI2S:CtlReg__1__SYNC\ : LABEL IS "macrocell8";
-    ATTRIBUTE Location OF \I2S:bI2S:CtlReg__1__SYNC\ : LABEL IS "U(1,1)";
+    ATTRIBUTE Location OF \I2S:bI2S:CtlReg__1__SYNC\ : LABEL IS "U(0,3)";
     ATTRIBUTE lib_model OF \Async_Feedback_Counter:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\ : LABEL IS "controlcell2";
     ATTRIBUTE Location OF \Async_Feedback_Counter:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\ : LABEL IS "U(1,3)";
     ATTRIBUTE lib_model OF \Async_Feedback_Counter:TimerUDB:rstSts:stsreg\ : LABEL IS "statusicell3";
-    ATTRIBUTE Location OF \Async_Feedback_Counter:TimerUDB:rstSts:stsreg\ : LABEL IS "U(0,3)";
+    ATTRIBUTE Location OF \Async_Feedback_Counter:TimerUDB:rstSts:stsreg\ : LABEL IS "U(1,2)";
     ATTRIBUTE lib_model OF \Async_Feedback_Counter:TimerUDB:sT8:timerdp:u0\ : LABEL IS "datapathcell3";
     ATTRIBUTE Location OF \Async_Feedback_Counter:TimerUDB:sT8:timerdp:u0\ : LABEL IS "U(1,3)";
     ATTRIBUTE Location OF \ByteCounter_Tx:cy_m0s8_tcpwm_1\ : LABEL IS "F(TCPWM,0)";
     ATTRIBUTE lib_model OF TxDMA : LABEL IS "drqcell2";
     ATTRIBUTE Location OF TxDMA : LABEL IS "[DrqContainer=(0)][DrqId=(0)]";
-    ATTRIBUTE Location OF isr_TxDMADone : LABEL IS "[IntrContainer=(0)][IntrId=(2)]";
+    ATTRIBUTE Location OF isr_TxDMADone : LABEL IS "[IntrContainer=(0)][IntrId=(3)]";
     ATTRIBUTE Location OF \ByteCounter_Rx:cy_m0s8_tcpwm_1\ : LABEL IS "F(TCPWM,1)";
-    ATTRIBUTE Location OF isr_RxDMADone : LABEL IS "[IntrContainer=(0)][IntrId=(1)]";
+    ATTRIBUTE Location OF isr_RxDMADone : LABEL IS "[IntrContainer=(0)][IntrId=(2)]";
     ATTRIBUTE lib_model OF RxDMA : LABEL IS "drqcell3";
     ATTRIBUTE Location OF RxDMA : LABEL IS "[DrqContainer=(0)][DrqId=(1)]";
     ATTRIBUTE lib_model OF USBInDMA : LABEL IS "drqcell4";
     ATTRIBUTE Location OF USBInDMA : LABEL IS "[DrqContainer=(0)][DrqId=(8)]";
-    ATTRIBUTE Location OF I2S_LRCLK__SYNC : LABEL IS "U(1,2)";
+    ATTRIBUTE Location OF I2S_LRCLK__SYNC : LABEL IS "U(1,1)";
     ATTRIBUTE Location OF \UART:SCB\ : LABEL IS "F(SCB,0)";
     ATTRIBUTE Location OF \CodecI2CM:SCB_IRQ\ : LABEL IS "[IntrContainer=(0)][IntrId=(10)]";
     ATTRIBUTE Location OF \CodecI2CM:SCB\ : LABEL IS "F(SCB,1)";
@@ -364,52 +371,53 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     ATTRIBUTE Location OF \AudioClkSel:Sync:ctrl_reg\ : LABEL IS "U(1,2)";
     ATTRIBUTE Location OF \ADC:IRQ\ : LABEL IS "[IntrContainer=(0)][IntrId=(17)]";
     ATTRIBUTE Location OF \ADC:cy_psoc4_sar\ : LABEL IS "F(SARADC,0)";
-    ATTRIBUTE Location OF I2S_LRCLK__SYNC_1 : LABEL IS "U(1,2)";
+    ATTRIBUTE Location OF I2S_LRCLK__SYNC_1 : LABEL IS "U(1,1)";
     ATTRIBUTE lib_model OF DMA : LABEL IS "drqcell5";
     ATTRIBUTE Location OF DMA : LABEL IS "[DrqContainer=(0)][DrqId=(2)]";
     ATTRIBUTE Location OF \USBUART:high_int\ : LABEL IS "[IntrContainer=(0)][IntrId=(30)]";
-    ATTRIBUTE Location OF \USBUART:med_int\ : LABEL IS "[IntrContainer=(0)][IntrId=(0)]";
+    ATTRIBUTE Location OF \USBUART:med_int\ : LABEL IS "[IntrContainer=(0)][IntrId=(1)]";
     ATTRIBUTE Location OF \USBUART:lo_int\ : LABEL IS "[IntrContainer=(0)][IntrId=(31)]";
     ATTRIBUTE Location OF \USBUART:dp_int\ : LABEL IS "[IntrContainer=(0)][IntrId=(5)]";
     ATTRIBUTE Location OF \USBUART:cy_m0s8_usb\ : LABEL IS "F(USB,0)";
+    ATTRIBUTE Location OF isr_Button : LABEL IS "[IntrContainer=(0)][IntrId=(0)]";
     ATTRIBUTE lib_model OF \I2S:bI2S:reset\ : LABEL IS "macrocell9";
-    ATTRIBUTE Location OF \I2S:bI2S:reset\ : LABEL IS "U(1,1)";
+    ATTRIBUTE Location OF \I2S:bI2S:reset\ : LABEL IS "U(0,2)";
     ATTRIBUTE lib_model OF I2S_LRCLK : LABEL IS "macrocell10";
     ATTRIBUTE Location OF I2S_LRCLK : LABEL IS "U(0,1)";
     ATTRIBUTE lib_model OF \I2S:bI2S:tx_underflow_sticky\ : LABEL IS "macrocell11";
-    ATTRIBUTE Location OF \I2S:bI2S:tx_underflow_sticky\ : LABEL IS "U(0,2)";
+    ATTRIBUTE Location OF \I2S:bI2S:tx_underflow_sticky\ : LABEL IS "U(0,0)";
     ATTRIBUTE lib_model OF \I2S:bI2S:txenable\ : LABEL IS "macrocell12";
-    ATTRIBUTE Location OF \I2S:bI2S:txenable\ : LABEL IS "U(0,2)";
+    ATTRIBUTE Location OF \I2S:bI2S:txenable\ : LABEL IS "U(1,0)";
     ATTRIBUTE lib_model OF \I2S:bI2S:tx_swap_done_reg\ : LABEL IS "macrocell13";
-    ATTRIBUTE Location OF \I2S:bI2S:tx_swap_done_reg\ : LABEL IS "U(0,2)";
+    ATTRIBUTE Location OF \I2S:bI2S:tx_swap_done_reg\ : LABEL IS "U(0,0)";
     ATTRIBUTE lib_model OF \I2S:bI2S:tx_state_2\ : LABEL IS "macrocell14";
-    ATTRIBUTE Location OF \I2S:bI2S:tx_state_2\ : LABEL IS "U(0,3)";
+    ATTRIBUTE Location OF \I2S:bI2S:tx_state_2\ : LABEL IS "U(0,1)";
     ATTRIBUTE lib_model OF \I2S:bI2S:tx_state_1\ : LABEL IS "macrocell15";
-    ATTRIBUTE Location OF \I2S:bI2S:tx_state_1\ : LABEL IS "U(0,3)";
+    ATTRIBUTE Location OF \I2S:bI2S:tx_state_1\ : LABEL IS "U(0,0)";
     ATTRIBUTE lib_model OF \I2S:bI2S:tx_state_0\ : LABEL IS "macrocell16";
-    ATTRIBUTE Location OF \I2S:bI2S:tx_state_0\ : LABEL IS "U(0,3)";
+    ATTRIBUTE Location OF \I2S:bI2S:tx_state_0\ : LABEL IS "U(0,1)";
     ATTRIBUTE lib_model OF \I2S:bI2S:d0_load\ : LABEL IS "macrocell17";
-    ATTRIBUTE Location OF \I2S:bI2S:d0_load\ : LABEL IS "U(0,3)";
+    ATTRIBUTE Location OF \I2S:bI2S:d0_load\ : LABEL IS "U(0,0)";
     ATTRIBUTE lib_model OF Net_4031_0 : LABEL IS "macrocell18";
     ATTRIBUTE Location OF Net_4031_0 : LABEL IS "U(0,1)";
     ATTRIBUTE lib_model OF \I2S:bI2S:rx_f0_load\ : LABEL IS "macrocell19";
-    ATTRIBUTE Location OF \I2S:bI2S:rx_f0_load\ : LABEL IS "U(1,0)";
+    ATTRIBUTE Location OF \I2S:bI2S:rx_f0_load\ : LABEL IS "U(0,3)";
     ATTRIBUTE lib_model OF \I2S:bI2S:rx_state_2\ : LABEL IS "macrocell20";
-    ATTRIBUTE Location OF \I2S:bI2S:rx_state_2\ : LABEL IS "U(0,0)";
+    ATTRIBUTE Location OF \I2S:bI2S:rx_state_2\ : LABEL IS "U(0,2)";
     ATTRIBUTE lib_model OF \I2S:bI2S:rx_state_1\ : LABEL IS "macrocell21";
-    ATTRIBUTE Location OF \I2S:bI2S:rx_state_1\ : LABEL IS "U(0,0)";
+    ATTRIBUTE Location OF \I2S:bI2S:rx_state_1\ : LABEL IS "U(0,2)";
     ATTRIBUTE lib_model OF \I2S:bI2S:rx_state_0\ : LABEL IS "macrocell22";
-    ATTRIBUTE Location OF \I2S:bI2S:rx_state_0\ : LABEL IS "U(0,0)";
+    ATTRIBUTE Location OF \I2S:bI2S:rx_state_0\ : LABEL IS "U(0,2)";
     ATTRIBUTE lib_model OF \I2S:bI2S:rx_f1_load\ : LABEL IS "macrocell23";
-    ATTRIBUTE Location OF \I2S:bI2S:rx_f1_load\ : LABEL IS "U(1,0)";
+    ATTRIBUTE Location OF \I2S:bI2S:rx_f1_load\ : LABEL IS "U(0,3)";
     ATTRIBUTE lib_model OF \I2S:bI2S:rx_overflow_sticky\ : LABEL IS "macrocell24";
-    ATTRIBUTE Location OF \I2S:bI2S:rx_overflow_sticky\ : LABEL IS "U(1,1)";
+    ATTRIBUTE Location OF \I2S:bI2S:rx_overflow_sticky\ : LABEL IS "U(0,3)";
     ATTRIBUTE lib_model OF \I2S:bI2S:rxenable\ : LABEL IS "macrocell25";
-    ATTRIBUTE Location OF \I2S:bI2S:rxenable\ : LABEL IS "U(0,1)";
+    ATTRIBUTE Location OF \I2S:bI2S:rxenable\ : LABEL IS "U(1,2)";
     ATTRIBUTE lib_model OF \I2S:bI2S:rx_data_in_0\ : LABEL IS "macrocell26";
-    ATTRIBUTE Location OF \I2S:bI2S:rx_data_in_0\ : LABEL IS "U(0,0)";
+    ATTRIBUTE Location OF \I2S:bI2S:rx_data_in_0\ : LABEL IS "U(1,0)";
     ATTRIBUTE lib_model OF Clk_I2S : LABEL IS "macrocell27";
-    ATTRIBUTE Location OF Clk_I2S : LABEL IS "U(1,2)";
+    ATTRIBUTE Location OF Clk_I2S : LABEL IS "U(1,1)";
     ATTRIBUTE lib_model OF Net_3641 : LABEL IS "macrocell28";
     ATTRIBUTE Location OF Net_3641 : LABEL IS "U(1,3)";
     COMPONENT controlcell
@@ -2572,6 +2580,98 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
+    BTN:logicalport
+        GENERIC MAP(
+            drive_mode => "010",
+            ibuf_enabled => "1",
+            id => "756624b3-69e0-4605-ba58-25d680fb65fe",
+            init_dr_st => "0",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "1",
+            input_sync_mode => "0",
+            intr_mode => "11",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "CONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "0",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "",
+            pin_mode => "I",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "00000000",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vohsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 0,
+            sw_only => 0,
+            use_annotation => "1",
+            vtrip => "00",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open,
+            interrupt => Net_4874,
+            in_clock => open);
+
+    BTN(0):iocell
+        GENERIC MAP(
+            in_sync_mode => 2,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "BTN",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000001000000000000000000000000000000000101")
+        PORT MAP(
+            pa_out => BTN(0)__PA,
+            oe => open,
+            pad_in => BTN(0)_PAD,
+            in_clock => ClockBlock_HFCLK,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
+
     \I2S:bI2S:tx_underflow_0\:macrocell
         GENERIC MAP(
             eqn_main => "(!main_0 * !main_1 * main_2 * main_3)",
@@ -3211,6 +3311,14 @@ BEGIN
             dma_req_2 => \USBUART:dma_req_2\,
             dma_req_1 => \USBUART:dma_req_1\,
             dma_req_0 => \USBUART:dma_req_0\);
+
+    isr_Button:interrupt
+        GENERIC MAP(
+            int_type => "01",
+            is_nmi => 0)
+        PORT MAP(
+            interrupt => Net_4874,
+            clock => ClockBlock_HFCLK);
 
     \I2S:bI2S:reset\:macrocell
         GENERIC MAP(

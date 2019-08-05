@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
   28:Calibration.c **** {
   28              		.loc 1 28 0
   29              		.cfi_startproc
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 2
 
 
   30              		@ args = 0, pretend = 0, frame = 0
@@ -71,174 +71,174 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
   29:Calibration.c ****     calibration_data_s *pCal = (calibration_data_s *)(CY_TEST_FLASH_ADDR);
   30:Calibration.c ****     cal_data = (calibration_data_s *)page;
   37              		.loc 1 30 0
-  38 0002 114A     		ldr	r2, .L4
-  39 0004 114B     		ldr	r3, .L4+4
+  38 0002 104A     		ldr	r2, .L4
+  39 0004 104B     		ldr	r3, .L4+4
   40 0006 1A60     		str	r2, [r3]
   31:Calibration.c ****     
   32:Calibration.c ****     if (pCal->signature == CALIB_SIGN)
   41              		.loc 1 32 0
-  42 0008 FE23     		movs	r3, #254
-  43 000a 1B02     		lsls	r3, r3, #8
-  44 000c 1A68     		ldr	r2, [r3]
-  45 000e 104B     		ldr	r3, .L4+8
-  46 0010 9A42     		cmp	r2, r3
-  47 0012 09D1     		bne	.L2
+  42 0008 104B     		ldr	r3, .L4+8
+  43 000a 1A68     		ldr	r2, [r3]
+  44 000c 104B     		ldr	r3, .L4+12
+  45 000e 9A42     		cmp	r2, r3
+  46 0010 08D1     		bne	.L2
   33:Calibration.c ****     {
   34:Calibration.c ****         memcpy((void *)cal_data, (void *)pCal, sizeof(calibration_data_s));
-  48              		.loc 1 34 0
-  49 0014 0C49     		ldr	r1, .L4
-  50 0016 FE20     		movs	r0, #254
-  51 0018 0002     		lsls	r0, r0, #8
-  52 001a 0B00     		movs	r3, r1
-  53 001c 0200     		movs	r2, r0
-  54 001e 13CA     		ldmia	r2!, {r0, r1, r4}
-  55 0020 13C3     		stmia	r3!, {r0, r1, r4}
-  56 0022 03CA     		ldmia	r2!, {r0, r1}
-  57 0024 03C3     		stmia	r3!, {r0, r1}
-  58 0026 0EE0     		b	.L1
-  59              	.L2:
+  47              		.loc 1 34 0
+  48 0012 0C49     		ldr	r1, .L4
+  49 0014 0D48     		ldr	r0, .L4+8
+  50 0016 0B00     		movs	r3, r1
+  51 0018 0200     		movs	r2, r0
+  52 001a 13CA     		ldmia	r2!, {r0, r1, r4}
+  53 001c 13C3     		stmia	r3!, {r0, r1, r4}
+  54 001e 03CA     		ldmia	r2!, {r0, r1}
+  55 0020 03C3     		stmia	r3!, {r0, r1}
+  56 0022 0EE0     		b	.L1
+  57              	.L2:
   35:Calibration.c ****     }
   36:Calibration.c ****     else
   37:Calibration.c ****     {
   38:Calibration.c ****         cal_data->signature = CALIB_SIGN;
-  60              		.loc 1 38 0
-  61 0028 074B     		ldr	r3, .L4
-  62 002a 094A     		ldr	r2, .L4+8
-  63 002c 1A60     		str	r2, [r3]
+  58              		.loc 1 38 0
+  59 0024 074B     		ldr	r3, .L4
+  60 0026 0A4A     		ldr	r2, .L4+12
+  61 0028 1A60     		str	r2, [r3]
   39:Calibration.c ****         
   40:Calibration.c ****         cal_data->counter = 1;
-  64              		.loc 1 40 0
-  65 002e 0122     		movs	r2, #1
-  66 0030 5A60     		str	r2, [r3, #4]
+  62              		.loc 1 40 0
+  63 002a 0122     		movs	r2, #1
+  64 002c 5A60     		str	r2, [r3, #4]
   41:Calibration.c **** 
   42:Calibration.c ****         cal_data->adc_min[vol_ctrl_right] = -2;
-  67              		.loc 1 42 0
-  68 0032 033A     		subs	r2, r2, #3
-  69 0034 1A81     		strh	r2, [r3, #8]
+  65              		.loc 1 42 0
+  66 002e 033A     		subs	r2, r2, #3
+  67 0030 1A81     		strh	r2, [r3, #8]
   43:Calibration.c ****         cal_data->adc_min[vol_ctrl_left] = -2;
-  70              		.loc 1 43 0
-  71 0036 5A81     		strh	r2, [r3, #10]
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 3
-
-
+  68              		.loc 1 43 0
+  69 0032 5A81     		strh	r2, [r3, #10]
   44:Calibration.c **** 
   45:Calibration.c ****         cal_data->adc_max[vol_ctrl_right] = 2047;
-  72              		.loc 1 45 0
-  73 0038 064A     		ldr	r2, .L4+12
-  74 003a 9A81     		strh	r2, [r3, #12]
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 3
+
+
+  70              		.loc 1 45 0
+  71 0034 074A     		ldr	r2, .L4+16
+  72 0036 9A81     		strh	r2, [r3, #12]
   46:Calibration.c ****         cal_data->adc_max[vol_ctrl_left] = 2047;
-  75              		.loc 1 46 0
-  76 003c DA81     		strh	r2, [r3, #14]
+  73              		.loc 1 46 0
+  74 0038 DA81     		strh	r2, [r3, #14]
   47:Calibration.c **** 
   48:Calibration.c ****         cal_data->led_max_brightness = 50;
-  77              		.loc 1 48 0
-  78 003e 3222     		movs	r2, #50
-  79 0040 1A74     		strb	r2, [r3, #16]
+  75              		.loc 1 48 0
+  76 003a 3222     		movs	r2, #50
+  77 003c 1A74     		strb	r2, [r3, #16]
   49:Calibration.c ****         
   50:Calibration.c ****         cal_data->debug_mask = 0xFF;
-  80              		.loc 1 50 0
-  81 0042 CD32     		adds	r2, r2, #205
-  82 0044 5A74     		strb	r2, [r3, #17]
-  83              	.L1:
+  78              		.loc 1 50 0
+  79 003e CD32     		adds	r2, r2, #205
+  80 0040 5A74     		strb	r2, [r3, #17]
+  81              	.L1:
   51:Calibration.c ****     }
   52:Calibration.c **** }
-  84              		.loc 1 52 0
-  85              		@ sp needed
-  86 0046 10BD     		pop	{r4, pc}
-  87              	.L5:
-  88              		.align	2
-  89              	.L4:
-  90 0048 00000000 		.word	.LANCHOR0
-  91 004c 00000000 		.word	cal_data
-  92 0050 EFBEADDE 		.word	-559038737
-  93 0054 FF070000 		.word	2047
-  94              		.cfi_endproc
-  95              	.LFE2:
-  96              		.size	CalibrationInit, .-CalibrationInit
-  97              		.section	.text.CalibrationRun,"ax",%progbits
-  98              		.align	2
-  99              		.global	CalibrationRun
- 100              		.code	16
- 101              		.thumb_func
- 102              		.type	CalibrationRun, %function
- 103              	CalibrationRun:
- 104              	.LFB3:
+  82              		.loc 1 52 0
+  83              		@ sp needed
+  84 0042 10BD     		pop	{r4, pc}
+  85              	.L5:
+  86              		.align	2
+  87              	.L4:
+  88 0044 00000000 		.word	.LANCHOR0
+  89 0048 00000000 		.word	cal_data
+  90 004c 00FE0300 		.word	261632
+  91 0050 EFBEADDE 		.word	-559038737
+  92 0054 FF070000 		.word	2047
+  93              		.cfi_endproc
+  94              	.LFE2:
+  95              		.size	CalibrationInit, .-CalibrationInit
+  96              		.section	.text.CalibrationRun,"ax",%progbits
+  97              		.align	2
+  98              		.global	CalibrationRun
+  99              		.code	16
+ 100              		.thumb_func
+ 101              		.type	CalibrationRun, %function
+ 102              	CalibrationRun:
+ 103              	.LFB3:
   53:Calibration.c **** 
   54:Calibration.c **** void CalibrationRun(void)
   55:Calibration.c **** {
- 105              		.loc 1 55 0
- 106              		.cfi_startproc
- 107              		@ args = 0, pretend = 0, frame = 0
- 108              		@ frame_needed = 0, uses_anonymous_args = 0
- 109              		@ link register save eliminated.
+ 104              		.loc 1 55 0
+ 105              		.cfi_startproc
+ 106              		@ args = 0, pretend = 0, frame = 0
+ 107              		@ frame_needed = 0, uses_anonymous_args = 0
+ 108              		@ link register save eliminated.
   56:Calibration.c **** }
- 110              		.loc 1 56 0
- 111              		@ sp needed
- 112 0000 7047     		bx	lr
- 113              		.cfi_endproc
- 114              	.LFE3:
- 115              		.size	CalibrationRun, .-CalibrationRun
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 4
+ 109              		.loc 1 56 0
+ 110              		@ sp needed
+ 111 0000 7047     		bx	lr
+ 112              		.cfi_endproc
+ 113              	.LFE3:
+ 114              		.size	CalibrationRun, .-CalibrationRun
+ 115 0002 C046     		.section	.text.CalibrationSave,"ax",%progbits
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 4
 
 
- 116 0002 C046     		.section	.text.CalibrationSave,"ax",%progbits
- 117              		.align	2
- 118              		.global	CalibrationSave
- 119              		.code	16
- 120              		.thumb_func
- 121              		.type	CalibrationSave, %function
- 122              	CalibrationSave:
- 123              	.LFB4:
+ 116              		.align	2
+ 117              		.global	CalibrationSave
+ 118              		.code	16
+ 119              		.thumb_func
+ 120              		.type	CalibrationSave, %function
+ 121              	CalibrationSave:
+ 122              	.LFB4:
   57:Calibration.c **** 
   58:Calibration.c **** bool CalibrationSave(void)
   59:Calibration.c **** {
- 124              		.loc 1 59 0
- 125              		.cfi_startproc
- 126              		@ args = 0, pretend = 0, frame = 0
- 127              		@ frame_needed = 0, uses_anonymous_args = 0
- 128 0000 10B5     		push	{r4, lr}
- 129              		.cfi_def_cfa_offset 8
- 130              		.cfi_offset 4, -8
- 131              		.cfi_offset 14, -4
+ 123              		.loc 1 59 0
+ 124              		.cfi_startproc
+ 125              		@ args = 0, pretend = 0, frame = 0
+ 126              		@ frame_needed = 0, uses_anonymous_args = 0
+ 127 0000 10B5     		push	{r4, lr}
+ 128              		.cfi_def_cfa_offset 8
+ 129              		.cfi_offset 4, -8
+ 130              		.cfi_offset 14, -4
   60:Calibration.c ****     cystatus returnValue;
   61:Calibration.c **** 
   62:Calibration.c ****     cal_data->counter++;
- 132              		.loc 1 62 0
- 133 0002 064B     		ldr	r3, .L8
- 134 0004 1968     		ldr	r1, [r3]
- 135 0006 4B68     		ldr	r3, [r1, #4]
- 136 0008 0133     		adds	r3, r3, #1
- 137 000a 4B60     		str	r3, [r1, #4]
+ 131              		.loc 1 62 0
+ 132 0002 064B     		ldr	r3, .L8
+ 133 0004 1968     		ldr	r1, [r3]
+ 134 0006 4B68     		ldr	r3, [r1, #4]
+ 135 0008 0133     		adds	r3, r3, #1
+ 136 000a 4B60     		str	r3, [r1, #4]
   63:Calibration.c **** 
   64:Calibration.c ****     returnValue = CySysFlashWriteRow(CY_TEST_FLASH_ROW, (uint8 *)cal_data);
- 138              		.loc 1 64 0
- 139 000c FE20     		movs	r0, #254
- 140 000e FFF7FEFF 		bl	CySysFlashWriteRow
- 141              	.LVL1:
- 142 0012 0300     		movs	r3, r0
- 143              	.LVL2:
+ 137              		.loc 1 64 0
+ 138 000c 0448     		ldr	r0, .L8+4
+ 139 000e FFF7FEFF 		bl	CySysFlashWriteRow
+ 140              	.LVL1:
+ 141 0012 0300     		movs	r3, r0
+ 142              	.LVL2:
   65:Calibration.c **** 
   66:Calibration.c ****     /* Check if operation is successful */
   67:Calibration.c ****     return (returnValue == CY_SYS_FLASH_SUCCESS);
- 144              		.loc 1 67 0
- 145 0014 5842     		rsbs	r0, r3, #0
- 146 0016 5841     		adcs	r0, r0, r3
- 147              	.LVL3:
- 148 0018 C0B2     		uxtb	r0, r0
+ 143              		.loc 1 67 0
+ 144 0014 5842     		rsbs	r0, r3, #0
+ 145 0016 5841     		adcs	r0, r0, r3
+ 146              	.LVL3:
+ 147 0018 C0B2     		uxtb	r0, r0
   68:Calibration.c **** }
- 149              		.loc 1 68 0
- 150              		@ sp needed
- 151 001a 10BD     		pop	{r4, pc}
- 152              	.L9:
- 153              		.align	2
- 154              	.L8:
- 155 001c 00000000 		.word	cal_data
+ 148              		.loc 1 68 0
+ 149              		@ sp needed
+ 150 001a 10BD     		pop	{r4, pc}
+ 151              	.L9:
+ 152              		.align	2
+ 153              	.L8:
+ 154 001c 00000000 		.word	cal_data
+ 155 0020 FE030000 		.word	1022
  156              		.cfi_endproc
  157              	.LFE4:
  158              		.size	CalibrationSave, .-CalibrationSave
  159              		.comm	cal_data,4,4
  160              		.bss
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 5
 
 
  161              		.align	2
@@ -259,7 +259,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  172              		.file 5 "Generated_Source\\PSoC4/CyFlash.h"
  173              		.section	.debug_info,"",%progbits
  174              	.Ldebug_info0:
- 175 0000 FD010000 		.4byte	0x1fd
+ 175 0000 00020000 		.4byte	0x200
  176 0004 0400     		.2byte	0x4
  177 0006 00000000 		.4byte	.Ldebug_abbrev0
  178 000a 04       		.byte	0x4
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  211 004f 02       		.uleb128 0x2
  212 0050 08       		.byte	0x8
  213 0051 05       		.byte	0x5
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 6
 
 
  214 0052 FB010000 		.4byte	.LASF6
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  268 00bf 01       		.byte	0x1
  269 00c0 2C000000 		.4byte	0x2c
  270 00c4 04       		.byte	0x4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 7
 
 
  271 00c5 14       		.byte	0x14
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  325 012e 09       		.uleb128 0x9
  326 012f 83000000 		.4byte	0x83
  327 0133 3E010000 		.4byte	0x13e
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 8
 
 
  328 0137 0A       		.uleb128 0xa
@@ -438,88 +438,88 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  342 0154 58000000 		.4byte	.LFE2-.LFB2
  343 0158 01       		.uleb128 0x1
  344 0159 9C       		.byte	0x9c
- 345 015a 6C010000 		.4byte	0x16c
+ 345 015a 6E010000 		.4byte	0x16e
  346 015e 0D       		.uleb128 0xd
  347 015f EA000000 		.4byte	.LASF28
  348 0163 01       		.byte	0x1
  349 0164 1D       		.byte	0x1d
- 350 0165 6C010000 		.4byte	0x16c
- 351 0169 00FE     		.2byte	0xfe00
- 352 016b 00       		.byte	0
- 353 016c 0E       		.uleb128 0xe
- 354 016d 04       		.byte	0x4
- 355 016e 3E010000 		.4byte	0x13e
- 356 0172 0F       		.uleb128 0xf
- 357 0173 30000000 		.4byte	.LASF36
- 358 0177 01       		.byte	0x1
- 359 0178 36       		.byte	0x36
- 360 0179 00000000 		.4byte	.LFB3
- 361 017d 02000000 		.4byte	.LFE3-.LFB3
- 362 0181 01       		.uleb128 0x1
- 363 0182 9C       		.byte	0x9c
- 364 0183 10       		.uleb128 0x10
- 365 0184 E2010000 		.4byte	.LASF37
- 366 0188 01       		.byte	0x1
- 367 0189 3A       		.byte	0x3a
- 368 018a BC010000 		.4byte	0x1bc
- 369 018e 00000000 		.4byte	.LFB4
- 370 0192 20000000 		.4byte	.LFE4-.LFB4
- 371 0196 01       		.uleb128 0x1
- 372 0197 9C       		.byte	0x9c
- 373 0198 BC010000 		.4byte	0x1bc
- 374 019c 11       		.uleb128 0x11
- 375 019d 62000000 		.4byte	.LASF29
- 376 01a1 01       		.byte	0x1
- 377 01a2 3C       		.byte	0x3c
- 378 01a3 A4000000 		.4byte	0xa4
- 379 01a7 00000000 		.4byte	.LLST0
- 380 01ab 12       		.uleb128 0x12
- 381 01ac 12000000 		.4byte	.LVL1
- 382 01b0 F5010000 		.4byte	0x1f5
- 383 01b4 13       		.uleb128 0x13
- 384 01b5 01       		.uleb128 0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 9
+ 350 0165 6E010000 		.4byte	0x16e
+ 351 0169 00FE0300 		.4byte	0x3fe00
+ 352 016d 00       		.byte	0
+ 353 016e 0E       		.uleb128 0xe
+ 354 016f 04       		.byte	0x4
+ 355 0170 3E010000 		.4byte	0x13e
+ 356 0174 0F       		.uleb128 0xf
+ 357 0175 30000000 		.4byte	.LASF36
+ 358 0179 01       		.byte	0x1
+ 359 017a 36       		.byte	0x36
+ 360 017b 00000000 		.4byte	.LFB3
+ 361 017f 02000000 		.4byte	.LFE3-.LFB3
+ 362 0183 01       		.uleb128 0x1
+ 363 0184 9C       		.byte	0x9c
+ 364 0185 10       		.uleb128 0x10
+ 365 0186 E2010000 		.4byte	.LASF37
+ 366 018a 01       		.byte	0x1
+ 367 018b 3A       		.byte	0x3a
+ 368 018c BF010000 		.4byte	0x1bf
+ 369 0190 00000000 		.4byte	.LFB4
+ 370 0194 24000000 		.4byte	.LFE4-.LFB4
+ 371 0198 01       		.uleb128 0x1
+ 372 0199 9C       		.byte	0x9c
+ 373 019a BF010000 		.4byte	0x1bf
+ 374 019e 11       		.uleb128 0x11
+ 375 019f 62000000 		.4byte	.LASF29
+ 376 01a3 01       		.byte	0x1
+ 377 01a4 3C       		.byte	0x3c
+ 378 01a5 A4000000 		.4byte	0xa4
+ 379 01a9 00000000 		.4byte	.LLST0
+ 380 01ad 12       		.uleb128 0x12
+ 381 01ae 12000000 		.4byte	.LVL1
+ 382 01b2 F8010000 		.4byte	0x1f8
+ 383 01b6 13       		.uleb128 0x13
+ 384 01b7 01       		.uleb128 0x1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 9
 
 
- 385 01b6 50       		.byte	0x50
- 386 01b7 02       		.uleb128 0x2
- 387 01b8 08       		.byte	0x8
- 388 01b9 FE       		.byte	0xfe
- 389 01ba 00       		.byte	0
- 390 01bb 00       		.byte	0
- 391 01bc 02       		.uleb128 0x2
- 392 01bd 01       		.byte	0x1
- 393 01be 02       		.byte	0x2
- 394 01bf 69020000 		.4byte	.LASF30
- 395 01c3 09       		.uleb128 0x9
- 396 01c4 6B000000 		.4byte	0x6b
- 397 01c8 D3010000 		.4byte	0x1d3
- 398 01cc 0A       		.uleb128 0xa
- 399 01cd B7000000 		.4byte	0xb7
- 400 01d1 FF       		.byte	0xff
- 401 01d2 00       		.byte	0
- 402 01d3 14       		.uleb128 0x14
- 403 01d4 00000000 		.4byte	.LASF31
- 404 01d8 01       		.byte	0x1
- 405 01d9 17       		.byte	0x17
- 406 01da C3010000 		.4byte	0x1c3
- 407 01de 05       		.uleb128 0x5
- 408 01df 03       		.byte	0x3
- 409 01e0 00000000 		.4byte	page
- 410 01e4 15       		.uleb128 0x15
- 411 01e5 F8000000 		.4byte	.LASF38
- 412 01e9 01       		.byte	0x1
- 413 01ea 19       		.byte	0x19
- 414 01eb 6C010000 		.4byte	0x16c
- 415 01ef 05       		.uleb128 0x5
- 416 01f0 03       		.byte	0x3
- 417 01f1 00000000 		.4byte	cal_data
- 418 01f5 16       		.uleb128 0x16
- 419 01f6 D7000000 		.4byte	.LASF39
- 420 01fa D7000000 		.4byte	.LASF39
- 421 01fe 05       		.byte	0x5
- 422 01ff 4E       		.byte	0x4e
- 423 0200 00       		.byte	0
+ 385 01b8 50       		.byte	0x50
+ 386 01b9 03       		.uleb128 0x3
+ 387 01ba 0A       		.byte	0xa
+ 388 01bb FE03     		.2byte	0x3fe
+ 389 01bd 00       		.byte	0
+ 390 01be 00       		.byte	0
+ 391 01bf 02       		.uleb128 0x2
+ 392 01c0 01       		.byte	0x1
+ 393 01c1 02       		.byte	0x2
+ 394 01c2 69020000 		.4byte	.LASF30
+ 395 01c6 09       		.uleb128 0x9
+ 396 01c7 6B000000 		.4byte	0x6b
+ 397 01cb D6010000 		.4byte	0x1d6
+ 398 01cf 0A       		.uleb128 0xa
+ 399 01d0 B7000000 		.4byte	0xb7
+ 400 01d4 FF       		.byte	0xff
+ 401 01d5 00       		.byte	0
+ 402 01d6 14       		.uleb128 0x14
+ 403 01d7 00000000 		.4byte	.LASF31
+ 404 01db 01       		.byte	0x1
+ 405 01dc 17       		.byte	0x17
+ 406 01dd C6010000 		.4byte	0x1c6
+ 407 01e1 05       		.uleb128 0x5
+ 408 01e2 03       		.byte	0x3
+ 409 01e3 00000000 		.4byte	page
+ 410 01e7 15       		.uleb128 0x15
+ 411 01e8 F8000000 		.4byte	.LASF38
+ 412 01ec 01       		.byte	0x1
+ 413 01ed 19       		.byte	0x19
+ 414 01ee 6E010000 		.4byte	0x16e
+ 415 01f2 05       		.uleb128 0x5
+ 416 01f3 03       		.byte	0x3
+ 417 01f4 00000000 		.4byte	cal_data
+ 418 01f8 16       		.uleb128 0x16
+ 419 01f9 D7000000 		.4byte	.LASF39
+ 420 01fd D7000000 		.4byte	.LASF39
+ 421 0201 05       		.byte	0x5
+ 422 0202 4E       		.byte	0x4e
+ 423 0203 00       		.byte	0
  424              		.section	.debug_abbrev,"",%progbits
  425              	.Ldebug_abbrev0:
  426 0000 01       		.uleb128 0x1
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  439 000d 11       		.uleb128 0x11
  440 000e 01       		.uleb128 0x1
  441 000f 10       		.uleb128 0x10
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 10
 
 
  442 0010 17       		.uleb128 0x17
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  496 0046 28       		.uleb128 0x28
  497 0047 00       		.byte	0
  498 0048 03       		.uleb128 0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 11
 
 
  499 0049 0E       		.uleb128 0xe
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  553 007f 03       		.uleb128 0x3
  554 0080 0E       		.uleb128 0xe
  555 0081 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 12
 
 
  556 0082 0B       		.uleb128 0xb
@@ -705,7 +705,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  597 00ac 49       		.uleb128 0x49
  598 00ad 13       		.uleb128 0x13
  599 00ae 1C       		.uleb128 0x1c
- 600 00af 05       		.uleb128 0x5
+ 600 00af 06       		.uleb128 0x6
  601 00b0 00       		.byte	0
  602 00b1 00       		.byte	0
  603 00b2 0E       		.uleb128 0xe
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  610 00b9 00       		.byte	0
  611 00ba 00       		.byte	0
  612 00bb 0F       		.uleb128 0xf
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 13
 
 
  613 00bc 2E       		.uleb128 0x2e
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  667 00f4 3A       		.uleb128 0x3a
  668 00f5 0B       		.uleb128 0xb
  669 00f6 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 14
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 14
 
 
  670 00f7 0B       		.uleb128 0xb
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  724 0132 18       		.uleb128 0x18
  725 0133 00       		.byte	0
  726 0134 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 15
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 15
 
 
  727 0135 16       		.uleb128 0x16
@@ -881,7 +881,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  764 0018 00000000 		.4byte	.LFB3
  765 001c 02000000 		.4byte	.LFE3-.LFB3
  766 0020 00000000 		.4byte	.LFB4
- 767 0024 20000000 		.4byte	.LFE4-.LFB4
+ 767 0024 24000000 		.4byte	.LFE4-.LFB4
  768 0028 00000000 		.4byte	0
  769 002c 00000000 		.4byte	0
  770              		.section	.debug_ranges,"",%progbits
@@ -891,14 +891,14 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  774 0008 00000000 		.4byte	.LFB3
  775 000c 02000000 		.4byte	.LFE3
  776 0010 00000000 		.4byte	.LFB4
- 777 0014 20000000 		.4byte	.LFE4
+ 777 0014 24000000 		.4byte	.LFE4
  778 0018 00000000 		.4byte	0
  779 001c 00000000 		.4byte	0
  780              		.section	.debug_line,"",%progbits
  781              	.Ldebug_line0:
  782 0000 C1000000 		.section	.debug_str,"MS",%progbits,1
  782      02007D00 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 16
 
 
  782      00000201 
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  808      65765C67 
  808      69745C69 
  808      63656272 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 17
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 17
 
 
  808      65616B65 
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  832      206C6F6E 
  832      6720756E 
  832      7369676E 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 18
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 18
 
 
  832      65642069 
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 1
  856      62726174 
  856      696F6E5F 
  856      64617461 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccco7pHO.s 			page 19
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccZiVhzl.s 			page 19
 
 
  856      5F7300

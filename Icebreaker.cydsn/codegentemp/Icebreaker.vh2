@@ -2,7 +2,7 @@
 --	Conversion of Icebreaker.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Sun Aug 04 01:25:13 2019
+--	Mon Aug 05 00:45:16 2019
 --
 
 USE cypress.cypress.all;
@@ -740,7 +740,7 @@ SIGNAL \ADC:Net_3104\ : bit;
 SIGNAL \ADC:Net_3103\ : bit;
 TERMINAL \ADC:Net_3113\ : bit;
 TERMINAL \ADC:Net_43\ : bit;
-TERMINAL \ADC:Net_3225\ : bit;
+TERMINAL \ADC:Net_3227\ : bit;
 TERMINAL \ADC:mux_bus_minus_1\ : bit;
 TERMINAL \ADC:mux_bus_minus_0\ : bit;
 TERMINAL \ADC:Net_2375_1\ : bit;
@@ -815,7 +815,6 @@ TERMINAL \ADC:mux_bus_minus_12\ : bit;
 TERMINAL \ADC:mux_bus_minus_13\ : bit;
 TERMINAL \ADC:mux_bus_minus_14\ : bit;
 TERMINAL \ADC:mux_bus_minus_15\ : bit;
-TERMINAL \ADC:Net_3227\ : bit;
 SIGNAL tmpOE__POTR_net_0 : bit;
 SIGNAL tmpFB_0__POTR_net_0 : bit;
 SIGNAL tmpIO_0__POTR_net_0 : bit;
@@ -897,6 +896,13 @@ SIGNAL \USBUART:Net_170\ : bit;
 SIGNAL \USBUART:Net_173\ : bit;
 SIGNAL \USBUART:Net_189\ : bit;
 SIGNAL \USBUART:Net_186\ : bit;
+TERMINAL Net_4867 : bit;
+TERMINAL Net_4858 : bit;
+SIGNAL tmpOE__BTN_net_0 : bit;
+SIGNAL Net_4868 : bit;
+SIGNAL tmpIO_0__BTN_net_0 : bit;
+TERMINAL tmpSIOVREF__BTN_net_0 : bit;
+SIGNAL Net_4874 : bit;
 SIGNAL \I2S:bI2S:reset\\D\ : bit;
 SIGNAL \I2S:bI2S:channel\\D\ : bit;
 SIGNAL \I2S:bI2S:tx_underflow_sticky\\D\ : bit;
@@ -2340,7 +2346,7 @@ D_1:cy_annotation_universal_v1_0
 	GENERIC MAP(sig_width=>1,
 		is_net_join=>'0')
 	PORT MAP(signal1=>\ADC:Net_43\,
-		signal2=>\ADC:Net_3225\);
+		signal2=>\ADC:Net_3227\);
 \ADC:Connect_2:bus_connect\:cy_connect_v1_0
 	GENERIC MAP(sig_width=>2,
 		is_net_join=>'0')
@@ -3236,6 +3242,90 @@ GND_1:cy_annotation_universal_v1_0
 		out_clock_en=>one,
 		out_reset=>zero,
 		interrupt=>\USBUART:tmpINTERRUPT_0__Dm_net_0\);
+R_1:cy_annotation_universal_v1_0
+	GENERIC MAP(comp_name=>"Resistor_v1_0",
+		port_names=>"T1, T2",
+		width=>2)
+	PORT MAP(connect=>(Net_4867, Net_4858));
+BTN:cy_psoc3_pins_v1_10
+	GENERIC MAP(id=>"756624b3-69e0-4605-ba58-25d680fb65fe",
+		drive_mode=>"010",
+		ibuf_enabled=>"1",
+		init_dr_st=>"0",
+		input_sync=>"1",
+		input_clk_en=>'0',
+		input_sync_mode=>"0",
+		intr_mode=>"11",
+		invert_in_clock=>'0',
+		invert_in_clock_en=>'0',
+		invert_in_reset=>'0',
+		invert_out_clock=>'0',
+		invert_out_clock_en=>'0',
+		invert_out_reset=>'0',
+		io_voltage=>"",
+		layout_mode=>"CONTIGUOUS",
+		output_conn=>"0",
+		output_sync=>"0",
+		output_clk_en=>'0',
+		output_mode=>"0",
+		output_reset=>'0',
+		output_clock_mode=>"0",
+		oe_sync=>"0",
+		oe_conn=>"0",
+		oe_reset=>'0',
+		pin_aliases=>"",
+		pin_mode=>"I",
+		por_state=>4,
+		sio_group_cnt=>0,
+		sio_hifreq=>"00000000",
+		sio_hyst=>"1",
+		sio_ibuf=>"00000000",
+		sio_info=>"00",
+		sio_obuf=>"00000000",
+		sio_refsel=>"00000000",
+		sio_vtrip=>"00000000",
+		sio_vohsel=>"00000000",
+		slew_rate=>"0",
+		spanning=>'0',
+		sw_only=>'0',
+		vtrip=>"00",
+		width=>1,
+		port_alias_required=>'0',
+		port_alias_group=>"",
+		use_annotation=>"1",
+		pa_in_clock=>-1,
+		pa_in_clock_en=>-1,
+		pa_in_reset=>-1,
+		pa_out_clock=>-1,
+		pa_out_clock_en=>-1,
+		pa_out_reset=>-1,
+		ovt_needed=>"0",
+		ovt_slew_control=>"00",
+		ovt_hyst_trim=>"0",
+		input_buffer_sel=>"00")
+	PORT MAP(oe=>(one),
+		y=>(zero),
+		fb=>Net_4868,
+		analog=>(open),
+		io=>(tmpIO_0__BTN_net_0),
+		siovref=>(tmpSIOVREF__BTN_net_0),
+		annotation=>Net_4867,
+		in_clock=>zero,
+		in_clock_en=>one,
+		in_reset=>zero,
+		out_clock=>zero,
+		out_clock_en=>one,
+		out_reset=>zero,
+		interrupt=>Net_4874);
+GND_2:cy_annotation_universal_v1_0
+	GENERIC MAP(comp_name=>"Gnd_v1_0",
+		port_names=>"T1",
+		width=>1)
+	PORT MAP(connect=>Net_4858);
+isr_Button:cy_isr_v1_0
+	GENERIC MAP(int_type=>"01",
+		is_nmi=>'0')
+	PORT MAP(int_signal=>Net_4874);
 \I2S:bI2S:reset\:cy_dff
 	PORT MAP(d=>\I2S:bI2S:reset\\D\,
 		clk=>\I2S:bI2S:op_clk\,

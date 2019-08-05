@@ -69,8 +69,11 @@
       <Data key="1425177d-0d0e-4468-8bcc-e638e5509a9b" value="SPI_MOSI" />
       <Data key="8843558f-8028-4242-b419-20e93446a62f" value="Codec_MCLK" />
       <Data key="77715107-f8d5-47e5-a629-0fb83101ac6b" value="POTR" />
+      <Data key="a38795bf-fde2-4dff-8a29-cb8931666097" value="BTN" />
       <Data key="aeb26ab7-0dc4-4c65-873b-dd1f1060d551" value="PD" />
       <Data key="be860bbe-c17b-4bbf-beaf-f1b59b120ce1" value="Pin_2" />
+      <Data key="c39ef993-d787-4c0c-8ad6-c0c81f866442/8b77a6c4-10a0-4390-971c-672353e2a49c" value="USBUART_Dm" />
+      <Data key="c39ef993-d787-4c0c-8ad6-c0c81f866442/618a72fc-5ddd-4df5-958f-a3d55102db42" value="USBUART_Dp" />
       <Data key="c0065ef1-1b4a-4c27-bd7a-de833fd58b42/8b77a6c4-10a0-4390-971c-672353e2a49c" value="USBFS_Dm" />
       <Data key="c0065ef1-1b4a-4c27-bd7a-de833fd58b42/618a72fc-5ddd-4df5-958f-a3d55102db42" value="USBFS_Dp" />
       <Data key="c147b780-8d50-46e0-8f28-5288a63bb8e0/8b77a6c4-10a0-4390-971c-672353e2a49c" value="USBiAP_Dm" />
@@ -4185,6 +4188,11 @@
     <Group key="77715107-f8d5-47e5-a629-0fb83101ac6b">
       <Group key="0">
         <Data key="Port Format" value="0,1" />
+      </Group>
+    </Group>
+    <Group key="a38795bf-fde2-4dff-8a29-cb8931666097">
+      <Group key="0">
+        <Data key="Port Format" value="0,3" />
       </Group>
     </Group>
     <Group key="aeb26ab7-0dc4-4c65-873b-dd1f1060d551">

@@ -19,6 +19,7 @@
 #include <Calibration.h>
 #include <LED.h>
 #include <USBUART_cdc.h>
+#include <timers.h>
 
 #define USBUART_BUFFER_SIZE (64u)
 
@@ -355,7 +356,7 @@ TK_SHELL_METHOD(sys, crash)
 
 TK_SHELL_METHOD(sys, info)
 {
-    PRINTF("> sys:ok %08lu\n", (unsigned long)sys_tick);
+    PRINTF("> sys:ok %08lu\n", (unsigned long)tmrGetCounter_ms());
 
     return 0;
 }

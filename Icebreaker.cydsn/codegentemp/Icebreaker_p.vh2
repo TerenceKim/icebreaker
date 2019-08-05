@@ -1,5 +1,5 @@
 -- Project:   Icebreaker
--- Generated: 08/04/2019 01:25:15
+-- Generated: 08/05/2019 00:45:17
 -- PSoC Creator  4.2
 
 ENTITY Icebreaker IS
@@ -19,22 +19,25 @@ ENTITY Icebreaker IS
         SPI_CS(0)_PAD : OUT std_ulogic;
         PD(0)_PAD : OUT std_ulogic;
         \USBUART:Dp(0)_PAD\ : INOUT std_ulogic;
-        \USBUART:Dm(0)_PAD\ : OUT std_ulogic);
-    ATTRIBUTE voltage_VDDIO_A_0 OF __DEFAULT__ : ENTITY IS 3.3e0;
+        \USBUART:Dm(0)_PAD\ : OUT std_ulogic;
+        BTN(0)_PAD : IN std_ulogic);
+    ATTRIBUTE voltage_VDDIO_A_1 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDA_0 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDA_CTB OF __DEFAULT__ : ENTITY IS 3.3e0;
-    ATTRIBUTE voltage_VDDD OF __DEFAULT__ : ENTITY IS 3.3e0;
+    ATTRIBUTE voltage_VDDA_1 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_0 OF __DEFAULT__ : ENTITY IS 3.3e0;
+    ATTRIBUTE voltage_VDDD OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_1 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_2 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_3 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_4 OF __DEFAULT__ : ENTITY IS 3.3e0;
-    ATTRIBUTE voltage_VDDIO OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDIO_A OF __DEFAULT__ : ENTITY IS 3.3e0;
+    ATTRIBUTE voltage_VDDIO OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VBUS OF __DEFAULT__ : ENTITY IS 5e0;
 END Icebreaker;
 
 ARCHITECTURE __DEFAULT__ OF Icebreaker IS
+    SIGNAL BTN(0)__PA : bit;
     SIGNAL Clk_I2S : bit;
     ATTRIBUTE udbclken_assigned OF Clk_I2S : SIGNAL IS "False";
     SIGNAL ClockBlock_ECO : bit;
@@ -97,6 +100,7 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     SIGNAL Net_4779 : bit;
     SIGNAL Net_4781 : bit;
     SIGNAL Net_4856 : bit;
+    SIGNAL Net_4874 : bit;
     SIGNAL PD(0)__PA : bit;
     SIGNAL POTL(0)__PA : bit;
     SIGNAL POTR(0)__PA : bit;
@@ -277,6 +281,7 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     ATTRIBUTE Location OF PD(0) : LABEL IS "P0[0]";
     ATTRIBUTE lib_model OF \USBUART:Dp(0)\ : LABEL IS "iocell17";
     ATTRIBUTE lib_model OF \USBUART:Dm(0)\ : LABEL IS "iocell18";
+    ATTRIBUTE lib_model OF BTN(0) : LABEL IS "iocell19";
     ATTRIBUTE lib_model OF \I2S:bI2S:tx_underflow_0\ : LABEL IS "macrocell2";
     ATTRIBUTE lib_model OF \I2S:bI2S:rx_overflow_0\ : LABEL IS "macrocell3";
     ATTRIBUTE lib_model OF \Async_Feedback_Counter:TimerUDB:status_tc\ : LABEL IS "macrocell4";
@@ -2503,6 +2508,98 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
+    BTN:logicalport
+        GENERIC MAP(
+            drive_mode => "010",
+            ibuf_enabled => "1",
+            id => "756624b3-69e0-4605-ba58-25d680fb65fe",
+            init_dr_st => "0",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "1",
+            input_sync_mode => "0",
+            intr_mode => "11",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "CONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "0",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "",
+            pin_mode => "I",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "00000000",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vohsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 0,
+            sw_only => 0,
+            use_annotation => "1",
+            vtrip => "00",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open,
+            interrupt => Net_4874,
+            in_clock => open);
+
+    BTN(0):iocell
+        GENERIC MAP(
+            in_sync_mode => 2,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "BTN",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000001000000000000000000000000000000000101")
+        PORT MAP(
+            pa_out => BTN(0)__PA,
+            oe => open,
+            pad_in => BTN(0)_PAD,
+            in_clock => ClockBlock_HFCLK,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
+
     \I2S:bI2S:tx_underflow_0\:macrocell
         GENERIC MAP(
             eqn_main => "(!main_0 * !main_1 * main_2 * main_3)",
@@ -3142,6 +3239,14 @@ BEGIN
             dma_req_2 => \USBUART:dma_req_2\,
             dma_req_1 => \USBUART:dma_req_1\,
             dma_req_0 => \USBUART:dma_req_0\);
+
+    isr_Button:interrupt
+        GENERIC MAP(
+            int_type => "01",
+            is_nmi => 0)
+        PORT MAP(
+            interrupt => Net_4874,
+            clock => ClockBlock_HFCLK);
 
     \I2S:bI2S:reset\:macrocell
         GENERIC MAP(
