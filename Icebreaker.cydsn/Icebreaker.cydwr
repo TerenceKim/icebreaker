@@ -67,6 +67,7 @@
       <Data key="169e56f7-3412-45a5-8336-07b0db29f736" value="POTL" />
       <Data key="817efed6-dcc9-47ed-aada-5900fb4364af" value="Codec_DACLRC" />
       <Data key="3176bfe9-21b7-4a5a-a4c8-d2fd8425837e" value="Codec_DACDAT_1" />
+      <Data key="8440a286-eda4-4774-8d70-0ec0410a83da" value="LED_GREEN" />
       <Data key="756624b3-69e0-4605-ba58-25d680fb65fe" value="BTN" />
       <Data key="1425177d-0d0e-4468-8bcc-e638e5509a9b" value="SPI_MOSI" />
       <Data key="8843558f-8028-4242-b419-20e93446a62f" value="Codec_MCLK" />
@@ -4181,6 +4182,11 @@
     <Group key="3176bfe9-21b7-4a5a-a4c8-d2fd8425837e">
       <Group key="0">
         <Data key="Port Format" value="3,3" />
+      </Group>
+    </Group>
+    <Group key="8440a286-eda4-4774-8d70-0ec0410a83da">
+      <Group key="0">
+        <Data key="Port Format" value="11,2" />
       </Group>
     </Group>
     <Group key="1425177d-0d0e-4468-8bcc-e638e5509a9b">

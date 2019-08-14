@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
   28:TkShell.c     **** #define TK_SHELL_COMMAND(name, desc)          {#name, (tk_shell_command_verb_s *)__tk_shell_verbs_ 
   29:TkShell.c     **** #define TK_SHELL_VERBS(name)                  const tk_shell_command_verb_s __tk_shell_verbs_ ## na
   30:TkShell.c     **** #define TK_SHELL_VERB(c, name, desc)          {#name, __tk_shell_ ## c ## _ ## name, desc}
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 2
 
 
   31:TkShell.c     **** 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
   85:TkShell.c     ****     TK_SHELL_VERB(wm, vol_get, "get volume level"),
   86:TkShell.c     ****     TK_SHELL_VERB(wm, reg_wr, "write register <reg:uint8,data:uint16>)"),
   87:TkShell.c     ****     TK_SHELL_VERB(wm, reg_rd, "read register <reg:uint8>"),
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 3
 
 
   88:TkShell.c     ****     { "", NULL, "" }
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  142:TkShell.c     **** 
  143:TkShell.c     **** static char cmd_buf[CMD_BUF_LEN];
  144:TkShell.c     **** static uint8_t cmd_char_count;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 4
 
 
  145:TkShell.c     **** 
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  199:TkShell.c     ****         return -1;
  200:TkShell.c     ****     }
  201:TkShell.c     ****     
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 5
 
 
  202:TkShell.c     ****     port = atoi(argv[i++]);
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  256:TkShell.c     ****     }
  257:TkShell.c     **** 
  258:TkShell.c     ****     return 0;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 6
 
 
  259:TkShell.c     **** }
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  313:TkShell.c     ****     
  314:TkShell.c     ****     PRINTF("> wm:ok 0x%04X\n", Codec_GetData(reg));
  315:TkShell.c     ****     
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 7
 
 
  316:TkShell.c     ****     return 0;
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
   45 000a 0028     		cmp	r0, #0
   46 000c 0CD0     		beq	.L2
   47              	.L3:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 8
 
 
   48              		.loc 1 352 0 is_stmt 0 discriminator 1
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
   97              		.loc 1 196 0
   98 0004 0528     		cmp	r0, #5
   99 0006 13D0     		beq	.L7
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 9
 
 
  198:TkShell.c     ****         return -1;
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  206:TkShell.c     ****     
  147              		.loc 1 206 0
  148 0046 B600     		lsls	r6, r6, #2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 10
 
 
  149              	.LVL23:
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  199              		.cfi_def_cfa_offset 16
  200              		.cfi_offset 4, -16
  201              		.cfi_offset 5, -12
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 11
 
 
  202              		.cfi_offset 6, -8
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  249 003e 0500     		movs	r5, r0
  250              	.LVL41:
  172:TkShell.c     ****     
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 12
 
 
  251              		.loc 1 172 0
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  299              	.LVL47:
  300 0088 0028     		cmp	r0, #0
  301 008a FBD0     		beq	.L19
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 13
 
 
  185:TkShell.c     ****     return 0;
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  212:TkShell.c     ****     uint32_t port, pin;
  351              		.loc 1 212 0
  352              		.cfi_startproc
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 14
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 14
 
 
  353              		@ args = 0, pretend = 0, frame = 0
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  401              	.LVL63:
  225:TkShell.c     ****     
  402              		.loc 1 225 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 15
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 15
 
 
  403 0038 E068     		ldr	r0, [r4, #12]
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  451              	.LVL75:
  452              	.L26:
  230:TkShell.c     **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 16
 
 
  453              		.loc 1 230 0
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  503 0022 FFF7FEFF 		bl	USBUART_PutString
  504              	.LVL80:
  505              	.L34:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 17
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 17
 
 
  360:TkShell.c     **** 
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  546 0010 FBD0     		beq	.L40
  547              		.loc 1 373 0 discriminator 2
  548 0012 074B     		ldr	r3, .L41
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 18
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 18
 
 
  549 0014 0221     		movs	r1, #2
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  394:TkShell.c     ****         ledIdx = LM_LED_RED;
  395:TkShell.c     ****     }
  396:TkShell.c     ****     else if (strcicmp(argv[i], "green") == 0)
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 19
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 19
 
 
  397:TkShell.c     ****     {
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  451:TkShell.c     ****     LedManagerStopOverride(ledIdx);
  452:TkShell.c     ****     
  453:TkShell.c     ****     PRINTF("> led:ok\n");
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 20
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 20
 
 
  454:TkShell.c     **** 
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  629 003a 1B68     		ldr	r3, [r3]
  630 003c 5A68     		ldr	r2, [r3, #4]
  631 003e 494C     		ldr	r4, .L62+4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 21
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 21
 
 
  632 0040 4A49     		ldr	r1, .L62+12
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  684 0094 FFF7FEFF 		bl	sprintf
  685              	.LVL101:
  686 0098 2000     		movs	r0, r4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 22
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 22
 
 
  687 009a FFF7FEFF 		bl	USBUART_PutString
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  739              	.L54:
  466:TkShell.c     **** 
  467:TkShell.c     ****     PRINTF("led_max_brightness = %d\n", cal_data->led_max_brightness);
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 23
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 23
 
 
  740              		.loc 1 467 0 is_stmt 1
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  792 0140 0CD0     		beq	.L60
  793              	.L61:
  794              		.loc 1 469 0 is_stmt 0 discriminator 1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 24
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 24
 
 
  795 0142 FFF7FEFF 		bl	USBUART_CDCIsReady
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  845              		.cfi_def_cfa_offset 16
  846              		.cfi_offset 4, -16
  847              		.cfi_offset 5, -12
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 25
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 25
 
 
  848              		.cfi_offset 6, -8
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  894              		.loc 1 250 0
  895 003e FFF7FEFF 		bl	USBUART_GetConfiguration
  896              	.LVL135:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 26
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 26
 
 
  897 0042 0028     		cmp	r0, #0
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  944 008a 06E0     		b	.L66
  945              	.LVL144:
  946              	.L71:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 27
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 27
 
 
  243:TkShell.c     ****     }
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  995 0006 0028     		cmp	r0, #0
  996 0008 0ED0     		beq	.L77
  997              	.L78:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 28
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 28
 
 
  263:TkShell.c     **** 
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1048              	.LVL154:
  277:TkShell.c     ****     {
  1049              		.loc 1 277 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 29
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 29
 
 
  1050 0004 0428     		cmp	r0, #4
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1097 0046 FFF7FEFF 		bl	Codec_SendData
  1098              	.LVL166:
  1099 004a 041E     		subs	r4, r0, #0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 30
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 30
 
 
  1100              	.LVL167:
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1147              	.LVL177:
  1148 0090 2800     		movs	r0, r5
  1149 0092 FFF7FEFF 		bl	USBUART_PutString
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 31
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 31
 
 
  1150              	.LVL178:
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1198 0000 10B5     		push	{r4, lr}
  1199              		.cfi_def_cfa_offset 8
  1200              		.cfi_offset 4, -8
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 32
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 32
 
 
  1201              		.cfi_offset 14, -4
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1247 003e FFF7FEFF 		bl	USBUART_CDCIsReady
  1248              	.LVL193:
  1249 0042 0028     		cmp	r0, #0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 33
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 33
 
 
  1250 0044 FBD0     		beq	.L97
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1299              	.LFB13:
  365:TkShell.c     ****     CySoftwareReset();
  1300              		.loc 1 365 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 34
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 34
 
 
  1301              		.cfi_startproc
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  499:TkShell.c     **** }
  500:TkShell.c     **** 
  501:TkShell.c     **** TK_SHELL_METHOD(cal, save)
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 35
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 35
 
 
  502:TkShell.c     **** {
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1377              		.type	strcicmp, %function
  1378              	strcicmp:
  1379              	.LFB2:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 36
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 36
 
 
  148:TkShell.c     ****     for (;; a++, b++)
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1428              	.LBE4:
  151:TkShell.c     ****         if (d != 0 || !*a)
  1429              		.loc 1 151 0 discriminator 8
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 37
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 37
 
 
  1430 002c E31A     		subs	r3, r4, r3
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1478              		.cfi_offset 14, -4
  1479 0002 0D00     		movs	r5, r1
  1480              	.LVL220:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 38
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 38
 
 
  325:TkShell.c     ****     
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1527 0044 C6B2     		uxtb	r6, r0
  1528              	.LVL231:
  336:TkShell.c     ****     {
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 39
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 39
 
 
  1529              		.loc 1 336 0
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1577              	.L126:
  343:TkShell.c     **** }
  1578              		.loc 1 343 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 40
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 40
 
 
  1579 008c 0020     		movs	r0, #0
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1628 0010 5FD0     		beq	.L136
  1629              	.L132:
  388:TkShell.c     ****         return -1;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 41
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 41
 
 
  1630              		.loc 1 388 0 is_stmt 0 discriminator 1
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1678 0058 FFF7FEFF 		bl	USBUART_GetConfiguration
  1679              	.LVL258:
  1680 005c 0028     		cmp	r0, #0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 42
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 42
 
 
  1681 005e 3BD0     		beq	.L140
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1727              	.LVL267:
  412:TkShell.c     ****     
  1728              		.loc 1 412 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 43
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 43
 
 
  1729 009a 6869     		ldr	r0, [r5, #20]
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1776 00d8 0220     		movs	r0, #2
  1777 00da 4042     		rsbs	r0, r0, #0
  1778 00dc 00E0     		b	.L131
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 44
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 44
 
 
  1779              	.LVL280:
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  430:TkShell.c     ****         return -1;
  1828              		.loc 1 430 0
  1829 000a FFF7FEFF 		bl	USBUART_GetConfiguration
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 45
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 45
 
 
  1830              	.LVL285:
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1878              	.LVL296:
  1879 0054 0028     		cmp	r0, #0
  1880 0056 17D0     		beq	.L154
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 46
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 46
 
 
  448:TkShell.c     ****         return -2;
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1926 0094 14D0     		beq	.L156
  1927              	.L150:
  453:TkShell.c     **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 47
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 47
 
 
  1928              		.loc 1 453 0 is_stmt 0 discriminator 1
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  1976 00dc C8010000 		.word	.LC82
  1977              		.cfi_endproc
  1978              	.LFE16:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 48
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 48
 
 
  1979              		.size	__tk_shell_led_stop, .-__tk_shell_led_stop
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2027 002c 6442     		rsbs	r4, r4, #0
  2028 002e 2DE0     		b	.L161
  2029              	.LVL317:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 49
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 49
 
 
  2030              	.L160:
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2078 0072 0A4B     		ldr	r3, .L167+12
  2079 0074 1E68     		ldr	r6, [r3]
  2080              	.LVL329:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 50
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 50
 
 
  2081 0076 E868     		ldr	r0, [r5, #12]
@@ -2998,7 +2998,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2129              		.cfi_offset 4, -20
  2130              		.cfi_offset 5, -16
  2131              		.cfi_offset 6, -12
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 51
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 51
 
 
  2132              		.cfi_offset 7, -8
@@ -3058,7 +3058,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2169 0026 C918     		adds	r1, r1, r3
  2170 0028 4978     		ldrb	r1, [r1, #1]
  2171 002a 0907     		lsls	r1, r1, #28
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 52
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 52
 
 
  2172 002c F3D4     		bmi	.L172
@@ -3118,7 +3118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2207 0056 4B46     		mov	r3, r9
  2208 0058 0A2B     		cmp	r3, #10
  2209 005a DFDD     		ble	.L170
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 53
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 53
 
 
  540:TkShell.c     ****         {
@@ -3178,7 +3178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2255              	.L201:
  547:TkShell.c     ****     {
  548:TkShell.c     ****         i = j = k = 0;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 54
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 54
 
 
  549:TkShell.c     ****         while (strcmp(commands[i].name, "") != 0)
@@ -3238,7 +3238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  562:TkShell.c     ****                     {
  563:TkShell.c     ****                         found = true;
  564:TkShell.c     ****                         PRINTF("Displaying list of %s commands:\n", commands[i].name);
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 55
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 55
 
 
  2297              		.loc 1 564 0
@@ -3298,7 +3298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2347 0120 E044     		add	r8, r8, ip
  2348              	.LVL362:
  2349              	.L189:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 56
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 56
 
 
  565:TkShell.c     ****                         while (strcmp(commands[i].verbs[k].name, "") != 0)
@@ -3358,7 +3358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2394              	.L207:
  576:TkShell.c     ****                 {
  577:TkShell.c     ****                     break;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 57
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 57
 
 
  578:TkShell.c     ****                 }
@@ -3418,7 +3418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2440 01a6 1219     		adds	r2, r2, r4
  2441 01a8 9300     		lsls	r3, r2, #2
  2442 01aa 2F4A     		ldr	r2, .L208+28
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 58
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 58
 
 
  2443 01ac D318     		adds	r3, r2, r3
@@ -3478,7 +3478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2490              	.L180:
  549:TkShell.c     ****         {
  2491              		.loc 1 549 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 59
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 59
 
 
  2492 01ee 7200     		lsls	r2, r6, #1
@@ -3538,7 +3538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2536              		.loc 1 542 0
  2537 0230 0220     		movs	r0, #2
  2538 0232 4042     		rsbs	r0, r0, #0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 60
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 60
 
 
  2539 0234 02E0     		b	.L178
@@ -3598,7 +3598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2589              		.cfi_def_cfa_offset 8
  2590              		.cfi_offset 4, -8
  2591              		.cfi_offset 14, -4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 61
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 61
 
 
  605:TkShell.c     ****     memset((void *)cmd_buf, 0, CMD_BUF_LEN);
@@ -3658,7 +3658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  616:TkShell.c     ****     /* Read received data and re-enable OUT endpoint. */
  617:TkShell.c     ****     count = USBUART_GetAll(buffer);
  2635              		.loc 1 617 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 62
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 62
 
 
  2636 0004 6846     		mov	r0, sp
@@ -3718,7 +3718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2657 001c 07D0     		beq	.L216
  2658 001e 082C     		cmp	r4, #8
  2659 0020 34D0     		beq	.L218
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 63
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 63
 
 
  2660 0022 50E0     		b	.L215
@@ -3778,7 +3778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2704 0064 0CD0     		beq	.L222
  2705              	.L223:
  2706              		.loc 1 659 0 is_stmt 0 discriminator 1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 64
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 64
 
 
  2707 0066 FFF7FEFF 		bl	USBUART_CDCIsReady
@@ -3838,7 +3838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2749              	.LVL410:
  2750 00a6 0028     		cmp	r0, #0
  2751 00a8 27D0     		beq	.L214
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 65
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 65
 
 
  2752              	.L225:
@@ -3898,7 +3898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2801 00f4 5454     		strb	r4, [r2, r1]
  677:TkShell.c     ****                 cmd_buf[cmd_char_count] = '\0';
  2802              		.loc 1 677 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 66
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 66
 
 
  2803 00f6 0021     		movs	r1, #0
@@ -3958,7 +3958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2851 0024 00090440 		.word	1074006272
  2852 0028 000A0440 		.word	1074006528
  2853 002c 000B0440 		.word	1074006784
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 67
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 67
 
 
  2854 0030 000C0440 		.word	1074007040
@@ -4018,7 +4018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2908              		.size	__tk_shell_verbs_sys, 60
  2909              	__tk_shell_verbs_sys:
  2910 00e0 28040000 		.word	.LC150
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 68
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 68
 
 
  2911 00e4 00000000 		.word	__tk_shell_sys_crash
@@ -4078,7 +4078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2965 0198 00000000 		.word	0
  2966 019c 40030000 		.word	.LC139
  2967              		.section	.rodata.str1.4,"aMS",%progbits,1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 69
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 69
 
 
  2968              		.align	2
@@ -4138,7 +4138,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  2994              	.LC34:
  2995 00a0 6164635F 		.ascii	"adc_min[L] = %d\012\000"
  2995      6D696E5B 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 70
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 70
 
 
  2995      4C5D203D 
@@ -4198,7 +4198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3021              	.LC65:
  3022 014c 496E7661 		.ascii	"Invalid number of arguments: %d\012\000"
  3022      6C696420 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 71
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 71
 
 
  3022      6E756D62 
@@ -4258,7 +4258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3054 0200 546F6F20 		.ascii	"Too many arguments!\012\000"
  3054      6D616E79 
  3054      20617267 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 72
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 72
 
 
  3054      756D656E 
@@ -4318,7 +4318,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3085      7300
  3086 02ba 0000     		.space	2
  3087              	.LC129:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 73
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 73
 
 
  3088 02bc 776D00   		.ascii	"wm\000"
@@ -4378,7 +4378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3120 035b 00       		.space	1
  3121              	.LC142:
  3122 035c 73657400 		.ascii	"set\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 74
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 74
 
 
  3123              	.LC143:
@@ -4438,7 +4438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3150              	.LC152:
  3151 0448 696E666F 		.ascii	"info\000"
  3151      00
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 75
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 75
 
 
  3152 044d 000000   		.space	3
@@ -4498,7 +4498,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3181      6576656C 
  3181      00
  3182 0511 000000   		.space	3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 76
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 76
 
 
  3183              	.LC164:
@@ -4558,7 +4558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3213      00000000 
  3214              		.type	cmd_char_count, %object
  3215              		.size	cmd_char_count, 1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 77
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 77
 
 
  3216              	cmd_char_count:
@@ -4618,7 +4618,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3270 0048 04       		.uleb128 0x4
  3271 0049 B1040000 		.4byte	.LASF6
  3272 004d 02       		.byte	0x2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 78
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 78
 
 
  3273 004e 1D       		.byte	0x1d
@@ -4678,7 +4678,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3327 00b4 07       		.uleb128 0x7
  3328 00b5 A0000000 		.4byte	0xa0
  3329 00b9 04       		.uleb128 0x4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 79
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 79
 
 
  3330 00ba 04030000 		.4byte	.LASF15
@@ -4738,7 +4738,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3384 0131 48010000 		.4byte	0x148
  3385 0135 0B       		.uleb128 0xb
  3386 0136 38000000 		.4byte	.LASF25
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 80
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 80
 
 
  3387 013a 00       		.byte	0
@@ -4798,7 +4798,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3441 01a3 93000000 		.4byte	0x93
  3442 01a7 01       		.byte	0x1
  3443 01a8 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 81
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 81
 
 
  3444 01a9 04       		.uleb128 0x4
@@ -4858,7 +4858,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3498 0212 25000000 		.4byte	0x25
  3499 0216 25020000 		.4byte	0x225
  3500 021a 11       		.uleb128 0x11
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 82
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 82
 
 
  3501 021b 25000000 		.4byte	0x25
@@ -4918,7 +4918,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3555 028e 01       		.uleb128 0x1
  3556 028f 9C       		.byte	0x9c
  3557 0290 0C030000 		.4byte	0x30c
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 83
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 83
 
 
  3558 0294 13       		.uleb128 0x13
@@ -4978,7 +4978,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3612 0305 01       		.uleb128 0x1
  3613 0306 50       		.byte	0x50
  3614 0307 02       		.uleb128 0x2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 84
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 84
 
 
  3615 0308 74       		.byte	0x74
@@ -5038,7 +5038,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3669 0387 14000000 		.4byte	.LVL10
  3670 038b 401B0000 		.4byte	0x1b40
  3671 038f 17       		.uleb128 0x17
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 85
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 85
 
 
  3672 0390 24000000 		.4byte	.LVL12
@@ -5098,7 +5098,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3726 03ff 01       		.byte	0x1
  3727 0400 9D       		.byte	0x9d
  3728 0401 25000000 		.4byte	0x25
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 86
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 86
 
 
  3729 0405 66010000 		.4byte	.LLST8
@@ -5158,7 +5158,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3783 0481 01       		.uleb128 0x1
  3784 0482 52       		.byte	0x52
  3785 0483 01       		.uleb128 0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 87
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 87
 
 
  3786 0484 4E       		.byte	0x4e
@@ -5218,7 +5218,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3840 04f3 00       		.byte	0
  3841 04f4 00       		.byte	0
  3842 04f5 1A       		.uleb128 0x1a
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 88
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 88
 
 
  3843 04f6 EE050000 		.4byte	.LASF54
@@ -5278,7 +5278,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3897 057b 00       		.sleb128 0
  3898 057c 18       		.uleb128 0x18
  3899 057d 01       		.uleb128 0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 89
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 89
 
 
  3900 057e 51       		.byte	0x51
@@ -5338,7 +5338,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  3954 05ea 01       		.uleb128 0x1
  3955 05eb 50       		.byte	0x50
  3956 05ec 02       		.uleb128 0x2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 90
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 90
 
 
  3957 05ed 74       		.byte	0x74
@@ -5398,7 +5398,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4011 0665 50       		.byte	0x50
  4012 0666 02       		.uleb128 0x2
  4013 0667 74       		.byte	0x74
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 91
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 91
 
 
  4014 0668 00       		.sleb128 0
@@ -5458,7 +5458,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4068 06e0 02       		.uleb128 0x2
  4069 06e1 74       		.byte	0x74
  4070 06e2 00       		.sleb128 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 92
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 92
 
 
  4071 06e3 00       		.byte	0
@@ -5518,7 +5518,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4125 075e 02       		.uleb128 0x2
  4126 075f 74       		.byte	0x74
  4127 0760 00       		.sleb128 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 93
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 93
 
 
  4128 0761 00       		.byte	0
@@ -5578,7 +5578,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4182 07cd 05       		.uleb128 0x5
  4183 07ce 03       		.byte	0x3
  4184 07cf 78000000 		.4byte	.LC30
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 94
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 94
 
 
  4185 07d3 00       		.byte	0
@@ -5638,7 +5638,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4239 0842 6A1B0000 		.4byte	0x1b6a
  4240 0846 5A080000 		.4byte	0x85a
  4241 084a 18       		.uleb128 0x18
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 95
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 95
 
 
  4242 084b 01       		.uleb128 0x1
@@ -5698,7 +5698,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4296 08ae 74       		.byte	0x74
  4297 08af 00       		.sleb128 0
  4298 08b0 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 96
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 96
 
 
  4299 08b1 16       		.uleb128 0x16
@@ -5758,7 +5758,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4353 091d 03       		.byte	0x3
  4354 091e E4000000 		.4byte	.LC40
  4355 0922 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 97
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 97
 
 
  4356 0923 17       		.uleb128 0x17
@@ -5818,7 +5818,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4410 0983 25000000 		.4byte	0x25
  4411 0987 00000000 		.4byte	.LFB6
  4412 098b AC000000 		.4byte	.LFE6-.LFB6
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 98
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 98
 
 
  4413 098f 01       		.uleb128 0x1
@@ -5878,7 +5878,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4467 0a07 0C000000 		.4byte	.LC4
  4468 0a0b 18       		.uleb128 0x18
  4469 0a0c 01       		.uleb128 0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 99
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 99
 
 
  4470 0a0d 52       		.byte	0x52
@@ -5938,7 +5938,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4524 0a79 01       		.uleb128 0x1
  4525 0a7a 50       		.byte	0x50
  4526 0a7b 02       		.uleb128 0x2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 100
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 100
 
 
  4527 0a7c 74       		.byte	0x74
@@ -5998,7 +5998,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4581 0ae0 8B030000 		.4byte	.LASF46
  4582 0ae4 01       		.byte	0x1
  4583 0ae5 0501     		.2byte	0x105
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 101
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 101
 
 
  4584 0ae7 25000000 		.4byte	0x25
@@ -6058,7 +6058,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4638 0b5e CA0C0000 		.4byte	0xcca
  4639 0b62 13       		.uleb128 0x13
  4640 0b63 8B030000 		.4byte	.LASF46
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 102
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 102
 
 
  4641 0b67 01       		.byte	0x1
@@ -6118,7 +6118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4695 0be8 03       		.byte	0x3
  4696 0be9 0C000000 		.4byte	.LC4
  4697 0bed 18       		.uleb128 0x18
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 103
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 103
 
 
  4698 0bee 01       		.uleb128 0x1
@@ -6178,7 +6178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4752 0c57 700C0000 		.4byte	0xc70
  4753 0c5b 18       		.uleb128 0x18
  4754 0c5c 01       		.uleb128 0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 104
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 104
 
 
  4755 0c5d 50       		.byte	0x50
@@ -6238,7 +6238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4809 0cb7 00       		.sleb128 0
  4810 0cb8 00       		.byte	0
  4811 0cb9 19       		.uleb128 0x19
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 105
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 105
 
 
  4812 0cba 96000000 		.4byte	.LVL178
@@ -6298,7 +6298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4866 0d41 18       		.uleb128 0x18
  4867 0d42 01       		.uleb128 0x1
  4868 0d43 50       		.byte	0x50
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 106
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 106
 
 
  4869 0d44 02       		.uleb128 0x2
@@ -6358,7 +6358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4923 0daa 74       		.byte	0x74
  4924 0dab 00       		.sleb128 0
  4925 0dac 18       		.uleb128 0x18
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 107
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 107
 
 
  4926 0dad 01       		.uleb128 0x1
@@ -6418,7 +6418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  4980 0e26 8B030000 		.4byte	.LASF46
  4981 0e2a 01       		.byte	0x1
  4982 0e2b F501     		.2byte	0x1f5
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 108
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 108
 
 
  4983 0e2d 25000000 		.4byte	0x25
@@ -6478,7 +6478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5037 0ea3 0D0F0000 		.4byte	0xf0d
  5038 0ea7 20       		.uleb128 0x20
  5039 0ea8 6100     		.ascii	"a\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 109
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 109
 
 
  5040 0eaa 01       		.byte	0x1
@@ -6538,7 +6538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5094 0f28 8B030000 		.4byte	.LASF46
  5095 0f2c 01       		.byte	0x1
  5096 0f2d 3F01     		.2byte	0x13f
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 110
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 110
 
 
  5097 0f2f 25000000 		.4byte	0x25
@@ -6598,7 +6598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5151 0fa6 00       		.byte	0
  5152 0fa7 17       		.uleb128 0x17
  5153 0fa8 2C000000 		.4byte	.LVL226
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 111
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 111
 
 
  5154 0fac 541B0000 		.4byte	0x1b54
@@ -6658,7 +6658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5208 100c 00       		.byte	0
  5209 100d 16       		.uleb128 0x16
  5210 100e 5E000000 		.4byte	.LVL234
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 112
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 112
 
 
  5211 1012 341B0000 		.4byte	0x1b34
@@ -6718,7 +6718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5265 107c 8B030000 		.4byte	.LASF46
  5266 1080 01       		.byte	0x1
  5267 1081 7A01     		.2byte	0x17a
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 113
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 113
 
 
  5268 1083 25000000 		.4byte	0x25
@@ -6778,7 +6778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5322 110b 18       		.uleb128 0x18
  5323 110c 01       		.uleb128 0x1
  5324 110d 51       		.byte	0x51
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 114
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 114
 
 
  5325 110e 05       		.uleb128 0x5
@@ -6838,7 +6838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5379 1168 00       		.byte	0
  5380 1169 17       		.uleb128 0x17
  5381 116a 54000000 		.4byte	.LVL257
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 115
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 115
 
 
  5382 116e 8E0E0000 		.4byte	0xe8e
@@ -6898,7 +6898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5436 11d7 5F1B0000 		.4byte	0x1b5f
  5437 11db 16       		.uleb128 0x16
  5438 11dc A0000000 		.4byte	.LVL269
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 116
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 116
 
 
  5439 11e0 5F1B0000 		.4byte	0x1b5f
@@ -6958,7 +6958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5493 123d 541B0000 		.4byte	0x1b54
  5494 1241 18       		.uleb128 0x18
  5495 1242 01       		.uleb128 0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 117
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 117
 
 
  5496 1243 50       		.byte	0x50
@@ -7018,7 +7018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5550 12c1 75       		.byte	0x75
  5551 12c2 00       		.sleb128 0
  5552 12c3 18       		.uleb128 0x18
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 118
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 118
 
 
  5553 12c4 01       		.uleb128 0x1
@@ -7078,7 +7078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5607 131b 03       		.byte	0x3
  5608 131c 8C010000 		.4byte	.LC76
  5609 1320 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 119
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 119
 
 
  5610 1321 17       		.uleb128 0x17
@@ -7138,7 +7138,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5664 138a 16       		.uleb128 0x16
  5665 138b 92000000 		.4byte	.LVL303
  5666 138f 341B0000 		.4byte	0x1b34
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 120
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 120
 
 
  5667 1393 16       		.uleb128 0x16
@@ -7198,7 +7198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5721 13fe 01       		.byte	0x1
  5722 13ff DA01     		.2byte	0x1da
  5723 1401 25020000 		.4byte	0x225
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 121
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 121
 
 
  5724 1405 820C0000 		.4byte	.LLST64
@@ -7258,7 +7258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5778 1470 76       		.byte	0x76
  5779 1471 00       		.sleb128 0
  5780 1472 18       		.uleb128 0x18
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 122
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 122
 
 
  5781 1473 01       		.uleb128 0x1
@@ -7318,7 +7318,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5835 14d6 18       		.uleb128 0x18
  5836 14d7 01       		.uleb128 0x1
  5837 14d8 52       		.byte	0x52
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 123
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 123
 
 
  5838 14d9 01       		.uleb128 0x1
@@ -7378,7 +7378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5892 1558 01       		.byte	0x1
  5893 1559 0202     		.2byte	0x202
  5894 155b 25000000 		.4byte	0x25
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 124
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 124
 
 
  5895 155f F10E0000 		.4byte	.LLST71
@@ -7438,7 +7438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  5949 15ca 75       		.byte	0x75
  5950 15cb 00       		.sleb128 0
  5951 15cc 18       		.uleb128 0x18
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 125
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 125
 
 
  5952 15cd 01       		.uleb128 0x1
@@ -7498,7 +7498,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6006 1626 16       		.uleb128 0x16
  6007 1627 DE000000 		.4byte	.LVL355
  6008 162b 401B0000 		.4byte	0x1b40
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 126
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 126
 
 
  6009 162f 17       		.uleb128 0x17
@@ -7558,7 +7558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6063 1693 04       		.uleb128 0x4
  6064 1694 91       		.byte	0x91
  6065 1695 A87F     		.sleb128 -88
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 127
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 127
 
 
  6066 1697 06       		.byte	0x6
@@ -7618,7 +7618,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6120 1700 18       		.uleb128 0x18
  6121 1701 01       		.uleb128 0x1
  6122 1702 50       		.byte	0x50
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 128
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 128
 
 
  6123 1703 02       		.uleb128 0x2
@@ -7678,7 +7678,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6177 175d 18       		.uleb128 0x18
  6178 175e 01       		.uleb128 0x1
  6179 175f 50       		.byte	0x50
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 129
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 129
 
 
  6180 1760 02       		.uleb128 0x2
@@ -7738,7 +7738,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6234 17c7 1C000000 		.4byte	.LFE21-.LFB21
  6235 17cb 01       		.uleb128 0x1
  6236 17cc 9C       		.byte	0x9c
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 130
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 130
 
 
  6237 17cd ED170000 		.4byte	0x17ed
@@ -7798,7 +7798,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6291 1837 7B190000 		.4byte	0x197b
  6292 183b 03       		.uleb128 0x3
  6293 183c 91       		.byte	0x91
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 131
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 131
 
 
  6294 183d A87F     		.sleb128 -88
@@ -7858,7 +7858,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6348 18a1 DD140000 		.4byte	0x14dd
  6349 18a5 16       		.uleb128 0x16
  6350 18a6 62000000 		.4byte	.LVL404
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 132
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 132
 
 
  6351 18aa 341B0000 		.4byte	0x1b34
@@ -7918,7 +7918,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6405 1913 01       		.uleb128 0x1
  6406 1914 51       		.byte	0x51
  6407 1915 05       		.uleb128 0x5
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 133
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 133
 
 
  6408 1916 03       		.byte	0x3
@@ -7978,7 +7978,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6462 1976 02       		.uleb128 0x2
  6463 1977 77       		.byte	0x77
  6464 1978 00       		.sleb128 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 134
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 134
 
 
  6465 1979 00       		.byte	0
@@ -8038,7 +8038,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6519 19f1 28       		.uleb128 0x28
  6520 19f2 72040000 		.4byte	.LASF83
  6521 19f6 01       		.byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 135
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 135
 
 
  6522 19f7 52       		.byte	0x52
@@ -8098,7 +8098,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6576 1a6f 7C       		.byte	0x7c
  6577 1a70 7A1A0000 		.4byte	0x1a7a
  6578 1a74 05       		.uleb128 0x5
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 136
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 136
 
 
  6579 1a75 03       		.byte	0x3
@@ -8158,7 +8158,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6633 1af0 2A       		.uleb128 0x2a
  6634 1af1 00       		.byte	0
  6635 1af2 29       		.uleb128 0x29
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 137
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 137
 
 
  6636 1af3 88010000 		.4byte	.LASF92
@@ -8218,7 +8218,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6690 1b6f CD030000 		.4byte	.LASF100
  6691 1b73 0E       		.byte	0xe
  6692 1b74 E7       		.byte	0xe7
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 138
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 138
 
 
  6693 1b75 2C       		.uleb128 0x2c
@@ -8278,7 +8278,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6747 1bed 1A       		.byte	0x1a
  6748 1bee 2D       		.uleb128 0x2d
  6749 1bef 7D030000 		.4byte	.LASF113
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 139
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 139
 
 
  6750 1bf3 7D030000 		.4byte	.LASF113
@@ -8338,7 +8338,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6804 002d 0E       		.uleb128 0xe
  6805 002e 3A       		.uleb128 0x3a
  6806 002f 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 140
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 140
 
 
  6807 0030 3B       		.uleb128 0x3b
@@ -8398,7 +8398,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6861 0066 49       		.uleb128 0x49
  6862 0067 13       		.uleb128 0x13
  6863 0068 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 141
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 141
 
 
  6864 0069 0B       		.uleb128 0xb
@@ -8458,7 +8458,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6918 009f 21       		.uleb128 0x21
  6919 00a0 00       		.byte	0
  6920 00a1 49       		.uleb128 0x49
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 142
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 142
 
 
  6921 00a2 13       		.uleb128 0x13
@@ -8518,7 +8518,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  6975 00d9 0E       		.uleb128 0xe
  6976 00da 3A       		.uleb128 0x3a
  6977 00db 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 143
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 143
 
 
  6978 00dc 3B       		.uleb128 0x3b
@@ -8578,7 +8578,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7032 011b 00       		.byte	0
  7033 011c 02       		.uleb128 0x2
  7034 011d 18       		.uleb128 0x18
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 144
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 144
 
 
  7035 011e 9142     		.uleb128 0x2111
@@ -8638,7 +8638,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7089 0158 00       		.byte	0
  7090 0159 1C       		.uleb128 0x1c
  7091 015a 34       		.uleb128 0x34
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 145
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 145
 
 
  7092 015b 00       		.byte	0
@@ -8698,7 +8698,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7146 0191 02       		.uleb128 0x2
  7147 0192 17       		.uleb128 0x17
  7148 0193 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 146
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 146
 
 
  7149 0194 00       		.byte	0
@@ -8758,7 +8758,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7203 01ca 03       		.uleb128 0x3
  7204 01cb 0E       		.uleb128 0xe
  7205 01cc 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 147
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 147
 
 
  7206 01cd 0B       		.uleb128 0xb
@@ -8818,7 +8818,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7260 0206 27       		.uleb128 0x27
  7261 0207 19       		.uleb128 0x19
  7262 0208 11       		.uleb128 0x11
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 148
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 148
 
 
  7263 0209 01       		.uleb128 0x1
@@ -8878,7 +8878,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7317 0240 19       		.uleb128 0x19
  7318 0241 6E       		.uleb128 0x6e
  7319 0242 0E       		.uleb128 0xe
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 149
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 149
 
 
  7320 0243 03       		.uleb128 0x3
@@ -8938,7 +8938,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7374 001d 00000000 		.4byte	0
  7375              	.LLST1:
  7376 0021 00000000 		.4byte	.LVL0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 150
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 150
 
 
  7377 0025 05000000 		.4byte	.LVL2-1
@@ -8998,7 +8998,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7431 009a 0B000000 		.4byte	.LVL9-1
  7432 009e 1A000000 		.4byte	.LVL11
  7433 00a2 0100     		.2byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 151
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 151
 
 
  7434 00a4 54       		.byte	0x54
@@ -9058,7 +9058,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7488              	.LLST7:
  7489 012e 04000000 		.4byte	.LVL8
  7490 0132 30000000 		.4byte	.LVL14
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 152
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 152
 
 
  7491 0136 0200     		.2byte	0x2
@@ -9118,7 +9118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7545 01aa 9F       		.byte	0x9f
  7546 01ab 00000000 		.4byte	0
  7547 01af 00000000 		.4byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 153
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 153
 
 
  7548              	.LLST9:
@@ -9178,7 +9178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7602 0236 00000000 		.4byte	0
  7603              	.LLST11:
  7604 023a 40000000 		.4byte	.LVL41
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 154
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 154
 
 
  7605 023e 42000000 		.4byte	.LVL42
@@ -9238,7 +9238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7659 02c9 0B000000 		.4byte	.LVL55-1
  7660 02cd 0300     		.2byte	0x3
  7661 02cf 70       		.byte	0x70
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 155
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 155
 
 
  7662 02d0 7E       		.sleb128 -2
@@ -9298,7 +9298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7716 0349 0400     		.2byte	0x4
  7717 034b F3       		.byte	0xf3
  7718 034c 01       		.uleb128 0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 156
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 156
 
 
  7719 034d 51       		.byte	0x51
@@ -9358,7 +9358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7773 03d8 33       		.byte	0x33
  7774 03d9 9F       		.byte	0x9f
  7775 03da 72000000 		.4byte	.LVL73
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 157
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 157
 
 
  7776 03de 78000000 		.4byte	.LVL74
@@ -9418,7 +9418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7830 045d 00000000 		.4byte	.LVL81
  7831 0461 05000000 		.4byte	.LVL82-1
  7832 0465 0100     		.2byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 158
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 158
 
 
  7833 0467 51       		.byte	0x51
@@ -9478,7 +9478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7887 04e4 50       		.byte	0x50
  7888 04e5 32       		.byte	0x32
  7889 04e6 1C       		.byte	0x1c
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 159
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 159
 
 
  7890 04e7 9F       		.byte	0x9f
@@ -9538,7 +9538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  7944 0564 32       		.byte	0x32
  7945 0565 9F       		.byte	0x9f
  7946 0566 2E000000 		.4byte	.LVL129
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 160
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 160
 
 
  7947 056a 8C000000 		.4byte	.LVL144
@@ -9598,7 +9598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8001 05ee 00000000 		.4byte	0
  8002              	.LLST32:
  8003 05f2 00000000 		.4byte	.LVL153
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 161
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 161
 
 
  8004 05f6 04000000 		.4byte	.LVL154
@@ -9658,7 +9658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8058 066d 51       		.byte	0x51
  8059 066e 35000000 		.4byte	.LVL162-1
  8060 0672 4C000000 		.4byte	.LVL167
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 162
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 162
 
 
  8061 0676 0100     		.2byte	0x1
@@ -9718,7 +9718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8115 06f6 55       		.byte	0x55
  8116 06f7 A2000000 		.4byte	.LVL180
  8117 06fb AA000000 		.4byte	.LVL181
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 163
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 163
 
 
  8118 06ff 0100     		.2byte	0x1
@@ -9778,7 +9778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8172 0784 2E000000 		.4byte	.LVL188
  8173 0788 30000000 		.4byte	.LVL189
  8174 078c 0300     		.2byte	0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 164
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 164
 
 
  8175 078e 70       		.byte	0x70
@@ -9838,7 +9838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8229 0806 9F       		.byte	0x9f
  8230 0807 68000000 		.4byte	.LVL199
  8231 080b 6A000000 		.4byte	.LVL200
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 165
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 165
 
 
  8232 080f 0200     		.2byte	0x2
@@ -9898,7 +9898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8286 0892 50       		.byte	0x50
  8287 0893 9F       		.byte	0x9f
  8288 0894 00000000 		.4byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 166
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 166
 
 
  8289 0898 00000000 		.4byte	0
@@ -9958,7 +9958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8343 0923 38000000 		.4byte	.LVL215
  8344 0927 3A000000 		.4byte	.LVL216
  8345 092b 0200     		.2byte	0x2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 167
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 167
 
 
  8346 092d 71       		.byte	0x71
@@ -10018,7 +10018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8400 09ac F3       		.byte	0xf3
  8401 09ad 01       		.uleb128 0x1
  8402 09ae 51       		.byte	0x51
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 168
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 168
 
 
  8403 09af 9F       		.byte	0x9f
@@ -10078,7 +10078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8457 0a3a 9F       		.byte	0x9f
  8458 0a3b 38000000 		.4byte	.LVL254
  8459 0a3f D2000000 		.4byte	.LVL278
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 169
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 169
 
 
  8460 0a43 0600     		.2byte	0x6
@@ -10138,7 +10138,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8514 0aba 00000000 		.4byte	0
  8515              	.LLST56:
  8516 0abe 04000000 		.4byte	.LVL244
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 170
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 170
 
 
  8517 0ac2 8A000000 		.4byte	.LVL262
@@ -10198,7 +10198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8571 0b51 A8000000 		.4byte	.LVL271
  8572 0b55 AB000000 		.4byte	.LVL272-1
  8573 0b59 0100     		.2byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 171
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 171
 
 
  8574 0b5b 53       		.byte	0x53
@@ -10258,7 +10258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8628 0bda F3       		.byte	0xf3
  8629 0bdb 01       		.uleb128 0x1
  8630 0bdc 51       		.byte	0x51
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 172
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 172
 
 
  8631 0bdd 9F       		.byte	0x9f
@@ -10318,7 +10318,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8685 0c5c 9F       		.byte	0x9f
  8686 0c5d 30000000 		.4byte	.LVL317
  8687 0c61 36000000 		.4byte	.LVL319
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 173
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 173
 
 
  8688 0c65 0300     		.2byte	0x3
@@ -10378,7 +10378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8742 0ce4 0200     		.2byte	0x2
  8743 0ce6 32       		.byte	0x32
  8744 0ce7 9F       		.byte	0x9f
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 174
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 174
 
 
  8745 0ce8 5C000000 		.4byte	.LVL325
@@ -10438,7 +10438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8799 0d6c 30020000 		.4byte	.LVL388
  8800 0d70 36020000 		.4byte	.LVL389
  8801 0d74 0300     		.2byte	0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 175
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 175
 
 
  8802 0d76 09       		.byte	0x9
@@ -10498,7 +10498,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8856 0e00 9F       		.byte	0x9f
  8857 0e01 3A010000 		.4byte	.LVL363
  8858 0e05 70010000 		.4byte	.LVL367
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 176
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 176
 
 
  8859 0e09 0100     		.2byte	0x1
@@ -10558,7 +10558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8913 0e95 3E020000 		.4byte	.LVL391
  8914 0e99 0100     		.2byte	0x1
  8915 0e9b 59       		.byte	0x59
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 177
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 177
 
 
  8916 0e9c 00000000 		.4byte	0
@@ -10618,7 +10618,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  8970 0f29 30       		.byte	0x30
  8971 0f2a 9F       		.byte	0x9f
  8972 0f2b 00000000 		.4byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 178
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 178
 
 
  8973 0f2f 00000000 		.4byte	0
@@ -10678,7 +10678,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  9027 0fb2 1C       		.byte	0x1c
  9028 0fb3 00000000 		.4byte	0
  9029 0fb7 00000000 		.4byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 179
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 179
 
 
  9030              	.LLST74:
@@ -10738,7 +10738,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  9084 005c BC000000 		.4byte	.LFE8-.LFB8
  9085 0060 00000000 		.4byte	.LFB9
  9086 0064 78000000 		.4byte	.LFE9-.LFB9
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 180
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 180
 
 
  9087 0068 00000000 		.4byte	.LFB13
@@ -10798,7 +10798,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  9141 0078 00000000 		.4byte	.LFB15
  9142 007c 00010000 		.4byte	.LFE15
  9143 0080 00000000 		.4byte	.LFB16
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 181
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 181
 
 
  9144 0084 E0000000 		.4byte	.LFE16
@@ -10858,7 +10858,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  9173      20696E74 
  9173      00
  9174              	.LASF32:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 182
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 182
 
 
  9175 006e 6C65645F 		.ascii	"led_max_brightness\000"
@@ -10918,7 +10918,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  9199      6D617800 
  9200              	.LASF101:
  9201 010f 436F6465 		.ascii	"Codec_AdjustBothHeadphoneVolume\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 183
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 183
 
 
  9201      635F4164 
@@ -10978,7 +10978,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  9225      43313120 
  9225      352E342E 
  9225      31203230 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 184
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 184
 
 
  9225      31363036 
@@ -11038,7 +11038,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  9247      47657441 
  9247      6C6C00
  9248              	.LASF19:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 185
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 185
 
 
  9249 02ea 75696E74 		.ascii	"uint16\000"
@@ -11098,7 +11098,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  9274              	.LASF20:
  9275 0384 75696E74 		.ascii	"uint32\000"
  9275      333200
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 186
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 186
 
 
  9276              	.LASF46:
@@ -11158,7 +11158,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  9302              	.LASF45:
  9303 041b 746B5F73 		.ascii	"tk_shell_command_s\000"
  9303      68656C6C 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 187
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 187
 
 
  9303      5F636F6D 
@@ -11218,7 +11218,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  9326              	.LASF98:
  9327 04c1 55534255 		.ascii	"USBUART_PutString\000"
  9327      4152545F 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 188
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 188
 
 
  9327      50757453 
@@ -11278,7 +11278,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  9349      72655265 
  9349      73657400 
  9350              	.LASF4:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 189
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 189
 
 
  9351 0572 756E7369 		.ascii	"unsigned char\000"
@@ -11338,7 +11338,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  9371      68617200 
  9372              	.LASF82:
  9373 0623 5F5F746B 		.ascii	"__tk_shell_verbs_gpio\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 190
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 190
 
 
  9373      5F736865 
@@ -11398,6 +11398,6 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 1
  9397      5F6C6566 
  9397      7400
  9398              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc1rRXTX.s 			page 191
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccEhBxPD.s 			page 191
 
 

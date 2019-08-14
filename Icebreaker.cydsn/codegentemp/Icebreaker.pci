@@ -1,5 +1,5 @@
 # Icebreaker
-# 2019-08-14 06:59:16Z
+# 2019-08-14 07:06:32Z
 
 # IO_4@[IOP=(0)][IoId=(4)] is reserved: KhzXtalEnabled
 dont_use_io iocell 0 4
@@ -31,4 +31,5 @@ set_io "SPI_MOSI(0)" iocell 2 0
 set_io "SPI_CS(0)" iocell 2 3
 set_io "PD(0)" iocell 0 0
 set_io "LED_RED(0)" iocell 11 6
+set_io "LED_GREEN(0)" iocell 11 2
 set_location "\ADC:cy_psoc4_sar\" p4sarcell -1 -1 0

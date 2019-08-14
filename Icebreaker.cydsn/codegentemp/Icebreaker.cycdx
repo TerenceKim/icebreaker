@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <blockRegMap version="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cypress.com/xsd/cyblockregmap cyblockregmap.xsd" xmlns="http://cypress.com/xsd/cyblockregmap">
-  <block name="SPI_CS" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Resistor_Red_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Resistor_Red_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="VDD_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="USBUART" BASE="0x0" SIZE="0x0" desc="USBFS" visible="true" hidden="false">
     <block name="ep3Dma_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -862,15 +858,8 @@
   <block name="R_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="PD" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="GND_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Resistor_Red_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Resistor_Red_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="DMA" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="POTL" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="VDD_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="SPI_MOSI" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="VDD_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="SPI_CLK" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="LED_BLUE_PWM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+  <block name="isr_Button" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="LED_RED_PWM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="VMux_count" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="VMux_reload" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="VMux_start" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -878,15 +867,28 @@
     <block name="VMux_capture" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="VMux_clock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="cy_m0s8_tcpwm_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="COUNTER" address="0x40200288" bitWidth="32" desc="Current counter value" hidden="false" />
-    <register name="CC" address="0x4020028C" bitWidth="32" desc="Compare / capture value" hidden="false" />
-    <register name="CC_BUF" address="0x40200290" bitWidth="32" desc="Compare / capture buffer value" hidden="false" />
-    <register name="PERIOD" address="0x40200294" bitWidth="32" desc="Period value" hidden="false" />
-    <register name="PERIOD_BUF" address="0x40200298" bitWidth="32" desc="Period buffer value" hidden="false" />
+    <register name="COUNTER" address="0x402002C8" bitWidth="32" desc="Current counter value" hidden="false" />
+    <register name="CC" address="0x402002CC" bitWidth="32" desc="Compare / capture value" hidden="false" />
+    <register name="CC_BUF" address="0x402002D0" bitWidth="32" desc="Compare / capture buffer value" hidden="false" />
+    <register name="PERIOD" address="0x402002D4" bitWidth="32" desc="Period value" hidden="false" />
+    <register name="PERIOD_BUF" address="0x402002D8" bitWidth="32" desc="Period buffer value" hidden="false" />
   </block>
-  <block name="LED_BLUE_PWM_ISR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="VDD_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="LED_RED" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="BTN" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GND_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Resistor_Red_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="SPI_CLK" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="VDD_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Resistor_Red_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="VDD_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="VDD_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="SPI_CS" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="SPI_MOSI" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Resistor_Red_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="LED_RED_PWM_ISR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="VDD_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="LED_GREEN" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="D_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Resistor_Red_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="cy_lfclk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Em_EEPROM_Dynamic" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="cy_boot" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -5197,34 +5199,13 @@
       <field name="CURR_DATA_NR" from="15" to="0" access="RW" resetVal="" desc="Specifies the index of the current data transfer. This value increases from 0 to CONTROL.DATA_NR. HW sets this field: &#xA; - When a descriptor is done (RESPONSE is DONE), the field is set to '0' when PING_CTL.INV_DESCR is '0' and the field is set to PING_CTL.DATA_NR when PING_CTL.INV_DESCR is '1'.                                                                 &#xA; - When a descriptor is not done (RESPONSE is NO_ERROR), the field reflects the progress of a data transfer.                                                                 &#xA; - In case of erroneous behavior (RESPONSE is neither DONE or NO_ERROR), the field is not updated, but keeps its value to ease debugging.                                                                 &#xA; HW only modifies this field for an active descriptor (STATUS.VALID to be '1'). At descriptor initialization, SW should set this field to '0'.                                                                 &#xA; This field allows software to read the progress of the data transfer. Note that SRC.ADDR and DST.ADDR represent base addresses and are not modified during data transfer. However, STATUS.CURR_DATA_NR is modified during data transfer and provides an offset wrt. the base addresses." hidden="false" />
     </register>
   </block>
-  <block name="isr_Button" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="LED_RED_PWM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
-    <block name="VMux_count" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="VMux_reload" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="VMux_start" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="VMux_stop" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="VMux_capture" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="VMux_clock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="cy_m0s8_tcpwm_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="COUNTER" address="0x402002C8" bitWidth="32" desc="Current counter value" hidden="false" />
-    <register name="CC" address="0x402002CC" bitWidth="32" desc="Compare / capture value" hidden="false" />
-    <register name="CC_BUF" address="0x402002D0" bitWidth="32" desc="Compare / capture buffer value" hidden="false" />
-    <register name="PERIOD" address="0x402002D4" bitWidth="32" desc="Period value" hidden="false" />
-    <register name="PERIOD_BUF" address="0x402002D8" bitWidth="32" desc="Period buffer value" hidden="false" />
-  </block>
-  <block name="BTN" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="GND_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="D_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="LED_GREEN_PWM_ISR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Resistor_Red_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="LED_RED_PWM_ISR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="VDD_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Clock_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="POTR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Codec_LRC" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Codec_ADCDAT" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Codec_DACDAT" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Codec_BCLK" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="isr_TxDMADone" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="ByteCounter_Rx" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+  <block name="D_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="LED_BLUE_PWM_ISR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="LED_GREEN_PWM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="VMux_count" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="VMux_reload" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="VMux_start" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -5232,12 +5213,29 @@
     <block name="VMux_capture" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="VMux_clock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="cy_m0s8_tcpwm_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="COUNTER" address="0x40200148" bitWidth="32" desc="Current counter value" hidden="false" />
-    <register name="CC" address="0x4020014C" bitWidth="32" desc="Compare / capture value" hidden="false" />
-    <register name="CC_BUF" address="0x40200150" bitWidth="32" desc="Compare / capture buffer value" hidden="false" />
-    <register name="PERIOD" address="0x40200154" bitWidth="32" desc="Period value" hidden="false" />
-    <register name="PERIOD_BUF" address="0x40200158" bitWidth="32" desc="Period buffer value" hidden="false" />
+    <register name="COUNTER" address="0x40200248" bitWidth="32" desc="Current counter value" hidden="false" />
+    <register name="CC" address="0x4020024C" bitWidth="32" desc="Compare / capture value" hidden="false" />
+    <register name="CC_BUF" address="0x40200250" bitWidth="32" desc="Compare / capture buffer value" hidden="false" />
+    <register name="PERIOD" address="0x40200254" bitWidth="32" desc="Period value" hidden="false" />
+    <register name="PERIOD_BUF" address="0x40200258" bitWidth="32" desc="Period buffer value" hidden="false" />
   </block>
+  <block name="LED_RED" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="LED_BLUE_PWM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="VMux_count" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VMux_reload" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VMux_start" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VMux_stop" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VMux_capture" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VMux_clock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_m0s8_tcpwm_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="COUNTER" address="0x40200288" bitWidth="32" desc="Current counter value" hidden="false" />
+    <register name="CC" address="0x4020028C" bitWidth="32" desc="Compare / capture value" hidden="false" />
+    <register name="CC_BUF" address="0x40200290" bitWidth="32" desc="Compare / capture buffer value" hidden="false" />
+    <register name="PERIOD" address="0x40200294" bitWidth="32" desc="Period value" hidden="false" />
+    <register name="PERIOD_BUF" address="0x40200298" bitWidth="32" desc="Period buffer value" hidden="false" />
+  </block>
+  <block name="Resistor_Red_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Codec_ADCDAT" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="ByteCounter_Tx" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="VMux_count" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="VMux_reload" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -5252,40 +5250,32 @@
     <register name="PERIOD" address="0x40200114" bitWidth="32" desc="Period value" hidden="false" />
     <register name="PERIOD_BUF" address="0x40200118" bitWidth="32" desc="Period buffer value" hidden="false" />
   </block>
+  <block name="Codec_BCLK" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Codec_LRC" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="ByteCounter_Rx" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="VMux_count" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VMux_reload" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VMux_start" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VMux_stop" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VMux_capture" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VMux_clock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_m0s8_tcpwm_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="COUNTER" address="0x40200148" bitWidth="32" desc="Current counter value" hidden="false" />
+    <register name="CC" address="0x4020014C" bitWidth="32" desc="Compare / capture value" hidden="false" />
+    <register name="CC_BUF" address="0x40200150" bitWidth="32" desc="Compare / capture buffer value" hidden="false" />
+    <register name="PERIOD" address="0x40200154" bitWidth="32" desc="Period value" hidden="false" />
+    <register name="PERIOD_BUF" address="0x40200158" bitWidth="32" desc="Period buffer value" hidden="false" />
+  </block>
+  <block name="isr_RxDMADone" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="TxDMA" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="isr_TxDMADone" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Codec_DACDAT" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="Codec_MCLK" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="cy_tff_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="USBOutDMA" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="I2S" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="bI2S" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <register name="RX_STATUS_0_REG" address="0x400F0060" bitWidth="8" desc="" hidden="false">
-      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" hidden="false" />
-      <field name="CH1 F1" from="5" to="5" access="R" resetVal="" desc="Stereo channel 1 FIFO 1 state" hidden="false">
-        <value name="EMPTY" value="0" desc="" />
-        <value name="NOT_EMPTY" value="1" desc="" />
-      </field>
-      <field name="CH1 F0" from="4" to="4" access="R" resetVal="" desc="Stereo channel 1 FIFO 0 state" hidden="false">
-        <value name="EMPTY" value="0" desc="" />
-        <value name="NOT_EMPTY" value="1" desc="" />
-      </field>
-      <field name="CH1 OVRFL" from="3" to="3" access="R" resetVal="" desc="Stereo channel 1 FIFO overflow" hidden="false">
-        <value name="NO_OVERFLOW" value="0" desc="" />
-        <value name="OVERFLOW" value="1" desc="" />
-      </field>
-      <field name="CH0 F1" from="2" to="2" access="R" resetVal="" desc="Stereo channel 0 FIFO 1 state" hidden="false">
-        <value name="EMPTY" value="0" desc="" />
-        <value name="NOT_EMPTY" value="1" desc="" />
-      </field>
-      <field name="CH0 F0" from="1" to="1" access="R" resetVal="" desc="Stereo channel 0 FIFO 0 state" hidden="false">
-        <value name="EMPTY" value="0" desc="" />
-        <value name="NOT_EMPTY" value="1" desc="" />
-      </field>
-      <field name="CH0 OVRFL" from="0" to="0" access="R" resetVal="" desc="Stereo channel 0 FIFO overflow" hidden="false">
-        <value name="NO_OVERFLOW" value="0" desc="" />
-        <value name="OVERFLOW" value="1" desc="" />
-      </field>
-    </register>
-    <register name="TX_STATUS_0_REG" address="0x400F0067" bitWidth="8" desc="" hidden="false">
+    <register name="TX_STATUS_0_REG" address="0x400F0066" bitWidth="8" desc="" hidden="false">
       <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" hidden="false" />
       <field name="CH1 F1" from="5" to="5" access="R" resetVal="" desc="Stereo channel 1 FIFO 1 state" hidden="false">
         <value name="FULL" value="0" desc="" />
@@ -5312,7 +5302,34 @@
         <value name="UNDERFLOW" value="1" desc="" />
       </field>
     </register>
-    <register name="CONTROL_REG" address="0x400F0070" bitWidth="8" desc="" hidden="false">
+    <register name="RX_STATUS_0_REG" address="0x400F0067" bitWidth="8" desc="" hidden="false">
+      <field name="INT" from="7" to="7" access="R" resetVal="" desc="Interrupt bit" hidden="false" />
+      <field name="CH1 F1" from="5" to="5" access="R" resetVal="" desc="Stereo channel 1 FIFO 1 state" hidden="false">
+        <value name="EMPTY" value="0" desc="" />
+        <value name="NOT_EMPTY" value="1" desc="" />
+      </field>
+      <field name="CH1 F0" from="4" to="4" access="R" resetVal="" desc="Stereo channel 1 FIFO 0 state" hidden="false">
+        <value name="EMPTY" value="0" desc="" />
+        <value name="NOT_EMPTY" value="1" desc="" />
+      </field>
+      <field name="CH1 OVRFL" from="3" to="3" access="R" resetVal="" desc="Stereo channel 1 FIFO overflow" hidden="false">
+        <value name="NO_OVERFLOW" value="0" desc="" />
+        <value name="OVERFLOW" value="1" desc="" />
+      </field>
+      <field name="CH0 F1" from="2" to="2" access="R" resetVal="" desc="Stereo channel 0 FIFO 1 state" hidden="false">
+        <value name="EMPTY" value="0" desc="" />
+        <value name="NOT_EMPTY" value="1" desc="" />
+      </field>
+      <field name="CH0 F0" from="1" to="1" access="R" resetVal="" desc="Stereo channel 0 FIFO 0 state" hidden="false">
+        <value name="EMPTY" value="0" desc="" />
+        <value name="NOT_EMPTY" value="1" desc="" />
+      </field>
+      <field name="CH0 OVRFL" from="0" to="0" access="R" resetVal="" desc="Stereo channel 0 FIFO overflow" hidden="false">
+        <value name="NO_OVERFLOW" value="0" desc="" />
+        <value name="OVERFLOW" value="1" desc="" />
+      </field>
+    </register>
+    <register name="CONTROL_REG" address="0x400F0073" bitWidth="8" desc="" hidden="false">
       <field name="RESOLUTION" from="4" to="3" access="RW" resetVal="" desc="Specifies data bits value. Applicable only if dynamic bit resolution is selected." hidden="false">
         <value name="8-BIT" value="00" desc="" />
         <value name="16-BIT" value="01" desc="" />
@@ -5337,20 +5354,20 @@
     <block name="TimerUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <register name="Async_Feedback_Counter_COUNTER" address="0x400F0001" bitWidth="8" desc="UDB.A0 - Current Down Counter Value" hidden="false" />
     <register name="Async_Feedback_Counter_PERIOD" address="0x400F0021" bitWidth="8" desc="UDB.D0 - Assigned Period" hidden="false" />
-    <register name="Async_Feedback_Counter_Control_Reg" address="0x400F0071" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+    <register name="Async_Feedback_Counter_Control_Reg" address="0x400F0070" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
       <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable the Timer" hidden="false" />
       <field name="CTRL_CMODE" from="6" to="5" access="RW" resetVal="" desc="Capture Mode" hidden="false" />
       <field name="CTRL_TEN" from="4" to="4" access="RW" resetVal="" desc="Trigger Enable Bit" hidden="false" />
       <field name="CTRL_TMODE" from="3" to="2" access="RW" resetVal="" desc="Trigger Mode" hidden="false" />
       <field name="CTRL_IC" from="1" to="0" access="RW" resetVal="" desc="Interrupt Count" hidden="false" />
     </register>
-    <register name="Async_Feedback_Counter_STATUS_MASK" address="0x400F0082" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+    <register name="Async_Feedback_Counter_STATUS_MASK" address="0x400F0081" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
       <field name="TIMER_STS_TC" from="0" to="0" access="R" resetVal="" desc="Enables the Interrupt on TC" hidden="false" />
       <field name="TIMER_STS_CAPT" from="1" to="1" access="R" resetVal="" desc="Enables the Interrupt on Capture" hidden="false" />
       <field name="TIMER_STS_FIFO_FULL" from="2" to="2" access="R" resetVal="" desc="FIFO Full Status " hidden="false" />
       <field name="TIMER_STS_FIFO_NEMPTY" from="3" to="3" access="R" resetVal="" desc="FIFO Empty status " hidden="false" />
     </register>
-    <register name="Async_Feedback_Counter_STATUS_AUX_CTRL" address="0x400F0092" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+    <register name="Async_Feedback_Counter_STATUS_AUX_CTRL" address="0x400F0091" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
       <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear" hidden="false">
         <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
         <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
@@ -5380,13 +5397,13 @@
   <block name="AudioClkGen_Ref" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="cy_tff_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="AudioClkSel" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
-    <register name="AudioClkSel_CONTROL_REG" address="0x400F0072" bitWidth="8" desc="" hidden="false" />
-  </block>
-  <block name="LED_BLUE" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="AudioClkGen_Ref_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="AudioClkMux" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Clk_Counter" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Resistor_Red_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="D_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="LED_BLUE" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="VDD_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="DMA" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="POTL" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="ADC" BASE="0x0" SIZE="0x0" desc="Sequencing SAR ADC" visible="true" hidden="false">
     <block name="cy_analog_noconnect_30" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="cy_analog_noconnect_31" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -5775,14 +5792,10 @@
       <field name="WOUND_RESOLUTION" from="1" to="0" access="R" resetVal="" desc="Maximum SAR resolution allowed" hidden="false" />
     </register>
   </block>
-  <block name="VDD_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Resistor_Red_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="RxDMA" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="USBInDMA" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="isr_RxDMADone" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="Clk_Counter" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  <block name="OneTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="POTR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="AudioClkSel" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <register name="AudioClkSel_CONTROL_REG" address="0x400F0076" bitWidth="8" desc="" hidden="false" />
+  </block>
   <block name="UART" BASE="0x0" SIZE="0x0" desc="Serial Communication Block" visible="true" hidden="false">
     <block name="clock_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="sclk_s_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -6474,4 +6487,10 @@
       <field name="BREAK_DETECT" from="11" to="11" access="RW" resetVal="" desc="Logical and of corresponding request and mask bits" hidden="false" />
     </register>
   </block>
+  <block name="RxDMA" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="USBInDMA" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="AudioClkGen_Ref_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="AudioClkMux" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="OneTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
 </blockRegMap>

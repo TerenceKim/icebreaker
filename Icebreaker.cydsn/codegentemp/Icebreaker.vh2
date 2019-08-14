@@ -2,7 +2,7 @@
 --	Conversion of Icebreaker.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Tue Aug 13 23:59:14 2019
+--	Wed Aug 14 00:06:30 2019
 --
 
 USE cypress.cypress.all;
@@ -912,11 +912,11 @@ SIGNAL \LED_RED_PWM:Net_82\ : bit;
 SIGNAL \LED_RED_PWM:Net_72\ : bit;
 SIGNAL Net_4881 : bit;
 SIGNAL Net_4880 : bit;
-SIGNAL Net_4882 : bit;
+SIGNAL Net_185 : bit;
 SIGNAL Net_4926 : bit;
 SIGNAL Net_4884 : bit;
 SIGNAL Net_155 : bit;
-SIGNAL Net_185 : bit;
+SIGNAL Net_4948 : bit;
 TERMINAL Net_4887 : bit;
 TERMINAL Net_4925 : bit;
 TERMINAL Net_4888 : bit;
@@ -936,6 +936,26 @@ SIGNAL Net_4896 : bit;
 SIGNAL Net_4916 : bit;
 SIGNAL Net_4900 : bit;
 SIGNAL Net_4907 : bit;
+SIGNAL \LED_GREEN_PWM:Net_81\ : bit;
+SIGNAL \LED_GREEN_PWM:Net_75\ : bit;
+SIGNAL \LED_GREEN_PWM:Net_69\ : bit;
+SIGNAL \LED_GREEN_PWM:Net_66\ : bit;
+SIGNAL \LED_GREEN_PWM:Net_82\ : bit;
+SIGNAL \LED_GREEN_PWM:Net_72\ : bit;
+SIGNAL Net_4939 : bit;
+SIGNAL Net_4938 : bit;
+SIGNAL Net_4940 : bit;
+SIGNAL Net_4941 : bit;
+SIGNAL Net_4942 : bit;
+SIGNAL Net_4937 : bit;
+TERMINAL Net_4944 : bit;
+TERMINAL Net_4945 : bit;
+TERMINAL Net_4946 : bit;
+SIGNAL tmpOE__LED_GREEN_net_0 : bit;
+SIGNAL tmpFB_0__LED_GREEN_net_0 : bit;
+SIGNAL tmpIO_0__LED_GREEN_net_0 : bit;
+TERMINAL tmpSIOVREF__LED_GREEN_net_0 : bit;
+SIGNAL tmpINTERRUPT_0__LED_GREEN_net_0 : bit;
 SIGNAL \I2S:bI2S:reset\\D\ : bit;
 SIGNAL \I2S:bI2S:channel\\D\ : bit;
 SIGNAL \I2S:bI2S:tx_underflow_sticky\\D\ : bit;
@@ -1012,11 +1032,11 @@ one <=  ('1') ;
 
 \I2S:bI2S:tx_underflow_0\ <= ((not \I2S:bI2S:tx_state_2\ and not \I2S:bI2S:tx_state_1\ and \I2S:bI2S:tx_state_0\ and \I2S:bI2S:tx_f0_empty_0\));
 
-\I2S:tx_line_0\\D\ <= ((not \I2S:bI2S:count_5\ and \I2S:bI2S:count_3\ and \I2S:bI2S:count_2\ and \I2S:bI2S:count_1\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
-	OR (not \I2S:bI2S:count_3\ and \I2S:bI2S:count_4\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
-	OR (not \I2S:bI2S:count_2\ and \I2S:bI2S:count_4\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
-	OR (not \I2S:bI2S:count_4\ and \I2S:bI2S:count_5\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
-	OR (not \I2S:bI2S:count_1\ and \I2S:bI2S:count_4\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
+\I2S:tx_line_0\\D\ <= ((not \I2S:bI2S:count_4\ and \I2S:bI2S:count_3\ and \I2S:bI2S:count_2\ and \I2S:bI2S:count_1\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
+	OR (not \I2S:bI2S:count_3\ and \I2S:bI2S:count_5\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
+	OR (not \I2S:bI2S:count_2\ and \I2S:bI2S:count_5\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
+	OR (not \I2S:bI2S:count_5\ and \I2S:bI2S:count_4\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
+	OR (not \I2S:bI2S:count_1\ and \I2S:bI2S:count_5\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
 	OR (not Net_4032 and Net_4031_0));
 
 \I2S:bI2S:rx_f0_load\\D\ <= ((not \I2S:bI2S:rx_state_1\ and \I2S:bI2S:rx_state_2\ and \I2S:bI2S:rx_state_0\)
@@ -1052,11 +1072,11 @@ one <=  ('1') ;
 
 \I2S:bI2S:rx_overflow_0\ <= ((\I2S:bI2S:rx_f0_load\ and \I2S:bI2S:rx_f0_full_0\));
 
-\I2S:bI2S:rx_data_in_0\\D\ <= ((not \I2S:bI2S:count_5\ and not Net_4032 and \I2S:bI2S:count_3\ and \I2S:bI2S:count_2\ and \I2S:bI2S:count_1\ and Net_4030)
-	OR (not \I2S:bI2S:count_3\ and not Net_4032 and \I2S:bI2S:count_4\ and Net_4030)
-	OR (not \I2S:bI2S:count_2\ and not Net_4032 and \I2S:bI2S:count_4\ and Net_4030)
-	OR (not \I2S:bI2S:count_4\ and not Net_4032 and \I2S:bI2S:count_5\ and Net_4030)
-	OR (not \I2S:bI2S:count_1\ and not Net_4032 and \I2S:bI2S:count_4\ and Net_4030)
+\I2S:bI2S:rx_data_in_0\\D\ <= ((not \I2S:bI2S:count_4\ and not Net_4032 and \I2S:bI2S:count_3\ and \I2S:bI2S:count_2\ and \I2S:bI2S:count_1\ and Net_4030)
+	OR (not \I2S:bI2S:count_3\ and not Net_4032 and \I2S:bI2S:count_5\ and Net_4030)
+	OR (not \I2S:bI2S:count_2\ and not Net_4032 and \I2S:bI2S:count_5\ and Net_4030)
+	OR (not \I2S:bI2S:count_5\ and not Net_4032 and \I2S:bI2S:count_4\ and Net_4030)
+	OR (not \I2S:bI2S:count_1\ and not Net_4032 and \I2S:bI2S:count_5\ and Net_4030)
 	OR (Net_4032 and \I2S:bI2S:rx_data_in_0\));
 
 cy_tff_2D <= (not Clk_I2S);
@@ -3361,7 +3381,7 @@ isr_Button:cy_isr_v1_0
 	PORT MAP(int_signal=>Net_4874);
 \LED_RED_PWM:cy_m0s8_tcpwm_1\:cy_m0s8_tcpwm_v1_0
 	GENERIC MAP(cy_registers=>"")
-	PORT MAP(clock=>Net_185,
+	PORT MAP(clock=>Net_4948,
 		capture=>zero,
 		count=>one,
 		reload=>zero,
@@ -3369,7 +3389,7 @@ isr_Button:cy_isr_v1_0
 		start=>zero,
 		underflow=>Net_4881,
 		overflow=>Net_4880,
-		compare_match=>Net_4882,
+		compare_match=>Net_185,
 		line_out=>Net_4926,
 		line_out_compl=>Net_4884,
 		interrupt=>Net_155);
@@ -3385,7 +3405,7 @@ Clock_1:cy_clock_v1_0
 		period=>"83333333.3333333",
 		is_direct=>'0',
 		is_digital=>'0')
-	PORT MAP(clock_out=>Net_185,
+	PORT MAP(clock_out=>Net_4948,
 		dig_domain_out=>open);
 D_2:cy_annotation_universal_v1_0
 	GENERIC MAP(comp_name=>"LED_v1_0",
@@ -3474,7 +3494,7 @@ LED_RED:cy_psoc3_pins_v1_10
 		interrupt=>tmpINTERRUPT_0__LED_RED_net_0);
 \LED_BLUE_PWM:cy_m0s8_tcpwm_1\:cy_m0s8_tcpwm_v1_0
 	GENERIC MAP(cy_registers=>"")
-	PORT MAP(clock=>Net_185,
+	PORT MAP(clock=>Net_4948,
 		capture=>zero,
 		count=>one,
 		reload=>zero,
@@ -3490,6 +3510,109 @@ LED_BLUE_PWM_ISR:cy_isr_v1_0
 	GENERIC MAP(int_type=>"10",
 		is_nmi=>'0')
 	PORT MAP(int_signal=>Net_4907);
+\LED_GREEN_PWM:cy_m0s8_tcpwm_1\:cy_m0s8_tcpwm_v1_0
+	GENERIC MAP(cy_registers=>"")
+	PORT MAP(clock=>Net_4948,
+		capture=>zero,
+		count=>one,
+		reload=>zero,
+		stop=>zero,
+		start=>zero,
+		underflow=>Net_4939,
+		overflow=>Net_4938,
+		compare_match=>Net_4940,
+		line_out=>Net_4941,
+		line_out_compl=>Net_4942,
+		interrupt=>Net_4937);
+LED_GREEN_PWM_ISR:cy_isr_v1_0
+	GENERIC MAP(int_type=>"10",
+		is_nmi=>'0')
+	PORT MAP(int_signal=>Net_4937);
+D_3:cy_annotation_universal_v1_0
+	GENERIC MAP(comp_name=>"LED_v1_0",
+		port_names=>"A, K",
+		width=>2)
+	PORT MAP(connect=>(Net_4944, Net_4945));
+Resistor_Red_7:cy_annotation_universal_v1_0
+	GENERIC MAP(comp_name=>"Resistor_v1_0",
+		port_names=>"T1, T2",
+		width=>2)
+	PORT MAP(connect=>(Net_4946, Net_4944));
+VDD_6:cy_annotation_universal_v1_0
+	GENERIC MAP(comp_name=>"Power_v1_0",
+		port_names=>"T1",
+		width=>1)
+	PORT MAP(connect=>Net_4946);
+LED_GREEN:cy_psoc3_pins_v1_10
+	GENERIC MAP(id=>"8440a286-eda4-4774-8d70-0ec0410a83da",
+		drive_mode=>"110",
+		ibuf_enabled=>"1",
+		init_dr_st=>"1",
+		input_sync=>"1",
+		input_clk_en=>'0',
+		input_sync_mode=>"0",
+		intr_mode=>"00",
+		invert_in_clock=>'0',
+		invert_in_clock_en=>'0',
+		invert_in_reset=>'0',
+		invert_out_clock=>'0',
+		invert_out_clock_en=>'0',
+		invert_out_reset=>'0',
+		io_voltage=>"",
+		layout_mode=>"CONTIGUOUS",
+		output_conn=>"1",
+		output_sync=>"0",
+		output_clk_en=>'0',
+		output_mode=>"0",
+		output_reset=>'0',
+		output_clock_mode=>"0",
+		oe_sync=>"0",
+		oe_conn=>"0",
+		oe_reset=>'0',
+		pin_aliases=>"",
+		pin_mode=>"O",
+		por_state=>4,
+		sio_group_cnt=>0,
+		sio_hifreq=>"00000000",
+		sio_hyst=>"1",
+		sio_ibuf=>"00000000",
+		sio_info=>"00",
+		sio_obuf=>"00000000",
+		sio_refsel=>"00000000",
+		sio_vtrip=>"00000000",
+		sio_vohsel=>"00000000",
+		slew_rate=>"0",
+		spanning=>'0',
+		sw_only=>'0',
+		vtrip=>"10",
+		width=>1,
+		port_alias_required=>'0',
+		port_alias_group=>"",
+		use_annotation=>"1",
+		pa_in_clock=>-1,
+		pa_in_clock_en=>-1,
+		pa_in_reset=>-1,
+		pa_out_clock=>-1,
+		pa_out_clock_en=>-1,
+		pa_out_reset=>-1,
+		ovt_needed=>"0",
+		ovt_slew_control=>"00",
+		ovt_hyst_trim=>"0",
+		input_buffer_sel=>"00")
+	PORT MAP(oe=>(one),
+		y=>Net_4941,
+		fb=>(tmpFB_0__LED_GREEN_net_0),
+		analog=>(open),
+		io=>(tmpIO_0__LED_GREEN_net_0),
+		siovref=>(tmpSIOVREF__LED_GREEN_net_0),
+		annotation=>Net_4945,
+		in_clock=>zero,
+		in_clock_en=>one,
+		in_reset=>zero,
+		out_clock=>zero,
+		out_clock_en=>one,
+		out_reset=>zero,
+		interrupt=>tmpINTERRUPT_0__LED_GREEN_net_0);
 \I2S:bI2S:reset\:cy_dff
 	PORT MAP(d=>\I2S:bI2S:reset\\D\,
 		clk=>\I2S:bI2S:op_clk\,

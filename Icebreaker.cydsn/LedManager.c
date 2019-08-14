@@ -12,8 +12,10 @@
 #include <LedManager.h>
 #include <LED_RED_PWM_ISR.h>
 #include <LED_BLUE_PWM_ISR.h>
+#include <LED_GREEN_PWM_ISR.h>
 #include <LED_RED_PWM.h>
 #include <LED_BLUE_PWM.h>
+#include <LED_GREEN_PWM.h>
 #include <stdbool.h>
 
 typedef struct
@@ -45,15 +47,15 @@ static pwm_callbacks_s pwm[LM_LED_MAX] =
     },
     // LM_LED_GREEN
     {
-//        .startIsr = LED_GREEN_PWM_ISR_Start,
-//        .start = LED_GREEN_PWM_Start,
-//        .stop = LED_GREEN_PWM_Stop,
-//        .writeCounter = LED_GREEN_PWM_WriteCounter,
-//        .readCounter = LED_GREEN_PWM_ReadCounter,
-//        .writePeriod = LED_GREEN_PWM_WritePeriod,
-//        .readPeriod = LED_GREEN_PWM_ReadPeriod,
-//        .writeCompare = LED_GREEN_PWM_WriteCompare,
-//        .readCompare = LED_GREEN_PWM_ReadCompare
+        .startIsr = LED_GREEN_PWM_ISR_Start,
+        .start = LED_GREEN_PWM_Start,
+        .stop = LED_GREEN_PWM_Stop,
+        .writeCounter = LED_GREEN_PWM_WriteCounter,
+        .readCounter = LED_GREEN_PWM_ReadCounter,
+        .writePeriod = LED_GREEN_PWM_WritePeriod,
+        .readPeriod = LED_GREEN_PWM_ReadPeriod,
+        .writeCompare = LED_GREEN_PWM_WriteCompare,
+        .readCompare = LED_GREEN_PWM_ReadCompare
     },
     // LM_LED_BLUE
     {
@@ -100,6 +102,10 @@ void LedManagerInterruptHandler(LM_LED_e ledIdx)
             case LM_LED_RED:
                 LED_RED_PWM_ClearInterrupt(LED_RED_PWM_INTR_MASK_TC);
                 break;
+            
+            case LM_LED_GREEN:
+                LED_GREEN_PWM_ClearInterrupt(LED_GREEN_PWM_INTR_MASK_TC);
+                break;                
             
             case LM_LED_BLUE:
                 LED_BLUE_PWM_ClearInterrupt(LED_BLUE_PWM_INTR_MASK_TC);

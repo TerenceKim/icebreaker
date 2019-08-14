@@ -214,6 +214,10 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\UART_rx.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\UART_rx_aliases.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\UART_rx_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_GREEN.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_GREEN.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_GREEN_aliases.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_GREEN_PM.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\ADC.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\ADC.h</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\ADC_PM.c</File>
@@ -298,6 +302,11 @@
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_BLUE_PWM_PM.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_BLUE_PWM_ISR.c</File>
           <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_BLUE_PWM_ISR.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_GREEN_PWM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_GREEN_PWM.h</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_GREEN_PWM_PM.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_GREEN_PWM_ISR.c</File>
+          <File BuildType="BUILD" Toolchain="">Generated_Source\PSoC4\LED_GREEN_PWM_ISR.h</File>
         </Files>
       </Folder>
       <Folder BuildType="EXCLUDE" Path=".\codegentemp">
