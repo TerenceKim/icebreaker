@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
   29:pcm1770.c     **** 
   30:pcm1770.c     **** #define WritePin(pp, s) pp ## _Write(s)
   31:pcm1770.c     **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 2
 
 
   32:pcm1770.c     **** #define ConfigPin(pp, m)  CY_SYS_PINS_SET_DRIVE_MODE(CYREG_PRT2_DR, pp ## _PIN, m)
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
   37              		.cfi_offset 14, -4
   38 0002 0400     		movs	r4, r0
   39 0004 0E1E     		subs	r6, r1, #0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 3
 
 
   76:pcm1770.c     ****     int i;
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
   90:pcm1770.c     **** 
   91:pcm1770.c     ****     if (toggle_cs)
   77              		.loc 1 91 0 is_stmt 1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 4
 
 
   78 002e 002E     		cmp	r6, #0
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  120 000c 0024     		movs	r4, #0
  121 000e 05E0     		b	.L7
  122              	.LVL16:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 5
 
 
  123              	.L8:
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  165 0004 1954     		strb	r1, [r3, r0]
  114:pcm1770.c     ****     
  115:pcm1770.c     ****     tmp = (tmp << 8) | data;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 6
 
 
  166              		.loc 1 115 0
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
   70:pcm1770.c     ****     pcm1770_reg_write(PCM1770_REG_ZCAT_PWRD, 0x10);
  214              		.loc 1 70 0
  215 0014 0121     		movs	r1, #1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 7
 
 
  216 0016 0320     		movs	r0, #3
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  125:pcm1770.c     ****     {
  126:pcm1770.c     ****         volume = PCM1770_VOL_MAX;
  261              		.loc 1 126 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 8
 
 
  262 0014 0024     		movs	r4, #0
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  308              	.LVL39:
  309 0058 2800     		movs	r0, r5
  310 005a FFF7FEFF 		bl	USBUART_PutString
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 9
 
 
  311              	.LVL40:
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  140:pcm1770.c     **** 
  141:pcm1770.c     **** void pcm1770_volume_set_level(uint8 level)
  142:pcm1770.c     **** {
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 10
 
 
  360              		.loc 1 142 0
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  151:pcm1770.c     **** void pcm1770_mute_set(bool left, bool right)
  152:pcm1770.c     **** {
  406              		.loc 1 152 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 11
 
 
  407              		.cfi_startproc
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  453              		.align	2
  454              		.global	pcm1770_reg_read
  455              		.code	16
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 12
 
 
  456              		.thumb_func
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  496      6D655F73 
  496      657400
  497              		.data
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 13
 
 
  498              		.align	2
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  549 0034 02       		.byte	0x2
  550 0035 05       		.byte	0x5
  551 0036 39000000 		.4byte	.LASF2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 14
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 14
 
 
  552 003a 02       		.uleb128 0x2
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  606 00a8 16030000 		.4byte	.LASF14
  607 00ac 02       		.byte	0x2
  608 00ad E901     		.2byte	0x1e9
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 15
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 15
 
 
  609 00af 41000000 		.4byte	0x41
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  663 0118 03       		.byte	0x3
  664 0119 19       		.byte	0x19
  665 011a 6B000000 		.4byte	0x6b
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 16
 
 
  666 011e 10       		.byte	0x10
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  720 017e 63000000 		.4byte	.LASF29
  721 0182 04       		.byte	0x4
  722 0183 1D       		.byte	0x1d
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 17
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 17
 
 
  723 0184 47010000 		.4byte	0x147
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  777 01fd 50       		.byte	0x50
  778 01fe 04       		.uleb128 0x4
  779 01ff 74       		.byte	0x74
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 18
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 18
 
 
  780 0200 00       		.sleb128 0
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  834 026a B8000000 		.4byte	.LLST5
  835 026e 10       		.uleb128 0x10
  836 026f 0C000000 		.4byte	.LVL15
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 19
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 19
 
 
  837 0273 59050000 		.4byte	0x559
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  891 02e5 01       		.uleb128 0x1
  892 02e6 31       		.byte	0x31
  893 02e7 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 20
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 20
 
 
  894 02e8 00       		.byte	0
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  948 034e 00       		.byte	0
  949 034f 12       		.uleb128 0x12
  950 0350 24000000 		.4byte	.LVL31
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 21
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 21
 
 
  951 0354 97020000 		.4byte	0x297
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1005 03bd 18       		.uleb128 0x18
  1006 03be 3A000000 		.4byte	.LVL38
  1007 03c2 9C050000 		.4byte	0x59c
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 22
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 22
 
 
  1008 03c6 10       		.uleb128 0x10
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1062 0423 11       		.uleb128 0x11
  1063 0424 01       		.uleb128 0x1
  1064 0425 50       		.byte	0x50
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 23
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 23
 
 
  1065 0426 01       		.uleb128 0x1
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1119 0498 9C       		.byte	0x9c
  1120 0499 E8040000 		.4byte	0x4e8
  1121 049d 0E       		.uleb128 0xe
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 24
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 24
 
 
  1122 049e 61020000 		.4byte	.LASF42
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1176 0510 00       		.byte	0
  1177 0511 08       		.uleb128 0x8
  1178 0512 6B000000 		.4byte	0x6b
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 25
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 25
 
 
  1179 0516 21050000 		.4byte	0x521
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1233 058e 0A       		.byte	0xa
  1234 058f 33       		.byte	0x33
  1235 0590 1F       		.uleb128 0x1f
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 26
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 26
 
 
  1236 0591 7F010000 		.4byte	.LASF52
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1290 0020 00       		.byte	0
  1291 0021 0B       		.uleb128 0xb
  1292 0022 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 27
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 27
 
 
  1293 0023 3E       		.uleb128 0x3e
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1347 0059 08       		.uleb128 0x8
  1348 005a 01       		.uleb128 0x1
  1349 005b 01       		.byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 28
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 28
 
 
  1350 005c 49       		.uleb128 0x49
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1404 0092 3A       		.uleb128 0x3a
  1405 0093 0B       		.uleb128 0xb
  1406 0094 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 29
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 29
 
 
  1407 0095 0B       		.uleb128 0xb
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1461 00cc 03       		.uleb128 0x3
  1462 00cd 08       		.uleb128 0x8
  1463 00ce 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 30
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 30
 
 
  1464 00cf 0B       		.uleb128 0xb
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1518 010c 06       		.uleb128 0x6
  1519 010d 40       		.uleb128 0x40
  1520 010e 18       		.uleb128 0x18
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 31
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 31
 
 
  1521 010f 9742     		.uleb128 0x2117
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1575 0146 02       		.uleb128 0x2
  1576 0147 18       		.uleb128 0x18
  1577 0148 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 32
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 32
 
 
  1578 0149 00       		.byte	0
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1632 0182 19       		.uleb128 0x19
  1633 0183 03       		.uleb128 0x3
  1634 0184 0E       		.uleb128 0xe
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 33
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 33
 
 
  1635 0185 3A       		.uleb128 0x3a
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1689 01bc 0B       		.uleb128 0xb
  1690 01bd 3B       		.uleb128 0x3b
  1691 01be 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 34
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 34
 
 
  1692 01bf 00       		.byte	0
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1746 004e 51       		.byte	0x51
  1747 004f 9F       		.byte	0x9f
  1748 0050 00000000 		.4byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 35
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 35
 
 
  1749 0054 00000000 		.4byte	0
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1803 00db 08000000 		.4byte	.LVL23
  1804 00df 0100     		.2byte	0x1
  1805 00e1 50       		.byte	0x50
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 36
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 36
 
 
  1806 00e2 08000000 		.4byte	.LVL23
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1860 0158 16000000 		.4byte	.LVL34
  1861 015c 1E000000 		.4byte	.LVL35
  1862 0160 0100     		.2byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 37
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 37
 
 
  1863 0162 54       		.byte	0x54
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1917 01eb F3       		.byte	0xf3
  1918 01ec 01       		.uleb128 0x1
  1919 01ed 51       		.byte	0x51
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 38
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 38
 
 
  1920 01ee 9F       		.byte	0x9f
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  1974              		.section	.debug_ranges,"",%progbits
  1975              	.Ldebug_ranges0:
  1976 0000 00000000 		.4byte	.LFB3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 39
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 39
 
 
  1977 0004 3A000000 		.4byte	.LFE3
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  2010      6300
  2011              	.LASF44:
  2012 0056 70636D31 		.ascii	"pcm1770_regs\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 40
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 40
 
 
  2012      3737305F 
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  2032 015a 55534255 		.ascii	"USBUART_PutString\000"
  2032      4152545F 
  2032      50757453 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 41
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 41
 
 
  2032      7472696E 
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  2058 01f3 6C6F6E67 		.ascii	"long double\000"
  2058      20646F75 
  2058      626C6500 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 42
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 42
 
 
  2059              	.LASF48:
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  2084      62726174 
  2084      696F6E5F 
  2084      64617461 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 43
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 43
 
 
  2084      5F7300
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 1
  2114 0335 6C657665 		.ascii	"level\000"
  2114      6C00
  2115              	.LASF20:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAA65x.s 			page 44
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc482Ank.s 			page 44
 
 
  2116 033b 7369676E 		.ascii	"signature\000"

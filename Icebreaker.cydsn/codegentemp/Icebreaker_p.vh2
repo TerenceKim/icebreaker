@@ -1,5 +1,5 @@
 -- Project:   Icebreaker
--- Generated: 08/05/2019 00:45:17
+-- Generated: 08/13/2019 23:59:16
 -- PSoC Creator  4.2
 
 ENTITY Icebreaker IS
@@ -20,7 +20,8 @@ ENTITY Icebreaker IS
         PD(0)_PAD : OUT std_ulogic;
         \USBUART:Dp(0)_PAD\ : INOUT std_ulogic;
         \USBUART:Dm(0)_PAD\ : OUT std_ulogic;
-        BTN(0)_PAD : IN std_ulogic);
+        BTN(0)_PAD : IN std_ulogic;
+        LED_RED(0)_PAD : OUT std_ulogic);
     ATTRIBUTE voltage_VDDIO_A_1 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDA_0 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDA_CTB OF __DEFAULT__ : ENTITY IS 3.3e0;
@@ -64,7 +65,13 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     SIGNAL I2S_LRCLK__SYNC_OUT : bit;
     SIGNAL I2S_LRCLK__SYNC_OUT_1 : bit;
     SIGNAL LED_BLUE(0)__PA : bit;
+    SIGNAL LED_RED(0)__PA : bit;
     SIGNAL Net_105 : bit;
+    SIGNAL Net_155 : bit;
+    SIGNAL Net_185_ff13 : bit;
+    ATTRIBUTE global_signal OF Net_185_ff13 : SIGNAL IS true;
+    SIGNAL Net_185_ff14 : bit;
+    ATTRIBUTE global_signal OF Net_185_ff14 : SIGNAL IS true;
     SIGNAL Net_3641 : bit;
     SIGNAL Net_3651 : bit;
     SIGNAL Net_3792 : bit;
@@ -101,6 +108,17 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     SIGNAL Net_4781 : bit;
     SIGNAL Net_4856 : bit;
     SIGNAL Net_4874 : bit;
+    SIGNAL Net_4880 : bit;
+    SIGNAL Net_4881 : bit;
+    SIGNAL Net_4882 : bit;
+    SIGNAL Net_4884 : bit;
+    SIGNAL Net_4896 : bit;
+    SIGNAL Net_4897 : bit;
+    SIGNAL Net_4900 : bit;
+    SIGNAL Net_4907 : bit;
+    SIGNAL Net_4916 : bit;
+    SIGNAL Net_4920 : bit;
+    SIGNAL Net_4926 : bit;
     SIGNAL PD(0)__PA : bit;
     SIGNAL POTL(0)__PA : bit;
     SIGNAL POTR(0)__PA : bit;
@@ -266,7 +284,7 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     ATTRIBUTE lib_model OF \CodecI2CM:scl(0)\ : LABEL IS "iocell9";
     ATTRIBUTE Location OF \CodecI2CM:scl(0)\ : LABEL IS "P3[0]";
     ATTRIBUTE lib_model OF LED_BLUE(0) : LABEL IS "iocell10";
-    ATTRIBUTE Location OF LED_BLUE(0) : LABEL IS "P1[6]";
+    ATTRIBUTE Location OF LED_BLUE(0) : LABEL IS "P11[4]";
     ATTRIBUTE lib_model OF POTR(0) : LABEL IS "iocell11";
     ATTRIBUTE Location OF POTR(0) : LABEL IS "P0[1]";
     ATTRIBUTE lib_model OF POTL(0) : LABEL IS "iocell12";
@@ -282,6 +300,8 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     ATTRIBUTE lib_model OF \USBUART:Dp(0)\ : LABEL IS "iocell17";
     ATTRIBUTE lib_model OF \USBUART:Dm(0)\ : LABEL IS "iocell18";
     ATTRIBUTE lib_model OF BTN(0) : LABEL IS "iocell19";
+    ATTRIBUTE lib_model OF LED_RED(0) : LABEL IS "iocell20";
+    ATTRIBUTE Location OF LED_RED(0) : LABEL IS "P11[6]";
     ATTRIBUTE lib_model OF \I2S:bI2S:tx_underflow_0\ : LABEL IS "macrocell2";
     ATTRIBUTE lib_model OF \I2S:bI2S:rx_overflow_0\ : LABEL IS "macrocell3";
     ATTRIBUTE lib_model OF \Async_Feedback_Counter:TimerUDB:status_tc\ : LABEL IS "macrocell4";
@@ -863,6 +883,8 @@ BEGIN
             dsi_in_1 => ClockBlock_Routed2,
             ff_div_11 => Net_3865_ff11,
             ff_div_12 => Net_3865_ff12,
+            ff_div_13 => Net_185_ff13,
+            ff_div_14 => Net_185_ff14,
             ff_div_2 => \CodecI2CM:Net_847_ff2\,
             ff_div_10 => \ADC:Net_1845_ff10\,
             ff_div_3 => \UART:Net_847_ff3\);
@@ -1697,7 +1719,7 @@ BEGIN
         GENERIC MAP(
             drive_mode => "110",
             ibuf_enabled => "1",
-            id => "3eb68a96-8389-4723-b4ae-625b760eef17",
+            id => "2a3273d7-09f0-4fed-8ed7-671d014dd8c9",
             init_dr_st => "1",
             input_buffer_sel => "00",
             input_clk_en => 0,
@@ -1717,7 +1739,7 @@ BEGIN
             oe_sync => "0",
             output_clk_en => 0,
             output_clock_mode => "0",
-            output_conn => "0",
+            output_conn => "1",
             output_mode => "0",
             output_reset => 0,
             output_sync => "0",
@@ -1775,6 +1797,8 @@ BEGIN
         PORT MAP(
             pa_out => LED_BLUE(0)__PA,
             oe => open,
+            pin_input => Net_4920,
+            pad_out => LED_BLUE(0)_PAD,
             pad_in => LED_BLUE(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
@@ -2600,6 +2624,98 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
+    LED_RED:logicalport
+        GENERIC MAP(
+            drive_mode => "110",
+            ibuf_enabled => "1",
+            id => "fc5e720a-dbc5-4223-b20f-5e6d1d2cc6ca",
+            init_dr_st => "1",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "1",
+            input_sync_mode => "0",
+            intr_mode => "00",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "CONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "1",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "",
+            pin_mode => "O",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "00000000",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vohsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 0,
+            sw_only => 0,
+            use_annotation => "1",
+            vtrip => "10",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open);
+
+    LED_RED(0):iocell
+        GENERIC MAP(
+            in_sync_mode => 0,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "LED_RED",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000001")
+        PORT MAP(
+            pa_out => LED_RED(0)__PA,
+            oe => open,
+            pin_input => Net_4926,
+            pad_out => LED_RED(0)_PAD,
+            pad_in => LED_RED(0)_PAD,
+            in_clock => open,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
+
     \I2S:bI2S:tx_underflow_0\:macrocell
         GENERIC MAP(
             eqn_main => "(!main_0 * !main_1 * main_2 * main_3)",
@@ -3246,6 +3362,56 @@ BEGIN
             is_nmi => 0)
         PORT MAP(
             interrupt => Net_4874,
+            clock => ClockBlock_HFCLK);
+
+    \LED_RED_PWM:cy_m0s8_tcpwm_1\:m0s8tcpwmcell
+        GENERIC MAP(
+            cy_registers => "")
+        PORT MAP(
+            clock => Net_185_ff14,
+            capture => '0',
+            count => '1',
+            reload => '0',
+            stop => '0',
+            start => '0',
+            tr_underflow => Net_4881,
+            tr_overflow => Net_4880,
+            tr_compare_match => Net_4882,
+            line => Net_4926,
+            line_compl => Net_4884,
+            interrupt => Net_155);
+
+    LED_RED_PWM_ISR:interrupt
+        GENERIC MAP(
+            int_type => "10",
+            is_nmi => 0)
+        PORT MAP(
+            interrupt => Net_155,
+            clock => ClockBlock_HFCLK);
+
+    \LED_BLUE_PWM:cy_m0s8_tcpwm_1\:m0s8tcpwmcell
+        GENERIC MAP(
+            cy_registers => "")
+        PORT MAP(
+            clock => Net_185_ff13,
+            capture => '0',
+            count => '1',
+            reload => '0',
+            stop => '0',
+            start => '0',
+            tr_underflow => Net_4897,
+            tr_overflow => Net_4896,
+            tr_compare_match => Net_4916,
+            line => Net_4920,
+            line_compl => Net_4900,
+            interrupt => Net_4907);
+
+    LED_BLUE_PWM_ISR:interrupt
+        GENERIC MAP(
+            int_type => "10",
+            is_nmi => 0)
+        PORT MAP(
+            interrupt => Net_4907,
             clock => ClockBlock_HFCLK);
 
     \I2S:bI2S:reset\:macrocell

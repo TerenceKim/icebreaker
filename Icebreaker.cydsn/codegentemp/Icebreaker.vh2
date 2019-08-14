@@ -2,7 +2,7 @@
 --	Conversion of Icebreaker.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Mon Aug 05 00:45:16 2019
+--	Tue Aug 13 23:59:14 2019
 --
 
 USE cypress.cypress.all;
@@ -684,10 +684,11 @@ SIGNAL \AudioClkSel:control_2\ : bit;
 SIGNAL \AudioClkSel:control_1\ : bit;
 SIGNAL \AudioClkSel:control_0\ : bit;
 SIGNAL tmpOE__LED_BLUE_net_0 : bit;
+SIGNAL Net_4920 : bit;
 SIGNAL tmpFB_0__LED_BLUE_net_0 : bit;
 SIGNAL tmpIO_0__LED_BLUE_net_0 : bit;
 TERMINAL tmpSIOVREF__LED_BLUE_net_0 : bit;
-TERMINAL Net_303 : bit;
+TERMINAL Net_4927 : bit;
 SIGNAL tmpINTERRUPT_0__LED_BLUE_net_0 : bit;
 TERMINAL Net_4771 : bit;
 TERMINAL Net_4770 : bit;
@@ -903,6 +904,38 @@ SIGNAL Net_4868 : bit;
 SIGNAL tmpIO_0__BTN_net_0 : bit;
 TERMINAL tmpSIOVREF__BTN_net_0 : bit;
 SIGNAL Net_4874 : bit;
+SIGNAL \LED_RED_PWM:Net_81\ : bit;
+SIGNAL \LED_RED_PWM:Net_75\ : bit;
+SIGNAL \LED_RED_PWM:Net_69\ : bit;
+SIGNAL \LED_RED_PWM:Net_66\ : bit;
+SIGNAL \LED_RED_PWM:Net_82\ : bit;
+SIGNAL \LED_RED_PWM:Net_72\ : bit;
+SIGNAL Net_4881 : bit;
+SIGNAL Net_4880 : bit;
+SIGNAL Net_4882 : bit;
+SIGNAL Net_4926 : bit;
+SIGNAL Net_4884 : bit;
+SIGNAL Net_155 : bit;
+SIGNAL Net_185 : bit;
+TERMINAL Net_4887 : bit;
+TERMINAL Net_4925 : bit;
+TERMINAL Net_4888 : bit;
+SIGNAL tmpOE__LED_RED_net_0 : bit;
+SIGNAL tmpFB_0__LED_RED_net_0 : bit;
+SIGNAL tmpIO_0__LED_RED_net_0 : bit;
+TERMINAL tmpSIOVREF__LED_RED_net_0 : bit;
+SIGNAL tmpINTERRUPT_0__LED_RED_net_0 : bit;
+SIGNAL \LED_BLUE_PWM:Net_81\ : bit;
+SIGNAL \LED_BLUE_PWM:Net_75\ : bit;
+SIGNAL \LED_BLUE_PWM:Net_69\ : bit;
+SIGNAL \LED_BLUE_PWM:Net_66\ : bit;
+SIGNAL \LED_BLUE_PWM:Net_82\ : bit;
+SIGNAL \LED_BLUE_PWM:Net_72\ : bit;
+SIGNAL Net_4897 : bit;
+SIGNAL Net_4896 : bit;
+SIGNAL Net_4916 : bit;
+SIGNAL Net_4900 : bit;
+SIGNAL Net_4907 : bit;
 SIGNAL \I2S:bI2S:reset\\D\ : bit;
 SIGNAL \I2S:bI2S:channel\\D\ : bit;
 SIGNAL \I2S:bI2S:tx_underflow_sticky\\D\ : bit;
@@ -2169,7 +2202,7 @@ AudioClkGen_Ref_1:cy_clock_v1_0
 		control=>(\AudioClkSel:control_7\, \AudioClkSel:control_6\, \AudioClkSel:control_5\, \AudioClkSel:control_4\,
 			\AudioClkSel:control_3\, \AudioClkSel:control_2\, \AudioClkSel:control_1\, Net_3792));
 LED_BLUE:cy_psoc3_pins_v1_10
-	GENERIC MAP(id=>"3eb68a96-8389-4723-b4ae-625b760eef17",
+	GENERIC MAP(id=>"2a3273d7-09f0-4fed-8ed7-671d014dd8c9",
 		drive_mode=>"110",
 		ibuf_enabled=>"1",
 		init_dr_st=>"1",
@@ -2185,7 +2218,7 @@ LED_BLUE:cy_psoc3_pins_v1_10
 		invert_out_reset=>'0',
 		io_voltage=>"",
 		layout_mode=>"CONTIGUOUS",
-		output_conn=>"0",
+		output_conn=>"1",
 		output_sync=>"0",
 		output_clk_en=>'0',
 		output_mode=>"0",
@@ -2225,12 +2258,12 @@ LED_BLUE:cy_psoc3_pins_v1_10
 		ovt_hyst_trim=>"0",
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(one),
-		y=>(zero),
+		y=>Net_4920,
 		fb=>(tmpFB_0__LED_BLUE_net_0),
 		analog=>(open),
 		io=>(tmpIO_0__LED_BLUE_net_0),
 		siovref=>(tmpSIOVREF__LED_BLUE_net_0),
-		annotation=>Net_303,
+		annotation=>Net_4927,
 		in_clock=>zero,
 		in_clock_en=>one,
 		in_reset=>zero,
@@ -2252,7 +2285,7 @@ D_1:cy_annotation_universal_v1_0
 	GENERIC MAP(comp_name=>"LED_v1_0",
 		port_names=>"A, K",
 		width=>2)
-	PORT MAP(connect=>(Net_4770, Net_303));
+	PORT MAP(connect=>(Net_4770, Net_4927));
 \ADC:IRQ\:cy_isr_v1_0
 	GENERIC MAP(int_type=>"10",
 		is_nmi=>'0')
@@ -3326,6 +3359,137 @@ isr_Button:cy_isr_v1_0
 	GENERIC MAP(int_type=>"01",
 		is_nmi=>'0')
 	PORT MAP(int_signal=>Net_4874);
+\LED_RED_PWM:cy_m0s8_tcpwm_1\:cy_m0s8_tcpwm_v1_0
+	GENERIC MAP(cy_registers=>"")
+	PORT MAP(clock=>Net_185,
+		capture=>zero,
+		count=>one,
+		reload=>zero,
+		stop=>zero,
+		start=>zero,
+		underflow=>Net_4881,
+		overflow=>Net_4880,
+		compare_match=>Net_4882,
+		line_out=>Net_4926,
+		line_out_compl=>Net_4884,
+		interrupt=>Net_155);
+LED_RED_PWM_ISR:cy_isr_v1_0
+	GENERIC MAP(int_type=>"10",
+		is_nmi=>'0')
+	PORT MAP(int_signal=>Net_155);
+Clock_1:cy_clock_v1_0
+	GENERIC MAP(cy_registers=>"",
+		id=>"810eaf3a-9ffe-4682-8bae-1bb8e4611974",
+		source_clock_id=>"",
+		divisor=>0,
+		period=>"83333333.3333333",
+		is_direct=>'0',
+		is_digital=>'0')
+	PORT MAP(clock_out=>Net_185,
+		dig_domain_out=>open);
+D_2:cy_annotation_universal_v1_0
+	GENERIC MAP(comp_name=>"LED_v1_0",
+		port_names=>"A, K",
+		width=>2)
+	PORT MAP(connect=>(Net_4887, Net_4925));
+Resistor_Red_6:cy_annotation_universal_v1_0
+	GENERIC MAP(comp_name=>"Resistor_v1_0",
+		port_names=>"T1, T2",
+		width=>2)
+	PORT MAP(connect=>(Net_4888, Net_4887));
+VDD_5:cy_annotation_universal_v1_0
+	GENERIC MAP(comp_name=>"Power_v1_0",
+		port_names=>"T1",
+		width=>1)
+	PORT MAP(connect=>Net_4888);
+LED_RED:cy_psoc3_pins_v1_10
+	GENERIC MAP(id=>"fc5e720a-dbc5-4223-b20f-5e6d1d2cc6ca",
+		drive_mode=>"110",
+		ibuf_enabled=>"1",
+		init_dr_st=>"1",
+		input_sync=>"1",
+		input_clk_en=>'0',
+		input_sync_mode=>"0",
+		intr_mode=>"00",
+		invert_in_clock=>'0',
+		invert_in_clock_en=>'0',
+		invert_in_reset=>'0',
+		invert_out_clock=>'0',
+		invert_out_clock_en=>'0',
+		invert_out_reset=>'0',
+		io_voltage=>"",
+		layout_mode=>"CONTIGUOUS",
+		output_conn=>"1",
+		output_sync=>"0",
+		output_clk_en=>'0',
+		output_mode=>"0",
+		output_reset=>'0',
+		output_clock_mode=>"0",
+		oe_sync=>"0",
+		oe_conn=>"0",
+		oe_reset=>'0',
+		pin_aliases=>"",
+		pin_mode=>"O",
+		por_state=>4,
+		sio_group_cnt=>0,
+		sio_hifreq=>"00000000",
+		sio_hyst=>"1",
+		sio_ibuf=>"00000000",
+		sio_info=>"00",
+		sio_obuf=>"00000000",
+		sio_refsel=>"00000000",
+		sio_vtrip=>"00000000",
+		sio_vohsel=>"00000000",
+		slew_rate=>"0",
+		spanning=>'0',
+		sw_only=>'0',
+		vtrip=>"10",
+		width=>1,
+		port_alias_required=>'0',
+		port_alias_group=>"",
+		use_annotation=>"1",
+		pa_in_clock=>-1,
+		pa_in_clock_en=>-1,
+		pa_in_reset=>-1,
+		pa_out_clock=>-1,
+		pa_out_clock_en=>-1,
+		pa_out_reset=>-1,
+		ovt_needed=>"0",
+		ovt_slew_control=>"00",
+		ovt_hyst_trim=>"0",
+		input_buffer_sel=>"00")
+	PORT MAP(oe=>(one),
+		y=>Net_4926,
+		fb=>(tmpFB_0__LED_RED_net_0),
+		analog=>(open),
+		io=>(tmpIO_0__LED_RED_net_0),
+		siovref=>(tmpSIOVREF__LED_RED_net_0),
+		annotation=>Net_4925,
+		in_clock=>zero,
+		in_clock_en=>one,
+		in_reset=>zero,
+		out_clock=>zero,
+		out_clock_en=>one,
+		out_reset=>zero,
+		interrupt=>tmpINTERRUPT_0__LED_RED_net_0);
+\LED_BLUE_PWM:cy_m0s8_tcpwm_1\:cy_m0s8_tcpwm_v1_0
+	GENERIC MAP(cy_registers=>"")
+	PORT MAP(clock=>Net_185,
+		capture=>zero,
+		count=>one,
+		reload=>zero,
+		stop=>zero,
+		start=>zero,
+		underflow=>Net_4897,
+		overflow=>Net_4896,
+		compare_match=>Net_4916,
+		line_out=>Net_4920,
+		line_out_compl=>Net_4900,
+		interrupt=>Net_4907);
+LED_BLUE_PWM_ISR:cy_isr_v1_0
+	GENERIC MAP(int_type=>"10",
+		is_nmi=>'0')
+	PORT MAP(int_signal=>Net_4907);
 \I2S:bI2S:reset\:cy_dff
 	PORT MAP(d=>\I2S:bI2S:reset\\D\,
 		clk=>\I2S:bI2S:op_clk\,

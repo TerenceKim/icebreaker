@@ -20,6 +20,7 @@
 #include <LED.h>
 #include <USBUART_cdc.h>
 #include <timers.h>
+#include <LedManager.h>
 
 #define USBUART_BUFFER_SIZE (64u)
 
@@ -112,9 +113,8 @@ TK_SHELL_METHOD(led, start);
 TK_SHELL_METHOD(led, stop);
 static TK_SHELL_VERBS(led) =
 {
-    TK_SHELL_VERB(led, pwm_period, "set LED PWM period"),
-    TK_SHELL_VERB(led, start, "start LED animation"),
-    TK_SHELL_VERB(led, stop, "stop LED animation"),
+    TK_SHELL_VERB(led, start, "start LED animation <led:red|green|blue> <period:uint32> <compare:uint32> <counter:uint32>"),
+    TK_SHELL_VERB(led, stop, "stop LED animation <led:red|green|blue>"),
     { "", NULL, "" }
 };
 
@@ -326,10 +326,10 @@ TK_SHELL_METHOD(pcm, reg)
     
     if (argc != 3)
     {
-        PRINTF("Invalid number of arguments!\n");
+        PRINTF("Invalid number of arguments: %d\n", argc);
         return -1;
     }
-    
+
     reg = atoi(argv[i + 1]);
     data = strtoul(argv[i + 2], NULL, 16);
 
@@ -375,27 +375,43 @@ TK_SHELL_METHOD(sys, adc)
     return 0;
 }
 
-TK_SHELL_METHOD(led, pwm_period)
+TK_SHELL_METHOD(led, start)
 {
     int i = 2;
+    LM_LED_e ledIdx = LM_LED_MAX;
+    uint32_t pwmPeriod, pwmCompare, pwmCounter;
     
     argc -= i;
     
-    if (argc != 1)
+    if (argc != 4)
     {
-        PRINTF("Invalid number of arguments!\n");
+        PRINTF("Invalid number of arguments: %d\n", argc);
         return -1;
     }
-    pwm_period = atoi(argv[2]);
     
-    PRINTF("> led:ok\n");
-
-    return 0;
-}
-
-TK_SHELL_METHOD(led, start)
-{
-    LedInit();
+    if (strcicmp(argv[i], "red") == 0)
+    {
+        ledIdx = LM_LED_RED;
+    }
+    else if (strcicmp(argv[i], "green") == 0)
+    {
+        ledIdx = LM_LED_GREEN;
+    }
+    else if (strcicmp(argv[i], "blue") == 0)
+    {
+        ledIdx = LM_LED_BLUE;
+    }
+    else
+    {
+        PRINTF("Invalid color %s, must be red|green|blue\n", argv[i]);
+        return -2;
+    }
+    
+    pwmPeriod = atoi(argv[i + 1]);
+    pwmCompare = atoi(argv[i + 2]);
+    pwmCounter = atoi(argv[i + 3]);
+    
+    LedManagerStartOverride(ledIdx, pwmPeriod, pwmCompare, pwmCounter);
     
     PRINTF("> led:ok\n");
 
@@ -404,7 +420,35 @@ TK_SHELL_METHOD(led, start)
 
 TK_SHELL_METHOD(led, stop)
 {
-    LedDeInit();
+    int i = 2;
+    LM_LED_e ledIdx = LM_LED_MAX;
+    
+    argc -= i;
+    
+    if (argc != 1)
+    {
+        PRINTF("Invalid number of arguments: %d\n", argc);
+        return -1;
+    }
+    
+    if (strcicmp(argv[i], "red") == 0)
+    {
+        ledIdx = LM_LED_RED;
+    }
+    else if (strcicmp(argv[i], "green") == 0)
+    {
+        ledIdx = LM_LED_GREEN;
+    }
+    else if (strcicmp(argv[i], "blue") == 0)
+    {
+        ledIdx = LM_LED_BLUE;
+    }
+    else
+    {
+        PRINTF("Invalid color %s, must be red|green|blue\n", argv[i]);
+        return -2;
+    }
+    LedManagerStopOverride(ledIdx);
     
     PRINTF("> led:ok\n");
 

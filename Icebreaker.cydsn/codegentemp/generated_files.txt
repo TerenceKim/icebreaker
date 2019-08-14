@@ -148,6 +148,22 @@
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\BTN_PM.c" value="SOURCE_C;CortexM0;;;;BTN" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\isr_Button.c" value="SOURCE_C;CortexM0;;;;isr_Button" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\isr_Button.h" value="HEADER;;;;;isr_Button" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_RED_PWM.c" value="SOURCE_C;CortexM0;;;;LED_RED_PWM" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_RED_PWM.h" value="HEADER;;;;;LED_RED_PWM" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_RED_PWM_PM.c" value="SOURCE_C;CortexM0;;;;LED_RED_PWM" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_RED_PWM_ISR.c" value="SOURCE_C;CortexM0;;;;LED_RED_PWM_ISR" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_RED_PWM_ISR.h" value="HEADER;;;;;LED_RED_PWM_ISR" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\Clock_1.c" value="SOURCE_C;CortexM0;;;;Clock_1" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\Clock_1.h" value="HEADER;;;;;Clock_1" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_RED.c" value="SOURCE_C;CortexM0;;;;LED_RED" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_RED.h" value="HEADER;;;;;LED_RED" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_RED_aliases.h" value="HEADER;;;;;LED_RED" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_RED_PM.c" value="SOURCE_C;CortexM0;;;;LED_RED" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_BLUE_PWM.c" value="SOURCE_C;CortexM0;;;;LED_BLUE_PWM" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_BLUE_PWM.h" value="HEADER;;;;;LED_BLUE_PWM" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_BLUE_PWM_PM.c" value="SOURCE_C;CortexM0;;;;LED_BLUE_PWM" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_BLUE_PWM_ISR.c" value="SOURCE_C;CortexM0;;;;LED_BLUE_PWM_ISR" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_BLUE_PWM_ISR.h" value="HEADER;;;;;LED_BLUE_PWM_ISR" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\UART_SCBCLK.c" value="SOURCE_C;CortexM0;;;;UART_SCBCLK" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\UART_SCBCLK.h" value="HEADER;;;;;UART_SCBCLK" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\UART_tx.c" value="SOURCE_C;CortexM0;;;;UART_tx" />

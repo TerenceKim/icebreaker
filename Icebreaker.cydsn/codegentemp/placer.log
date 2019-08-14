@@ -6,7 +6,7 @@
 
 #Build Date:         Dec  5 2017 15:35:27
 
-#File Generated:     Aug 5 2019 00:45:17
+#File Generated:     Aug 13 2019 23:59:16
 
 #Purpose:            
 
@@ -55,7 +55,7 @@ Design Statistics after Packing
 Device Utilization Summary after Packing
     Macrocells                  :	28/64
     UDBS                        :	7/8
-    IOs                         :	19/99
+    IOs                         :	20/99
 
 
 D2088: Phase 3, elapsed time : 0.0 (sec)
@@ -76,12 +76,14 @@ analysis after routing.
 ######################################################################
                      Clock Summary 
 ======================================================================
-Number of clocks: 22
+Number of clocks: 24
 Clock: ADC_intClock         | Frequency: N/A       | Target:   2.0 MHz
 Clock: ADC_intClock(FFB)    | Frequency: N/A       | Target:   2.0 MHz
 Clock: Clk_Counter          | Frequency: N/A       | Target:  48.0 MHz
 Clock: Clk_Counter(FFB)     | Frequency: N/A       | Target:  48.0 MHz
 Clock: Clk_I2S/q            | Frequency:  44.4 MHz | Target:   6.1 MHz
+Clock: Clock_1              | Frequency: N/A       | Target:  12.0 MHz
+Clock: Clock_1(FFB)         | Frequency: N/A       | Target:  12.0 MHz
 Clock: CodecI2CM_SCBCLK     | Frequency: N/A       | Target:   8.0 MHz
 Clock: CodecI2CM_SCBCLK(FFB) | Frequency: N/A       | Target:   8.0 MHz
 Clock: CyECO                | Frequency: N/A       | Target:  17.2 MHz
@@ -104,18 +106,20 @@ Clock: UART_SCBCLK(FFB)     | Frequency: N/A       | Target:   1.4 MHz
                      End of Clock Summary
 ######################################################################
 
-D2088: Phase 6, elapsed time : 0.0 (sec)
+D2088: Phase 6, elapsed time : 0.1 (sec)
 
 Phase 7
 ######################################################################
                      Clock Summary 
 ======================================================================
-Number of clocks: 22
+Number of clocks: 24
 Clock: ADC_intClock         | Frequency: N/A       | Target:   2.0 MHz
 Clock: ADC_intClock(FFB)    | Frequency: N/A       | Target:   2.0 MHz
 Clock: Clk_Counter          | Frequency: N/A       | Target:  48.0 MHz
 Clock: Clk_Counter(FFB)     | Frequency: N/A       | Target:  48.0 MHz
 Clock: Clk_I2S/q            | Frequency:  45.5 MHz | Target:   6.1 MHz
+Clock: Clock_1              | Frequency: N/A       | Target:  12.0 MHz
+Clock: Clock_1(FFB)         | Frequency: N/A       | Target:  12.0 MHz
 Clock: CodecI2CM_SCBCLK     | Frequency: N/A       | Target:   8.0 MHz
 Clock: CodecI2CM_SCBCLK(FFB) | Frequency: N/A       | Target:   8.0 MHz
 Clock: CyECO                | Frequency: N/A       | Target:  17.2 MHz
@@ -137,7 +141,7 @@ Clock: UART_SCBCLK(FFB)     | Frequency: N/A       | Target:   1.4 MHz
 ======================================================================
                      End of Clock Summary
 ######################################################################
-D2088: Phase 7, elapsed time : 0.2 (sec)
+D2088: Phase 7, elapsed time : 0.3 (sec)
 
 Final Design Statistics
     Number of Combinational MCs 	:	5
@@ -147,11 +151,11 @@ Final Design Statistics
     Number of Status            	:	3
     Number of SyncCells         	:	5
     Number of count7cells       	:	1
-    Number of IOs       	:	19
+    Number of IOs       	:	20
 
 Device Utilization Summary
     Macrocells                  :	28/64
-    IOs                         :	19/99
+    IOs                         :	20/99
 
 
 
@@ -167,12 +171,14 @@ analysis after routing.
 ######################################################################
                      Clock Summary 
 ======================================================================
-Number of clocks: 22
+Number of clocks: 24
 Clock: ADC_intClock         | Frequency: N/A       | Target:   2.0 MHz
 Clock: ADC_intClock(FFB)    | Frequency: N/A       | Target:   2.0 MHz
 Clock: Clk_Counter          | Frequency: N/A       | Target:  48.0 MHz
 Clock: Clk_Counter(FFB)     | Frequency: N/A       | Target:  48.0 MHz
 Clock: Clk_I2S/q            | Frequency:  45.5 MHz | Target:   6.1 MHz
+Clock: Clock_1              | Frequency: N/A       | Target:  12.0 MHz
+Clock: Clock_1(FFB)         | Frequency: N/A       | Target:  12.0 MHz
 Clock: CodecI2CM_SCBCLK     | Frequency: N/A       | Target:   8.0 MHz
 Clock: CodecI2CM_SCBCLK(FFB) | Frequency: N/A       | Target:   8.0 MHz
 Clock: CyECO                | Frequency: N/A       | Target:  17.2 MHz
@@ -208,12 +214,14 @@ analysis after routing.
 ######################################################################
                      Clock Summary 
 ======================================================================
-Number of clocks: 22
+Number of clocks: 24
 Clock: ADC_intClock         | Frequency: N/A       | Target:   2.0 MHz
 Clock: ADC_intClock(FFB)    | Frequency: N/A       | Target:   2.0 MHz
 Clock: Clk_Counter          | Frequency: N/A       | Target:  48.0 MHz
 Clock: Clk_Counter(FFB)     | Frequency: N/A       | Target:  48.0 MHz
 Clock: Clk_I2S/q            | Frequency:  44.4 MHz | Target:   6.1 MHz
+Clock: Clock_1              | Frequency: N/A       | Target:  12.0 MHz
+Clock: Clock_1(FFB)         | Frequency: N/A       | Target:  12.0 MHz
 Clock: CodecI2CM_SCBCLK     | Frequency: N/A       | Target:   8.0 MHz
 Clock: CodecI2CM_SCBCLK(FFB) | Frequency: N/A       | Target:   8.0 MHz
 Clock: CyECO                | Frequency: N/A       | Target:  17.2 MHz
@@ -236,18 +244,20 @@ Clock: UART_SCBCLK(FFB)     | Frequency: N/A       | Target:   1.4 MHz
                      End of Clock Summary
 ######################################################################
 
-D2088: Phase 6, elapsed time : 0.0 (sec)
+D2088: Phase 6, elapsed time : 0.1 (sec)
 
 Phase 7
 ######################################################################
                      Clock Summary 
 ======================================================================
-Number of clocks: 22
+Number of clocks: 24
 Clock: ADC_intClock         | Frequency: N/A       | Target:   2.0 MHz
 Clock: ADC_intClock(FFB)    | Frequency: N/A       | Target:   2.0 MHz
 Clock: Clk_Counter          | Frequency: N/A       | Target:  48.0 MHz
 Clock: Clk_Counter(FFB)     | Frequency: N/A       | Target:  48.0 MHz
 Clock: Clk_I2S/q            | Frequency:  54.5 MHz | Target:   6.1 MHz
+Clock: Clock_1              | Frequency: N/A       | Target:  12.0 MHz
+Clock: Clock_1(FFB)         | Frequency: N/A       | Target:  12.0 MHz
 Clock: CodecI2CM_SCBCLK     | Frequency: N/A       | Target:   8.0 MHz
 Clock: CodecI2CM_SCBCLK(FFB) | Frequency: N/A       | Target:   8.0 MHz
 Clock: CyECO                | Frequency: N/A       | Target:  17.2 MHz
@@ -269,7 +279,7 @@ Clock: UART_SCBCLK(FFB)     | Frequency: N/A       | Target:   1.4 MHz
 ======================================================================
                      End of Clock Summary
 ######################################################################
-D2088: Phase 7, elapsed time : 0.5 (sec)
+D2088: Phase 7, elapsed time : 0.6 (sec)
 
 Final Design Statistics
     Number of Combinational MCs 	:	5
@@ -279,11 +289,11 @@ Final Design Statistics
     Number of Status            	:	3
     Number of SyncCells         	:	5
     Number of count7cells       	:	1
-    Number of IOs       	:	19
+    Number of IOs       	:	20
 
 Device Utilization Summary
     Macrocells                  :	28/64
-    IOs                         :	19/99
+    IOs                         :	20/99
 
 
 
@@ -299,12 +309,14 @@ analysis after routing.
 ######################################################################
                      Clock Summary 
 ======================================================================
-Number of clocks: 22
+Number of clocks: 24
 Clock: ADC_intClock         | Frequency: N/A       | Target:   2.0 MHz
 Clock: ADC_intClock(FFB)    | Frequency: N/A       | Target:   2.0 MHz
 Clock: Clk_Counter          | Frequency: N/A       | Target:  48.0 MHz
 Clock: Clk_Counter(FFB)     | Frequency: N/A       | Target:  48.0 MHz
 Clock: Clk_I2S/q            | Frequency:  54.9 MHz | Target:   6.1 MHz
+Clock: Clock_1              | Frequency: N/A       | Target:  12.0 MHz
+Clock: Clock_1(FFB)         | Frequency: N/A       | Target:  12.0 MHz
 Clock: CodecI2CM_SCBCLK     | Frequency: N/A       | Target:   8.0 MHz
 Clock: CodecI2CM_SCBCLK(FFB) | Frequency: N/A       | Target:   8.0 MHz
 Clock: CyECO                | Frequency: N/A       | Target:  17.2 MHz
@@ -332,5 +344,5 @@ D2088: Phase 8, elapsed time : 0.0 (sec)
 
 D2054: Placement of the design completed successfully
 
-I2076: Total run-time: 1.2 sec.
+I2076: Total run-time: 1.7 sec.
 
