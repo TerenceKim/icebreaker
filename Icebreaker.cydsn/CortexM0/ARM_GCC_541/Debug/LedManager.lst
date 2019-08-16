@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
   28:LedManager.c  ****     void (* writePeriod)(uint32 period);
   29:LedManager.c  ****     uint32 (* readPeriod)(void);
   30:LedManager.c  ****     void (* writeCompare)(uint32 compare);
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 2
 
 
   31:LedManager.c  ****     uint32 (* readCompare)(void);
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
   34              		.cfi_def_cfa_offset 20
   35              		.cfi_offset 4, -20
   36              		.cfi_offset 5, -16
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 3
 
 
   37              		.cfi_offset 6, -12
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
   87:LedManager.c  ****     change[ledIdx] = pwmCompare;
   83              		.loc 1 87 0
   84 003c A400     		lsls	r4, r4, #2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 4
 
 
   85 003e 3419     		adds	r4, r6, r4
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  132 0018 10BD     		pop	{r4, pc}
  133              	.L6:
  134 001a C046     		.align	2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 5
 
 
  135              	.L5:
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  104:LedManager.c  ****                 break;
  180              		.loc 1 104 0
  181 0020 06E0     		b	.L9
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 6
 
 
  182              	.LVL13:
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  222              	.LVL20:
  223 0058 8642     		cmp	r6, r0
  224 005a 13D9     		bls	.L14
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 7
 
 
  225              	.L13:
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  270              		.loc 1 126 0
  271 00a2 A400     		lsls	r4, r4, #2
  272 00a4 024B     		ldr	r3, .L16
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 8
 
 
  273 00a6 1C19     		adds	r4, r3, r4
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  324              		.set	.LANCHOR0,. + 0
  325              		.type	override, %object
  326              		.size	override, 3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 9
 
 
  327              	override:
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  379 004d 02       		.byte	0x2
  380 004e 41       		.byte	0x41
  381 004f 53000000 		.4byte	0x53
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 10
 
 
  382 0053 02       		.uleb128 0x2
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  436 00bd 07       		.uleb128 0x7
  437 00be DB000000 		.4byte	.LASF17
  438 00c2 05       		.byte	0x5
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 11
 
 
  439 00c3 E901     		.2byte	0x1e9
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  493 012a 0C       		.byte	0xc
  494 012b 0B       		.uleb128 0xb
  495 012c BA020000 		.4byte	.LASF27
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 12
 
 
  496 0130 01       		.byte	0x1
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  550 019f 9C       		.byte	0x9c
  551 01a0 35020000 		.4byte	0x235
  552 01a4 10       		.uleb128 0x10
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 13
 
 
  553 01a5 47000000 		.4byte	.LASF33
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  607 020b 91       		.byte	0x91
  608 020c 5C       		.sleb128 -36
  609 020d 06       		.byte	0x6
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 14
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 14
 
 
  610 020e 00       		.byte	0
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  664 0265 22       		.byte	0x22
  665 0266 32       		.byte	0x32
  666 0267 24       		.byte	0x24
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 15
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 15
 
 
  667 0268 03       		.byte	0x3
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  721 02d4 20       		.sleb128 32
  722 02d5 06       		.byte	0x6
  723 02d6 11       		.uleb128 0x11
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 16
 
 
  724 02d7 58000000 		.4byte	.LVL20
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  778 032b 35030000 		.4byte	0x335
  779 032f 05       		.uleb128 0x5
  780 0330 03       		.byte	0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 17
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 17
 
 
  781 0331 00000000 		.4byte	pwm
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  835              	.Ldebug_abbrev0:
  836 0000 01       		.uleb128 0x1
  837 0001 11       		.uleb128 0x11
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 18
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 18
 
 
  838 0002 01       		.byte	0x1
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  892 0038 01       		.byte	0x1
  893 0039 0B       		.uleb128 0xb
  894 003a 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 19
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 19
 
 
  895 003b 49       		.uleb128 0x49
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  949 0071 0B       		.uleb128 0xb
  950 0072 3B       		.uleb128 0x3b
  951 0073 0B       		.uleb128 0xb
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 20
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 20
 
 
  952 0074 01       		.uleb128 0x1
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  1006 00aa 0B       		.uleb128 0xb
  1007 00ab 27       		.uleb128 0x27
  1008 00ac 19       		.uleb128 0x19
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 21
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 21
 
 
  1009 00ad 11       		.uleb128 0x11
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  1063 00ed 00       		.byte	0
  1064 00ee 00       		.byte	0
  1065 00ef 14       		.uleb128 0x14
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 22
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 22
 
 
  1066 00f0 898201   		.uleb128 0x4109
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  1120 012b 00       		.byte	0
  1121 012c 49       		.uleb128 0x49
  1122 012d 13       		.uleb128 0x13
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 23
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 23
 
 
  1123 012e 00       		.byte	0
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  1177 0029 0100     		.2byte	0x1
  1178 002b 51       		.byte	0x51
  1179 002c 1D000000 		.4byte	.LVL3-1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 24
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 24
 
 
  1180 0030 50000000 		.4byte	.LFE1
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  1234 00b6 50       		.byte	0x50
  1235 00b7 9F       		.byte	0x9f
  1236 00b8 22000000 		.4byte	.LVL13
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 25
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 25
 
 
  1237 00bc 24000000 		.4byte	.LVL14
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  1288      FB0E0D00 
  1288      01010101 
  1289              	.LASF38:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 26
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 26
 
 
  1290 0000 4C65644D 		.ascii	"LedManagerStopOverride\000"
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  1314      00
  1315              	.LASF18:
  1316 009c 666C6F61 		.ascii	"float\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 27
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 27
 
 
  1316      7400
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  1340 0156 75696E74 		.ascii	"uint32\000"
  1340      333200
  1341              	.LASF8:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 28
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 28
 
 
  1342 015d 756E7369 		.ascii	"unsigned int\000"
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 1
  1362      6720696E 
  1362      7400
  1363              	.LASF20:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccwusNxN.s 			page 29
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccXw43Go.s 			page 29
 
 
  1364 0267 63686172 		.ascii	"char\000"

@@ -1,6 +1,6 @@
 // ======================================================================
 // Icebreaker.v generated from TopDesign.cysch
-// 08/14/2019 at 00:06
+// 08/16/2019 at 01:59
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
@@ -2298,11 +2298,10 @@ module top ;
           wire  Net_4876;
           wire  Net_4875;
           wire  Net_4868;
-          wire  Net_4857;
-          wire  Net_4856;
+          wire  Net_4950;
           wire  TxCount;
+          wire  Net_4949;
           wire  Net_4779;
-          wire  Rx_DMA_tr;
           wire  Net_4783;
     electrical  Net_4777;
     electrical  Net_4788;
@@ -2366,8 +2365,6 @@ module top ;
           wire  Net_4655;
           wire  Net_4654;
           wire  Net_4653;
-          wire  Net_4652;
-          wire  Net_4651;
           wire  Net_4650;
           wire  Net_4649;
           wire  Net_4648;
@@ -2404,8 +2401,8 @@ module top ;
           wire  Net_4617;
           wire [0:0] Net_4616;
           wire [0:0] Net_4615;
-          wire  Net_4612;
-          wire  Net_4611;
+          wire [0:0] Net_4958;
+          wire  Net_4963;
           wire  Net_4937;
           wire  Net_4941;
     electrical  Net_4945;
@@ -2432,7 +2429,6 @@ module top ;
           wire  Net_105;
           wire  Net_4032;
           wire [0:0] Net_4031;
-          wire  Net_4030;
           wire  Net_3865;
           wire  Net_3792;
           wire  Net_4312;
@@ -2440,21 +2436,13 @@ module top ;
           wire  Net_3651;
           wire  Net_3641;
 
-
-	cy_m0s8_dma_v1_0
-		#(.priority(3))
-		USBOutDMA
-		 (.tr_in(1'b0),
-		  .tr_out(Net_4612));
-
-
     I2S_v2_70_0 I2S (
         .clock(Clk_I2S),
-        .sdi(Net_4030),
+        .sdi(Net_4963),
         .sck(Net_4032),
         .ws(I2S_LRCLK),
         .sdo(Net_4031[0:0]),
-        .rx_dma0(Rx_DMA_tr),
+        .rx_dma0(Net_4958[0:0]),
         .rx_dma1(Net_4615[0:0]),
         .tx_dma0(Tx_DMA_tr),
         .tx_dma1(Net_4616[0:0]),
@@ -2812,80 +2800,6 @@ module top ;
 
 	assign tmpOE__Codec_LRC_net = (`CYDEV_CHIP_MEMBER_USED == `CYDEV_CHIP_MEMBER_3A && `CYDEV_CHIP_REVISION_USED < `CYDEV_CHIP_REVISION_3A_ES3) ? ~{1'b1} : {1'b1};
 
-	wire [0:0] tmpOE__Codec_ADCDAT_net;
-	wire [0:0] tmpIO_0__Codec_ADCDAT_net;
-	wire [0:0] tmpINTERRUPT_0__Codec_ADCDAT_net;
-	electrical [0:0] tmpSIOVREF__Codec_ADCDAT_net;
-
-	cy_psoc3_pins_v1_10
-		#(.id("de616092-3627-4d1c-9049-719cec881e0a"),
-		  .drive_mode(3'b001),
-		  .ibuf_enabled(1'b1),
-		  .init_dr_st(1'b0),
-		  .input_clk_en(0),
-		  .input_sync(1'b0),
-		  .input_sync_mode(1'b0),
-		  .intr_mode(2'b00),
-		  .invert_in_clock(0),
-		  .invert_in_clock_en(0),
-		  .invert_in_reset(0),
-		  .invert_out_clock(0),
-		  .invert_out_clock_en(0),
-		  .invert_out_reset(0),
-		  .io_voltage(""),
-		  .layout_mode("CONTIGUOUS"),
-		  .oe_conn(1'b0),
-		  .oe_reset(0),
-		  .oe_sync(1'b0),
-		  .output_clk_en(0),
-		  .output_clock_mode(1'b0),
-		  .output_conn(1'b0),
-		  .output_mode(1'b0),
-		  .output_reset(0),
-		  .output_sync(1'b0),
-		  .pa_in_clock(-1),
-		  .pa_in_clock_en(-1),
-		  .pa_in_reset(-1),
-		  .pa_out_clock(-1),
-		  .pa_out_clock_en(-1),
-		  .pa_out_reset(-1),
-		  .pin_aliases("PSOC_I2S_SDTI"),
-		  .pin_mode("I"),
-		  .por_state(4),
-		  .sio_group_cnt(0),
-		  .sio_hyst(1'b1),
-		  .sio_ibuf(""),
-		  .sio_info(2'b00),
-		  .sio_obuf(""),
-		  .sio_refsel(""),
-		  .sio_vtrip(""),
-		  .sio_hifreq(""),
-		  .sio_vohsel(""),
-		  .slew_rate(1'b0),
-		  .spanning(0),
-		  .use_annotation(1'b0),
-		  .vtrip(2'b00),
-		  .width(1),
-		  .ovt_hyst_trim(1'b0),
-		  .ovt_needed(1'b0),
-		  .ovt_slew_control(2'b00),
-		  .input_buffer_sel(2'b00))
-		Codec_ADCDAT
-		 (.oe(tmpOE__Codec_ADCDAT_net),
-		  .y({1'b0}),
-		  .fb({Net_4030}),
-		  .io({tmpIO_0__Codec_ADCDAT_net[0:0]}),
-		  .siovref(tmpSIOVREF__Codec_ADCDAT_net),
-		  .interrupt({tmpINTERRUPT_0__Codec_ADCDAT_net[0:0]}),
-		  .in_clock({1'b0}),
-		  .in_clock_en({1'b1}),
-		  .in_reset({1'b0}),
-		  .out_clock({1'b0}),
-		  .out_clock_en({1'b1}),
-		  .out_reset({1'b0}));
-
-	assign tmpOE__Codec_ADCDAT_net = (`CYDEV_CHIP_MEMBER_USED == `CYDEV_CHIP_MEMBER_3A && `CYDEV_CHIP_REVISION_USED < `CYDEV_CHIP_REVISION_3A_ES3) ? ~{1'b1} : {1'b1};
-
     TCPWM_P4_v2_10_2 ByteCounter_Tx (
         .stop(1'b0),
         .reload(1'b0),
@@ -2919,7 +2833,7 @@ module top ;
         .stop(1'b0),
         .reload(1'b0),
         .start(1'b0),
-        .count(RxCount),
+        .count(1'b1),
         .capture(1'b0),
         .interrupt(Net_4644),
         .ov(Net_4645),
@@ -2946,22 +2860,6 @@ module top ;
 		  .is_digital(0))
 		Clk_Counter
 		 (.clock_out(Net_3865));
-
-
-
-	cy_m0s8_dma_v1_0
-		#(.priority(0))
-		RxDMA
-		 (.tr_in(Rx_DMA_tr),
-		  .tr_out(RxCount));
-
-
-
-	cy_m0s8_dma_v1_0
-		#(.priority(3))
-		USBInDMA
-		 (.tr_in(1'b0),
-		  .tr_out(Net_4652));
 
 
     SCB_P4_v4_0_4 UART (
@@ -3724,7 +3622,7 @@ module top ;
     defparam GND_1.width = 1;
 
     USBFS_v3_10_7 USBUART (
-        .sof(Net_4856),
+        .sof(Net_4949),
         .vbusdet(1'b0));
     defparam USBUART.epDMAautoOptimization = 0;
 
@@ -4112,6 +4010,80 @@ module top ;
 		  .out_reset({1'b0}));
 
 	assign tmpOE__LED_GREEN_net = (`CYDEV_CHIP_MEMBER_USED == `CYDEV_CHIP_MEMBER_3A && `CYDEV_CHIP_REVISION_USED < `CYDEV_CHIP_REVISION_3A_ES3) ? ~{1'b1} : {1'b1};
+
+	wire [0:0] tmpOE__Codec_ADCDAT_net;
+	wire [0:0] tmpIO_0__Codec_ADCDAT_net;
+	wire [0:0] tmpINTERRUPT_0__Codec_ADCDAT_net;
+	electrical [0:0] tmpSIOVREF__Codec_ADCDAT_net;
+
+	cy_psoc3_pins_v1_10
+		#(.id("e851a3b9-efb8-48be-bbb8-b303b216c393"),
+		  .drive_mode(3'b001),
+		  .ibuf_enabled(1'b1),
+		  .init_dr_st(1'b0),
+		  .input_clk_en(0),
+		  .input_sync(1'b0),
+		  .input_sync_mode(1'b0),
+		  .intr_mode(2'b00),
+		  .invert_in_clock(0),
+		  .invert_in_clock_en(0),
+		  .invert_in_reset(0),
+		  .invert_out_clock(0),
+		  .invert_out_clock_en(0),
+		  .invert_out_reset(0),
+		  .io_voltage(""),
+		  .layout_mode("CONTIGUOUS"),
+		  .oe_conn(1'b0),
+		  .oe_reset(0),
+		  .oe_sync(1'b0),
+		  .output_clk_en(0),
+		  .output_clock_mode(1'b0),
+		  .output_conn(1'b0),
+		  .output_mode(1'b0),
+		  .output_reset(0),
+		  .output_sync(1'b0),
+		  .pa_in_clock(-1),
+		  .pa_in_clock_en(-1),
+		  .pa_in_reset(-1),
+		  .pa_out_clock(-1),
+		  .pa_out_clock_en(-1),
+		  .pa_out_reset(-1),
+		  .pin_aliases("PSOC_I2S_SDTI"),
+		  .pin_mode("I"),
+		  .por_state(4),
+		  .sio_group_cnt(0),
+		  .sio_hyst(1'b1),
+		  .sio_ibuf(""),
+		  .sio_info(2'b00),
+		  .sio_obuf(""),
+		  .sio_refsel(""),
+		  .sio_vtrip(""),
+		  .sio_hifreq(""),
+		  .sio_vohsel(""),
+		  .slew_rate(1'b0),
+		  .spanning(0),
+		  .use_annotation(1'b0),
+		  .vtrip(2'b00),
+		  .width(1),
+		  .ovt_hyst_trim(1'b0),
+		  .ovt_needed(1'b0),
+		  .ovt_slew_control(2'b00),
+		  .input_buffer_sel(2'b00))
+		Codec_ADCDAT
+		 (.oe(tmpOE__Codec_ADCDAT_net),
+		  .y({1'b0}),
+		  .fb({Net_4963}),
+		  .io({tmpIO_0__Codec_ADCDAT_net[0:0]}),
+		  .siovref(tmpSIOVREF__Codec_ADCDAT_net),
+		  .interrupt({tmpINTERRUPT_0__Codec_ADCDAT_net[0:0]}),
+		  .in_clock({1'b0}),
+		  .in_clock_en({1'b1}),
+		  .in_reset({1'b0}),
+		  .out_clock({1'b0}),
+		  .out_clock_en({1'b1}),
+		  .out_reset({1'b0}));
+
+	assign tmpOE__Codec_ADCDAT_net = (`CYDEV_CHIP_MEMBER_USED == `CYDEV_CHIP_MEMBER_3A && `CYDEV_CHIP_REVISION_USED < `CYDEV_CHIP_REVISION_3A_ES3) ? ~{1'b1} : {1'b1};
 
 
 

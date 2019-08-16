@@ -2,7 +2,7 @@
 --	Conversion of Icebreaker.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Wed Aug 14 00:06:30 2019
+--	Fri Aug 16 01:59:51 2019
 --
 
 USE cypress.cypress.all;
@@ -12,11 +12,10 @@ ATTRIBUTE part_name of top_RTL:TYPE IS "cpsoc3";
 END top_RTL;
 --------------------------------------------------------
 ARCHITECTURE R_T_L OF top_RTL IS
-SIGNAL zero : bit;
-SIGNAL Net_4612 : bit;
 SIGNAL Clk_I2S : bit;
 SIGNAL one : bit;
 SIGNAL \I2S:bI2S:op_clk\ : bit;
+SIGNAL zero : bit;
 SIGNAL \I2S:bI2S:ctrl_reg_out_7\ : bit;
 SIGNAL \I2S:bI2S:ctrl_reg_out_6\ : bit;
 SIGNAL \I2S:bI2S:ctrl_reg_out_5\ : bit;
@@ -316,7 +315,7 @@ SIGNAL \I2S:rx_line_4\ : bit;
 SIGNAL \I2S:rx_line_3\ : bit;
 SIGNAL \I2S:rx_line_2\ : bit;
 SIGNAL \I2S:rx_line_1\ : bit;
-SIGNAL Net_4030 : bit;
+SIGNAL Net_4963 : bit;
 SIGNAL \I2S:sdo_4\ : bit;
 ATTRIBUTE port_state_att of \I2S:sdo_4\:SIGNAL IS 2;
 SIGNAL \I2S:tx_line_4\ : bit;
@@ -342,7 +341,7 @@ SIGNAL \I2S:rx_drq0_2\ : bit;
 SIGNAL \I2S:rx_dma0_1\ : bit;
 ATTRIBUTE port_state_att of \I2S:rx_dma0_1\:SIGNAL IS 2;
 SIGNAL \I2S:rx_drq0_1\ : bit;
-SIGNAL Rx_DMA_tr : bit;
+SIGNAL Net_4958_0 : bit;
 SIGNAL \I2S:rx_dma1_4\ : bit;
 ATTRIBUTE port_state_att of \I2S:rx_dma1_4\:SIGNAL IS 2;
 SIGNAL \I2S:rx_drq1_4\ : bit;
@@ -531,10 +530,6 @@ SIGNAL tmpFB_0__Codec_LRC_net_0 : bit;
 SIGNAL tmpIO_0__Codec_LRC_net_0 : bit;
 TERMINAL tmpSIOVREF__Codec_LRC_net_0 : bit;
 SIGNAL tmpINTERRUPT_0__Codec_LRC_net_0 : bit;
-SIGNAL tmpOE__Codec_ADCDAT_net_0 : bit;
-SIGNAL tmpIO_0__Codec_ADCDAT_net_0 : bit;
-TERMINAL tmpSIOVREF__Codec_ADCDAT_net_0 : bit;
-SIGNAL tmpINTERRUPT_0__Codec_ADCDAT_net_0 : bit;
 SIGNAL \ByteCounter_Tx:Net_81\ : bit;
 SIGNAL \ByteCounter_Tx:Net_75\ : bit;
 SIGNAL \ByteCounter_Tx:Net_69\ : bit;
@@ -561,8 +556,6 @@ SIGNAL Net_4647 : bit;
 SIGNAL Net_4648 : bit;
 SIGNAL Net_4649 : bit;
 SIGNAL Net_4644 : bit;
-SIGNAL RxCount : bit;
-SIGNAL Net_4652 : bit;
 SIGNAL \UART:Net_847\ : bit;
 SIGNAL \UART:select_s_wire\ : bit;
 SIGNAL \UART:rx_wire\ : bit;
@@ -867,7 +860,7 @@ SIGNAL \USBUART:Net_237\ : bit;
 SIGNAL \USBUART:Net_259\ : bit;
 SIGNAL \USBUART:Net_258\ : bit;
 SIGNAL \USBUART:Net_235\ : bit;
-SIGNAL Net_4856 : bit;
+SIGNAL Net_4949 : bit;
 SIGNAL \USBUART:dma_nrq_7\ : bit;
 SIGNAL \USBUART:dma_nrq_6\ : bit;
 SIGNAL \USBUART:dma_nrq_5\ : bit;
@@ -956,6 +949,10 @@ SIGNAL tmpFB_0__LED_GREEN_net_0 : bit;
 SIGNAL tmpIO_0__LED_GREEN_net_0 : bit;
 TERMINAL tmpSIOVREF__LED_GREEN_net_0 : bit;
 SIGNAL tmpINTERRUPT_0__LED_GREEN_net_0 : bit;
+SIGNAL tmpOE__Codec_ADCDAT_net_0 : bit;
+SIGNAL tmpIO_0__Codec_ADCDAT_net_0 : bit;
+TERMINAL tmpSIOVREF__Codec_ADCDAT_net_0 : bit;
+SIGNAL tmpINTERRUPT_0__Codec_ADCDAT_net_0 : bit;
 SIGNAL \I2S:bI2S:reset\\D\ : bit;
 SIGNAL \I2S:bI2S:channel\\D\ : bit;
 SIGNAL \I2S:bI2S:tx_underflow_sticky\\D\ : bit;
@@ -984,9 +981,9 @@ SIGNAL \Async_Feedback_Counter:TimerUDB:hwEnable_reg\\D\ : bit;
 SIGNAL \Async_Feedback_Counter:TimerUDB:capture_out_reg_i\\D\ : bit;
 BEGIN
 
-zero <=  ('0') ;
-
 one <=  ('1') ;
+
+zero <=  ('0') ;
 
 \I2S:bI2S:reset\\D\ <= (not \I2S:bI2S:ctrl_2\);
 
@@ -1032,11 +1029,11 @@ one <=  ('1') ;
 
 \I2S:bI2S:tx_underflow_0\ <= ((not \I2S:bI2S:tx_state_2\ and not \I2S:bI2S:tx_state_1\ and \I2S:bI2S:tx_state_0\ and \I2S:bI2S:tx_f0_empty_0\));
 
-\I2S:tx_line_0\\D\ <= ((not \I2S:bI2S:count_4\ and \I2S:bI2S:count_3\ and \I2S:bI2S:count_2\ and \I2S:bI2S:count_1\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
-	OR (not \I2S:bI2S:count_3\ and \I2S:bI2S:count_5\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
-	OR (not \I2S:bI2S:count_2\ and \I2S:bI2S:count_5\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
-	OR (not \I2S:bI2S:count_5\ and \I2S:bI2S:count_4\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
-	OR (not \I2S:bI2S:count_1\ and \I2S:bI2S:count_5\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
+\I2S:tx_line_0\\D\ <= ((not \I2S:bI2S:count_5\ and \I2S:bI2S:count_3\ and \I2S:bI2S:count_2\ and \I2S:bI2S:count_1\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
+	OR (not \I2S:bI2S:count_3\ and \I2S:bI2S:count_4\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
+	OR (not \I2S:bI2S:count_2\ and \I2S:bI2S:count_4\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
+	OR (not \I2S:bI2S:count_4\ and \I2S:bI2S:count_5\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
+	OR (not \I2S:bI2S:count_1\ and \I2S:bI2S:count_4\ and Net_4032 and \I2S:bI2S:tx_data_out_0\)
 	OR (not Net_4032 and Net_4031_0));
 
 \I2S:bI2S:rx_f0_load\\D\ <= ((not \I2S:bI2S:rx_state_1\ and \I2S:bI2S:rx_state_2\ and \I2S:bI2S:rx_state_0\)
@@ -1072,11 +1069,11 @@ one <=  ('1') ;
 
 \I2S:bI2S:rx_overflow_0\ <= ((\I2S:bI2S:rx_f0_load\ and \I2S:bI2S:rx_f0_full_0\));
 
-\I2S:bI2S:rx_data_in_0\\D\ <= ((not \I2S:bI2S:count_4\ and not Net_4032 and \I2S:bI2S:count_3\ and \I2S:bI2S:count_2\ and \I2S:bI2S:count_1\ and Net_4030)
-	OR (not \I2S:bI2S:count_3\ and not Net_4032 and \I2S:bI2S:count_5\ and Net_4030)
-	OR (not \I2S:bI2S:count_2\ and not Net_4032 and \I2S:bI2S:count_5\ and Net_4030)
-	OR (not \I2S:bI2S:count_5\ and not Net_4032 and \I2S:bI2S:count_4\ and Net_4030)
-	OR (not \I2S:bI2S:count_1\ and not Net_4032 and \I2S:bI2S:count_5\ and Net_4030)
+\I2S:bI2S:rx_data_in_0\\D\ <= ((not \I2S:bI2S:count_5\ and not Net_4032 and \I2S:bI2S:count_3\ and \I2S:bI2S:count_2\ and \I2S:bI2S:count_1\ and Net_4963)
+	OR (not \I2S:bI2S:count_3\ and not Net_4032 and \I2S:bI2S:count_4\ and Net_4963)
+	OR (not \I2S:bI2S:count_2\ and not Net_4032 and \I2S:bI2S:count_4\ and Net_4963)
+	OR (not \I2S:bI2S:count_4\ and not Net_4032 and \I2S:bI2S:count_5\ and Net_4963)
+	OR (not \I2S:bI2S:count_1\ and not Net_4032 and \I2S:bI2S:count_4\ and Net_4963)
 	OR (Net_4032 and \I2S:bI2S:rx_data_in_0\));
 
 cy_tff_2D <= (not Clk_I2S);
@@ -1088,10 +1085,6 @@ cy_tff_1D <= (not Net_3641);
 Net_3651 <= ((not Net_3792 and Net_4312)
 	OR (Net_3667 and Net_3792));
 
-USBOutDMA:cy_m0s8_dma_v1_0
-	GENERIC MAP(priority=>"11")
-	PORT MAP(tr_in=>zero,
-		tr_out=>Net_4612);
 \I2S:bI2S:ClkSync\:cy_psoc3_udb_clock_enable_v1_0
 	GENERIC MAP(sync_mode=>'0')
 	PORT MAP(clock_in=>Clk_I2S,
@@ -1234,7 +1227,7 @@ USBOutDMA:cy_m0s8_dma_v1_0
 	PORT MAP(reset=>zero,
 		clock=>\I2S:bI2S:op_clk\,
 		status=>(zero, zero, zero, zero,
-			zero, Rx_DMA_tr, \I2S:bI2S:rx_overflow_0\),
+			zero, \I2S:bI2S:rx_f0_n_empty_0\, \I2S:bI2S:rx_overflow_0\),
 		interrupt=>\I2S:bI2S:rx_int_out_0\);
 \I2S:bI2S:Rx:CH[0]:dpRx:u0\:cy_psoc3_dp
 	GENERIC MAP(cy_dpconfig=>"0000000000000000000000010100000000000001010000000000000101010000000000010100000000010000011100000001000001000000000000000000000011111111000000001111111111111111001000000000001000000101000000000001001000000100",
@@ -1279,7 +1272,7 @@ USBOutDMA:cy_m0s8_dma_v1_0
 		co_msb=>open,
 		cmsb=>open,
 		so=>open,
-		f0_bus_stat=>Rx_DMA_tr,
+		f0_bus_stat=>\I2S:bI2S:rx_f0_n_empty_0\,
 		f0_blk_stat=>\I2S:bI2S:rx_f0_full_0\,
 		f1_bus_stat=>\I2S:bI2S:rx_f1_n_empty_0\,
 		f1_blk_stat=>\I2S:bI2S:rx_f1_full_0\,
@@ -1727,76 +1720,6 @@ Codec_LRC:cy_psoc3_pins_v1_10
 		out_clock_en=>one,
 		out_reset=>zero,
 		interrupt=>tmpINTERRUPT_0__Codec_LRC_net_0);
-Codec_ADCDAT:cy_psoc3_pins_v1_10
-	GENERIC MAP(id=>"de616092-3627-4d1c-9049-719cec881e0a",
-		drive_mode=>"001",
-		ibuf_enabled=>"1",
-		init_dr_st=>"0",
-		input_sync=>"0",
-		input_clk_en=>'0',
-		input_sync_mode=>"0",
-		intr_mode=>"00",
-		invert_in_clock=>'0',
-		invert_in_clock_en=>'0',
-		invert_in_reset=>'0',
-		invert_out_clock=>'0',
-		invert_out_clock_en=>'0',
-		invert_out_reset=>'0',
-		io_voltage=>"",
-		layout_mode=>"CONTIGUOUS",
-		output_conn=>"0",
-		output_sync=>"0",
-		output_clk_en=>'0',
-		output_mode=>"0",
-		output_reset=>'0',
-		output_clock_mode=>"0",
-		oe_sync=>"0",
-		oe_conn=>"0",
-		oe_reset=>'0',
-		pin_aliases=>"PSOC_I2S_SDTI",
-		pin_mode=>"I",
-		por_state=>4,
-		sio_group_cnt=>0,
-		sio_hifreq=>"00000000",
-		sio_hyst=>"1",
-		sio_ibuf=>"00000000",
-		sio_info=>"00",
-		sio_obuf=>"00000000",
-		sio_refsel=>"00000000",
-		sio_vtrip=>"00000000",
-		sio_vohsel=>"00000000",
-		slew_rate=>"0",
-		spanning=>'0',
-		sw_only=>'0',
-		vtrip=>"00",
-		width=>1,
-		port_alias_required=>'0',
-		port_alias_group=>"",
-		use_annotation=>"0",
-		pa_in_clock=>-1,
-		pa_in_clock_en=>-1,
-		pa_in_reset=>-1,
-		pa_out_clock=>-1,
-		pa_out_clock_en=>-1,
-		pa_out_reset=>-1,
-		ovt_needed=>"0",
-		ovt_slew_control=>"00",
-		ovt_hyst_trim=>"0",
-		input_buffer_sel=>"00")
-	PORT MAP(oe=>(one),
-		y=>(zero),
-		fb=>Net_4030,
-		analog=>(open),
-		io=>(tmpIO_0__Codec_ADCDAT_net_0),
-		siovref=>(tmpSIOVREF__Codec_ADCDAT_net_0),
-		annotation=>(open),
-		in_clock=>zero,
-		in_clock_en=>one,
-		in_reset=>zero,
-		out_clock=>zero,
-		out_clock_en=>one,
-		out_reset=>zero,
-		interrupt=>tmpINTERRUPT_0__Codec_ADCDAT_net_0);
 \ByteCounter_Tx:cy_m0s8_tcpwm_1\:cy_m0s8_tcpwm_v1_0
 	GENERIC MAP(cy_registers=>"")
 	PORT MAP(clock=>Net_3865,
@@ -1823,7 +1746,7 @@ isr_TxDMADone:cy_isr_v1_0
 	GENERIC MAP(cy_registers=>"")
 	PORT MAP(clock=>Net_3865,
 		capture=>zero,
-		count=>RxCount,
+		count=>one,
 		reload=>zero,
 		stop=>zero,
 		start=>zero,
@@ -1847,14 +1770,6 @@ Clk_Counter:cy_clock_v1_0
 		is_digital=>'0')
 	PORT MAP(clock_out=>Net_3865,
 		dig_domain_out=>open);
-RxDMA:cy_m0s8_dma_v1_0
-	GENERIC MAP(priority=>"00")
-	PORT MAP(tr_in=>Rx_DMA_tr,
-		tr_out=>RxCount);
-USBInDMA:cy_m0s8_dma_v1_0
-	GENERIC MAP(priority=>"11")
-	PORT MAP(tr_in=>zero,
-		tr_out=>Net_4652);
 \UART:SCBCLK\:cy_clock_v1_0
 	GENERIC MAP(cy_registers=>"",
 		id=>"43ec2fa1-bf22-4b71-9477-b6ca7b97f0b0/2dc2d7a8-ce2b-43c7-af4a-821c8cd73ccf",
@@ -3220,7 +3135,7 @@ GND_1:cy_annotation_universal_v1_0
 		interrupt_lo=>\USBUART:Net_258\,
 		interrupt_med=>\USBUART:Net_259\,
 		interrupt_hi=>\USBUART:Net_237\,
-		dsi_usb_sof=>Net_4856,
+		dsi_usb_sof=>Net_4949,
 		dma_burstend=>(zero, zero, zero, zero,
 			zero, zero, zero, zero),
 		dma_req=>(\USBUART:dma_req_7\, \USBUART:dma_req_6\, \USBUART:dma_req_5\, \USBUART:dma_req_4\,
@@ -3613,6 +3528,76 @@ LED_GREEN:cy_psoc3_pins_v1_10
 		out_clock_en=>one,
 		out_reset=>zero,
 		interrupt=>tmpINTERRUPT_0__LED_GREEN_net_0);
+Codec_ADCDAT:cy_psoc3_pins_v1_10
+	GENERIC MAP(id=>"e851a3b9-efb8-48be-bbb8-b303b216c393",
+		drive_mode=>"001",
+		ibuf_enabled=>"1",
+		init_dr_st=>"0",
+		input_sync=>"0",
+		input_clk_en=>'0',
+		input_sync_mode=>"0",
+		intr_mode=>"00",
+		invert_in_clock=>'0',
+		invert_in_clock_en=>'0',
+		invert_in_reset=>'0',
+		invert_out_clock=>'0',
+		invert_out_clock_en=>'0',
+		invert_out_reset=>'0',
+		io_voltage=>"",
+		layout_mode=>"CONTIGUOUS",
+		output_conn=>"0",
+		output_sync=>"0",
+		output_clk_en=>'0',
+		output_mode=>"0",
+		output_reset=>'0',
+		output_clock_mode=>"0",
+		oe_sync=>"0",
+		oe_conn=>"0",
+		oe_reset=>'0',
+		pin_aliases=>"PSOC_I2S_SDTI",
+		pin_mode=>"I",
+		por_state=>4,
+		sio_group_cnt=>0,
+		sio_hifreq=>"00000000",
+		sio_hyst=>"1",
+		sio_ibuf=>"00000000",
+		sio_info=>"00",
+		sio_obuf=>"00000000",
+		sio_refsel=>"00000000",
+		sio_vtrip=>"00000000",
+		sio_vohsel=>"00000000",
+		slew_rate=>"0",
+		spanning=>'0',
+		sw_only=>'0',
+		vtrip=>"00",
+		width=>1,
+		port_alias_required=>'0',
+		port_alias_group=>"",
+		use_annotation=>"0",
+		pa_in_clock=>-1,
+		pa_in_clock_en=>-1,
+		pa_in_reset=>-1,
+		pa_out_clock=>-1,
+		pa_out_clock_en=>-1,
+		pa_out_reset=>-1,
+		ovt_needed=>"0",
+		ovt_slew_control=>"00",
+		ovt_hyst_trim=>"0",
+		input_buffer_sel=>"00")
+	PORT MAP(oe=>(one),
+		y=>(zero),
+		fb=>Net_4963,
+		analog=>(open),
+		io=>(tmpIO_0__Codec_ADCDAT_net_0),
+		siovref=>(tmpSIOVREF__Codec_ADCDAT_net_0),
+		annotation=>(open),
+		in_clock=>zero,
+		in_clock_en=>one,
+		in_reset=>zero,
+		out_clock=>zero,
+		out_clock_en=>one,
+		out_reset=>zero,
+		interrupt=>tmpINTERRUPT_0__Codec_ADCDAT_net_0);
 \I2S:bI2S:reset\:cy_dff
 	PORT MAP(d=>\I2S:bI2S:reset\\D\,
 		clk=>\I2S:bI2S:op_clk\,

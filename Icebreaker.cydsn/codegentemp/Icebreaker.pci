@@ -1,5 +1,5 @@
 # Icebreaker
-# 2019-08-14 07:06:32Z
+# 2019-08-16 08:59:53Z
 
 # IO_4@[IOP=(0)][IoId=(4)] is reserved: KhzXtalEnabled
 dont_use_io iocell 0 4
@@ -14,15 +14,14 @@ dont_use_io iocell 7 0
 # IO_1@[IOP=(7)][IoId=(1)] is reserved: MhzXtalEnabled
 dont_use_io iocell 7 1
 set_location "ClockGenBlock" m0s8clockgenblockcell -1 -1 0
-set_io "Codec_MCLK(0)" iocell 2 7
+set_io "Codec_MCLK(0)" iocell 5 7
 set_io "Codec_DACDAT(0)" iocell 3 6
 set_io "Codec_BCLK(0)" iocell 3 4
 set_io "Codec_LRC(0)" iocell 3 5
-set_io "Codec_ADCDAT(0)" iocell 3 7
-set_io "\UART:tx(0)\" iocell 1 1
-set_io "\UART:rx(0)\" iocell 1 0
-set_io "\CodecI2CM:sda(0)\" iocell 3 1
-set_io "\CodecI2CM:scl(0)\" iocell 3 0
+set_io "\UART:tx(0)\" iocell 8 1
+set_io "\UART:rx(0)\" iocell 8 0
+set_io "\CodecI2CM:sda(0)\" iocell 4 1
+set_io "\CodecI2CM:scl(0)\" iocell 4 0
 set_io "LED_BLUE(0)" iocell 11 4
 set_io "POTR(0)" iocell 0 1
 set_io "POTL(0)" iocell 0 2
@@ -30,6 +29,10 @@ set_io "SPI_CLK(0)" iocell 2 2
 set_io "SPI_MOSI(0)" iocell 2 0
 set_io "SPI_CS(0)" iocell 2 3
 set_io "PD(0)" iocell 0 0
+set_io "\USBUART:Dp(0)\" iocell 13 0
+set_io "\USBUART:Dm(0)\" iocell 13 1
+set_io "BTN(0)" iocell 0 3
 set_io "LED_RED(0)" iocell 11 6
 set_io "LED_GREEN(0)" iocell 11 2
+set_io "Codec_ADCDAT(0)" iocell 3 7
 set_location "\ADC:cy_psoc4_sar\" p4sarcell -1 -1 0

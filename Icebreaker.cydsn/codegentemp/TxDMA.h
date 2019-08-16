@@ -865,7 +865,7 @@ extern uint8 TxDMA_initVar;
 ***************************************/
 
 #define TxDMA_CHANNEL_CFG           (0x00000000u)
-#define TxDMA_DESCR0_CFG            (0x0180047Fu)
+#define TxDMA_DESCR0_CFG            (0x018000FFu)
 #define TxDMA_DESCR1_CFG            (0x00000000u)
 
 

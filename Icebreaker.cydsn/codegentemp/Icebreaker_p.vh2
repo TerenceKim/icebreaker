@@ -1,5 +1,5 @@
 -- Project:   Icebreaker
--- Generated: 08/14/2019 00:06:32
+-- Generated: 08/16/2019 01:59:53
 -- PSoC Creator  4.2
 
 ENTITY Icebreaker IS
@@ -8,7 +8,6 @@ ENTITY Icebreaker IS
         Codec_DACDAT(0)_PAD : OUT std_ulogic;
         Codec_BCLK(0)_PAD : OUT std_ulogic;
         Codec_LRC(0)_PAD : OUT std_ulogic;
-        Codec_ADCDAT(0)_PAD : IN std_ulogic;
         \UART:tx(0)_PAD\ : INOUT std_ulogic;
         \UART:rx(0)_PAD\ : IN std_ulogic;
         \CodecI2CM:sda(0)_PAD\ : INOUT std_ulogic;
@@ -22,7 +21,8 @@ ENTITY Icebreaker IS
         \USBUART:Dm(0)_PAD\ : OUT std_ulogic;
         BTN(0)_PAD : IN std_ulogic;
         LED_RED(0)_PAD : OUT std_ulogic;
-        LED_GREEN(0)_PAD : OUT std_ulogic);
+        LED_GREEN(0)_PAD : OUT std_ulogic;
+        Codec_ADCDAT(0)_PAD : IN std_ulogic);
     ATTRIBUTE voltage_VDDIO_A_1 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDA_0 OF __DEFAULT__ : ENTITY IS 3.3e0;
     ATTRIBUTE voltage_VDDA_CTB OF __DEFAULT__ : ENTITY IS 3.3e0;
@@ -78,10 +78,8 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     ATTRIBUTE global_signal OF Net_3865_ff11 : SIGNAL IS true;
     SIGNAL Net_3865_ff12 : bit;
     ATTRIBUTE global_signal OF Net_3865_ff12 : SIGNAL IS true;
-    SIGNAL Net_4030 : bit;
     SIGNAL Net_4031_0 : bit;
     SIGNAL Net_4032 : bit;
-    SIGNAL Net_4612 : bit;
     SIGNAL Net_4634 : bit;
     SIGNAL Net_4635 : bit;
     SIGNAL Net_4636 : bit;
@@ -94,7 +92,6 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     SIGNAL Net_4647 : bit;
     SIGNAL Net_4648 : bit;
     SIGNAL Net_4649 : bit;
-    SIGNAL Net_4652 : bit;
     SIGNAL Net_4655 : bit;
     SIGNAL Net_4657 : bit;
     SIGNAL Net_4658 : bit;
@@ -105,7 +102,6 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     SIGNAL Net_4695 : bit;
     SIGNAL Net_4779 : bit;
     SIGNAL Net_4781 : bit;
-    SIGNAL Net_4856 : bit;
     SIGNAL Net_4874 : bit;
     SIGNAL Net_4880 : bit;
     SIGNAL Net_4881 : bit;
@@ -129,11 +125,11 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     ATTRIBUTE global_signal OF Net_4948_ff14 : SIGNAL IS true;
     SIGNAL Net_4948_ff15 : bit;
     ATTRIBUTE global_signal OF Net_4948_ff15 : SIGNAL IS true;
+    SIGNAL Net_4949 : bit;
+    SIGNAL Net_4963 : bit;
     SIGNAL PD(0)__PA : bit;
     SIGNAL POTL(0)__PA : bit;
     SIGNAL POTR(0)__PA : bit;
-    SIGNAL RxCount : bit;
-    SIGNAL Rx_DMA_tr : bit;
     SIGNAL SPI_CLK(0)__PA : bit;
     SIGNAL SPI_CS(0)__PA : bit;
     SIGNAL SPI_MOSI(0)__PA : bit;
@@ -217,6 +213,7 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     SIGNAL \I2S:bI2S:rx_data_in_0\ : bit;
     SIGNAL \I2S:bI2S:rx_f0_full_0\ : bit;
     SIGNAL \I2S:bI2S:rx_f0_load\ : bit;
+    SIGNAL \I2S:bI2S:rx_f0_n_empty_0\ : bit;
     SIGNAL \I2S:bI2S:rx_f1_load\ : bit;
     SIGNAL \I2S:bI2S:rx_int_out_0\ : bit;
     SIGNAL \I2S:bI2S:rx_overflow_0\ : bit;
@@ -276,49 +273,51 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     ATTRIBUTE lib_model OF __ONE__ : LABEL IS "macrocell1";
     ATTRIBUTE Location OF ClockGenBlock : LABEL IS "F(CLK_GEN,0)";
     ATTRIBUTE lib_model OF Codec_MCLK(0) : LABEL IS "iocell1";
-    ATTRIBUTE Location OF Codec_MCLK(0) : LABEL IS "P2[7]";
+    ATTRIBUTE Location OF Codec_MCLK(0) : LABEL IS "P5[7]";
     ATTRIBUTE lib_model OF Codec_DACDAT(0) : LABEL IS "iocell2";
     ATTRIBUTE Location OF Codec_DACDAT(0) : LABEL IS "P3[6]";
     ATTRIBUTE lib_model OF Codec_BCLK(0) : LABEL IS "iocell3";
     ATTRIBUTE Location OF Codec_BCLK(0) : LABEL IS "P3[4]";
     ATTRIBUTE lib_model OF Codec_LRC(0) : LABEL IS "iocell4";
     ATTRIBUTE Location OF Codec_LRC(0) : LABEL IS "P3[5]";
-    ATTRIBUTE lib_model OF Codec_ADCDAT(0) : LABEL IS "iocell5";
-    ATTRIBUTE Location OF Codec_ADCDAT(0) : LABEL IS "P3[7]";
-    ATTRIBUTE lib_model OF \UART:tx(0)\ : LABEL IS "iocell6";
-    ATTRIBUTE Location OF \UART:tx(0)\ : LABEL IS "P1[1]";
-    ATTRIBUTE lib_model OF \UART:rx(0)\ : LABEL IS "iocell7";
-    ATTRIBUTE Location OF \UART:rx(0)\ : LABEL IS "P1[0]";
-    ATTRIBUTE lib_model OF \CodecI2CM:sda(0)\ : LABEL IS "iocell8";
-    ATTRIBUTE Location OF \CodecI2CM:sda(0)\ : LABEL IS "P3[1]";
-    ATTRIBUTE lib_model OF \CodecI2CM:scl(0)\ : LABEL IS "iocell9";
-    ATTRIBUTE Location OF \CodecI2CM:scl(0)\ : LABEL IS "P3[0]";
-    ATTRIBUTE lib_model OF LED_BLUE(0) : LABEL IS "iocell10";
+    ATTRIBUTE lib_model OF \UART:tx(0)\ : LABEL IS "iocell5";
+    ATTRIBUTE Location OF \UART:tx(0)\ : LABEL IS "P8[1]";
+    ATTRIBUTE lib_model OF \UART:rx(0)\ : LABEL IS "iocell6";
+    ATTRIBUTE Location OF \UART:rx(0)\ : LABEL IS "P8[0]";
+    ATTRIBUTE lib_model OF \CodecI2CM:sda(0)\ : LABEL IS "iocell7";
+    ATTRIBUTE Location OF \CodecI2CM:sda(0)\ : LABEL IS "P4[1]";
+    ATTRIBUTE lib_model OF \CodecI2CM:scl(0)\ : LABEL IS "iocell8";
+    ATTRIBUTE Location OF \CodecI2CM:scl(0)\ : LABEL IS "P4[0]";
+    ATTRIBUTE lib_model OF LED_BLUE(0) : LABEL IS "iocell9";
     ATTRIBUTE Location OF LED_BLUE(0) : LABEL IS "P11[4]";
-    ATTRIBUTE lib_model OF POTR(0) : LABEL IS "iocell11";
+    ATTRIBUTE lib_model OF POTR(0) : LABEL IS "iocell10";
     ATTRIBUTE Location OF POTR(0) : LABEL IS "P0[1]";
-    ATTRIBUTE lib_model OF POTL(0) : LABEL IS "iocell12";
+    ATTRIBUTE lib_model OF POTL(0) : LABEL IS "iocell11";
     ATTRIBUTE Location OF POTL(0) : LABEL IS "P0[2]";
-    ATTRIBUTE lib_model OF SPI_CLK(0) : LABEL IS "iocell13";
+    ATTRIBUTE lib_model OF SPI_CLK(0) : LABEL IS "iocell12";
     ATTRIBUTE Location OF SPI_CLK(0) : LABEL IS "P2[2]";
-    ATTRIBUTE lib_model OF SPI_MOSI(0) : LABEL IS "iocell14";
+    ATTRIBUTE lib_model OF SPI_MOSI(0) : LABEL IS "iocell13";
     ATTRIBUTE Location OF SPI_MOSI(0) : LABEL IS "P2[0]";
-    ATTRIBUTE lib_model OF SPI_CS(0) : LABEL IS "iocell15";
+    ATTRIBUTE lib_model OF SPI_CS(0) : LABEL IS "iocell14";
     ATTRIBUTE Location OF SPI_CS(0) : LABEL IS "P2[3]";
-    ATTRIBUTE lib_model OF PD(0) : LABEL IS "iocell16";
+    ATTRIBUTE lib_model OF PD(0) : LABEL IS "iocell15";
     ATTRIBUTE Location OF PD(0) : LABEL IS "P0[0]";
-    ATTRIBUTE lib_model OF \USBUART:Dp(0)\ : LABEL IS "iocell17";
-    ATTRIBUTE lib_model OF \USBUART:Dm(0)\ : LABEL IS "iocell18";
-    ATTRIBUTE lib_model OF BTN(0) : LABEL IS "iocell19";
-    ATTRIBUTE lib_model OF LED_RED(0) : LABEL IS "iocell20";
+    ATTRIBUTE lib_model OF \USBUART:Dp(0)\ : LABEL IS "iocell16";
+    ATTRIBUTE Location OF \USBUART:Dp(0)\ : LABEL IS "P13[0]";
+    ATTRIBUTE lib_model OF \USBUART:Dm(0)\ : LABEL IS "iocell17";
+    ATTRIBUTE Location OF \USBUART:Dm(0)\ : LABEL IS "P13[1]";
+    ATTRIBUTE lib_model OF BTN(0) : LABEL IS "iocell18";
+    ATTRIBUTE Location OF BTN(0) : LABEL IS "P0[3]";
+    ATTRIBUTE lib_model OF LED_RED(0) : LABEL IS "iocell19";
     ATTRIBUTE Location OF LED_RED(0) : LABEL IS "P11[6]";
-    ATTRIBUTE lib_model OF LED_GREEN(0) : LABEL IS "iocell21";
+    ATTRIBUTE lib_model OF LED_GREEN(0) : LABEL IS "iocell20";
     ATTRIBUTE Location OF LED_GREEN(0) : LABEL IS "P11[2]";
+    ATTRIBUTE lib_model OF Codec_ADCDAT(0) : LABEL IS "iocell21";
+    ATTRIBUTE Location OF Codec_ADCDAT(0) : LABEL IS "P3[7]";
     ATTRIBUTE lib_model OF \I2S:bI2S:tx_underflow_0\ : LABEL IS "macrocell2";
     ATTRIBUTE lib_model OF \I2S:bI2S:rx_overflow_0\ : LABEL IS "macrocell3";
     ATTRIBUTE lib_model OF \Async_Feedback_Counter:TimerUDB:status_tc\ : LABEL IS "macrocell4";
     ATTRIBUTE lib_model OF Net_3651 : LABEL IS "macrocell5";
-    ATTRIBUTE lib_model OF USBOutDMA : LABEL IS "drqcell1";
     ATTRIBUTE lib_model OF \I2S:bI2S:CtlReg__0__SYNC\ : LABEL IS "macrocell6";
     ATTRIBUTE lib_model OF \I2S:bI2S:CtlReg\ : LABEL IS "controlcell1";
     ATTRIBUTE lib_model OF \I2S:bI2S:Tx:STS[0]:Sts\ : LABEL IS "statusicell1";
@@ -330,12 +329,10 @@ ARCHITECTURE __DEFAULT__ OF Icebreaker IS
     ATTRIBUTE lib_model OF \Async_Feedback_Counter:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\ : LABEL IS "controlcell2";
     ATTRIBUTE lib_model OF \Async_Feedback_Counter:TimerUDB:rstSts:stsreg\ : LABEL IS "statusicell3";
     ATTRIBUTE lib_model OF \Async_Feedback_Counter:TimerUDB:sT8:timerdp:u0\ : LABEL IS "datapathcell3";
-    ATTRIBUTE lib_model OF TxDMA : LABEL IS "drqcell2";
-    ATTRIBUTE lib_model OF RxDMA : LABEL IS "drqcell3";
-    ATTRIBUTE lib_model OF USBInDMA : LABEL IS "drqcell4";
+    ATTRIBUTE lib_model OF TxDMA : LABEL IS "drqcell1";
     ATTRIBUTE lib_model OF \AudioClkSel:Sync:ctrl_reg\ : LABEL IS "controlcell3";
     ATTRIBUTE Location OF \ADC:cy_psoc4_sar\ : LABEL IS "F(SARADC,0)";
-    ATTRIBUTE lib_model OF DMA : LABEL IS "drqcell5";
+    ATTRIBUTE lib_model OF DMA : LABEL IS "drqcell2";
     ATTRIBUTE lib_model OF \I2S:bI2S:reset\ : LABEL IS "macrocell9";
     ATTRIBUTE lib_model OF I2S_LRCLK : LABEL IS "macrocell10";
     ATTRIBUTE lib_model OF \I2S:bI2S:tx_underflow_sticky\ : LABEL IS "macrocell11";
@@ -1263,97 +1260,6 @@ BEGIN
             pin_input => I2S_LRCLK,
             pad_out => Codec_LRC(0)_PAD,
             pad_in => Codec_LRC(0)_PAD,
-            in_clock => open,
-            in_clock_en => '1',
-            in_reset => '0',
-            out_clock => open,
-            out_clock_en => '1',
-            out_reset => '0');
-
-    Codec_ADCDAT:logicalport
-        GENERIC MAP(
-            drive_mode => "001",
-            ibuf_enabled => "1",
-            id => "de616092-3627-4d1c-9049-719cec881e0a",
-            init_dr_st => "0",
-            input_buffer_sel => "00",
-            input_clk_en => 0,
-            input_sync => "0",
-            input_sync_mode => "0",
-            intr_mode => "00",
-            invert_in_clock => 0,
-            invert_in_clock_en => 0,
-            invert_in_reset => 0,
-            invert_out_clock => 0,
-            invert_out_clock_en => 0,
-            invert_out_reset => 0,
-            io_voltage => "",
-            layout_mode => "CONTIGUOUS",
-            oe_conn => "0",
-            oe_reset => 0,
-            oe_sync => "0",
-            output_clk_en => 0,
-            output_clock_mode => "0",
-            output_conn => "0",
-            output_mode => "0",
-            output_reset => 0,
-            output_sync => "0",
-            ovt_hyst_trim => "0",
-            ovt_needed => "0",
-            ovt_slew_control => "00",
-            pa_in_clock => -1,
-            pa_in_clock_en => -1,
-            pa_in_reset => -1,
-            pa_out_clock => -1,
-            pa_out_clock_en => -1,
-            pa_out_reset => -1,
-            pin_aliases => "PSOC_I2S_SDTI",
-            pin_mode => "I",
-            por_state => 4,
-            port_alias_group => "",
-            port_alias_required => 0,
-            sio_group_cnt => 0,
-            sio_hifreq => "00000000",
-            sio_hyst => "1",
-            sio_ibuf => "00000000",
-            sio_info => "00",
-            sio_obuf => "00000000",
-            sio_refsel => "00000000",
-            sio_vohsel => "00000000",
-            sio_vtrip => "00000000",
-            slew_rate => "0",
-            spanning => 0,
-            sw_only => 0,
-            use_annotation => "0",
-            vtrip => "00",
-            width => 1,
-            in_clk_inv => 0,
-            in_clken_inv => 0,
-            in_clken_mode => 1,
-            in_rst_inv => 0,
-            out_clk_inv => 0,
-            out_clken_inv => 0,
-            out_clken_mode => 1,
-            out_rst_inv => 0)
-        PORT MAP(
-            in_clock_en => open,
-            in_reset => open,
-            out_clock_en => open,
-            out_reset => open);
-
-    Codec_ADCDAT(0):iocell
-        GENERIC MAP(
-            in_sync_mode => 0,
-            out_sync_mode => 0,
-            oe_sync_mode => 0,
-            logicalport => "Codec_ADCDAT",
-            logicalport_pin_id => 0,
-            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
-        PORT MAP(
-            pa_out => Codec_ADCDAT(0)__PA,
-            oe => open,
-            fb => Net_4030,
-            pad_in => Codec_ADCDAT(0)_PAD,
             in_clock => open,
             in_clock_en => '1',
             in_reset => '0',
@@ -2821,6 +2727,97 @@ BEGIN
             out_clock_en => '1',
             out_reset => '0');
 
+    Codec_ADCDAT:logicalport
+        GENERIC MAP(
+            drive_mode => "001",
+            ibuf_enabled => "1",
+            id => "e851a3b9-efb8-48be-bbb8-b303b216c393",
+            init_dr_st => "0",
+            input_buffer_sel => "00",
+            input_clk_en => 0,
+            input_sync => "0",
+            input_sync_mode => "0",
+            intr_mode => "00",
+            invert_in_clock => 0,
+            invert_in_clock_en => 0,
+            invert_in_reset => 0,
+            invert_out_clock => 0,
+            invert_out_clock_en => 0,
+            invert_out_reset => 0,
+            io_voltage => "",
+            layout_mode => "CONTIGUOUS",
+            oe_conn => "0",
+            oe_reset => 0,
+            oe_sync => "0",
+            output_clk_en => 0,
+            output_clock_mode => "0",
+            output_conn => "0",
+            output_mode => "0",
+            output_reset => 0,
+            output_sync => "0",
+            ovt_hyst_trim => "0",
+            ovt_needed => "0",
+            ovt_slew_control => "00",
+            pa_in_clock => -1,
+            pa_in_clock_en => -1,
+            pa_in_reset => -1,
+            pa_out_clock => -1,
+            pa_out_clock_en => -1,
+            pa_out_reset => -1,
+            pin_aliases => "PSOC_I2S_SDTI",
+            pin_mode => "I",
+            por_state => 4,
+            port_alias_group => "",
+            port_alias_required => 0,
+            sio_group_cnt => 0,
+            sio_hifreq => "00000000",
+            sio_hyst => "1",
+            sio_ibuf => "00000000",
+            sio_info => "00",
+            sio_obuf => "00000000",
+            sio_refsel => "00000000",
+            sio_vohsel => "00000000",
+            sio_vtrip => "00000000",
+            slew_rate => "0",
+            spanning => 0,
+            sw_only => 0,
+            use_annotation => "0",
+            vtrip => "00",
+            width => 1,
+            in_clk_inv => 0,
+            in_clken_inv => 0,
+            in_clken_mode => 1,
+            in_rst_inv => 0,
+            out_clk_inv => 0,
+            out_clken_inv => 0,
+            out_clken_mode => 1,
+            out_rst_inv => 0)
+        PORT MAP(
+            in_clock_en => open,
+            in_reset => open,
+            out_clock_en => open,
+            out_reset => open);
+
+    Codec_ADCDAT(0):iocell
+        GENERIC MAP(
+            in_sync_mode => 0,
+            out_sync_mode => 0,
+            oe_sync_mode => 0,
+            logicalport => "Codec_ADCDAT",
+            logicalport_pin_id => 0,
+            io_capabilities => "0000000000000000000000000000000000000000000000000000000000000101")
+        PORT MAP(
+            pa_out => Codec_ADCDAT(0)__PA,
+            oe => open,
+            fb => Net_4963,
+            pad_in => Codec_ADCDAT(0)_PAD,
+            in_clock => open,
+            in_clock_en => '1',
+            in_reset => '0',
+            out_clock => open,
+            out_clock_en => '1',
+            out_reset => '0');
+
     \I2S:bI2S:tx_underflow_0\:macrocell
         GENERIC MAP(
             eqn_main => "(!main_0 * !main_1 * main_2 * main_3)",
@@ -2863,14 +2860,6 @@ BEGIN
             main_0 => Net_3792,
             main_1 => ClockBlock_Routed3,
             main_2 => ClockBlock_Routed2);
-
-    USBOutDMA:drqcell
-        GENERIC MAP(
-            priority => "11")
-        PORT MAP(
-            dmareq => open,
-            termout => Net_4612,
-            clock => ClockBlock_HFCLK);
 
     \I2S:bI2S:CtlReg__0__SYNC\:macrocell
         GENERIC MAP(
@@ -3023,7 +3012,7 @@ BEGIN
             status_4 => open,
             status_3 => open,
             status_2 => open,
-            status_1 => Rx_DMA_tr,
+            status_1 => \I2S:bI2S:rx_f0_n_empty_0\,
             status_0 => \I2S:bI2S:rx_overflow_0\,
             interrupt => \I2S:bI2S:rx_int_out_0\);
 
@@ -3062,7 +3051,7 @@ BEGIN
             route_si => \I2S:bI2S:rx_data_in_0\,
             f0_load => \I2S:bI2S:rx_f0_load\,
             f1_load => \I2S:bI2S:rx_f1_load\,
-            f0_bus_stat_comb => Rx_DMA_tr,
+            f0_bus_stat_comb => \I2S:bI2S:rx_f0_n_empty_0\,
             f0_blk_stat_comb => \I2S:bI2S:rx_f0_full_0\,
             busclk => ClockBlock_HFCLK);
 
@@ -3209,7 +3198,7 @@ BEGIN
         PORT MAP(
             clock => Net_3865_ff11,
             capture => '0',
-            count => RxCount,
+            count => '1',
             reload => '0',
             stop => '0',
             start => '0',
@@ -3226,22 +3215,6 @@ BEGIN
             is_nmi => 0)
         PORT MAP(
             interrupt => Net_4645,
-            clock => ClockBlock_HFCLK);
-
-    RxDMA:drqcell
-        GENERIC MAP(
-            priority => "00")
-        PORT MAP(
-            dmareq => Rx_DMA_tr,
-            termout => RxCount,
-            clock => ClockBlock_HFCLK);
-
-    USBInDMA:drqcell
-        GENERIC MAP(
-            priority => "11")
-        PORT MAP(
-            dmareq => open,
-            termout => Net_4652,
             clock => ClockBlock_HFCLK);
 
     I2S_LRCLK__SYNC:synccell
@@ -3443,7 +3416,7 @@ BEGIN
             interrupt_lo => \USBUART:Net_258\,
             interrupt_med => \USBUART:Net_259\,
             interrupt_hi => \USBUART:Net_237\,
-            dsi_usb_sof => Net_4856,
+            dsi_usb_sof => Net_4949,
             dma_burstend_7 => open,
             dma_burstend_6 => open,
             dma_burstend_5 => open,
@@ -3698,7 +3671,7 @@ BEGIN
 
     Net_4031_0:macrocell
         GENERIC MAP(
-            eqn_main => "(!main_0 * main_1 * main_5 * main_6) + (main_0 * !main_2 * main_5 * main_6) + (main_0 * !main_3 * main_5 * main_6) + (main_0 * !main_4 * main_5 * main_6) + (!main_1 * main_2 * main_3 * main_4 * main_5 * main_6) + (!main_5 * main_7)",
+            eqn_main => "(!main_0 * main_2 * main_3 * main_4 * main_5 * main_6) + (main_0 * !main_1 * main_5 * main_6) + (main_1 * !main_2 * main_5 * main_6) + (main_1 * !main_3 * main_5 * main_6) + (main_1 * !main_4 * main_5 * main_6) + (!main_5 * main_7)",
             regmode => 1,
             clk_inv => '0',
             clken_mode => 1)
@@ -3832,7 +3805,7 @@ BEGIN
 
     \I2S:bI2S:rx_data_in_0\:macrocell
         GENERIC MAP(
-            eqn_main => "(!main_0 * main_1 * !main_5 * main_7) + (main_0 * !main_2 * !main_5 * main_7) + (main_0 * !main_3 * !main_5 * main_7) + (main_0 * !main_4 * !main_5 * main_7) + (!main_1 * main_2 * main_3 * main_4 * !main_5 * main_7) + (main_5 * main_6)",
+            eqn_main => "(!main_0 * main_2 * main_3 * main_4 * !main_5 * main_7) + (main_0 * !main_1 * !main_5 * main_7) + (main_1 * !main_2 * !main_5 * main_7) + (main_1 * !main_3 * !main_5 * main_7) + (main_1 * !main_4 * !main_5 * main_7) + (main_5 * main_6)",
             regmode => 1,
             clk_inv => '0',
             clken_mode => 1)
@@ -3846,7 +3819,7 @@ BEGIN
             main_4 => \I2S:bI2S:count_1\,
             main_5 => Net_4032,
             main_6 => \I2S:bI2S:rx_data_in_0\,
-            main_7 => Net_4030);
+            main_7 => Net_4963);
 
     Clk_I2S:macrocell
         GENERIC MAP(

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
   29:Button.c      **** static void buttonDebounceEventHandler(BUTTON_DEBOUNCE_EVT_e e);
   30:Button.c      **** static BUTTON_DEBOUNCE_STATE_e buttonDebounceGetState(void);
   31:Button.c      **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 2
 
 
   32:Button.c      **** static tmrFuncType buttonDebounceTimer = 
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
   54              		@ args = 0, pretend = 0, frame = 0
   55              		@ frame_needed = 0, uses_anonymous_args = 0
   56              		@ link register save eliminated.
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 3
 
 
   57              	.LVL0:
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
   96 0032 0122     		movs	r2, #1
   97 0034 0243     		orrs	r2, r0
   98 0036 0A60     		str	r2, [r1]
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 4
 
 
   99 0038 04E0     		b	.L11
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  137              		.loc 1 89 0
  138              		.cfi_startproc
  139              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 5
 
 
  140              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  102:Button.c      ****                 }
  103:Button.c      ****                 else
  104:Button.c      ****                 {
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 6
 
 
  105:Button.c      ****                     buttonDebounceSetState(BUTTON_DEBOUNCE_STATE_DEBOUNCING);
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  219              		@ args = 0, pretend = 0, frame = 0
  220              		@ frame_needed = 0, uses_anonymous_args = 0
  221 0000 10B5     		push	{r4, lr}
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 7
 
 
  222              		.cfi_def_cfa_offset 8
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  268              	.LFE1:
  269              		.size	button_debounce_timer_callback, .-button_debounce_timer_callback
  270              		.section	.text.buttonEdgeDetected,"ax",%progbits
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 8
 
 
  271              		.align	2
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  305              		.loc 1 140 0 is_stmt 1 discriminator 4
  306 001c 074B     		ldr	r3, .L34
  307 001e 9C70     		strb	r4, [r3, #2]
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 9
 
 
  141:Button.c      **** 
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  350 0000 10B5     		push	{r4, lr}
  351              		.cfi_def_cfa_offset 8
  352              		.cfi_offset 4, -8
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 10
 
 
  353              		.cfi_offset 14, -4
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  400              		.size	buttonPressed, 1
  401              	buttonPressed:
  402 0002 00       		.space	1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 11
 
 
  403              		.type	buttonOfficiallyPressed, %object
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  457 0059 05       		.byte	0x5
  458 005a 77030000 		.4byte	.LASF6
  459 005e 03       		.uleb128 0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 12
 
 
  460 005f F0010000 		.4byte	.LASF7
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  514 00c8 04       		.byte	0x4
  515 00c9 15       		.byte	0x15
  516 00ca F2000000 		.4byte	0xf2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 13
 
 
  517 00ce 06       		.uleb128 0x6
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  571 0139 02       		.byte	0x2
  572 013a 00       		.byte	0
  573 013b 03       		.uleb128 0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 14
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 14
 
 
  574 013c 00000000 		.4byte	.LASF26
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  628 01b4 9C       		.byte	0x9c
  629 01b5 FC010000 		.4byte	0x1fc
  630 01b9 0F       		.uleb128 0xf
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 15
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 15
 
 
  631 01ba 6500     		.ascii	"e\000"
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  685 022d 15       		.uleb128 0x15
  686 022e 1C000000 		.4byte	.LVL15
  687 0232 A4010000 		.4byte	0x1a4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 16
 
 
  688 0236 15       		.uleb128 0x15
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  742 02ab 16       		.uleb128 0x16
  743 02ac E6000000 		.4byte	.LASF36
  744 02b0 01       		.byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 17
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 17
 
 
  745 02b1 7A       		.byte	0x7a
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  799 0329 C7010000 		.4byte	.LASF52
  800 032d 07       		.byte	0x7
  801 032e 32       		.byte	0x32
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 18
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 18
 
 
  802 032f 33030000 		.4byte	0x333
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  856 001c 00       		.byte	0
  857 001d 00       		.byte	0
  858 001e 03       		.uleb128 0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 19
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 19
 
 
  859 001f 16       		.uleb128 0x16
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  913 0055 0D       		.uleb128 0xd
  914 0056 00       		.byte	0
  915 0057 03       		.uleb128 0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 20
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 20
 
 
  916 0058 08       		.uleb128 0x8
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  970 008e 2E       		.uleb128 0x2e
  971 008f 00       		.byte	0
  972 0090 03       		.uleb128 0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 21
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 21
 
 
  973 0091 0E       		.uleb128 0xe
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  1027 00c9 17       		.uleb128 0x17
  1028 00ca 00       		.byte	0
  1029 00cb 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 22
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 22
 
 
  1030 00cc 0F       		.uleb128 0xf
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  1084 0109 19       		.uleb128 0x19
  1085 010a 49       		.uleb128 0x49
  1086 010b 13       		.uleb128 0x13
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 23
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 23
 
 
  1087 010c 11       		.uleb128 0x11
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  1141 0145 18       		.uleb128 0x18
  1142 0146 9742     		.uleb128 0x2117
  1143 0148 19       		.uleb128 0x19
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 24
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 24
 
 
  1144 0149 01       		.uleb128 0x1
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  1198 017f 3A       		.uleb128 0x3a
  1199 0180 0B       		.uleb128 0xb
  1200 0181 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 25
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 25
 
 
  1201 0182 0B       		.uleb128 0xb
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  1255 006c 38000000 		.4byte	.LVL10
  1256 0070 3A000000 		.4byte	.LVL11
  1257 0074 0100     		.2byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 26
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 26
 
 
  1258 0076 50       		.byte	0x50
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  1312 0018 00000000 		.4byte	.LFB1
  1313 001c 34000000 		.4byte	.LFE1
  1314 0020 00000000 		.4byte	.LFB6
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 27
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 27
 
 
  1315 0024 44000000 		.4byte	.LFE6
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  1343              	.LASF25:
  1344 006f 42555454 		.ascii	"BUTTON_DEBOUNCE_STATE_DONE\000"
  1344      4F4E5F44 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 28
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 28
 
 
  1344      45424F55 
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  1364      74537461 
  1365              	.LASF23:
  1366 0142 42555454 		.ascii	"BUTTON_DEBOUNCE_STATE_IDLE\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 29
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 29
 
 
  1366      4F4E5F44 
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  1388      6F6E4465 
  1388      626F756E 
  1388      63654765 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 30
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 30
 
 
  1388      74537461 
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 1
  1408      626F756E 
  1408      63654576 
  1408      656E7448 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccJhPDRw.s 			page 31
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKwkx3h.s 			page 31
 
 
  1409              	.LASF39:

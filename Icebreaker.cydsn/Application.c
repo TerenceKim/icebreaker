@@ -51,6 +51,7 @@
 #include <Calibration.h>
 #include <isr_Button.h>
 #include <ButtonManager.h>
+#include <AudioManager.h>
 
 #define USBFS_DEVICE    (0u)
 #define USBUART_BUFFER_SIZE (64u)
@@ -151,16 +152,34 @@ void InitApp(void)
     /* Start SPI Master */
     pcm1770_init();
  #else
+    /* Configure CPU/DMA to be in round robin mode while accessing memory */
+  	//CY_SET_REG32((void *) 0x40100038, CY_GET_REG32((void *) 0x40100038) | 0x22222222);
+
     CyGlobalIntEnable;
 
     CalibrationInit();
     
+    PRINTF("\r\n=== v%d.%d.%d ===\r\n", FW_VER_MAJOR, FW_VER_MINOR, FW_VER_REV);
+
+		if(CySysGetResetReason(CY_SYS_RESET_SW) != CY_SYS_RESET_SW)
+		{
+			D_PRINTF(INFO, "\r\nApp Started...\r\n");
+		}
+		else
+		{
+			D_PRINTF(INFO, "\r\nApp Restarted after SW reset...\r\n");
+		}
+    
     buttonManagerInit();
+    
+    AudioManagerInit();
+        
+    TkShellInit();
     
     /* Start USBFS operation with 5-V operation. */
     USBUART_Start(USBFS_DEVICE, USBUART_5V_OPERATION);
     
-    TkShellInit();
+    CyIntSetPriority(CYDMA_INTR_NUMBER, 0);
  #endif
 }
 
@@ -219,6 +238,7 @@ void RunApplication(void)
         }
         
         buttonManagerService();
+        AudioManagerService();
     }
 #endif
 }

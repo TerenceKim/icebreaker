@@ -21,6 +21,7 @@
 #include <USBUART_cdc.h>
 #include <timers.h>
 #include <LedManager.h>
+#include <AudioManager.h>
 
 #define USBUART_BUFFER_SIZE (64u)
 
@@ -129,6 +130,15 @@ static TK_SHELL_VERBS(cal) =
     { "", NULL, "" }
 };
 
+TK_SHELL_METHOD(audio, play_tone);
+TK_SHELL_METHOD(audio, stop_tone);
+static TK_SHELL_VERBS(audio) =
+{
+  TK_SHELL_VERB(audio, play_tone, "play tone"),
+  TK_SHELL_VERB(audio, stop_tone, "stop tone"),
+  { "", NULL, "" }
+};
+
 static const tk_shell_command_s commands[] = 
 {
     TK_SHELL_COMMAND(gpio, "GPIO commands"),
@@ -137,6 +147,7 @@ static const tk_shell_command_s commands[] =
     TK_SHELL_COMMAND(sys, "System commands"),
     TK_SHELL_COMMAND(led, "LED commands"),
     TK_SHELL_COMMAND(cal, "Calibration data commands"),
+    TK_SHELL_COMMAND(audio, "Audio commands"),
     { "", NULL, "" }
 };
 
@@ -502,6 +513,22 @@ TK_SHELL_METHOD(cal, save)
 {
     PRINTF("> cal:ok %d\n", CalibrationSave());
     return 0;
+}
+
+TK_SHELL_METHOD(audio, play_tone)
+{
+  AudioManagerToneStart(strtoul(argv[2], NULL, 16));
+  
+  PRINTF("> audio:ok\n");
+
+  return 0;
+}
+
+TK_SHELL_METHOD(audio, stop_tone)
+{
+  AudioManagerToneStop();
+  PRINTF("> audio:ok\n");
+  return 0;
 }
 
 static int TkShellProcessCommand(void)

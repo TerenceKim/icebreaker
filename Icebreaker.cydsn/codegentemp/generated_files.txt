@@ -13,8 +13,6 @@
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\cyfitteriar.inc" value="HEADER;;;;;" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\cyfitter.h" value="HEADER;;;;;" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\cydisabledsheets.h" value="HEADER;;;;;" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\USBOutDMA.h" value="HEADER;;;;;USBOutDMA" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\USBOutDMA.c" value="SOURCE_C;CortexM0;;;;USBOutDMA" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\I2S.c" value="SOURCE_C;CortexM0;;;;I2S" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\I2S.h" value="HEADER;;;;;I2S" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\I2S_PM.c" value="SOURCE_C;CortexM0;;;;I2S" />
@@ -52,10 +50,6 @@
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\isr_RxDMADone.h" value="HEADER;;;;;isr_RxDMADone" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\Clk_Counter.c" value="SOURCE_C;CortexM0;;;;Clk_Counter" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\Clk_Counter.h" value="HEADER;;;;;Clk_Counter" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\RxDMA.h" value="HEADER;;;;;RxDMA" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\RxDMA.c" value="SOURCE_C;CortexM0;;;;RxDMA" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\USBInDMA.h" value="HEADER;;;;;USBInDMA" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\USBInDMA.c" value="SOURCE_C;CortexM0;;;;USBInDMA" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\UART.c" value="SOURCE_C;CortexM0;;;;UART" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\UART.h" value="HEADER;;;;;UART" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\UART_SPI_UART.h" value="HEADER;;;;;UART" />

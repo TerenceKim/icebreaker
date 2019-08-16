@@ -52,18 +52,25 @@
 #include "AudioControl.h"
 #include "USBInterface.h"
 #include <LED.h>
+#include <LedManager.h>
 #include <timers.h>
 
 CY_ISR(HFI_Handler)
 {
-    while (1)
-    {
-        LED_BLUE_Write(1);
-        CyDelay(1000);
-        
-        LED_BLUE_Write(0);
-        CyDelay(1000);
-    }
+  while (1)
+  {
+    LedManagerStartOverride(LM_LED_BLUE, 63000, 30000, 0);
+    LedManagerStartOverride(LM_LED_RED, 63000, 30000, 0);
+    LedManagerStartOverride(LM_LED_GREEN, 63000, 30000, 0);
+    
+    CyDelay(1000);
+    
+    LedManagerStopOverride(LM_LED_RED);
+    LedManagerStopOverride(LM_LED_GREEN);
+    LedManagerStopOverride(LM_LED_BLUE);
+    
+    CyDelay(1000);
+  }
 }
 
 CY_ISR(SysTickHandler)

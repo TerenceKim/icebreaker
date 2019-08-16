@@ -164,7 +164,10 @@ CY_ISR(LED_GREEN_PWM_ISR_Interrupt)
 
     /*  Place your Interrupt code here. */
     /* `#START LED_GREEN_PWM_ISR_Interrupt` */
+    #include <LedManager.h>
+    LED_GREEN_PWM_ISR_ClearPending();
 
+    LedManagerInterruptHandler(LM_LED_GREEN);
     /* `#END` */
 }
 

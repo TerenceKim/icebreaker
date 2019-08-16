@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
   28:Generated_Source\PSoC4/I2S.c **** * Summary:
   29:Generated_Source\PSoC4/I2S.c **** *  Enables I2S interface. Starts the generation of the sck and ws outputs.
   30:Generated_Source\PSoC4/I2S.c **** *  The Tx and Rx directions remain disabled. It is not necessary to call
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 2
 
 
   31:Generated_Source\PSoC4/I2S.c **** *  I2S_Enable() because the I2S_Start() routine calls this function, which is
@@ -115,10 +115,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
   59              	.L3:
   60              		.align	2
   61              	.L2:
-  62 0024 94000F40 		.word	1074725012
+  62 0024 95000F40 		.word	1074725013
   63 0028 73000F40 		.word	1074724979
   64              		.cfi_endproc
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 3
 
 
   65              	.LFE1:
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
   87 000c D2B2     		uxtb	r2, r2
   88 000e 1A70     		strb	r2, [r3]
   83:Generated_Source\PSoC4/I2S.c ****         #if (I2S_TX_STEREO_1_PRESENT)
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 4
 
 
   84:Generated_Source\PSoC4/I2S.c ****             I2S_SET_TX_INT_MASK(CH1, I2S_TX_INT_SOURCE);
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  130:Generated_Source\PSoC4/I2S.c ****             #endif /* I2S_CLIP_DETECT_ENABLE */
  131:Generated_Source\PSoC4/I2S.c ****         #endif /* I2S_RX_STEREO_4_PRESENT */
  132:Generated_Source\PSoC4/I2S.c ****     #endif /* (I2S_RX_DIRECTION_ENABLE) */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 5
 
 
  133:Generated_Source\PSoC4/I2S.c **** }
@@ -248,8 +248,8 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  100              	.L6:
  101              		.align	2
  102              	.L5:
- 103 0020 86000F40 		.word	1074724998
- 104 0024 87000F40 		.word	1074724999
+ 103 0020 87000F40 		.word	1074724999
+ 104 0024 83000F40 		.word	1074724995
  105              		.cfi_endproc
  106              	.LFE2:
  107              		.size	I2S_Init, .-I2S_Init
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  160:Generated_Source\PSoC4/I2S.c ****     if(0u == I2S_initVar)
  124              		.loc 1 160 0
  125 0002 064B     		ldr	r3, .L9
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 6
 
 
  126 0004 1B78     		ldrb	r3, [r3]
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  183:Generated_Source\PSoC4/I2S.c **** *
  184:Generated_Source\PSoC4/I2S.c **** *******************************************************************************/
  185:Generated_Source\PSoC4/I2S.c **** void I2S_Stop(void) 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 7
 
 
  186:Generated_Source\PSoC4/I2S.c **** {
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  240:Generated_Source\PSoC4/I2S.c ****         */
  241:Generated_Source\PSoC4/I2S.c ****         switch(dataBits)
  242:Generated_Source\PSoC4/I2S.c ****         {
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 8
 
 
  243:Generated_Source\PSoC4/I2S.c ****         case I2S_8BIT_DATA:
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  169              		.loc 1 285 0
  170 0006 074A     		ldr	r2, .L12
  171 0008 1178     		ldrb	r1, [r2]
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 9
 
 
  172 000a 1023     		movs	r3, #16
@@ -511,7 +511,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  189              	.L13:
  190              		.align	2
  191              	.L12:
- 192 0024 96000F40 		.word	1074725014
+ 192 0024 97000F40 		.word	1074725015
  193 0028 73000F40 		.word	1074724979
  194              		.cfi_endproc
  195              	.LFE5:
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  307:Generated_Source\PSoC4/I2S.c ****     * Parameters:
  308:Generated_Source\PSoC4/I2S.c ****     *  None.
  309:Generated_Source\PSoC4/I2S.c ****     *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 10
 
 
  310:Generated_Source\PSoC4/I2S.c ****     * Return:
@@ -594,11 +594,11 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  235              		.align	2
  236              	.L15:
  237 0020 73000F40 		.word	1074724979
- 238 0024 96000F40 		.word	1074725014
+ 238 0024 97000F40 		.word	1074725015
  239              		.cfi_endproc
  240              	.LFE6:
  241              		.size	I2S_DisableTx, .-I2S_DisableTx
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 11
 
 
  242              		.section	.text.I2S_ClearTxFIFO,"ax",%progbits
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  354:Generated_Source\PSoC4/I2S.c ****             I2S_CLEAR_TX_FIFO(CH1);
  355:Generated_Source\PSoC4/I2S.c ****         #endif /* I2S_TX_STEREO_1_PRESENT */
  356:Generated_Source\PSoC4/I2S.c ****         #if (I2S_TX_STEREO_2_PRESENT)
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 12
 
 
  357:Generated_Source\PSoC4/I2S.c ****             I2S_CLEAR_TX_FIFO(CH2);
@@ -680,7 +680,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  278              	.L19:
  279              		.align	2
  280              	.L18:
- 281 0020 94000F40 		.word	1074725012
+ 281 0020 97000F40 		.word	1074725015
  282              		.cfi_endproc
  283              	.LFE7:
  284              		.size	I2S_ClearTxFIFO, .-I2S_ClearTxFIFO
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  294              		.cfi_startproc
  295              		@ args = 0, pretend = 0, frame = 0
  296              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 13
 
 
  297 0000 10B5     		push	{r4, lr}
@@ -765,7 +765,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  324              	.L22:
  325              		.align	2
  326              	.L21:
- 327 0024 97000F40 		.word	1074725015
+ 327 0024 93000F40 		.word	1074725011
  328 0028 73000F40 		.word	1074724979
  329              		.cfi_endproc
  330              	.LFE8:
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  337              		.type	I2S_DisableRx, %function
  338              	I2S_DisableRx:
  339              	.LFB9:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 14
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 14
 
 
  403:Generated_Source\PSoC4/I2S.c **** 
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  363              		.loc 1 433 0
  364 001a FFF7FEFF 		bl	CyExitCriticalSection
  365              	.LVL13:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 15
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 15
 
 
  434:Generated_Source\PSoC4/I2S.c ****     }
@@ -849,7 +849,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  370              		.align	2
  371              	.L24:
  372 0020 73000F40 		.word	1074724979
- 373 0024 97000F40 		.word	1074725015
+ 373 0024 93000F40 		.word	1074725011
  374              		.cfi_endproc
  375              	.LFE9:
  376              		.size	I2S_DisableRx, .-I2S_DisableRx
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  396              		.loc 1 457 0
  397 0006 064A     		ldr	r2, .L27
  398 0008 1178     		ldrb	r1, [r2]
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 16
 
 
  399 000a 0323     		movs	r3, #3
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  437 0002 0D4A     		ldr	r2, .L30
  438 0004 1378     		ldrb	r3, [r2]
  439 0006 0421     		movs	r1, #4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 17
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 17
 
 
  440 0008 8B43     		bics	r3, r1
@@ -1007,8 +1007,8 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  474 0036 C046     		.align	2
  475              	.L30:
  476 0038 73000F40 		.word	1074724979
- 477 003c 94000F40 		.word	1074725012
- 478 0040 74000F40 		.word	1074724980
+ 477 003c 95000F40 		.word	1074725013
+ 478 0040 75000F40 		.word	1074724981
  479              		.cfi_endproc
  480              	.LFE4:
  481              		.size	I2S_Stop, .-I2S_Stop
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  485              		.type	I2S_initVar, %object
  486              		.size	I2S_initVar, 1
  487              	I2S_initVar:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 18
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 18
 
 
  488 0000 00       		.space	1
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  542 0060 696E7400 		.ascii	"int\000"
  543 0064 02       		.uleb128 0x2
  544 0065 04       		.byte	0x4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 19
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 19
 
 
  545 0066 07       		.byte	0x7
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  599 00dd E8020000 		.4byte	0x2e8
  600 00e1 00       		.byte	0
  601 00e2 09       		.uleb128 0x9
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 20
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 20
 
 
  602 00e3 02010000 		.4byte	.LASF31
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  656 016a 0B       		.uleb128 0xb
  657 016b BB000000 		.4byte	.LASF19
  658 016f 01       		.byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 21
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 21
 
 
  659 0170 3C01     		.2byte	0x13c
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  713 01ff 0A       		.uleb128 0xa
  714 0200 09020000 		.4byte	.LASF23
  715 0204 01       		.byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 22
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 22
 
 
  716 0205 A301     		.2byte	0x1a3
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  770 028d 6B000000 		.4byte	0x6b
  771 0291 85000000 		.4byte	.LLST7
  772 0295 08       		.uleb128 0x8
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 23
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 23
 
 
  773 0296 10000000 		.4byte	.LVL16
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  827 000f 10       		.uleb128 0x10
  828 0010 17       		.uleb128 0x17
  829 0011 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 24
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 24
 
 
  830 0012 00       		.byte	0
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  884 0048 27       		.uleb128 0x27
  885 0049 19       		.uleb128 0x19
  886 004a 11       		.uleb128 0x11
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 25
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 25
 
 
  887 004b 01       		.uleb128 0x1
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  941 0084 9742     		.uleb128 0x2117
  942 0086 19       		.uleb128 0x19
  943 0087 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 26
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 26
 
 
  944 0088 00       		.byte	0
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  998 00bf 02       		.uleb128 0x2
  999 00c0 18       		.uleb128 0x18
  1000 00c1 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 27
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 27
 
 
  1001 00c2 00       		.byte	0
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  1055 0057 00000000 		.4byte	0
  1056 005b 00000000 		.4byte	0
  1057              	.LLST5:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 28
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 28
 
 
  1058 005f 10000000 		.4byte	.LVL12
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  1112 0008 00000000 		.4byte	.LFB2
  1113 000c 28000000 		.4byte	.LFE2
  1114 0010 00000000 		.4byte	.LFB3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 29
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 29
 
 
  1115 0014 20000000 		.4byte	.LFE3
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  1148 005a 72656738 		.ascii	"reg8\000"
  1148      00
  1149              	.LASF5:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 30
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 30
 
 
  1150 005f 6C6F6E67 		.ascii	"long unsigned int\000"
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  1171              	.LASF17:
  1172 0121 4932535F 		.ascii	"I2S_Start\000"
  1172      53746172 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 31
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 31
 
 
  1172      7400
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 1
  1194 0217 6C6F6E67 		.ascii	"long int\000"
  1194      20696E74 
  1194      00
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccTMc6se.s 			page 32
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccrmt3xT.s 			page 32
 
 
  1195              	.LASF20:
