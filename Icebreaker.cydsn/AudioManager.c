@@ -220,10 +220,16 @@ void AudioManagerToneStart(uint32_t word)
   I2S_EnableTx(); /* Unmute the TX output */
   
   Codec_Activate();
+
+  /* Enable power to speaker output */
+  Codec_PowerOnControl(CODEC_POWER_CTRL_OUTPD);
 }
 
 void AudioManagerToneStop(void)
 {
+  /* Enable power to speaker output */
+  Codec_PowerOffControl(CODEC_POWER_CTRL_OUTPD);
+
   Codec_Deactivate();
 
   I2S_DisableTx();
