@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
   28:Generated_Source\PSoC4/USBUART.c **** * Global data allocation
   29:Generated_Source\PSoC4/USBUART.c **** ***************************************/
   30:Generated_Source\PSoC4/USBUART.c **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 2
 
 
   31:Generated_Source\PSoC4/USBUART.c **** /** Indicates whether the USBFS has been initialized. The variable is
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
   85:Generated_Source\PSoC4/USBUART.c ****         USBUART_ep2_dma__TR_OUTPUT,
   86:Generated_Source\PSoC4/USBUART.c ****         USBUART_ep3_dma__TR_OUTPUT,
   87:Generated_Source\PSoC4/USBUART.c ****         0u,
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 3
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 3
 
 
   88:Generated_Source\PSoC4/USBUART.c ****         0u,
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  142:Generated_Source\PSoC4/USBUART.c **** *   Note that global interrupts have to be enabled because interrupts are
  143:Generated_Source\PSoC4/USBUART.c **** *   required for USBFS component operation.
  144:Generated_Source\PSoC4/USBUART.c **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 4
 
 
  145:Generated_Source\PSoC4/USBUART.c **** *   PSoC 4200L devices: when USBFS component configured to DMA with Automatic
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  199:Generated_Source\PSoC4/USBUART.c **** * Function Name: USBUART_Init
  200:Generated_Source\PSoC4/USBUART.c **** ****************************************************************************//**
  201:Generated_Source\PSoC4/USBUART.c **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 5
 
 
  202:Generated_Source\PSoC4/USBUART.c **** * This function initializes or restores the component according to the
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
   53 001c 2360     		str	r3, [r4]
  231:Generated_Source\PSoC4/USBUART.c **** 
  232:Generated_Source\PSoC4/USBUART.c ****     /* Enable PHY detector and single-ended and differential receivers. */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 6
 
 
  233:Generated_Source\PSoC4/USBUART.c ****     USBUART_POWER_CTRL_REG |= USBUART_DEFAULT_POWER_CTRL_PHY;
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  250:Generated_Source\PSoC4/USBUART.c ****     uint8 enableInterrupts = CyEnterCriticalSection();
  251:Generated_Source\PSoC4/USBUART.c **** 
  252:Generated_Source\PSoC4/USBUART.c **** #if (USBUART_EP_MANAGEMENT_DMA)
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 7
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 7
 
 
  253:Generated_Source\PSoC4/USBUART.c ****     uint16 i;
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  307:Generated_Source\PSoC4/USBUART.c ****         USBUART_DmaNextTd[i] = DMA_INVALID_TD;
  308:Generated_Source\PSoC4/USBUART.c ****     #endif /* (USBUART_EP_MANAGEMENT_DMA_AUTO && (USBUART_EP_DMA_AUTO_OPT == 0u)) */
  309:Generated_Source\PSoC4/USBUART.c ****     }
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 8
 
 
  310:Generated_Source\PSoC4/USBUART.c **** #endif /* (USBUART_EP_MANAGEMENT_DMA) */
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  334:Generated_Source\PSoC4/USBUART.c ****     /* Set Control Endpoint Interrupt. */
  335:Generated_Source\PSoC4/USBUART.c ****     CyIntSetPriority(USBUART_EP_0_VECT_NUM, USBUART_EP_0_PRIOR);
  336:Generated_Source\PSoC4/USBUART.c ****     (void) CyIntSetVector(USBUART_EP_0_VECT_NUM,   &USBUART_EP_0_ISR);
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 9
 
 
  337:Generated_Source\PSoC4/USBUART.c **** 
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  391:Generated_Source\PSoC4/USBUART.c **** 
  392:Generated_Source\PSoC4/USBUART.c ****     /* Set ARB Interrupt. */
  393:Generated_Source\PSoC4/USBUART.c ****     #if (USBUART_EP_MANAGEMENT_DMA && USBUART_ARB_ISR_ACTIVE)
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 10
 
 
  394:Generated_Source\PSoC4/USBUART.c ****         CyIntSetPriority     (USBUART_ARB_VECT_NUM,  USBUART_ARB_PRIOR);
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  159              		.type	USBUART_InitComponent, %function
  160              	USBUART_InitComponent:
  161              	.LFB3:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 11
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 11
 
 
  410:Generated_Source\PSoC4/USBUART.c **** 
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  164              		@ args = 0, pretend = 0, frame = 0
  165              		@ frame_needed = 0, uses_anonymous_args = 0
  166              	.LVL10:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 12
 
 
  167 0000 10B5     		push	{r4, lr}
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  200 0020 204A     		ldr	r2, .L13+12
  201 0022 1370     		strb	r3, [r2]
  481:Generated_Source\PSoC4/USBUART.c ****     USBUART_configuration   = 0u;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 13
 
 
  202              		.loc 1 481 0
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  508:Generated_Source\PSoC4/USBUART.c ****     #if (USBUART_EP3_ISR_ACTIVE)
  509:Generated_Source\PSoC4/USBUART.c ****         CyIntEnable(USBUART_EP_3_VECT_NUM);
  510:Generated_Source\PSoC4/USBUART.c ****     #endif /* (USBUART_EP5_ISR_ACTIVE) */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 14
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 14
 
 
  511:Generated_Source\PSoC4/USBUART.c **** 
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  565:Generated_Source\PSoC4/USBUART.c ****                 USBUART_EP17_DMA_Done_SR_InterruptEnable();
  566:Generated_Source\PSoC4/USBUART.c ****                 USBUART_EP8_DMA_Done_SR_InterruptEnable();
  567:Generated_Source\PSoC4/USBUART.c ****             #endif /* (USBUART_EP_DMA_AUTO_OPT == 0u) */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 15
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 15
 
 
  568:Generated_Source\PSoC4/USBUART.c ****         #endif /* (CY_PSOC4) */
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  260 0074 1360     		str	r3, [r2]
  261              	.L11:
  592:Generated_Source\PSoC4/USBUART.c ****     #endif /* (USBUART_VDDD_MV < USBUART_3500MV) */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 16
 
 
  593:Generated_Source\PSoC4/USBUART.c ****         break;
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  629:Generated_Source\PSoC4/USBUART.c ****     /* Enable device to respond to USB traffic with address 0. */
  630:Generated_Source\PSoC4/USBUART.c ****     USBUART_CR0_REG = USBUART_DEFUALT_CR0;
  631:Generated_Source\PSoC4/USBUART.c ****     CyDelayCycles(USBUART_WAIT_CR0_REG_STABILITY);
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 17
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 17
 
 
  632:Generated_Source\PSoC4/USBUART.c **** #endif /* (CY_PSOC4) */
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  327              		.loc 1 188 0
  328 0006 074B     		ldr	r3, .L17
  329 0008 1B78     		ldrb	r3, [r3]
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 18
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 18
 
 
  330 000a 002B     		cmp	r3, #0
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  654:Generated_Source\PSoC4/USBUART.c **** *   USBUART_configuration - Contains the current configuration number
  655:Generated_Source\PSoC4/USBUART.c **** *       set by the Host using a SET_CONFIGURATION request.
  656:Generated_Source\PSoC4/USBUART.c **** *       Initialized to zero in this API.
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 19
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 19
 
 
  657:Generated_Source\PSoC4/USBUART.c **** *   USBUART_deviceAddress - Contains the current device address. This
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  685:Generated_Source\PSoC4/USBUART.c ****     /* Reset component internal variables. */
  686:Generated_Source\PSoC4/USBUART.c ****     USBUART_transferState   = USBUART_TRANS_STATE_IDLE;
  387              		.loc 1 686 0 is_stmt 1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 20
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 20
 
 
  388 0012 0023     		movs	r3, #0
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  424 0040 00000000 		.word	USBUART_hidProtocol
  425 0044 00000000 		.word	USBUART_transferState
  426 0048 00000000 		.word	USBUART_configurationChanged
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 21
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 21
 
 
  427 004c 00000000 		.word	USBUART_configuration
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  733:Generated_Source\PSoC4/USBUART.c **** #if (USBUART_EP_MANAGEMENT_DMA)
  734:Generated_Source\PSoC4/USBUART.c ****     /* Stop all DMA channels. */
  735:Generated_Source\PSoC4/USBUART.c ****     USBUART_Stop_DMA(USBUART_MAX_EP);
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 22
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 22
 
 
  736:Generated_Source\PSoC4/USBUART.c **** #endif /* (USBUART_EP_MANAGEMENT_DMA) */
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  477              		.loc 1 765 0
  478 0028 1E20     		movs	r0, #30
  479 002a FFF7FEFF 		bl	CyIntDisable
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 23
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 23
 
 
  480              	.LVL30:
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  811:Generated_Source\PSoC4/USBUART.c ****         (void) USBUART_Dp_ClearInterrupt();
  812:Generated_Source\PSoC4/USBUART.c ****         CyIntClearPending(USBUART_DP_INTC_VECT_NUM);
  813:Generated_Source\PSoC4/USBUART.c ****     #endif /* (USBUART_DP_ISR_ACTIVE). */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 24
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 24
 
 
  814:Generated_Source\PSoC4/USBUART.c **** 
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  530              		.thumb_func
  531              		.type	USBUART_CheckActivity, %function
  532              	USBUART_CheckActivity:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 25
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 25
 
 
  533              	.LFB6:
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  858:Generated_Source\PSoC4/USBUART.c **** }
  556              		.loc 1 858 0 discriminator 4
  557              		@ sp needed
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 26
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 26
 
 
  558 0016 7047     		bx	lr
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  595              		.global	USBUART_IsConfigurationChanged
  596              		.code	16
  597              		.thumb_func
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 27
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 27
 
 
  598              		.type	USBUART_IsConfigurationChanged, %function
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  622              	.L37:
  900:Generated_Source\PSoC4/USBUART.c ****     uint8 res = 0u;
  623              		.loc 1 900 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 28
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 28
 
 
  624 0014 0020     		movs	r0, #0
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  653 0002 185C     		ldrb	r0, [r3, r0]
  654              	.LVL39:
  655 0004 C0B2     		uxtb	r0, r0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 29
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 29
 
 
  931:Generated_Source\PSoC4/USBUART.c **** }
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  961:Generated_Source\PSoC4/USBUART.c ****     return (USBUART_EP[epNumber].apiEpState);
  680              		.loc 1 961 0
  681 0000 4300     		lsls	r3, r0, #1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 30
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 30
 
 
  682 0002 1818     		adds	r0, r3, r0
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  985:Generated_Source\PSoC4/USBUART.c **** 
  986:Generated_Source\PSoC4/USBUART.c ****     if ((epNumber > USBUART_EP0) && (epNumber < USBUART_MAX_EP))
  713              		.loc 1 986 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 31
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 31
 
 
  714 0000 431E     		subs	r3, r0, #1
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  758              	.LFE11:
  759              		.size	USBUART_GetEPCount, .-USBUART_GetEPCount
  760              		.section	.text.USBUART_LoadInEP,"ax",%progbits
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 32
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 32
 
 
  761              		.align	2
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1043:Generated_Source\PSoC4/USBUART.c ****         /* Initialize DMA channel callbacks. */
 1044:Generated_Source\PSoC4/USBUART.c ****         #if (USBUART_DMA1_ACTIVE)
 1045:Generated_Source\PSoC4/USBUART.c ****             (void) USBUART_ep1_dma_SetInterruptCallback(&USBUART_EP1_DMA_DONE_ISR);
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 33
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 33
 
 
 1046:Generated_Source\PSoC4/USBUART.c ****         #endif /* (USBUART_DMA1_ACTIVE) */
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1100:Generated_Source\PSoC4/USBUART.c ****     {
 1101:Generated_Source\PSoC4/USBUART.c ****         uint16 src;
 1102:Generated_Source\PSoC4/USBUART.c ****         uint16 dst;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 34
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 34
 
 
 1103:Generated_Source\PSoC4/USBUART.c **** 
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1157:Generated_Source\PSoC4/USBUART.c ****             break;
 1158:Generated_Source\PSoC4/USBUART.c ****     #endif /* (USBUART_DMA5_ACTIVE) */
 1159:Generated_Source\PSoC4/USBUART.c **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 35
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 35
 
 
 1160:Generated_Source\PSoC4/USBUART.c ****     #if (USBUART_DMA6_ACTIVE)
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1214:Generated_Source\PSoC4/USBUART.c ****     *
 1215:Generated_Source\PSoC4/USBUART.c ****     ***************************************************************************/
 1216:Generated_Source\PSoC4/USBUART.c ****     void USBUART_Stop_DMA(uint8 epNumber) 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 36
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 36
 
 
 1217:Generated_Source\PSoC4/USBUART.c ****     {
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1271:Generated_Source\PSoC4/USBUART.c ****         reg16 *convert;
 1272:Generated_Source\PSoC4/USBUART.c **** 
 1273:Generated_Source\PSoC4/USBUART.c ****         if (mode == 0u)
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 37
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 37
 
 
 1274:Generated_Source\PSoC4/USBUART.c ****         {
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1328:Generated_Source\PSoC4/USBUART.c **** *  \param epNumber Contains the data endpoint number.
 1329:Generated_Source\PSoC4/USBUART.c **** *            Valid values are between 1 and 8.
 1330:Generated_Source\PSoC4/USBUART.c **** *  \param *pData A pointer to a data array from which the data for the endpoint space
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 38
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 38
 
 
 1331:Generated_Source\PSoC4/USBUART.c **** *          is loaded.
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  801 0024 1218     		adds	r2, r2, r0
  802 0026 9300     		lsls	r3, r2, #2
  803 0028 194A     		ldr	r2, .L58
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 39
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 39
 
 
  804 002a D318     		adds	r3, r2, r3
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1364:Generated_Source\PSoC4/USBUART.c ****             {
  843              		.loc 1 1364 0 discriminator 3
  844 0066 0133     		adds	r3, r3, #1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 40
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 40
 
 
  845              	.LVL55:
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1384:Generated_Source\PSoC4/USBUART.c ****         #endif /* (CY_PSOC3 || CY_PSOC5LP) */
 1385:Generated_Source\PSoC4/USBUART.c **** 
 1386:Generated_Source\PSoC4/USBUART.c ****         #if (USBUART_EP_MANAGEMENT_DMA_MANUAL)
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 41
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 41
 
 
 1387:Generated_Source\PSoC4/USBUART.c ****             /* IN endpoint buffer will be fully loaded by DMA shortly. */
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1441:Generated_Source\PSoC4/USBUART.c **** 
 1442:Generated_Source\PSoC4/USBUART.c ****                 /* Store address of buffer. */
 1443:Generated_Source\PSoC4/USBUART.c ****                 USBUART_DmaEpBufferAddrBackup[epNumber] = (uint32) pData;
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 42
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 42
 
 
 1444:Generated_Source\PSoC4/USBUART.c **** 
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1498:Generated_Source\PSoC4/USBUART.c ****                 #endif /* (USBUART_EP_DMA_AUTO_OPT == 0u) */
 1499:Generated_Source\PSoC4/USBUART.c **** 
 1500:Generated_Source\PSoC4/USBUART.c ****                 /* Clear any potential pending DMA requests before starting DMA channel to transfer
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 43
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 43
 
 
 1501:Generated_Source\PSoC4/USBUART.c ****                 (void) CyDmaClearPendingDrq(USBUART_DmaChan[epNumber]);
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1555:Generated_Source\PSoC4/USBUART.c ****                     USBUART_CyDmaSetDescriptor0Next(channelNum);
 1556:Generated_Source\PSoC4/USBUART.c **** 
 1557:Generated_Source\PSoC4/USBUART.c ****                     /* Validate descriptor 1. */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 44
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 44
 
 
 1558:Generated_Source\PSoC4/USBUART.c ****                     if (USBUART_DmaEpBurstCnt[epNumber] > 1u)
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  888 0094 F0FF2B40 		.word	1076625392
  889 0098 C0012C40 		.word	1076625856
  890              		.cfi_endproc
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 45
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 45
 
 
  891              	.LFE12:
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1649:Generated_Source\PSoC4/USBUART.c **** * \reentrant
 1650:Generated_Source\PSoC4/USBUART.c **** *  No.
 1651:Generated_Source\PSoC4/USBUART.c **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 46
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 46
 
 
 1652:Generated_Source\PSoC4/USBUART.c **** *******************************************************************************/
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1706:Generated_Source\PSoC4/USBUART.c ****         }
 1707:Generated_Source\PSoC4/USBUART.c ****         #else
 1708:Generated_Source\PSoC4/USBUART.c ****             /* Configure DMA to transfer data. */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 47
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 47
 
 
 1709:Generated_Source\PSoC4/USBUART.c ****             (void) CyDmaChDisable(USBUART_DmaChan[epNumber]);
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1763:Generated_Source\PSoC4/USBUART.c ****             /* Adjust burst counter taking to account: 2 valid descriptors and interrupt trigger af
 1764:Generated_Source\PSoC4/USBUART.c ****             USBUART_DmaEpBurstCnt[epNumber] = USBUART_DMA_GET_BURST_CNT(USBUART_DmaEpBurstCnt[epNum
 1765:Generated_Source\PSoC4/USBUART.c **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 48
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 48
 
 
 1766:Generated_Source\PSoC4/USBUART.c ****             /* Disable DMA channel: start configuration. */
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1820:Generated_Source\PSoC4/USBUART.c ****         length = 0u;
 1821:Generated_Source\PSoC4/USBUART.c ****     }
 1822:Generated_Source\PSoC4/USBUART.c **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 49
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 49
 
 
 1823:Generated_Source\PSoC4/USBUART.c ****     return (length);
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1877:Generated_Source\PSoC4/USBUART.c ****         }
 1878:Generated_Source\PSoC4/USBUART.c ****     #endif /* (!USBUART_EP_MANAGEMENT_DMA_AUTO) */
 1879:Generated_Source\PSoC4/USBUART.c **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 50
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 50
 
 
 1880:Generated_Source\PSoC4/USBUART.c ****         /* Set count and data toggle. */
@@ -2998,7 +2998,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1934:Generated_Source\PSoC4/USBUART.c **** 
 1935:Generated_Source\PSoC4/USBUART.c ****                 /* Generate DMA request. */
 1936:Generated_Source\PSoC4/USBUART.c ****                 USBUART_ARB_EP_BASE.arbEp[epNumber].epCfg |=  (uint32)  USBUART_ARB_EPX_CFG_DMA_REQ
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 51
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 51
 
 
 1937:Generated_Source\PSoC4/USBUART.c ****                 USBUART_ARB_EP_BASE.arbEp[epNumber].epCfg &=  (uint32) ~USBUART_ARB_EPX_CFG_DMA_REQ
@@ -3058,7 +3058,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 1991:Generated_Source\PSoC4/USBUART.c ****                     USBUART_DmaEpLastBurstEl[epNumber] = (uint8) (length % USBUART_DMA_BYTES_PER_BU
 1992:Generated_Source\PSoC4/USBUART.c **** 
 1993:Generated_Source\PSoC4/USBUART.c ****                     /* Get total number of bursts. */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 52
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 52
 
 
 1994:Generated_Source\PSoC4/USBUART.c ****                     USBUART_DmaEpBurstCnt[epNumber] += (0u != USBUART_DmaEpLastBurstEl[epNumber]) ?
@@ -3118,7 +3118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 2048:Generated_Source\PSoC4/USBUART.c ****                 }
 2049:Generated_Source\PSoC4/USBUART.c ****             }
 2050:Generated_Source\PSoC4/USBUART.c ****         #endif /* (USBUART_EP_MANAGEMENT_DMA_AUTO) */
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 53
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 53
 
 
 2051:Generated_Source\PSoC4/USBUART.c ****     #endif /* (USBUART_EP_MANAGEMENT_MANUAL) */
@@ -3178,7 +3178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 2105:Generated_Source\PSoC4/USBUART.c **** {
 2106:Generated_Source\PSoC4/USBUART.c ****     uint32 adjLength;
 2107:Generated_Source\PSoC4/USBUART.c **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 54
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 54
 
 
 2108:Generated_Source\PSoC4/USBUART.c ****     /* Check array alignment on half-word boundary */
@@ -3238,7 +3238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 2162:Generated_Source\PSoC4/USBUART.c **** 
 2163:Generated_Source\PSoC4/USBUART.c ****             /* OUT endpoint has to be armed again by user when DMA transfers have been completed.
 2164:Generated_Source\PSoC4/USBUART.c ****             * NO_EVENT_PENDING: notifies that data has been copied from endpoint buffer.
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 55
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 55
 
 
 2165:Generated_Source\PSoC4/USBUART.c ****             */
@@ -3298,7 +3298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 2219:Generated_Source\PSoC4/USBUART.c ****             /* Configure DMA descriptor 0. */
 2220:Generated_Source\PSoC4/USBUART.c ****             USBUART_CyDmaSetConfiguration(channelNum, USBUART_DMA_DESCR0, USBUART_DMA_COMMON_CFG  |
 2221:Generated_Source\PSoC4/USBUART.c ****                                                     CYDMA_HALFWORD | CYDMA_WORD_ELEMENT | CYDMA_INC
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 56
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 56
 
 
 2222:Generated_Source\PSoC4/USBUART.c **** 
@@ -3358,7 +3358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 2276:Generated_Source\PSoC4/USBUART.c **** void USBUART_EnableOutEP(uint8 epNumber) 
 2277:Generated_Source\PSoC4/USBUART.c **** {
  901              		.loc 1 2277 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 57
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 57
 
 
  902              		.cfi_startproc
@@ -3418,7 +3418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  947              	USBUART_ReadOutEP:
  948              	.LFB13:
 1655:Generated_Source\PSoC4/USBUART.c ****     if ((pData != NULL) && (epNumber > USBUART_EP0) && (epNumber < USBUART_MAX_EP))
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 58
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 58
 
 
  949              		.loc 1 1655 0
@@ -3478,7 +3478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  996 0032 F254     		strb	r2, [r6, r3]
 1667:Generated_Source\PSoC4/USBUART.c ****             {
  997              		.loc 1 1667 0 discriminator 3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 59
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 59
 
 
  998 0034 0133     		adds	r3, r3, #1
@@ -3538,7 +3538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 2290:Generated_Source\PSoC4/USBUART.c **** * Function Name: USBUART_DisableOutEP
 2291:Generated_Source\PSoC4/USBUART.c **** ****************************************************************************//**
 2292:Generated_Source\PSoC4/USBUART.c **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 60
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 60
 
 
 2293:Generated_Source\PSoC4/USBUART.c **** *  This function disables the specified USBFS OUT endpoint. Do not call this
@@ -3598,7 +3598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 2309:Generated_Source\PSoC4/USBUART.c **** 
 2310:Generated_Source\PSoC4/USBUART.c **** /*******************************************************************************
 2311:Generated_Source\PSoC4/USBUART.c **** * Function Name: USBUART_Force
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 61
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 61
 
 
 2312:Generated_Source\PSoC4/USBUART.c **** ****************************************************************************//**
@@ -3658,7 +3658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 2339:Generated_Source\PSoC4/USBUART.c **** /*******************************************************************************
 2340:Generated_Source\PSoC4/USBUART.c **** * Function Name: USBUART_GetEPAckState
 2341:Generated_Source\PSoC4/USBUART.c **** ****************************************************************************//**
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 62
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 62
 
 
 2342:Generated_Source\PSoC4/USBUART.c **** *
@@ -3718,7 +3718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1140              	.LVL84:
 2365:Generated_Source\PSoC4/USBUART.c **** }
  1141              		.loc 1 2365 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 63
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 63
 
 
  1142              		@ sp needed
@@ -3778,7 +3778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1164              	.LVL85:
 2398:Generated_Source\PSoC4/USBUART.c ****     if (powerStatus != USBUART_DEVICE_STATUS_BUS_POWERED)
  1165              		.loc 1 2398 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 64
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 64
 
 
  1166 0000 0028     		cmp	r0, #0
@@ -3838,7 +3838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 2417:Generated_Source\PSoC4/USBUART.c ****     * \return
 2418:Generated_Source\PSoC4/USBUART.c ****     *  The return value can be the following:
 2419:Generated_Source\PSoC4/USBUART.c ****     *  Return Value | Description
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 65
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 65
 
 
 2420:Generated_Source\PSoC4/USBUART.c ****     *  -------------|-----------------
@@ -3898,7 +3898,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
 2458:Generated_Source\PSoC4/USBUART.c ****     {
 2459:Generated_Source\PSoC4/USBUART.c ****         result = USBUART_TRUE;
  1217              		.loc 1 2459 0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 66
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 66
 
 
  1218 000c 0120     		movs	r0, #1
@@ -3958,7 +3958,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1251 0008 7047     		bx	lr
  1252              	.L98:
  1253 000a C046     		.align	2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 67
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 67
 
 
  1254              	.L97:
@@ -4018,7 +4018,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1286              	.LFE21:
  1287              		.size	USBUART_EnableSofInt, .-USBUART_EnableSofInt
  1288              		.section	.text.USBUART_DisableSofInt,"ax",%progbits
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 68
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 68
 
 
  1289              		.align	2
@@ -4078,7 +4078,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1321              		.size	USBUART_initVar, 1
  1322              	USBUART_initVar:
  1323 0000 00       		.space	1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 69
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 69
 
 
  1324              		.text
@@ -4138,7 +4138,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1378 005f 05       		.byte	0x5
  1379 0060 696E7400 		.ascii	"int\000"
  1380 0064 02       		.uleb128 0x2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 70
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 70
 
 
  1381 0065 04       		.byte	0x4
@@ -4198,7 +4198,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1435 00d5 03       		.byte	0x3
  1436 00d6 94       		.byte	0x94
  1437 00d7 6B000000 		.4byte	0x6b
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 71
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 71
 
 
  1438 00db 00       		.byte	0
@@ -4258,7 +4258,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1492 0144 C8000000 		.4byte	0xc8
  1493 0148 06       		.uleb128 0x6
  1494 0149 40       		.byte	0x40
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 72
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 72
 
 
  1495 014a 03       		.byte	0x3
@@ -4318,7 +4318,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1549 01b6 EE       		.byte	0xee
  1550 01b7 83000000 		.4byte	0x83
  1551 01bb 04       		.byte	0x4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 73
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 73
 
 
  1552 01bc 07       		.uleb128 0x7
@@ -4378,7 +4378,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1606 022b 06       		.byte	0x6
  1607 022c 00       		.byte	0
  1608 022d 08       		.uleb128 0x8
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 74
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 74
 
 
  1609 022e F4030000 		.4byte	.LASF41
@@ -4438,7 +4438,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1663 02a5 01       		.byte	0x1
  1664 02a6 D3       		.byte	0xd3
  1665 02a7 00000000 		.4byte	.LFB2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 75
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 75
 
 
  1666 02ab D0000000 		.4byte	.LFE2-.LFB2
@@ -4498,7 +4498,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1720 0311 01       		.uleb128 0x1
  1721 0312 33       		.byte	0x33
  1722 0313 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 76
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 76
 
 
  1723 0314 0F       		.uleb128 0xf
@@ -4558,7 +4558,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1777 0374 01       		.uleb128 0x1
  1778 0375 50       		.byte	0x50
  1779 0376 01       		.uleb128 0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 77
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 77
 
 
  1780 0377 35       		.byte	0x35
@@ -4618,7 +4618,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1834 03ee 01       		.uleb128 0x1
  1835 03ef 50       		.byte	0x50
  1836 03f0 01       		.uleb128 0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 78
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 78
 
 
  1837 03f1 4F       		.byte	0x4f
@@ -4678,7 +4678,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1891 045e 6900     		.ascii	"i\000"
  1892 0460 01       		.byte	0x1
  1893 0461 A502     		.2byte	0x2a5
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 79
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 79
 
 
  1894 0463 6B000000 		.4byte	0x6b
@@ -4738,7 +4738,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  1948 04da 18       		.uleb128 0x18
  1949 04db E5010000 		.4byte	.LASF55
  1950 04df 01       		.byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 80
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 80
 
 
  1951 04e0 5103     		.2byte	0x351
@@ -4798,7 +4798,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2005 0564 9F03     		.2byte	0x39f
  2006 0566 6B000000 		.4byte	0x6b
  2007 056a 21010000 		.4byte	.LLST8
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 81
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 81
 
 
  2008 056e 00       		.byte	0
@@ -4858,7 +4858,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2062 05f3 6B000000 		.4byte	0x6b
  2063 05f7 FA010000 		.4byte	.LLST12
  2064 05fb 1B       		.uleb128 0x1b
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 82
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 82
 
 
  2065 05fc C6020000 		.4byte	.LASF64
@@ -4918,7 +4918,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2119 067b 5C010000 		.4byte	.LASF60
  2120 067f 01       		.byte	0x1
  2121 0680 7506     		.2byte	0x675
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 83
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 83
 
 
  2122 0682 6B000000 		.4byte	0x6b
@@ -4978,7 +4978,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2176 06fb 75       		.byte	0x75
  2177 06fc 00       		.sleb128 0
  2178 06fd 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 84
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 84
 
 
  2179 06fe 00       		.byte	0
@@ -5038,7 +5038,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2233 077c 637200   		.ascii	"cr\000"
  2234 077f 01       		.byte	0x1
  2235 0780 3509     		.2byte	0x935
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 85
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 85
 
 
  2236 0782 83000000 		.4byte	0x83
@@ -5098,7 +5098,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2290 0803 20       		.uleb128 0x20
  2291 0804 56020000 		.4byte	.LASF79
  2292 0808 01       		.byte	0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 86
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 86
 
 
  2293 0809 D109     		.2byte	0x9d1
@@ -5158,7 +5158,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2347 0888 04       		.byte	0x4
  2348 0889 73       		.byte	0x73
  2349 088a A4000000 		.4byte	0xa4
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 87
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 87
 
 
  2350 088e 23       		.uleb128 0x23
@@ -5218,7 +5218,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2404 0906 D6040000 		.4byte	.LASF96
  2405 090a D6040000 		.4byte	.LASF96
  2406 090e 05       		.byte	0x5
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 88
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 88
 
 
  2407 090f C3       		.byte	0xc3
@@ -5278,7 +5278,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2461 0023 3E       		.uleb128 0x3e
  2462 0024 0B       		.uleb128 0xb
  2463 0025 03       		.uleb128 0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 89
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 89
 
 
  2464 0026 08       		.uleb128 0x8
@@ -5338,7 +5338,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2518 005c 03       		.uleb128 0x3
  2519 005d 0E       		.uleb128 0xe
  2520 005e 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 90
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 90
 
 
  2521 005f 0B       		.uleb128 0xb
@@ -5398,7 +5398,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2575 0095 0D       		.uleb128 0xd
  2576 0096 00       		.byte	0
  2577 0097 03       		.uleb128 0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 91
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 91
 
 
  2578 0098 0E       		.uleb128 0xe
@@ -5458,7 +5458,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2632 00d4 00       		.byte	0
  2633 00d5 00       		.byte	0
  2634 00d6 11       		.uleb128 0x11
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 92
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 92
 
 
  2635 00d7 898201   		.uleb128 0x4109
@@ -5518,7 +5518,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2689 0112 17       		.uleb128 0x17
  2690 0113 00       		.byte	0
  2691 0114 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 93
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 93
 
 
  2692 0115 15       		.uleb128 0x15
@@ -5578,7 +5578,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2746 014b 3B       		.uleb128 0x3b
  2747 014c 05       		.uleb128 0x5
  2748 014d 27       		.uleb128 0x27
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 94
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 94
 
 
  2749 014e 19       		.uleb128 0x19
@@ -5638,7 +5638,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2803 0186 00       		.byte	0
  2804 0187 1B       		.uleb128 0x1b
  2805 0188 05       		.uleb128 0x5
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 95
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 95
 
 
  2806 0189 00       		.byte	0
@@ -5698,7 +5698,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2860 01bf 3A       		.uleb128 0x3a
  2861 01c0 0B       		.uleb128 0xb
  2862 01c1 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 96
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 96
 
 
  2863 01c2 05       		.uleb128 0x5
@@ -5758,7 +5758,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2917 01f9 3B       		.uleb128 0x3b
  2918 01fa 0B       		.uleb128 0xb
  2919 01fb 49       		.uleb128 0x49
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 97
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 97
 
 
  2920 01fc 13       		.uleb128 0x13
@@ -5818,7 +5818,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  2974 003e 00000000 		.4byte	0
  2975              	.LLST2:
  2976 0042 04000000 		.4byte	.LVL11
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 98
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 98
 
 
  2977 0046 08000000 		.4byte	.LVL12
@@ -5878,7 +5878,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3031 00cd 0100     		.2byte	0x1
  3032 00cf 53       		.byte	0x53
  3033 00d0 00000000 		.4byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 99
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 99
 
 
  3034 00d4 00000000 		.4byte	0
@@ -5938,7 +5938,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3088 015a 9F       		.byte	0x9f
  3089 015b 00000000 		.4byte	0
  3090 015f 00000000 		.4byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 100
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 100
 
 
  3091              	.LLST10:
@@ -5998,7 +5998,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3145 01df 2C000000 		.4byte	.LVL50
  3146 01e3 0200     		.2byte	0x2
  3147 01e5 30       		.byte	0x30
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 101
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 101
 
 
  3148 01e6 9F       		.byte	0x9f
@@ -6058,7 +6058,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3202              	.LLST15:
  3203 0270 00000000 		.4byte	.LVL62
  3204 0274 1C000000 		.4byte	.LVL63
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 102
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 102
 
 
  3205 0278 0100     		.2byte	0x1
@@ -6118,7 +6118,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3259 02fb 58000000 		.4byte	.LFE13
  3260 02ff 0400     		.2byte	0x4
  3261 0301 F3       		.byte	0xf3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 103
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 103
 
 
  3262 0302 01       		.uleb128 0x1
@@ -6178,7 +6178,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3316 038c 0400     		.2byte	0x4
  3317 038e F3       		.byte	0xf3
  3318 038f 01       		.uleb128 0x1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 104
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 104
 
 
  3319 0390 50       		.byte	0x50
@@ -6238,7 +6238,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3373 0414 30       		.byte	0x30
  3374 0415 9F       		.byte	0x9f
  3375 0416 0E000000 		.4byte	.LVL87
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 105
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 105
 
 
  3376 041a 14000000 		.4byte	.LFE19
@@ -6298,7 +6298,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3430 00b4 10000000 		.4byte	.LFE21-.LFB21
  3431 00b8 00000000 		.4byte	.LFB22
  3432 00bc 10000000 		.4byte	.LFE22-.LFB22
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 106
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 106
 
 
  3433 00c0 00000000 		.4byte	0
@@ -6358,7 +6358,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3487 00c8 00000000 		.4byte	0
  3488 00cc 00000000 		.4byte	0
  3489              		.section	.debug_line,"",%progbits
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 107
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 107
 
 
  3490              	.Ldebug_line0:
@@ -6418,7 +6418,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3509      31203230 
  3509      31363036 
  3510 00d4 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 108
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 108
 
 
  3510      20726576 
@@ -6478,7 +6478,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3533 01b3 55534255 		.ascii	"USBUART_GetEPAckState\000"
  3533      4152545F 
  3533      47657445 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 109
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 109
 
 
  3533      5041636B 
@@ -6538,7 +6538,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3559 0256 55534255 		.ascii	"USBUART_DisableSofInt\000"
  3559      4152545F 
  3559      44697361 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 110
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 110
 
 
  3559      626C6553 
@@ -6598,7 +6598,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3584              	.LASF5:
  3585 0304 6C6F6E67 		.ascii	"long unsigned int\000"
  3585      20756E73 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 111
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 111
 
 
  3585      69676E65 
@@ -6658,7 +6658,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3605      6500
  3606              	.LASF54:
  3607 03d1 63723152 		.ascii	"cr1Reg\000"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 112
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 112
 
 
  3607      656700
@@ -6718,7 +6718,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3633      5072696F 
  3633      72697479 
  3633      00
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 113
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 113
 
 
  3634              	.LASF30:
@@ -6778,7 +6778,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3659 0517 55534255 		.ascii	"USBUART_sie_ep_struct\000"
  3659      4152545F 
  3659      7369655F 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 114
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 114
 
 
  3659      65705F73 
@@ -6838,7 +6838,7 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 1
  3684              	.LASF83:
  3685 05c1 55534255 		.ascii	"USBUART_configuration\000"
  3685      4152545F 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cclAU0HC.s 			page 115
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc5ccTlf.s 			page 115
 
 
  3685      636F6E66 

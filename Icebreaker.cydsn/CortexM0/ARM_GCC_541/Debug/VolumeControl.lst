@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 1
 
 
    1              		.syntax unified
@@ -46,29 +46,28 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
   16:VolumeControl.c **** #include <DMA.h>
   17:VolumeControl.c **** #include <Codec.h>
   18:VolumeControl.c **** //#include <USBFS.h>
-  19:VolumeControl.c **** #include <pcm1770.h>
-  20:VolumeControl.c **** 
-  21:VolumeControl.c **** int32 ADC_MIN_READING[vol_ctrl_both] = { -2, -2 };
-  22:VolumeControl.c **** int32 ADC_MAX_READING[vol_ctrl_both] = { 2047, 2047 };
-  23:VolumeControl.c **** 
-  24:VolumeControl.c **** #define ADC_READING_RANGE(side)       (ADC_MAX_READING[side] - ADC_MIN_READING[side])
-  25:VolumeControl.c **** 
-  26:VolumeControl.c **** /* ADC measurement status and result */
-  27:VolumeControl.c **** int16   adcSample[vol_ctrl_both] = { 0, 0 };
-  28:VolumeControl.c **** 
-  29:VolumeControl.c **** CY_ISR(DmaIntHandler)
-  30:VolumeControl.c **** {
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 2
+  19:VolumeControl.c **** 
+  20:VolumeControl.c **** int32 ADC_MIN_READING[vol_ctrl_both] = { -2, -2 };
+  21:VolumeControl.c **** int32 ADC_MAX_READING[vol_ctrl_both] = { 2047, 2047 };
+  22:VolumeControl.c **** 
+  23:VolumeControl.c **** #define ADC_READING_RANGE(side)       (ADC_MAX_READING[side] - ADC_MIN_READING[side])
+  24:VolumeControl.c **** 
+  25:VolumeControl.c **** /* ADC measurement status and result */
+  26:VolumeControl.c **** int16   adcSample[vol_ctrl_both] = { 0, 0 };
+  27:VolumeControl.c **** 
+  28:VolumeControl.c **** CY_ISR(DmaIntHandler)
+  29:VolumeControl.c **** {
+  28              		.loc 1 29 0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 2
 
 
-  28              		.loc 1 30 0
   29              		.cfi_startproc
   30              		@ args = 0, pretend = 0, frame = 0
   31              		@ frame_needed = 0, uses_anonymous_args = 0
   32              		@ link register save eliminated.
-  31:VolumeControl.c ****     // Do nothing
-  32:VolumeControl.c **** }
-  33              		.loc 1 32 0
+  30:VolumeControl.c ****     // Do nothing
+  31:VolumeControl.c **** }
+  33              		.loc 1 31 0
   34              		@ sp needed
   35 0000 7047     		bx	lr
   36              		.cfi_endproc
@@ -82,10 +81,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
   44              		.type	VolumeControlInit, %function
   45              	VolumeControlInit:
   46              	.LFB35:
-  33:VolumeControl.c **** 
-  34:VolumeControl.c **** void VolumeControlInit(void)
-  35:VolumeControl.c **** {
-  47              		.loc 1 35 0
+  32:VolumeControl.c **** 
+  33:VolumeControl.c **** void VolumeControlInit(void)
+  34:VolumeControl.c **** {
+  47              		.loc 1 34 0
   48              		.cfi_startproc
   49              		@ args = 0, pretend = 0, frame = 0
   50              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -93,17 +92,17 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
   52              		.cfi_def_cfa_offset 8
   53              		.cfi_offset 4, -8
   54              		.cfi_offset 14, -4
-  36:VolumeControl.c ****     /* Initialize ADC. Conversion is not enabled yet. */
-  37:VolumeControl.c ****     ADC_Start();
-  55              		.loc 1 37 0
+  35:VolumeControl.c ****     /* Initialize ADC. Conversion is not enabled yet. */
+  36:VolumeControl.c ****     ADC_Start();
+  55              		.loc 1 36 0
   56 0002 FFF7FEFF 		bl	ADC_Start
   57              	.LVL0:
-  38:VolumeControl.c **** 
-  39:VolumeControl.c ****     /* Configure DMA source and destination locations to transfer from
-  40:VolumeControl.c ****     * ADC data register to memory variable.
-  41:VolumeControl.c ****     */
-  42:VolumeControl.c ****     DMA_Start((void *)ADC_SAR_CHAN0_RESULT_PTR, (void *)adcSample);
-  58              		.loc 1 42 0
+  37:VolumeControl.c **** 
+  38:VolumeControl.c ****     /* Configure DMA source and destination locations to transfer from
+  39:VolumeControl.c ****     * ADC data register to memory variable.
+  40:VolumeControl.c ****     */
+  41:VolumeControl.c ****     DMA_Start((void *)ADC_SAR_CHAN0_RESULT_PTR, (void *)adcSample);
+  58              		.loc 1 41 0
   59 0006 0549     		ldr	r1, .L3
   60 0008 0548     		ldr	r0, .L3+4
   61 000a FFF7FEFF 		bl	DMA_Start
@@ -118,10 +117,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
    5:Generated_Source\PSoC4/DMA.h **** * Description:
    6:Generated_Source\PSoC4/DMA.h **** *  This file provides DMA channel defines and API function definitions.
    7:Generated_Source\PSoC4/DMA.h **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 3
-
-
    8:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 3
+
+
    9:Generated_Source\PSoC4/DMA.h **** * Copyright 2015, Cypress Semiconductor Corporation. All rights reserved.
   10:Generated_Source\PSoC4/DMA.h **** * You may use this file only in accordance with the license, terms, conditions,
   11:Generated_Source\PSoC4/DMA.h **** * disclaimers, and limitations in the end user license agreement accompanying
@@ -178,10 +177,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
   62:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetTransferMode(int32 descriptor, uint32 transferMode);
   63:Generated_Source\PSoC4/DMA.h **** static uint32 DMA_GetTransferMode(int32 descriptor);
   64:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetPreemptable(int32 descriptor, uint32 preemptable);
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 4
-
-
   65:Generated_Source\PSoC4/DMA.h **** static uint32 DMA_GetPreemptable(int32 descriptor);
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 4
+
+
   66:Generated_Source\PSoC4/DMA.h **** static void   DMA_SetPostCompletionActions(int32 descriptor, uint32 actions);
   67:Generated_Source\PSoC4/DMA.h **** static uint32 DMA_GetPostCompletionAction(int32 descriptor);
   68:Generated_Source\PSoC4/DMA.h **** static cydma_callback_t DMA_SetInterruptCallback(cydma_callback_t callback);
@@ -238,10 +237,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  119:Generated_Source\PSoC4/DMA.h ****     CyDmaChDisable(DMA_CHANNEL);
  120:Generated_Source\PSoC4/DMA.h **** }
  121:Generated_Source\PSoC4/DMA.h **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 5
-
-
  122:Generated_Source\PSoC4/DMA.h **** 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 5
+
+
  123:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
  124:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_Trigger
  125:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
@@ -298,10 +297,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  176:Generated_Source\PSoC4/DMA.h **** *  None.
  177:Generated_Source\PSoC4/DMA.h **** *                   
  178:Generated_Source\PSoC4/DMA.h **** * Return:
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 6
-
-
  179:Generated_Source\PSoC4/DMA.h **** *  Priority for channel. Priority can be 0,1,2, or 3. 0 is the highest priority.
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 6
+
+
  180:Generated_Source\PSoC4/DMA.h **** *
  181:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
  182:Generated_Source\PSoC4/DMA.h **** static CY_INLINE int32 DMA_GetPriority(void)
@@ -358,10 +357,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  233:Generated_Source\PSoC4/DMA.h **** *
  234:Generated_Source\PSoC4/DMA.h **** * Summary:
  235:Generated_Source\PSoC4/DMA.h **** *  Sets configuration information for the specified descriptor.
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 7
-
-
  236:Generated_Source\PSoC4/DMA.h **** *
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 7
+
+
  237:Generated_Source\PSoC4/DMA.h **** * Parameters:
  238:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
  239:Generated_Source\PSoC4/DMA.h **** *  config: Pointer to a configuration structure. Refer to cydma_init_struct
@@ -418,10 +417,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  290:Generated_Source\PSoC4/DMA.h **** * Parameters:
  291:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
  292:Generated_Source\PSoC4/DMA.h **** *                   
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 8
-
-
  293:Generated_Source\PSoC4/DMA.h **** * Return:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 8
+
+
  294:Generated_Source\PSoC4/DMA.h **** *  Returns the contents of the specified descriptors status register. Refer to 
  295:Generated_Source\PSoC4/DMA.h **** *  descriptor status register bit definitions in CyDMA_P4.h or the API
  296:Generated_Source\PSoC4/DMA.h **** *  description in the DMA channel datasheet for more information.
@@ -478,10 +477,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  347:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetSrcAddress(DMA_CHANNEL, descriptor));
  348:Generated_Source\PSoC4/DMA.h **** }
  349:Generated_Source\PSoC4/DMA.h **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 9
-
-
  350:Generated_Source\PSoC4/DMA.h **** 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 9
+
+
  351:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
  352:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_SetDstAddress
  353:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
@@ -538,10 +537,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  404:Generated_Source\PSoC4/DMA.h **** * Parameters:
  405:Generated_Source\PSoC4/DMA.h **** *  descriptor:      Descriptor (0 or 1) modified by this function.
  406:Generated_Source\PSoC4/DMA.h **** *  dataElementSize: Specifies the size of the data element. The DMA transfer
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 10
-
-
  407:Generated_Source\PSoC4/DMA.h **** *                   engine transfers one data element at a time. How these
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 10
+
+
  408:Generated_Source\PSoC4/DMA.h **** *                   transfers occur is controlled by the transfer mode.
  409:Generated_Source\PSoC4/DMA.h **** *                   Refer to the API bit field definitions in CyDMA_P4.h or API
  410:Generated_Source\PSoC4/DMA.h **** *                   description in the DMA channel datasheet for the parameter
@@ -598,10 +597,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  461:Generated_Source\PSoC4/DMA.h **** *
  462:Generated_Source\PSoC4/DMA.h **** * Parameters:
  463:Generated_Source\PSoC4/DMA.h **** *  descriptor:      Descriptor (0 or 1) modified by this function.
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 11
-
-
  464:Generated_Source\PSoC4/DMA.h **** *  numDataElements: Total number of data elements this descriptor transfers.
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 11
+
+
  465:Generated_Source\PSoC4/DMA.h **** *                   Valid ranges are 1 to 65536.
  466:Generated_Source\PSoC4/DMA.h **** *                   
  467:Generated_Source\PSoC4/DMA.h **** * Return:
@@ -658,10 +657,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  518:Generated_Source\PSoC4/DMA.h **** *                 bit field definitions in CyDMA_P4.h or the API description in
  519:Generated_Source\PSoC4/DMA.h **** *                 the DMA channel datasheet for the parameter options.
  520:Generated_Source\PSoC4/DMA.h **** *                   
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 12
-
-
  521:Generated_Source\PSoC4/DMA.h **** * Return:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 12
+
+
  522:Generated_Source\PSoC4/DMA.h **** *  None.
  523:Generated_Source\PSoC4/DMA.h **** *
  524:Generated_Source\PSoC4/DMA.h **** * Side effect:
@@ -718,10 +717,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  575:Generated_Source\PSoC4/DMA.h **** * Return:
  576:Generated_Source\PSoC4/DMA.h **** *  None.
  577:Generated_Source\PSoC4/DMA.h **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 13
-
-
  578:Generated_Source\PSoC4/DMA.h **** * Side effect:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 13
+
+
  579:Generated_Source\PSoC4/DMA.h **** *  This function should not be called when the specified descriptor is active
  580:Generated_Source\PSoC4/DMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
  581:Generated_Source\PSoC4/DMA.h **** *
@@ -778,10 +777,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  632:Generated_Source\PSoC4/DMA.h **** *  in the DMA transfer engine. This can be checked by calling CyDmaGetStatus(). 
  633:Generated_Source\PSoC4/DMA.h **** *
  634:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 14
-
-
  635:Generated_Source\PSoC4/DMA.h **** static CY_INLINE void DMA_SetTriggerType(int32 descriptor, uint32 triggerType)
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 14
+
+
  636:Generated_Source\PSoC4/DMA.h **** {
  637:Generated_Source\PSoC4/DMA.h ****     CyDmaSetTriggerType(DMA_CHANNEL, descriptor, triggerType);
  638:Generated_Source\PSoC4/DMA.h **** }
@@ -838,10 +837,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  689:Generated_Source\PSoC4/DMA.h **** }
  690:Generated_Source\PSoC4/DMA.h **** 
  691:Generated_Source\PSoC4/DMA.h **** 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 15
-
-
  692:Generated_Source\PSoC4/DMA.h **** /*******************************************************************************
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 15
+
+
  693:Generated_Source\PSoC4/DMA.h **** * Function Name: DMA_GetTransferMode
  694:Generated_Source\PSoC4/DMA.h **** ********************************************************************************
  695:Generated_Source\PSoC4/DMA.h **** *
@@ -898,10 +897,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  746:Generated_Source\PSoC4/DMA.h **** * Summary:
  747:Generated_Source\PSoC4/DMA.h **** *  Returns whether or not the descriptor is preemptable.
  748:Generated_Source\PSoC4/DMA.h **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 16
-
-
  749:Generated_Source\PSoC4/DMA.h **** * Parameters:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 16
+
+
  750:Generated_Source\PSoC4/DMA.h **** *  descriptor: Descriptor (0 or 1) modified by this function.
  751:Generated_Source\PSoC4/DMA.h **** *                   
  752:Generated_Source\PSoC4/DMA.h **** * Return:
@@ -958,10 +957,10 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  803:Generated_Source\PSoC4/DMA.h **** *  Post descriptor actions. Refer to the API bit field definitions in CyDMA_P4.h
  804:Generated_Source\PSoC4/DMA.h **** *  or the API description in the DMA channel datasheet for more information.
  805:Generated_Source\PSoC4/DMA.h **** *
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 17
-
-
  806:Generated_Source\PSoC4/DMA.h **** *******************************************************************************/
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 17
+
+
  807:Generated_Source\PSoC4/DMA.h **** static CY_INLINE uint32 DMA_GetPostCompletionAction(int32 descriptor)
  808:Generated_Source\PSoC4/DMA.h **** {
  809:Generated_Source\PSoC4/DMA.h ****     return (CyDmaGetPostCompletionActions(DMA_CHANNEL, descriptor));
@@ -994,16 +993,16 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
   70              	.LVL2:
   71              	.LBE5:
   72              	.LBE4:
-  43:VolumeControl.c ****     
-  44:VolumeControl.c ****     DMA_SetInterruptCallback(DmaIntHandler);
-  45:VolumeControl.c **** 
-  46:VolumeControl.c ****     /* Start ADC conversion. */
-  47:VolumeControl.c ****     ADC_StartConvert();
-  73              		.loc 1 47 0
+  42:VolumeControl.c ****     
+  43:VolumeControl.c ****     DMA_SetInterruptCallback(DmaIntHandler);
+  44:VolumeControl.c **** 
+  45:VolumeControl.c ****     /* Start ADC conversion. */
+  46:VolumeControl.c ****     ADC_StartConvert();
+  73              		.loc 1 46 0
   74 0016 FFF7FEFF 		bl	ADC_StartConvert
   75              	.LVL3:
-  48:VolumeControl.c **** }
-  76              		.loc 1 48 0
+  47:VolumeControl.c **** }
+  76              		.loc 1 47 0
   77              		@ sp needed
   78 001a 10BD     		pop	{r4, pc}
   79              	.L4:
@@ -1018,19 +1017,19 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
   88              		.global	__aeabi_idiv
   89              		.section	.text.VolumeControlService,"ax",%progbits
   90              		.align	2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 18
-
-
   91              		.global	VolumeControlService
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 18
+
+
   92              		.code	16
   93              		.thumb_func
   94              		.type	VolumeControlService, %function
   95              	VolumeControlService:
   96              	.LFB36:
-  49:VolumeControl.c **** 
-  50:VolumeControl.c **** void VolumeControlService(void)
-  51:VolumeControl.c **** {
-  97              		.loc 1 51 0
+  48:VolumeControl.c **** 
+  49:VolumeControl.c **** void VolumeControlService(void)
+  50:VolumeControl.c **** {
+  97              		.loc 1 50 0
   98              		.cfi_startproc
   99              		@ args = 0, pretend = 0, frame = 0
  100              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -1044,24 +1043,24 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  108 0002 83B0     		sub	sp, sp, #12
  109              		.cfi_def_cfa_offset 32
  110              	.LVL4:
-  52:VolumeControl.c ****     static int32 prevVol[vol_ctrl_both] = { 0, 0 };
-  53:VolumeControl.c ****     int32 volume[vol_ctrl_both] = { 0, 0 };
-  54:VolumeControl.c ****     int i;
-  55:VolumeControl.c **** 
-  56:VolumeControl.c ****     for (i = 0; i < vol_ctrl_both; i++)
- 111              		.loc 1 56 0
+  51:VolumeControl.c ****     static int32 prevVol[vol_ctrl_both] = { 0, 0 };
+  52:VolumeControl.c ****     int32 volume[vol_ctrl_both] = { 0, 0 };
+  53:VolumeControl.c ****     int i;
+  54:VolumeControl.c **** 
+  55:VolumeControl.c ****     for (i = 0; i < vol_ctrl_both; i++)
+ 111              		.loc 1 55 0
  112 0004 0024     		movs	r4, #0
- 113 0006 41E0     		b	.L6
+ 113 0006 3DE0     		b	.L6
  114              	.LVL5:
- 115              	.L13:
-  57:VolumeControl.c **** 	{
-  58:VolumeControl.c ****         // Scale ADC reading to USBFS volume range
-  59:VolumeControl.c ****         volume[i] = (adcSample[i] - ADC_MIN_READING[i]) * PC_VOLUME_MSB_MAX / ADC_READING_RANGE(i);
- 116              		.loc 1 59 0
- 117 0008 224E     		ldr	r6, .L15
+ 115              	.L12:
+  56:VolumeControl.c **** 	{
+  57:VolumeControl.c ****         // Scale ADC reading to USBFS volume range
+  58:VolumeControl.c ****         volume[i] = (adcSample[i] - ADC_MIN_READING[i]) * PC_VOLUME_MSB_MAX / ADC_READING_RANGE(i);
+ 116              		.loc 1 58 0
+ 117 0008 204E     		ldr	r6, .L14
  118 000a 6300     		lsls	r3, r4, #1
  119 000c 9A5F     		ldrsh	r2, [r3, r6]
- 120 000e 224B     		ldr	r3, .L15+4
+ 120 000e 204B     		ldr	r3, .L14+4
  121 0010 A500     		lsls	r5, r4, #2
  122 0012 E958     		ldr	r1, [r5, r3]
  123 0014 521A     		subs	r2, r2, r1
@@ -1073,1479 +1072,1446 @@ ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 1
  129 0020 FFF7FEFF 		bl	__aeabi_idiv
  130              	.LVL6:
  131 0024 0700     		movs	r7, r0
-  60:VolumeControl.c **** 
-  61:VolumeControl.c ****         #if 0
-  62:VolumeControl.c ****         /* Filter volume to be in the expected range */
-  63:VolumeControl.c **** 		if((volume[i] > PC_VOLUME_MSB_MIN) && (volume[i] <= PC_VOLUME_MSB_MAX))
-  64:VolumeControl.c **** 		{
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 19
+  59:VolumeControl.c **** 
+  60:VolumeControl.c ****         #if 0
+  61:VolumeControl.c ****         /* Filter volume to be in the expected range */
+  62:VolumeControl.c **** 		if((volume[i] > PC_VOLUME_MSB_MIN) && (volume[i] <= PC_VOLUME_MSB_MAX))
+  63:VolumeControl.c **** 		{
+  64:VolumeControl.c **** 			volume[i] = (uint8)(((volume[i] - PC_VOLUME_MSB_MIN) * CODEC_HP_VOLUME_MAX) / (PC_VOLUME_MSB_MAX
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 19
 
 
-  65:VolumeControl.c **** 			volume[i] = (uint8)(((volume[i] - PC_VOLUME_MSB_MIN) * CODEC_HP_VOLUME_MAX) / (PC_VOLUME_MSB_MAX
-  66:VolumeControl.c **** 		}
-  67:VolumeControl.c **** 		else
-  68:VolumeControl.c **** 		{
-  69:VolumeControl.c **** 			/* Set volume to 0 if the volume from PC is not in expected range */
-  70:VolumeControl.c **** 			volume[i] = 0;
-  71:VolumeControl.c **** 		}
-  72:VolumeControl.c ****         #endif
-  73:VolumeControl.c **** 
-  74:VolumeControl.c ****         if (volume[i] != prevVol[i])
- 132              		.loc 1 74 0
+  65:VolumeControl.c **** 		}
+  66:VolumeControl.c **** 		else
+  67:VolumeControl.c **** 		{
+  68:VolumeControl.c **** 			/* Set volume to 0 if the volume from PC is not in expected range */
+  69:VolumeControl.c **** 			volume[i] = 0;
+  70:VolumeControl.c **** 		}
+  71:VolumeControl.c ****         #endif
+  72:VolumeControl.c **** 
+  73:VolumeControl.c ****         if (volume[i] != prevVol[i])
+ 132              		.loc 1 73 0
  133 0026 7519     		adds	r5, r6, r5
  134 0028 6B68     		ldr	r3, [r5, #4]
  135 002a 9842     		cmp	r0, r3
- 136 002c 2DD0     		beq	.L7
-  75:VolumeControl.c ****         {
-  76:VolumeControl.c ****             /* Update the codec volume */
-  77:VolumeControl.c ****             D_PRINTF(DEBUG, "%s volume knob change %ld -> %ld\n", (i == vol_ctrl_right) ? "Right" :
- 137              		.loc 1 77 0
- 138 002e 1B4B     		ldr	r3, .L15+8
+ 136 002c 29D0     		beq	.L7
+  74:VolumeControl.c ****         {
+  75:VolumeControl.c ****             /* Update the codec volume */
+  76:VolumeControl.c ****             D_PRINTF(DEBUG, "%s volume knob change %ld -> %ld\n", (i == vol_ctrl_right) ? "Right" :
+ 137              		.loc 1 76 0
+ 138 002e 194B     		ldr	r3, .L14+8
  139 0030 1B68     		ldr	r3, [r3]
  140 0032 002B     		cmp	r3, #0
  141 0034 1CD0     		beq	.L8
- 142              		.loc 1 77 0 is_stmt 0 discriminator 1
+ 142              		.loc 1 76 0 is_stmt 0 discriminator 1
  143 0036 5B7C     		ldrb	r3, [r3, #17]
  144 0038 9B07     		lsls	r3, r3, #30
  145 003a 19D0     		beq	.L8
- 146              		.loc 1 77 0 discriminator 2
+ 146              		.loc 1 76 0 discriminator 2
  147 003c FFF7FEFF 		bl	USBUART_GetConfiguration
  148              	.LVL7:
  149 0040 0028     		cmp	r0, #0
  150 0042 15D0     		beq	.L8
  151              	.L9:
- 152              		.loc 1 77 0 discriminator 3
+ 152              		.loc 1 76 0 discriminator 3
  153 0044 FFF7FEFF 		bl	USBUART_CDCIsReady
  154              	.LVL8:
  155 0048 0028     		cmp	r0, #0
  156 004a FBD0     		beq	.L9
- 157              		.loc 1 77 0 discriminator 4
+ 157              		.loc 1 76 0 discriminator 4
  158 004c 002C     		cmp	r4, #0
- 159 004e 01D1     		bne	.L14
- 160              		.loc 1 77 0
- 161 0050 134A     		ldr	r2, .L15+12
+ 159 004e 01D1     		bne	.L13
+ 160              		.loc 1 76 0
+ 161 0050 114A     		ldr	r2, .L14+12
  162 0052 00E0     		b	.L10
- 163              	.L14:
- 164 0054 134A     		ldr	r2, .L15+16
+ 163              	.L13:
+ 164 0054 114A     		ldr	r2, .L14+16
  165              	.L10:
- 166              		.loc 1 77 0 discriminator 8
+ 166              		.loc 1 76 0 discriminator 8
  167 0056 A300     		lsls	r3, r4, #2
- 168 0058 0E49     		ldr	r1, .L15
+ 168 0058 0C49     		ldr	r1, .L14
  169 005a CB18     		adds	r3, r1, r3
  170 005c 5B68     		ldr	r3, [r3, #4]
- 171 005e 124D     		ldr	r5, .L15+20
+ 171 005e 104D     		ldr	r5, .L14+20
  172 0060 0097     		str	r7, [sp]
- 173 0062 1249     		ldr	r1, .L15+24
+ 173 0062 1049     		ldr	r1, .L14+24
  174 0064 2800     		movs	r0, r5
  175 0066 FFF7FEFF 		bl	sprintf
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 20
-
-
  176              	.LVL9:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 20
+
+
  177 006a 2800     		movs	r0, r5
  178 006c FFF7FEFF 		bl	USBUART_PutString
  179              	.LVL10:
  180              	.L8:
-  78:VolumeControl.c ****             
-  79:VolumeControl.c ****             if (i == vol_ctrl_right)
- 181              		.loc 1 79 0 is_stmt 1
+  77:VolumeControl.c ****             
+  78:VolumeControl.c ****             if (i == vol_ctrl_right)
+ 181              		.loc 1 78 0 is_stmt 1
  182 0070 002C     		cmp	r4, #0
- 183 0072 03D1     		bne	.L11
-  80:VolumeControl.c ****             {
-  81:VolumeControl.c ****     		    Codec_AdjustBothHeadphoneVolumeLevel(volume[i]);
- 184              		.loc 1 81 0
+ 183 0072 02D1     		bne	.L11
+  79:VolumeControl.c ****             {
+  80:VolumeControl.c ****     		    Codec_AdjustBothHeadphoneVolumeLevel(volume[i]);
+ 184              		.loc 1 80 0
  185 0074 F8B2     		uxtb	r0, r7
  186 0076 FFF7FEFF 		bl	Codec_AdjustBothHeadphoneVolumeLevel
  187              	.LVL11:
- 188 007a 02E0     		b	.L12
- 189              	.L11:
-  82:VolumeControl.c ****             }
-  83:VolumeControl.c ****             else
-  84:VolumeControl.c ****             {
-  85:VolumeControl.c ****                 pcm1770_volume_set_level(volume[i]);
- 190              		.loc 1 85 0
- 191 007c F8B2     		uxtb	r0, r7
- 192 007e FFF7FEFF 		bl	pcm1770_volume_set_level
- 193              	.LVL12:
- 194              	.L12:
-  86:VolumeControl.c ****             }
-  87:VolumeControl.c ****             prevVol[i] = volume[i];
- 195              		.loc 1 87 0
- 196 0082 A300     		lsls	r3, r4, #2
- 197 0084 034A     		ldr	r2, .L15
- 198 0086 D318     		adds	r3, r2, r3
- 199 0088 5F60     		str	r7, [r3, #4]
- 200              	.L7:
-  56:VolumeControl.c **** 	{
- 201              		.loc 1 56 0 discriminator 2
- 202 008a 0134     		adds	r4, r4, #1
- 203              	.LVL13:
- 204              	.L6:
-  56:VolumeControl.c **** 	{
- 205              		.loc 1 56 0 is_stmt 0 discriminator 1
- 206 008c 012C     		cmp	r4, #1
- 207 008e BBDD     		ble	.L13
-  88:VolumeControl.c ****         }
-  89:VolumeControl.c ****     }
-  90:VolumeControl.c **** }
- 208              		.loc 1 90 0 is_stmt 1
- 209 0090 03B0     		add	sp, sp, #12
- 210              		@ sp needed
- 211              	.LVL14:
- 212 0092 F0BD     		pop	{r4, r5, r6, r7, pc}
- 213              	.L16:
- 214              		.align	2
- 215              	.L15:
- 216 0094 00000000 		.word	.LANCHOR0
- 217 0098 00000000 		.word	.LANCHOR1
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 21
+ 188              	.L11:
+  81:VolumeControl.c ****             }
+  82:VolumeControl.c ****             else
+  83:VolumeControl.c ****             {
+  84:VolumeControl.c ****             }
+  85:VolumeControl.c ****             prevVol[i] = volume[i];
+ 189              		.loc 1 85 0
+ 190 007a A300     		lsls	r3, r4, #2
+ 191 007c 034A     		ldr	r2, .L14
+ 192 007e D318     		adds	r3, r2, r3
+ 193 0080 5F60     		str	r7, [r3, #4]
+ 194              	.L7:
+  55:VolumeControl.c **** 	{
+ 195              		.loc 1 55 0 discriminator 2
+ 196 0082 0134     		adds	r4, r4, #1
+ 197              	.LVL12:
+ 198              	.L6:
+  55:VolumeControl.c **** 	{
+ 199              		.loc 1 55 0 is_stmt 0 discriminator 1
+ 200 0084 012C     		cmp	r4, #1
+ 201 0086 BFDD     		ble	.L12
+  86:VolumeControl.c ****         }
+  87:VolumeControl.c ****     }
+  88:VolumeControl.c **** }
+ 202              		.loc 1 88 0 is_stmt 1
+ 203 0088 03B0     		add	sp, sp, #12
+ 204              		@ sp needed
+ 205              	.LVL13:
+ 206 008a F0BD     		pop	{r4, r5, r6, r7, pc}
+ 207              	.L15:
+ 208              		.align	2
+ 209              	.L14:
+ 210 008c 00000000 		.word	.LANCHOR0
+ 211 0090 00000000 		.word	.LANCHOR1
+ 212 0094 00000000 		.word	cal_data
+ 213 0098 00000000 		.word	.LC2
+ 214 009c 08000000 		.word	.LC4
+ 215 00a0 00000000 		.word	gbuf
+ 216 00a4 10000000 		.word	.LC9
+ 217              		.cfi_endproc
+ 218              	.LFE36:
+ 219              		.size	VolumeControlService, .-VolumeControlService
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 21
 
 
- 218 009c 00000000 		.word	cal_data
- 219 00a0 00000000 		.word	.LC2
- 220 00a4 08000000 		.word	.LC4
- 221 00a8 00000000 		.word	gbuf
- 222 00ac 10000000 		.word	.LC9
- 223              		.cfi_endproc
- 224              	.LFE36:
- 225              		.size	VolumeControlService, .-VolumeControlService
- 226              		.global	adcSample
- 227              		.global	ADC_MAX_READING
- 228              		.global	ADC_MIN_READING
- 229              		.data
- 230              		.align	2
- 231              		.set	.LANCHOR1,. + 0
- 232              		.type	ADC_MIN_READING, %object
- 233              		.size	ADC_MIN_READING, 8
- 234              	ADC_MIN_READING:
- 235 0000 FEFFFFFF 		.word	-2
- 236 0004 FEFFFFFF 		.word	-2
- 237              		.type	ADC_MAX_READING, %object
- 238              		.size	ADC_MAX_READING, 8
- 239              	ADC_MAX_READING:
- 240 0008 FF070000 		.word	2047
- 241 000c FF070000 		.word	2047
- 242              		.section	.rodata.str1.4,"aMS",%progbits,1
- 243              		.align	2
- 244              	.LC2:
- 245 0000 52696768 		.ascii	"Right\000"
- 245      7400
- 246 0006 0000     		.space	2
- 247              	.LC4:
- 248 0008 4C656674 		.ascii	"Left\000"
- 248      00
- 249 000d 000000   		.space	3
- 250              	.LC9:
- 251 0010 25732076 		.ascii	"%s volume knob change %ld -> %ld\012\000"
- 251      6F6C756D 
- 251      65206B6E 
- 251      6F622063 
- 251      68616E67 
- 252              		.bss
- 253              		.align	2
- 254              		.set	.LANCHOR0,. + 0
- 255              		.type	adcSample, %object
- 256              		.size	adcSample, 4
- 257              	adcSample:
- 258 0000 00000000 		.space	4
- 259              		.type	prevVol.6982, %object
- 260              		.size	prevVol.6982, 8
- 261              	prevVol.6982:
- 262 0004 00000000 		.space	8
- 262      00000000 
- 263              		.text
- 264              	.Letext0:
- 265              		.file 3 "Generated_Source\\PSoC4/cytypes.h"
- 266              		.file 4 "./Calibration.h"
- 267              		.file 5 "Generated_Source\\PSoC4/CyDMA.h"
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 22
+ 220              		.global	adcSample
+ 221              		.global	ADC_MAX_READING
+ 222              		.global	ADC_MIN_READING
+ 223              		.data
+ 224              		.align	2
+ 225              		.set	.LANCHOR1,. + 0
+ 226              		.type	ADC_MIN_READING, %object
+ 227              		.size	ADC_MIN_READING, 8
+ 228              	ADC_MIN_READING:
+ 229 0000 FEFFFFFF 		.word	-2
+ 230 0004 FEFFFFFF 		.word	-2
+ 231              		.type	ADC_MAX_READING, %object
+ 232              		.size	ADC_MAX_READING, 8
+ 233              	ADC_MAX_READING:
+ 234 0008 FF070000 		.word	2047
+ 235 000c FF070000 		.word	2047
+ 236              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 237              		.align	2
+ 238              	.LC2:
+ 239 0000 52696768 		.ascii	"Right\000"
+ 239      7400
+ 240 0006 0000     		.space	2
+ 241              	.LC4:
+ 242 0008 4C656674 		.ascii	"Left\000"
+ 242      00
+ 243 000d 000000   		.space	3
+ 244              	.LC9:
+ 245 0010 25732076 		.ascii	"%s volume knob change %ld -> %ld\012\000"
+ 245      6F6C756D 
+ 245      65206B6E 
+ 245      6F622063 
+ 245      68616E67 
+ 246              		.bss
+ 247              		.align	2
+ 248              		.set	.LANCHOR0,. + 0
+ 249              		.type	adcSample, %object
+ 250              		.size	adcSample, 4
+ 251              	adcSample:
+ 252 0000 00000000 		.space	4
+ 253              		.type	prevVol.6962, %object
+ 254              		.size	prevVol.6962, 8
+ 255              	prevVol.6962:
+ 256 0004 00000000 		.space	8
+ 256      00000000 
+ 257              		.text
+ 258              	.Letext0:
+ 259              		.file 3 "Generated_Source\\PSoC4/cytypes.h"
+ 260              		.file 4 "./Calibration.h"
+ 261              		.file 5 "Generated_Source\\PSoC4/CyDMA.h"
+ 262              		.file 6 "./Application.h"
+ 263              		.file 7 "Generated_Source\\PSoC4/ADC.h"
+ 264              		.file 8 "Generated_Source\\PSoC4/USBUART.h"
+ 265              		.file 9 "Generated_Source\\PSoC4/USBUART_cdc.h"
+ 266              		.file 10 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4
+ 267              		.file 11 "./Codec.h"
+ 268              		.file 12 "VolumeControl.h"
+ 269              		.section	.debug_info,"",%progbits
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 22
 
 
- 268              		.file 6 "./Application.h"
- 269              		.file 7 "Generated_Source\\PSoC4/ADC.h"
- 270              		.file 8 "Generated_Source\\PSoC4/USBUART.h"
- 271              		.file 9 "Generated_Source\\PSoC4/USBUART_cdc.h"
- 272              		.file 10 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4
- 273              		.file 11 "./Codec.h"
- 274              		.file 12 "./pcm1770.h"
- 275              		.file 13 "VolumeControl.h"
- 276              		.section	.debug_info,"",%progbits
- 277              	.Ldebug_info0:
- 278 0000 9B030000 		.4byte	0x39b
- 279 0004 0400     		.2byte	0x4
- 280 0006 00000000 		.4byte	.Ldebug_abbrev0
- 281 000a 04       		.byte	0x4
- 282 000b 01       		.uleb128 0x1
- 283 000c 00020000 		.4byte	.LASF48
- 284 0010 0C       		.byte	0xc
- 285 0011 06000000 		.4byte	.LASF49
- 286 0015 05010000 		.4byte	.LASF50
- 287 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 288 001d 00000000 		.4byte	0
- 289 0021 00000000 		.4byte	.Ldebug_line0
- 290 0025 02       		.uleb128 0x2
- 291 0026 01       		.byte	0x1
- 292 0027 06       		.byte	0x6
- 293 0028 48030000 		.4byte	.LASF0
- 294 002c 02       		.uleb128 0x2
- 295 002d 01       		.byte	0x1
- 296 002e 08       		.byte	0x8
- 297 002f B3000000 		.4byte	.LASF1
- 298 0033 02       		.uleb128 0x2
- 299 0034 02       		.byte	0x2
- 300 0035 05       		.byte	0x5
- 301 0036 5C010000 		.4byte	.LASF2
- 302 003a 02       		.uleb128 0x2
- 303 003b 02       		.byte	0x2
- 304 003c 07       		.byte	0x7
- 305 003d 33000000 		.4byte	.LASF3
- 306 0041 02       		.uleb128 0x2
- 307 0042 04       		.byte	0x4
- 308 0043 05       		.byte	0x5
- 309 0044 2A030000 		.4byte	.LASF4
- 310 0048 02       		.uleb128 0x2
- 311 0049 04       		.byte	0x4
- 312 004a 07       		.byte	0x7
- 313 004b 94010000 		.4byte	.LASF5
- 314 004f 02       		.uleb128 0x2
- 315 0050 08       		.byte	0x8
- 316 0051 05       		.byte	0x5
- 317 0052 A3020000 		.4byte	.LASF6
- 318 0056 02       		.uleb128 0x2
- 319 0057 08       		.byte	0x8
- 320 0058 07       		.byte	0x7
- 321 0059 B3010000 		.4byte	.LASF7
- 322 005d 03       		.uleb128 0x3
- 323 005e 04       		.byte	0x4
- 324 005f 05       		.byte	0x5
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 23
+ 270              	.Ldebug_info0:
+ 271 0000 7C030000 		.4byte	0x37c
+ 272 0004 0400     		.2byte	0x4
+ 273 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 274 000a 04       		.byte	0x4
+ 275 000b 01       		.uleb128 0x1
+ 276 000c 00020000 		.4byte	.LASF47
+ 277 0010 0C       		.byte	0xc
+ 278 0011 06000000 		.4byte	.LASF48
+ 279 0015 05010000 		.4byte	.LASF49
+ 280 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 281 001d 00000000 		.4byte	0
+ 282 0021 00000000 		.4byte	.Ldebug_line0
+ 283 0025 02       		.uleb128 0x2
+ 284 0026 01       		.byte	0x1
+ 285 0027 06       		.byte	0x6
+ 286 0028 2F030000 		.4byte	.LASF0
+ 287 002c 02       		.uleb128 0x2
+ 288 002d 01       		.byte	0x1
+ 289 002e 08       		.byte	0x8
+ 290 002f B3000000 		.4byte	.LASF1
+ 291 0033 02       		.uleb128 0x2
+ 292 0034 02       		.byte	0x2
+ 293 0035 05       		.byte	0x5
+ 294 0036 5C010000 		.4byte	.LASF2
+ 295 003a 02       		.uleb128 0x2
+ 296 003b 02       		.byte	0x2
+ 297 003c 07       		.byte	0x7
+ 298 003d 33000000 		.4byte	.LASF3
+ 299 0041 02       		.uleb128 0x2
+ 300 0042 04       		.byte	0x4
+ 301 0043 05       		.byte	0x5
+ 302 0044 11030000 		.4byte	.LASF4
+ 303 0048 02       		.uleb128 0x2
+ 304 0049 04       		.byte	0x4
+ 305 004a 07       		.byte	0x7
+ 306 004b 94010000 		.4byte	.LASF5
+ 307 004f 02       		.uleb128 0x2
+ 308 0050 08       		.byte	0x8
+ 309 0051 05       		.byte	0x5
+ 310 0052 A3020000 		.4byte	.LASF6
+ 311 0056 02       		.uleb128 0x2
+ 312 0057 08       		.byte	0x8
+ 313 0058 07       		.byte	0x7
+ 314 0059 B3010000 		.4byte	.LASF7
+ 315 005d 03       		.uleb128 0x3
+ 316 005e 04       		.byte	0x4
+ 317 005f 05       		.byte	0x5
+ 318 0060 696E7400 		.ascii	"int\000"
+ 319 0064 02       		.uleb128 0x2
+ 320 0065 04       		.byte	0x4
+ 321 0066 07       		.byte	0x7
+ 322 0067 A6010000 		.4byte	.LASF8
+ 323 006b 04       		.uleb128 0x4
+ 324 006c AD000000 		.4byte	.LASF9
+ 325 0070 03       		.byte	0x3
+ 326 0071 E401     		.2byte	0x1e4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 23
 
 
- 325 0060 696E7400 		.ascii	"int\000"
- 326 0064 02       		.uleb128 0x2
- 327 0065 04       		.byte	0x4
- 328 0066 07       		.byte	0x7
- 329 0067 A6010000 		.4byte	.LASF8
- 330 006b 04       		.uleb128 0x4
- 331 006c 5F000000 		.4byte	.LASF9
- 332 0070 03       		.byte	0x3
- 333 0071 E401     		.2byte	0x1e4
- 334 0073 2C000000 		.4byte	0x2c
- 335 0077 04       		.uleb128 0x4
- 336 0078 7F010000 		.4byte	.LASF10
- 337 007c 03       		.byte	0x3
- 338 007d E601     		.2byte	0x1e6
- 339 007f 48000000 		.4byte	0x48
- 340 0083 04       		.uleb128 0x4
- 341 0084 FF000000 		.4byte	.LASF11
- 342 0088 03       		.byte	0x3
- 343 0089 E801     		.2byte	0x1e8
- 344 008b 33000000 		.4byte	0x33
- 345 008f 04       		.uleb128 0x4
- 346 0090 2C010000 		.4byte	.LASF12
- 347 0094 03       		.byte	0x3
- 348 0095 E901     		.2byte	0x1e9
- 349 0097 41000000 		.4byte	0x41
- 350 009b 02       		.uleb128 0x2
- 351 009c 04       		.byte	0x4
- 352 009d 04       		.byte	0x4
- 353 009e A6000000 		.4byte	.LASF13
- 354 00a2 02       		.uleb128 0x2
- 355 00a3 08       		.byte	0x8
- 356 00a4 04       		.byte	0x4
- 357 00a5 58000000 		.4byte	.LASF14
- 358 00a9 02       		.uleb128 0x2
- 359 00aa 01       		.byte	0x1
- 360 00ab 08       		.byte	0x8
- 361 00ac B1020000 		.4byte	.LASF15
- 362 00b0 04       		.uleb128 0x4
- 363 00b1 00000000 		.4byte	.LASF16
- 364 00b5 03       		.byte	0x3
- 365 00b6 9002     		.2byte	0x290
- 366 00b8 BC000000 		.4byte	0xbc
- 367 00bc 05       		.uleb128 0x5
- 368 00bd 77000000 		.4byte	0x77
- 369 00c1 06       		.uleb128 0x6
- 370 00c2 04       		.byte	0x4
- 371 00c3 C7000000 		.4byte	0xc7
- 372 00c7 07       		.uleb128 0x7
- 373 00c8 02       		.uleb128 0x2
- 374 00c9 08       		.byte	0x8
- 375 00ca 04       		.byte	0x4
- 376 00cb 8E020000 		.4byte	.LASF17
- 377 00cf 02       		.uleb128 0x2
- 378 00d0 04       		.byte	0x4
- 379 00d1 07       		.byte	0x7
- 380 00d2 9A020000 		.4byte	.LASF18
- 381 00d6 08       		.uleb128 0x8
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 24
+ 327 0073 2C000000 		.4byte	0x2c
+ 328 0077 04       		.uleb128 0x4
+ 329 0078 7F010000 		.4byte	.LASF10
+ 330 007c 03       		.byte	0x3
+ 331 007d E601     		.2byte	0x1e6
+ 332 007f 48000000 		.4byte	0x48
+ 333 0083 04       		.uleb128 0x4
+ 334 0084 FF000000 		.4byte	.LASF11
+ 335 0088 03       		.byte	0x3
+ 336 0089 E801     		.2byte	0x1e8
+ 337 008b 33000000 		.4byte	0x33
+ 338 008f 04       		.uleb128 0x4
+ 339 0090 2C010000 		.4byte	.LASF12
+ 340 0094 03       		.byte	0x3
+ 341 0095 E901     		.2byte	0x1e9
+ 342 0097 41000000 		.4byte	0x41
+ 343 009b 02       		.uleb128 0x2
+ 344 009c 04       		.byte	0x4
+ 345 009d 04       		.byte	0x4
+ 346 009e A0000000 		.4byte	.LASF13
+ 347 00a2 02       		.uleb128 0x2
+ 348 00a3 08       		.byte	0x8
+ 349 00a4 04       		.byte	0x4
+ 350 00a5 58000000 		.4byte	.LASF14
+ 351 00a9 02       		.uleb128 0x2
+ 352 00aa 01       		.byte	0x1
+ 353 00ab 08       		.byte	0x8
+ 354 00ac B1020000 		.4byte	.LASF15
+ 355 00b0 04       		.uleb128 0x4
+ 356 00b1 00000000 		.4byte	.LASF16
+ 357 00b5 03       		.byte	0x3
+ 358 00b6 9002     		.2byte	0x290
+ 359 00b8 BC000000 		.4byte	0xbc
+ 360 00bc 05       		.uleb128 0x5
+ 361 00bd 77000000 		.4byte	0x77
+ 362 00c1 06       		.uleb128 0x6
+ 363 00c2 04       		.byte	0x4
+ 364 00c3 C7000000 		.4byte	0xc7
+ 365 00c7 07       		.uleb128 0x7
+ 366 00c8 02       		.uleb128 0x2
+ 367 00c9 08       		.byte	0x8
+ 368 00ca 04       		.byte	0x4
+ 369 00cb 8E020000 		.4byte	.LASF17
+ 370 00cf 02       		.uleb128 0x2
+ 371 00d0 04       		.byte	0x4
+ 372 00d1 07       		.byte	0x7
+ 373 00d2 9A020000 		.4byte	.LASF18
+ 374 00d6 08       		.uleb128 0x8
+ 375 00d7 14       		.byte	0x14
+ 376 00d8 04       		.byte	0x4
+ 377 00d9 12       		.byte	0x12
+ 378 00da 27010000 		.4byte	0x127
+ 379 00de 09       		.uleb128 0x9
+ 380 00df 16000000 		.4byte	.LASF19
+ 381 00e3 04       		.byte	0x4
+ 382 00e4 14       		.byte	0x14
+ 383 00e5 77000000 		.4byte	0x77
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 24
 
 
- 382 00d7 14       		.byte	0x14
- 383 00d8 04       		.byte	0x4
- 384 00d9 12       		.byte	0x12
- 385 00da 27010000 		.4byte	0x127
- 386 00de 09       		.uleb128 0x9
- 387 00df 16000000 		.4byte	.LASF19
- 388 00e3 04       		.byte	0x4
- 389 00e4 14       		.byte	0x14
- 390 00e5 77000000 		.4byte	0x77
- 391 00e9 00       		.byte	0
- 392 00ea 09       		.uleb128 0x9
- 393 00eb 3B010000 		.4byte	.LASF20
- 394 00ef 04       		.byte	0x4
- 395 00f0 15       		.byte	0x15
- 396 00f1 77000000 		.4byte	0x77
- 397 00f5 04       		.byte	0x4
- 398 00f6 09       		.uleb128 0x9
- 399 00f7 B6020000 		.4byte	.LASF21
- 400 00fb 04       		.byte	0x4
- 401 00fc 16       		.byte	0x16
- 402 00fd 27010000 		.4byte	0x127
- 403 0101 08       		.byte	0x8
- 404 0102 09       		.uleb128 0x9
- 405 0103 CA010000 		.4byte	.LASF22
- 406 0107 04       		.byte	0x4
- 407 0108 17       		.byte	0x17
- 408 0109 27010000 		.4byte	0x127
- 409 010d 0C       		.byte	0xc
- 410 010e 09       		.uleb128 0x9
- 411 010f 20000000 		.4byte	.LASF23
- 412 0113 04       		.byte	0x4
- 413 0114 19       		.byte	0x19
- 414 0115 6B000000 		.4byte	0x6b
- 415 0119 10       		.byte	0x10
- 416 011a 09       		.uleb128 0x9
- 417 011b 51010000 		.4byte	.LASF24
- 418 011f 04       		.byte	0x4
- 419 0120 1A       		.byte	0x1a
- 420 0121 6B000000 		.4byte	0x6b
- 421 0125 11       		.byte	0x11
- 422 0126 00       		.byte	0
- 423 0127 0A       		.uleb128 0xa
- 424 0128 83000000 		.4byte	0x83
- 425 012c 37010000 		.4byte	0x137
- 426 0130 0B       		.uleb128 0xb
- 427 0131 CF000000 		.4byte	0xcf
- 428 0135 01       		.byte	0x1
- 429 0136 00       		.byte	0
- 430 0137 0C       		.uleb128 0xc
- 431 0138 17030000 		.4byte	.LASF25
- 432 013c 04       		.byte	0x4
- 433 013d 1B       		.byte	0x1b
- 434 013e D6000000 		.4byte	0xd6
- 435 0142 0D       		.uleb128 0xd
- 436 0143 01       		.byte	0x1
- 437 0144 2C000000 		.4byte	0x2c
- 438 0148 0D       		.byte	0xd
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 25
+ 384 00e9 00       		.byte	0
+ 385 00ea 09       		.uleb128 0x9
+ 386 00eb 3B010000 		.4byte	.LASF20
+ 387 00ef 04       		.byte	0x4
+ 388 00f0 15       		.byte	0x15
+ 389 00f1 77000000 		.4byte	0x77
+ 390 00f5 04       		.byte	0x4
+ 391 00f6 09       		.uleb128 0x9
+ 392 00f7 B6020000 		.4byte	.LASF21
+ 393 00fb 04       		.byte	0x4
+ 394 00fc 16       		.byte	0x16
+ 395 00fd 27010000 		.4byte	0x127
+ 396 0101 08       		.byte	0x8
+ 397 0102 09       		.uleb128 0x9
+ 398 0103 CA010000 		.4byte	.LASF22
+ 399 0107 04       		.byte	0x4
+ 400 0108 17       		.byte	0x17
+ 401 0109 27010000 		.4byte	0x127
+ 402 010d 0C       		.byte	0xc
+ 403 010e 09       		.uleb128 0x9
+ 404 010f 20000000 		.4byte	.LASF23
+ 405 0113 04       		.byte	0x4
+ 406 0114 19       		.byte	0x19
+ 407 0115 6B000000 		.4byte	0x6b
+ 408 0119 10       		.byte	0x10
+ 409 011a 09       		.uleb128 0x9
+ 410 011b 51010000 		.4byte	.LASF24
+ 411 011f 04       		.byte	0x4
+ 412 0120 1A       		.byte	0x1a
+ 413 0121 6B000000 		.4byte	0x6b
+ 414 0125 11       		.byte	0x11
+ 415 0126 00       		.byte	0
+ 416 0127 0A       		.uleb128 0xa
+ 417 0128 83000000 		.4byte	0x83
+ 418 012c 37010000 		.4byte	0x137
+ 419 0130 0B       		.uleb128 0xb
+ 420 0131 CF000000 		.4byte	0xcf
+ 421 0135 01       		.byte	0x1
+ 422 0136 00       		.byte	0
+ 423 0137 0C       		.uleb128 0xc
+ 424 0138 FE020000 		.4byte	.LASF25
+ 425 013c 04       		.byte	0x4
+ 426 013d 1B       		.byte	0x1b
+ 427 013e D6000000 		.4byte	0xd6
+ 428 0142 0D       		.uleb128 0xd
+ 429 0143 01       		.byte	0x1
+ 430 0144 2C000000 		.4byte	0x2c
+ 431 0148 0C       		.byte	0xc
+ 432 0149 14       		.byte	0x14
+ 433 014a 61010000 		.4byte	0x161
+ 434 014e 0E       		.uleb128 0xe
+ 435 014f D8020000 		.4byte	.LASF26
+ 436 0153 00       		.byte	0
+ 437 0154 0E       		.uleb128 0xe
+ 438 0155 86010000 		.4byte	.LASF27
+ 439 0159 01       		.byte	0x1
+ 440 015a 0E       		.uleb128 0xe
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 25
 
 
- 439 0149 14       		.byte	0x14
- 440 014a 61010000 		.4byte	0x161
- 441 014e 0E       		.uleb128 0xe
- 442 014f F1020000 		.4byte	.LASF26
- 443 0153 00       		.byte	0
- 444 0154 0E       		.uleb128 0xe
- 445 0155 86010000 		.4byte	.LASF27
- 446 0159 01       		.byte	0x1
- 447 015a 0E       		.uleb128 0xe
- 448 015b 43010000 		.4byte	.LASF28
- 449 015f 02       		.byte	0x2
- 450 0160 00       		.byte	0
- 451 0161 0C       		.uleb128 0xc
- 452 0162 EF010000 		.4byte	.LASF29
- 453 0166 05       		.byte	0x5
- 454 0167 67       		.byte	0x67
- 455 0168 C1000000 		.4byte	0xc1
- 456 016c 0F       		.uleb128 0xf
- 457 016d C1000000 		.4byte	.LASF51
- 458 0171 02       		.byte	0x2
- 459 0172 3D03     		.2byte	0x33d
- 460 0174 61010000 		.4byte	0x161
- 461 0178 03       		.byte	0x3
- 462 0179 8A010000 		.4byte	0x18a
- 463 017d 10       		.uleb128 0x10
- 464 017e 32010000 		.4byte	.LASF52
- 465 0182 02       		.byte	0x2
- 466 0183 3D03     		.2byte	0x33d
- 467 0185 61010000 		.4byte	0x161
- 468 0189 00       		.byte	0
- 469 018a 11       		.uleb128 0x11
- 470 018b 98000000 		.4byte	.LASF53
- 471 018f 01       		.byte	0x1
- 472 0190 1D       		.byte	0x1d
- 473 0191 00000000 		.4byte	.LFB34
- 474 0195 02000000 		.4byte	.LFE34-.LFB34
- 475 0199 01       		.uleb128 0x1
- 476 019a 9C       		.byte	0x9c
- 477 019b 12       		.uleb128 0x12
- 478 019c 00030000 		.4byte	.LASF30
- 479 01a0 01       		.byte	0x1
- 480 01a1 22       		.byte	0x22
- 481 01a2 00000000 		.4byte	.LFB35
- 482 01a6 28000000 		.4byte	.LFE35-.LFB35
- 483 01aa 01       		.uleb128 0x1
- 484 01ab 9C       		.byte	0x9c
- 485 01ac 18020000 		.4byte	0x218
- 486 01b0 13       		.uleb128 0x13
- 487 01b1 6C010000 		.4byte	0x16c
- 488 01b5 0E000000 		.4byte	.LBB4
- 489 01b9 08000000 		.4byte	.LBE4-.LBB4
- 490 01bd 01       		.byte	0x1
- 491 01be 2C       		.byte	0x2c
- 492 01bf E5010000 		.4byte	0x1e5
- 493 01c3 14       		.uleb128 0x14
- 494 01c4 7D010000 		.4byte	0x17d
- 495 01c8 00000000 		.4byte	.LLST0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 26
+ 441 015b 43010000 		.4byte	.LASF28
+ 442 015f 02       		.byte	0x2
+ 443 0160 00       		.byte	0
+ 444 0161 0C       		.uleb128 0xc
+ 445 0162 EF010000 		.4byte	.LASF29
+ 446 0166 05       		.byte	0x5
+ 447 0167 67       		.byte	0x67
+ 448 0168 C1000000 		.4byte	0xc1
+ 449 016c 0F       		.uleb128 0xf
+ 450 016d C1000000 		.4byte	.LASF50
+ 451 0171 02       		.byte	0x2
+ 452 0172 3D03     		.2byte	0x33d
+ 453 0174 61010000 		.4byte	0x161
+ 454 0178 03       		.byte	0x3
+ 455 0179 8A010000 		.4byte	0x18a
+ 456 017d 10       		.uleb128 0x10
+ 457 017e 32010000 		.4byte	.LASF51
+ 458 0182 02       		.byte	0x2
+ 459 0183 3D03     		.2byte	0x33d
+ 460 0185 61010000 		.4byte	0x161
+ 461 0189 00       		.byte	0
+ 462 018a 11       		.uleb128 0x11
+ 463 018b 92000000 		.4byte	.LASF52
+ 464 018f 01       		.byte	0x1
+ 465 0190 1C       		.byte	0x1c
+ 466 0191 00000000 		.4byte	.LFB34
+ 467 0195 02000000 		.4byte	.LFE34-.LFB34
+ 468 0199 01       		.uleb128 0x1
+ 469 019a 9C       		.byte	0x9c
+ 470 019b 12       		.uleb128 0x12
+ 471 019c E7020000 		.4byte	.LASF30
+ 472 01a0 01       		.byte	0x1
+ 473 01a1 21       		.byte	0x21
+ 474 01a2 00000000 		.4byte	.LFB35
+ 475 01a6 28000000 		.4byte	.LFE35-.LFB35
+ 476 01aa 01       		.uleb128 0x1
+ 477 01ab 9C       		.byte	0x9c
+ 478 01ac 18020000 		.4byte	0x218
+ 479 01b0 13       		.uleb128 0x13
+ 480 01b1 6C010000 		.4byte	0x16c
+ 481 01b5 0E000000 		.4byte	.LBB4
+ 482 01b9 08000000 		.4byte	.LBE4-.LBB4
+ 483 01bd 01       		.byte	0x1
+ 484 01be 2B       		.byte	0x2b
+ 485 01bf E5010000 		.4byte	0x1e5
+ 486 01c3 14       		.uleb128 0x14
+ 487 01c4 7D010000 		.4byte	0x17d
+ 488 01c8 00000000 		.4byte	.LLST0
+ 489 01cc 15       		.uleb128 0x15
+ 490 01cd 16000000 		.4byte	.LVL2
+ 491 01d1 1B030000 		.4byte	0x31b
+ 492 01d5 16       		.uleb128 0x16
+ 493 01d6 01       		.uleb128 0x1
+ 494 01d7 50       		.byte	0x50
+ 495 01d8 01       		.uleb128 0x1
+ 496 01d9 32       		.byte	0x32
+ 497 01da 16       		.uleb128 0x16
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 26
 
 
- 496 01cc 15       		.uleb128 0x15
- 497 01cd 16000000 		.4byte	.LVL2
- 498 01d1 2F030000 		.4byte	0x32f
- 499 01d5 16       		.uleb128 0x16
- 500 01d6 01       		.uleb128 0x1
- 501 01d7 50       		.byte	0x50
- 502 01d8 01       		.uleb128 0x1
- 503 01d9 32       		.byte	0x32
- 504 01da 16       		.uleb128 0x16
- 505 01db 01       		.uleb128 0x1
- 506 01dc 51       		.byte	0x51
- 507 01dd 05       		.uleb128 0x5
- 508 01de 03       		.byte	0x3
- 509 01df 00000000 		.4byte	DmaIntHandler
- 510 01e3 00       		.byte	0
- 511 01e4 00       		.byte	0
- 512 01e5 17       		.uleb128 0x17
- 513 01e6 06000000 		.4byte	.LVL0
- 514 01ea 3A030000 		.4byte	0x33a
- 515 01ee 18       		.uleb128 0x18
- 516 01ef 0E000000 		.4byte	.LVL1
- 517 01f3 45030000 		.4byte	0x345
- 518 01f7 0E020000 		.4byte	0x20e
- 519 01fb 16       		.uleb128 0x16
- 520 01fc 01       		.uleb128 0x1
- 521 01fd 50       		.byte	0x50
- 522 01fe 05       		.uleb128 0x5
- 523 01ff 0C       		.byte	0xc
- 524 0200 80013A40 		.4byte	0x403a0180
- 525 0204 16       		.uleb128 0x16
- 526 0205 01       		.uleb128 0x1
- 527 0206 51       		.byte	0x51
- 528 0207 05       		.uleb128 0x5
- 529 0208 03       		.byte	0x3
- 530 0209 00000000 		.4byte	.LANCHOR0
- 531 020d 00       		.byte	0
- 532 020e 17       		.uleb128 0x17
- 533 020f 1A000000 		.4byte	.LVL3
- 534 0213 50030000 		.4byte	0x350
- 535 0217 00       		.byte	0
- 536 0218 19       		.uleb128 0x19
- 537 0219 33030000 		.4byte	.LASF31
- 538 021d 01       		.byte	0x1
- 539 021e 32       		.byte	0x32
- 540 021f 00000000 		.4byte	.LFB36
- 541 0223 B0000000 		.4byte	.LFE36-.LFB36
- 542 0227 01       		.uleb128 0x1
- 543 0228 9C       		.byte	0x9c
- 544 0229 C5020000 		.4byte	0x2c5
- 545 022d 1A       		.uleb128 0x1a
- 546 022e 6F030000 		.4byte	.LASF32
- 547 0232 01       		.byte	0x1
- 548 0233 34       		.byte	0x34
- 549 0234 C5020000 		.4byte	0x2c5
- 550 0238 05       		.uleb128 0x5
- 551 0239 03       		.byte	0x3
- 552 023a 04000000 		.4byte	prevVol.6982
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 27
+ 498 01db 01       		.uleb128 0x1
+ 499 01dc 51       		.byte	0x51
+ 500 01dd 05       		.uleb128 0x5
+ 501 01de 03       		.byte	0x3
+ 502 01df 00000000 		.4byte	DmaIntHandler
+ 503 01e3 00       		.byte	0
+ 504 01e4 00       		.byte	0
+ 505 01e5 17       		.uleb128 0x17
+ 506 01e6 06000000 		.4byte	.LVL0
+ 507 01ea 26030000 		.4byte	0x326
+ 508 01ee 18       		.uleb128 0x18
+ 509 01ef 0E000000 		.4byte	.LVL1
+ 510 01f3 31030000 		.4byte	0x331
+ 511 01f7 0E020000 		.4byte	0x20e
+ 512 01fb 16       		.uleb128 0x16
+ 513 01fc 01       		.uleb128 0x1
+ 514 01fd 50       		.byte	0x50
+ 515 01fe 05       		.uleb128 0x5
+ 516 01ff 0C       		.byte	0xc
+ 517 0200 80013A40 		.4byte	0x403a0180
+ 518 0204 16       		.uleb128 0x16
+ 519 0205 01       		.uleb128 0x1
+ 520 0206 51       		.byte	0x51
+ 521 0207 05       		.uleb128 0x5
+ 522 0208 03       		.byte	0x3
+ 523 0209 00000000 		.4byte	.LANCHOR0
+ 524 020d 00       		.byte	0
+ 525 020e 17       		.uleb128 0x17
+ 526 020f 1A000000 		.4byte	.LVL3
+ 527 0213 3C030000 		.4byte	0x33c
+ 528 0217 00       		.byte	0
+ 529 0218 19       		.uleb128 0x19
+ 530 0219 1A030000 		.4byte	.LASF31
+ 531 021d 01       		.byte	0x1
+ 532 021e 31       		.byte	0x31
+ 533 021f 00000000 		.4byte	.LFB36
+ 534 0223 A8000000 		.4byte	.LFE36-.LFB36
+ 535 0227 01       		.uleb128 0x1
+ 536 0228 9C       		.byte	0x9c
+ 537 0229 B1020000 		.4byte	0x2b1
+ 538 022d 1A       		.uleb128 0x1a
+ 539 022e 56030000 		.4byte	.LASF32
+ 540 0232 01       		.byte	0x1
+ 541 0233 33       		.byte	0x33
+ 542 0234 B1020000 		.4byte	0x2b1
+ 543 0238 05       		.uleb128 0x5
+ 544 0239 03       		.byte	0x3
+ 545 023a 04000000 		.4byte	prevVol.6962
+ 546 023e 1B       		.uleb128 0x1b
+ 547 023f A6000000 		.4byte	.LASF53
+ 548 0243 01       		.byte	0x1
+ 549 0244 34       		.byte	0x34
+ 550 0245 B1020000 		.4byte	0x2b1
+ 551 0249 1C       		.uleb128 0x1c
+ 552 024a 6900     		.ascii	"i\000"
+ 553 024c 01       		.byte	0x1
+ 554 024d 35       		.byte	0x35
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 27
 
 
- 553 023e 1B       		.uleb128 0x1b
- 554 023f AC000000 		.4byte	.LASF54
- 555 0243 01       		.byte	0x1
- 556 0244 35       		.byte	0x35
- 557 0245 C5020000 		.4byte	0x2c5
- 558 0249 1C       		.uleb128 0x1c
- 559 024a 6900     		.ascii	"i\000"
- 560 024c 01       		.byte	0x1
- 561 024d 36       		.byte	0x36
- 562 024e 5D000000 		.4byte	0x5d
- 563 0252 18000000 		.4byte	.LLST1
- 564 0256 17       		.uleb128 0x17
- 565 0257 40000000 		.4byte	.LVL7
- 566 025b 5B030000 		.4byte	0x35b
- 567 025f 17       		.uleb128 0x17
- 568 0260 48000000 		.4byte	.LVL8
- 569 0264 67030000 		.4byte	0x367
- 570 0268 18       		.uleb128 0x18
- 571 0269 6A000000 		.4byte	.LVL9
- 572 026d 72030000 		.4byte	0x372
- 573 0271 8C020000 		.4byte	0x28c
- 574 0275 16       		.uleb128 0x16
- 575 0276 01       		.uleb128 0x1
- 576 0277 50       		.byte	0x50
- 577 0278 02       		.uleb128 0x2
- 578 0279 75       		.byte	0x75
- 579 027a 00       		.sleb128 0
- 580 027b 16       		.uleb128 0x16
- 581 027c 01       		.uleb128 0x1
- 582 027d 51       		.byte	0x51
- 583 027e 05       		.uleb128 0x5
- 584 027f 03       		.byte	0x3
- 585 0280 10000000 		.4byte	.LC9
- 586 0284 16       		.uleb128 0x16
- 587 0285 02       		.uleb128 0x2
- 588 0286 7D       		.byte	0x7d
- 589 0287 00       		.sleb128 0
- 590 0288 02       		.uleb128 0x2
- 591 0289 77       		.byte	0x77
- 592 028a 00       		.sleb128 0
- 593 028b 00       		.byte	0
- 594 028c 18       		.uleb128 0x18
- 595 028d 70000000 		.4byte	.LVL10
- 596 0291 7D030000 		.4byte	0x37d
- 597 0295 A0020000 		.4byte	0x2a0
- 598 0299 16       		.uleb128 0x16
- 599 029a 01       		.uleb128 0x1
- 600 029b 50       		.byte	0x50
- 601 029c 02       		.uleb128 0x2
- 602 029d 75       		.byte	0x75
- 603 029e 00       		.sleb128 0
- 604 029f 00       		.byte	0
- 605 02a0 18       		.uleb128 0x18
- 606 02a1 7A000000 		.4byte	.LVL11
- 607 02a5 88030000 		.4byte	0x388
- 608 02a9 B4020000 		.4byte	0x2b4
- 609 02ad 16       		.uleb128 0x16
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 28
+ 555 024e 5D000000 		.4byte	0x5d
+ 556 0252 18000000 		.4byte	.LLST1
+ 557 0256 17       		.uleb128 0x17
+ 558 0257 40000000 		.4byte	.LVL7
+ 559 025b 47030000 		.4byte	0x347
+ 560 025f 17       		.uleb128 0x17
+ 561 0260 48000000 		.4byte	.LVL8
+ 562 0264 53030000 		.4byte	0x353
+ 563 0268 18       		.uleb128 0x18
+ 564 0269 6A000000 		.4byte	.LVL9
+ 565 026d 5E030000 		.4byte	0x35e
+ 566 0271 8C020000 		.4byte	0x28c
+ 567 0275 16       		.uleb128 0x16
+ 568 0276 01       		.uleb128 0x1
+ 569 0277 50       		.byte	0x50
+ 570 0278 02       		.uleb128 0x2
+ 571 0279 75       		.byte	0x75
+ 572 027a 00       		.sleb128 0
+ 573 027b 16       		.uleb128 0x16
+ 574 027c 01       		.uleb128 0x1
+ 575 027d 51       		.byte	0x51
+ 576 027e 05       		.uleb128 0x5
+ 577 027f 03       		.byte	0x3
+ 578 0280 10000000 		.4byte	.LC9
+ 579 0284 16       		.uleb128 0x16
+ 580 0285 02       		.uleb128 0x2
+ 581 0286 7D       		.byte	0x7d
+ 582 0287 00       		.sleb128 0
+ 583 0288 02       		.uleb128 0x2
+ 584 0289 77       		.byte	0x77
+ 585 028a 00       		.sleb128 0
+ 586 028b 00       		.byte	0
+ 587 028c 18       		.uleb128 0x18
+ 588 028d 70000000 		.4byte	.LVL10
+ 589 0291 69030000 		.4byte	0x369
+ 590 0295 A0020000 		.4byte	0x2a0
+ 591 0299 16       		.uleb128 0x16
+ 592 029a 01       		.uleb128 0x1
+ 593 029b 50       		.byte	0x50
+ 594 029c 02       		.uleb128 0x2
+ 595 029d 75       		.byte	0x75
+ 596 029e 00       		.sleb128 0
+ 597 029f 00       		.byte	0
+ 598 02a0 15       		.uleb128 0x15
+ 599 02a1 7A000000 		.4byte	.LVL11
+ 600 02a5 74030000 		.4byte	0x374
+ 601 02a9 16       		.uleb128 0x16
+ 602 02aa 01       		.uleb128 0x1
+ 603 02ab 50       		.byte	0x50
+ 604 02ac 02       		.uleb128 0x2
+ 605 02ad 77       		.byte	0x77
+ 606 02ae 00       		.sleb128 0
+ 607 02af 00       		.byte	0
+ 608 02b0 00       		.byte	0
+ 609 02b1 0A       		.uleb128 0xa
+ 610 02b2 8F000000 		.4byte	0x8f
+ 611 02b6 C1020000 		.4byte	0x2c1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 28
 
 
- 610 02ae 01       		.uleb128 0x1
- 611 02af 50       		.byte	0x50
- 612 02b0 02       		.uleb128 0x2
- 613 02b1 77       		.byte	0x77
- 614 02b2 00       		.sleb128 0
- 615 02b3 00       		.byte	0
- 616 02b4 15       		.uleb128 0x15
- 617 02b5 82000000 		.4byte	.LVL12
- 618 02b9 93030000 		.4byte	0x393
- 619 02bd 16       		.uleb128 0x16
- 620 02be 01       		.uleb128 0x1
- 621 02bf 50       		.byte	0x50
- 622 02c0 02       		.uleb128 0x2
- 623 02c1 77       		.byte	0x77
- 624 02c2 00       		.sleb128 0
- 625 02c3 00       		.byte	0
- 626 02c4 00       		.byte	0
- 627 02c5 0A       		.uleb128 0xa
- 628 02c6 8F000000 		.4byte	0x8f
- 629 02ca D5020000 		.4byte	0x2d5
- 630 02ce 0B       		.uleb128 0xb
- 631 02cf CF000000 		.4byte	0xcf
- 632 02d3 01       		.byte	0x1
- 633 02d4 00       		.byte	0
- 634 02d5 1D       		.uleb128 0x1d
- 635 02d6 76010000 		.4byte	.LASF33
- 636 02da 04       		.byte	0x4
- 637 02db 1D       		.byte	0x1d
- 638 02dc E0020000 		.4byte	0x2e0
- 639 02e0 06       		.uleb128 0x6
- 640 02e1 04       		.byte	0x4
- 641 02e2 37010000 		.4byte	0x137
- 642 02e6 0A       		.uleb128 0xa
- 643 02e7 A9000000 		.4byte	0xa9
- 644 02eb F1020000 		.4byte	0x2f1
- 645 02ef 1E       		.uleb128 0x1e
- 646 02f0 00       		.byte	0
- 647 02f1 1D       		.uleb128 0x1d
- 648 02f2 12030000 		.4byte	.LASF34
- 649 02f6 06       		.byte	0x6
- 650 02f7 3C       		.byte	0x3c
- 651 02f8 E6020000 		.4byte	0x2e6
- 652 02fc 1F       		.uleb128 0x1f
- 653 02fd E7020000 		.4byte	.LASF35
- 654 0301 01       		.byte	0x1
- 655 0302 1B       		.byte	0x1b
- 656 0303 27010000 		.4byte	0x127
- 657 0307 05       		.uleb128 0x5
- 658 0308 03       		.byte	0x3
- 659 0309 00000000 		.4byte	adcSample
- 660 030d 1F       		.uleb128 0x1f
- 661 030e BE020000 		.4byte	.LASF36
- 662 0312 01       		.byte	0x1
- 663 0313 15       		.byte	0x15
- 664 0314 C5020000 		.4byte	0x2c5
- 665 0318 05       		.uleb128 0x5
- 666 0319 03       		.byte	0x3
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 29
+ 612 02ba 0B       		.uleb128 0xb
+ 613 02bb CF000000 		.4byte	0xcf
+ 614 02bf 01       		.byte	0x1
+ 615 02c0 00       		.byte	0
+ 616 02c1 1D       		.uleb128 0x1d
+ 617 02c2 76010000 		.4byte	.LASF33
+ 618 02c6 04       		.byte	0x4
+ 619 02c7 1D       		.byte	0x1d
+ 620 02c8 CC020000 		.4byte	0x2cc
+ 621 02cc 06       		.uleb128 0x6
+ 622 02cd 04       		.byte	0x4
+ 623 02ce 37010000 		.4byte	0x137
+ 624 02d2 0A       		.uleb128 0xa
+ 625 02d3 A9000000 		.4byte	0xa9
+ 626 02d7 DD020000 		.4byte	0x2dd
+ 627 02db 1E       		.uleb128 0x1e
+ 628 02dc 00       		.byte	0
+ 629 02dd 1D       		.uleb128 0x1d
+ 630 02de F9020000 		.4byte	.LASF34
+ 631 02e2 06       		.byte	0x6
+ 632 02e3 3C       		.byte	0x3c
+ 633 02e4 D2020000 		.4byte	0x2d2
+ 634 02e8 1F       		.uleb128 0x1f
+ 635 02e9 CE020000 		.4byte	.LASF35
+ 636 02ed 01       		.byte	0x1
+ 637 02ee 1A       		.byte	0x1a
+ 638 02ef 27010000 		.4byte	0x127
+ 639 02f3 05       		.uleb128 0x5
+ 640 02f4 03       		.byte	0x3
+ 641 02f5 00000000 		.4byte	adcSample
+ 642 02f9 1F       		.uleb128 0x1f
+ 643 02fa BE020000 		.4byte	.LASF36
+ 644 02fe 01       		.byte	0x1
+ 645 02ff 14       		.byte	0x14
+ 646 0300 B1020000 		.4byte	0x2b1
+ 647 0304 05       		.uleb128 0x5
+ 648 0305 03       		.byte	0x3
+ 649 0306 00000000 		.4byte	ADC_MIN_READING
+ 650 030a 1F       		.uleb128 0x1f
+ 651 030b 66010000 		.4byte	.LASF37
+ 652 030f 01       		.byte	0x1
+ 653 0310 15       		.byte	0x15
+ 654 0311 B1020000 		.4byte	0x2b1
+ 655 0315 05       		.uleb128 0x5
+ 656 0316 03       		.byte	0x3
+ 657 0317 00000000 		.4byte	ADC_MAX_READING
+ 658 031b 20       		.uleb128 0x20
+ 659 031c 78000000 		.4byte	.LASF38
+ 660 0320 78000000 		.4byte	.LASF38
+ 661 0324 05       		.byte	0x5
+ 662 0325 7B       		.byte	0x7b
+ 663 0326 20       		.uleb128 0x20
+ 664 0327 E5010000 		.4byte	.LASF39
+ 665 032b E5010000 		.4byte	.LASF39
+ 666 032f 07       		.byte	0x7
+ 667 0330 99       		.byte	0x99
+ 668 0331 20       		.uleb128 0x20
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 29
 
 
- 667 031a 00000000 		.4byte	ADC_MIN_READING
- 668 031e 1F       		.uleb128 0x1f
- 669 031f 66010000 		.4byte	.LASF37
- 670 0323 01       		.byte	0x1
- 671 0324 16       		.byte	0x16
- 672 0325 C5020000 		.4byte	0x2c5
- 673 0329 05       		.uleb128 0x5
- 674 032a 03       		.byte	0x3
- 675 032b 00000000 		.4byte	ADC_MAX_READING
- 676 032f 20       		.uleb128 0x20
- 677 0330 7E000000 		.4byte	.LASF38
- 678 0334 7E000000 		.4byte	.LASF38
- 679 0338 05       		.byte	0x5
- 680 0339 7B       		.byte	0x7b
- 681 033a 20       		.uleb128 0x20
- 682 033b E5010000 		.4byte	.LASF39
- 683 033f E5010000 		.4byte	.LASF39
- 684 0343 07       		.byte	0x7
- 685 0344 99       		.byte	0x99
- 686 0345 20       		.uleb128 0x20
- 687 0346 54030000 		.4byte	.LASF40
- 688 034a 54030000 		.4byte	.LASF40
- 689 034e 02       		.byte	0x2
- 690 034f 23       		.byte	0x23
- 691 0350 20       		.uleb128 0x20
- 692 0351 5E030000 		.4byte	.LASF41
- 693 0355 5E030000 		.4byte	.LASF41
- 694 0359 07       		.byte	0x7
- 695 035a 9D       		.byte	0x9d
- 696 035b 21       		.uleb128 0x21
- 697 035c 65000000 		.4byte	.LASF42
- 698 0360 65000000 		.4byte	.LASF42
- 699 0364 08       		.byte	0x8
- 700 0365 3201     		.2byte	0x132
- 701 0367 20       		.uleb128 0x20
- 702 0368 D2010000 		.4byte	.LASF43
- 703 036c D2010000 		.4byte	.LASF43
- 704 0370 09       		.byte	0x9
- 705 0371 28       		.byte	0x28
- 706 0372 20       		.uleb128 0x20
- 707 0373 77030000 		.4byte	.LASF44
- 708 0377 77030000 		.4byte	.LASF44
- 709 037b 0A       		.byte	0xa
- 710 037c E7       		.byte	0xe7
- 711 037d 20       		.uleb128 0x20
- 712 037e 46000000 		.4byte	.LASF45
- 713 0382 46000000 		.4byte	.LASF45
- 714 0386 09       		.byte	0x9
- 715 0387 24       		.byte	0x24
- 716 0388 20       		.uleb128 0x20
- 717 0389 DA000000 		.4byte	.LASF46
- 718 038d DA000000 		.4byte	.LASF46
- 719 0391 0B       		.byte	0xb
- 720 0392 AC       		.byte	0xac
- 721 0393 20       		.uleb128 0x20
- 722 0394 CE020000 		.4byte	.LASF47
- 723 0398 CE020000 		.4byte	.LASF47
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 30
+ 669 0332 3B030000 		.4byte	.LASF40
+ 670 0336 3B030000 		.4byte	.LASF40
+ 671 033a 02       		.byte	0x2
+ 672 033b 23       		.byte	0x23
+ 673 033c 20       		.uleb128 0x20
+ 674 033d 45030000 		.4byte	.LASF41
+ 675 0341 45030000 		.4byte	.LASF41
+ 676 0345 07       		.byte	0x7
+ 677 0346 9D       		.byte	0x9d
+ 678 0347 21       		.uleb128 0x21
+ 679 0348 5F000000 		.4byte	.LASF42
+ 680 034c 5F000000 		.4byte	.LASF42
+ 681 0350 08       		.byte	0x8
+ 682 0351 3201     		.2byte	0x132
+ 683 0353 20       		.uleb128 0x20
+ 684 0354 D2010000 		.4byte	.LASF43
+ 685 0358 D2010000 		.4byte	.LASF43
+ 686 035c 09       		.byte	0x9
+ 687 035d 28       		.byte	0x28
+ 688 035e 20       		.uleb128 0x20
+ 689 035f 5E030000 		.4byte	.LASF44
+ 690 0363 5E030000 		.4byte	.LASF44
+ 691 0367 0A       		.byte	0xa
+ 692 0368 E7       		.byte	0xe7
+ 693 0369 20       		.uleb128 0x20
+ 694 036a 46000000 		.4byte	.LASF45
+ 695 036e 46000000 		.4byte	.LASF45
+ 696 0372 09       		.byte	0x9
+ 697 0373 24       		.byte	0x24
+ 698 0374 20       		.uleb128 0x20
+ 699 0375 DA000000 		.4byte	.LASF46
+ 700 0379 DA000000 		.4byte	.LASF46
+ 701 037d 0B       		.byte	0xb
+ 702 037e AC       		.byte	0xac
+ 703 037f 00       		.byte	0
+ 704              		.section	.debug_abbrev,"",%progbits
+ 705              	.Ldebug_abbrev0:
+ 706 0000 01       		.uleb128 0x1
+ 707 0001 11       		.uleb128 0x11
+ 708 0002 01       		.byte	0x1
+ 709 0003 25       		.uleb128 0x25
+ 710 0004 0E       		.uleb128 0xe
+ 711 0005 13       		.uleb128 0x13
+ 712 0006 0B       		.uleb128 0xb
+ 713 0007 03       		.uleb128 0x3
+ 714 0008 0E       		.uleb128 0xe
+ 715 0009 1B       		.uleb128 0x1b
+ 716 000a 0E       		.uleb128 0xe
+ 717 000b 55       		.uleb128 0x55
+ 718 000c 17       		.uleb128 0x17
+ 719 000d 11       		.uleb128 0x11
+ 720 000e 01       		.uleb128 0x1
+ 721 000f 10       		.uleb128 0x10
+ 722 0010 17       		.uleb128 0x17
+ 723 0011 00       		.byte	0
+ 724 0012 00       		.byte	0
+ 725 0013 02       		.uleb128 0x2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 30
 
 
- 724 039c 0C       		.byte	0xc
- 725 039d 21       		.byte	0x21
- 726 039e 00       		.byte	0
- 727              		.section	.debug_abbrev,"",%progbits
- 728              	.Ldebug_abbrev0:
- 729 0000 01       		.uleb128 0x1
- 730 0001 11       		.uleb128 0x11
- 731 0002 01       		.byte	0x1
- 732 0003 25       		.uleb128 0x25
- 733 0004 0E       		.uleb128 0xe
- 734 0005 13       		.uleb128 0x13
- 735 0006 0B       		.uleb128 0xb
- 736 0007 03       		.uleb128 0x3
- 737 0008 0E       		.uleb128 0xe
- 738 0009 1B       		.uleb128 0x1b
- 739 000a 0E       		.uleb128 0xe
- 740 000b 55       		.uleb128 0x55
- 741 000c 17       		.uleb128 0x17
- 742 000d 11       		.uleb128 0x11
- 743 000e 01       		.uleb128 0x1
- 744 000f 10       		.uleb128 0x10
- 745 0010 17       		.uleb128 0x17
- 746 0011 00       		.byte	0
- 747 0012 00       		.byte	0
- 748 0013 02       		.uleb128 0x2
- 749 0014 24       		.uleb128 0x24
- 750 0015 00       		.byte	0
- 751 0016 0B       		.uleb128 0xb
- 752 0017 0B       		.uleb128 0xb
- 753 0018 3E       		.uleb128 0x3e
- 754 0019 0B       		.uleb128 0xb
- 755 001a 03       		.uleb128 0x3
- 756 001b 0E       		.uleb128 0xe
- 757 001c 00       		.byte	0
- 758 001d 00       		.byte	0
- 759 001e 03       		.uleb128 0x3
- 760 001f 24       		.uleb128 0x24
- 761 0020 00       		.byte	0
- 762 0021 0B       		.uleb128 0xb
- 763 0022 0B       		.uleb128 0xb
- 764 0023 3E       		.uleb128 0x3e
- 765 0024 0B       		.uleb128 0xb
- 766 0025 03       		.uleb128 0x3
- 767 0026 08       		.uleb128 0x8
- 768 0027 00       		.byte	0
- 769 0028 00       		.byte	0
- 770 0029 04       		.uleb128 0x4
- 771 002a 16       		.uleb128 0x16
- 772 002b 00       		.byte	0
- 773 002c 03       		.uleb128 0x3
- 774 002d 0E       		.uleb128 0xe
- 775 002e 3A       		.uleb128 0x3a
- 776 002f 0B       		.uleb128 0xb
- 777 0030 3B       		.uleb128 0x3b
- 778 0031 05       		.uleb128 0x5
- 779 0032 49       		.uleb128 0x49
- 780 0033 13       		.uleb128 0x13
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 31
+ 726 0014 24       		.uleb128 0x24
+ 727 0015 00       		.byte	0
+ 728 0016 0B       		.uleb128 0xb
+ 729 0017 0B       		.uleb128 0xb
+ 730 0018 3E       		.uleb128 0x3e
+ 731 0019 0B       		.uleb128 0xb
+ 732 001a 03       		.uleb128 0x3
+ 733 001b 0E       		.uleb128 0xe
+ 734 001c 00       		.byte	0
+ 735 001d 00       		.byte	0
+ 736 001e 03       		.uleb128 0x3
+ 737 001f 24       		.uleb128 0x24
+ 738 0020 00       		.byte	0
+ 739 0021 0B       		.uleb128 0xb
+ 740 0022 0B       		.uleb128 0xb
+ 741 0023 3E       		.uleb128 0x3e
+ 742 0024 0B       		.uleb128 0xb
+ 743 0025 03       		.uleb128 0x3
+ 744 0026 08       		.uleb128 0x8
+ 745 0027 00       		.byte	0
+ 746 0028 00       		.byte	0
+ 747 0029 04       		.uleb128 0x4
+ 748 002a 16       		.uleb128 0x16
+ 749 002b 00       		.byte	0
+ 750 002c 03       		.uleb128 0x3
+ 751 002d 0E       		.uleb128 0xe
+ 752 002e 3A       		.uleb128 0x3a
+ 753 002f 0B       		.uleb128 0xb
+ 754 0030 3B       		.uleb128 0x3b
+ 755 0031 05       		.uleb128 0x5
+ 756 0032 49       		.uleb128 0x49
+ 757 0033 13       		.uleb128 0x13
+ 758 0034 00       		.byte	0
+ 759 0035 00       		.byte	0
+ 760 0036 05       		.uleb128 0x5
+ 761 0037 35       		.uleb128 0x35
+ 762 0038 00       		.byte	0
+ 763 0039 49       		.uleb128 0x49
+ 764 003a 13       		.uleb128 0x13
+ 765 003b 00       		.byte	0
+ 766 003c 00       		.byte	0
+ 767 003d 06       		.uleb128 0x6
+ 768 003e 0F       		.uleb128 0xf
+ 769 003f 00       		.byte	0
+ 770 0040 0B       		.uleb128 0xb
+ 771 0041 0B       		.uleb128 0xb
+ 772 0042 49       		.uleb128 0x49
+ 773 0043 13       		.uleb128 0x13
+ 774 0044 00       		.byte	0
+ 775 0045 00       		.byte	0
+ 776 0046 07       		.uleb128 0x7
+ 777 0047 15       		.uleb128 0x15
+ 778 0048 00       		.byte	0
+ 779 0049 27       		.uleb128 0x27
+ 780 004a 19       		.uleb128 0x19
+ 781 004b 00       		.byte	0
+ 782 004c 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 31
 
 
- 781 0034 00       		.byte	0
- 782 0035 00       		.byte	0
- 783 0036 05       		.uleb128 0x5
- 784 0037 35       		.uleb128 0x35
- 785 0038 00       		.byte	0
- 786 0039 49       		.uleb128 0x49
- 787 003a 13       		.uleb128 0x13
- 788 003b 00       		.byte	0
- 789 003c 00       		.byte	0
- 790 003d 06       		.uleb128 0x6
- 791 003e 0F       		.uleb128 0xf
- 792 003f 00       		.byte	0
- 793 0040 0B       		.uleb128 0xb
- 794 0041 0B       		.uleb128 0xb
- 795 0042 49       		.uleb128 0x49
- 796 0043 13       		.uleb128 0x13
- 797 0044 00       		.byte	0
- 798 0045 00       		.byte	0
- 799 0046 07       		.uleb128 0x7
- 800 0047 15       		.uleb128 0x15
- 801 0048 00       		.byte	0
- 802 0049 27       		.uleb128 0x27
- 803 004a 19       		.uleb128 0x19
- 804 004b 00       		.byte	0
- 805 004c 00       		.byte	0
- 806 004d 08       		.uleb128 0x8
- 807 004e 13       		.uleb128 0x13
- 808 004f 01       		.byte	0x1
- 809 0050 0B       		.uleb128 0xb
- 810 0051 0B       		.uleb128 0xb
- 811 0052 3A       		.uleb128 0x3a
- 812 0053 0B       		.uleb128 0xb
- 813 0054 3B       		.uleb128 0x3b
- 814 0055 0B       		.uleb128 0xb
- 815 0056 01       		.uleb128 0x1
- 816 0057 13       		.uleb128 0x13
- 817 0058 00       		.byte	0
- 818 0059 00       		.byte	0
- 819 005a 09       		.uleb128 0x9
- 820 005b 0D       		.uleb128 0xd
- 821 005c 00       		.byte	0
- 822 005d 03       		.uleb128 0x3
- 823 005e 0E       		.uleb128 0xe
- 824 005f 3A       		.uleb128 0x3a
- 825 0060 0B       		.uleb128 0xb
- 826 0061 3B       		.uleb128 0x3b
- 827 0062 0B       		.uleb128 0xb
- 828 0063 49       		.uleb128 0x49
- 829 0064 13       		.uleb128 0x13
- 830 0065 38       		.uleb128 0x38
- 831 0066 0B       		.uleb128 0xb
- 832 0067 00       		.byte	0
- 833 0068 00       		.byte	0
- 834 0069 0A       		.uleb128 0xa
- 835 006a 01       		.uleb128 0x1
- 836 006b 01       		.byte	0x1
- 837 006c 49       		.uleb128 0x49
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 32
+ 783 004d 08       		.uleb128 0x8
+ 784 004e 13       		.uleb128 0x13
+ 785 004f 01       		.byte	0x1
+ 786 0050 0B       		.uleb128 0xb
+ 787 0051 0B       		.uleb128 0xb
+ 788 0052 3A       		.uleb128 0x3a
+ 789 0053 0B       		.uleb128 0xb
+ 790 0054 3B       		.uleb128 0x3b
+ 791 0055 0B       		.uleb128 0xb
+ 792 0056 01       		.uleb128 0x1
+ 793 0057 13       		.uleb128 0x13
+ 794 0058 00       		.byte	0
+ 795 0059 00       		.byte	0
+ 796 005a 09       		.uleb128 0x9
+ 797 005b 0D       		.uleb128 0xd
+ 798 005c 00       		.byte	0
+ 799 005d 03       		.uleb128 0x3
+ 800 005e 0E       		.uleb128 0xe
+ 801 005f 3A       		.uleb128 0x3a
+ 802 0060 0B       		.uleb128 0xb
+ 803 0061 3B       		.uleb128 0x3b
+ 804 0062 0B       		.uleb128 0xb
+ 805 0063 49       		.uleb128 0x49
+ 806 0064 13       		.uleb128 0x13
+ 807 0065 38       		.uleb128 0x38
+ 808 0066 0B       		.uleb128 0xb
+ 809 0067 00       		.byte	0
+ 810 0068 00       		.byte	0
+ 811 0069 0A       		.uleb128 0xa
+ 812 006a 01       		.uleb128 0x1
+ 813 006b 01       		.byte	0x1
+ 814 006c 49       		.uleb128 0x49
+ 815 006d 13       		.uleb128 0x13
+ 816 006e 01       		.uleb128 0x1
+ 817 006f 13       		.uleb128 0x13
+ 818 0070 00       		.byte	0
+ 819 0071 00       		.byte	0
+ 820 0072 0B       		.uleb128 0xb
+ 821 0073 21       		.uleb128 0x21
+ 822 0074 00       		.byte	0
+ 823 0075 49       		.uleb128 0x49
+ 824 0076 13       		.uleb128 0x13
+ 825 0077 2F       		.uleb128 0x2f
+ 826 0078 0B       		.uleb128 0xb
+ 827 0079 00       		.byte	0
+ 828 007a 00       		.byte	0
+ 829 007b 0C       		.uleb128 0xc
+ 830 007c 16       		.uleb128 0x16
+ 831 007d 00       		.byte	0
+ 832 007e 03       		.uleb128 0x3
+ 833 007f 0E       		.uleb128 0xe
+ 834 0080 3A       		.uleb128 0x3a
+ 835 0081 0B       		.uleb128 0xb
+ 836 0082 3B       		.uleb128 0x3b
+ 837 0083 0B       		.uleb128 0xb
+ 838 0084 49       		.uleb128 0x49
+ 839 0085 13       		.uleb128 0x13
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 32
 
 
- 838 006d 13       		.uleb128 0x13
- 839 006e 01       		.uleb128 0x1
- 840 006f 13       		.uleb128 0x13
- 841 0070 00       		.byte	0
- 842 0071 00       		.byte	0
- 843 0072 0B       		.uleb128 0xb
- 844 0073 21       		.uleb128 0x21
- 845 0074 00       		.byte	0
- 846 0075 49       		.uleb128 0x49
- 847 0076 13       		.uleb128 0x13
- 848 0077 2F       		.uleb128 0x2f
- 849 0078 0B       		.uleb128 0xb
- 850 0079 00       		.byte	0
- 851 007a 00       		.byte	0
- 852 007b 0C       		.uleb128 0xc
- 853 007c 16       		.uleb128 0x16
- 854 007d 00       		.byte	0
- 855 007e 03       		.uleb128 0x3
- 856 007f 0E       		.uleb128 0xe
- 857 0080 3A       		.uleb128 0x3a
- 858 0081 0B       		.uleb128 0xb
- 859 0082 3B       		.uleb128 0x3b
- 860 0083 0B       		.uleb128 0xb
- 861 0084 49       		.uleb128 0x49
- 862 0085 13       		.uleb128 0x13
- 863 0086 00       		.byte	0
- 864 0087 00       		.byte	0
- 865 0088 0D       		.uleb128 0xd
- 866 0089 04       		.uleb128 0x4
- 867 008a 01       		.byte	0x1
- 868 008b 0B       		.uleb128 0xb
- 869 008c 0B       		.uleb128 0xb
- 870 008d 49       		.uleb128 0x49
- 871 008e 13       		.uleb128 0x13
- 872 008f 3A       		.uleb128 0x3a
- 873 0090 0B       		.uleb128 0xb
- 874 0091 3B       		.uleb128 0x3b
- 875 0092 0B       		.uleb128 0xb
- 876 0093 01       		.uleb128 0x1
- 877 0094 13       		.uleb128 0x13
- 878 0095 00       		.byte	0
- 879 0096 00       		.byte	0
- 880 0097 0E       		.uleb128 0xe
- 881 0098 28       		.uleb128 0x28
- 882 0099 00       		.byte	0
- 883 009a 03       		.uleb128 0x3
- 884 009b 0E       		.uleb128 0xe
- 885 009c 1C       		.uleb128 0x1c
- 886 009d 0B       		.uleb128 0xb
- 887 009e 00       		.byte	0
- 888 009f 00       		.byte	0
- 889 00a0 0F       		.uleb128 0xf
- 890 00a1 2E       		.uleb128 0x2e
- 891 00a2 01       		.byte	0x1
- 892 00a3 03       		.uleb128 0x3
- 893 00a4 0E       		.uleb128 0xe
- 894 00a5 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 33
+ 840 0086 00       		.byte	0
+ 841 0087 00       		.byte	0
+ 842 0088 0D       		.uleb128 0xd
+ 843 0089 04       		.uleb128 0x4
+ 844 008a 01       		.byte	0x1
+ 845 008b 0B       		.uleb128 0xb
+ 846 008c 0B       		.uleb128 0xb
+ 847 008d 49       		.uleb128 0x49
+ 848 008e 13       		.uleb128 0x13
+ 849 008f 3A       		.uleb128 0x3a
+ 850 0090 0B       		.uleb128 0xb
+ 851 0091 3B       		.uleb128 0x3b
+ 852 0092 0B       		.uleb128 0xb
+ 853 0093 01       		.uleb128 0x1
+ 854 0094 13       		.uleb128 0x13
+ 855 0095 00       		.byte	0
+ 856 0096 00       		.byte	0
+ 857 0097 0E       		.uleb128 0xe
+ 858 0098 28       		.uleb128 0x28
+ 859 0099 00       		.byte	0
+ 860 009a 03       		.uleb128 0x3
+ 861 009b 0E       		.uleb128 0xe
+ 862 009c 1C       		.uleb128 0x1c
+ 863 009d 0B       		.uleb128 0xb
+ 864 009e 00       		.byte	0
+ 865 009f 00       		.byte	0
+ 866 00a0 0F       		.uleb128 0xf
+ 867 00a1 2E       		.uleb128 0x2e
+ 868 00a2 01       		.byte	0x1
+ 869 00a3 03       		.uleb128 0x3
+ 870 00a4 0E       		.uleb128 0xe
+ 871 00a5 3A       		.uleb128 0x3a
+ 872 00a6 0B       		.uleb128 0xb
+ 873 00a7 3B       		.uleb128 0x3b
+ 874 00a8 05       		.uleb128 0x5
+ 875 00a9 27       		.uleb128 0x27
+ 876 00aa 19       		.uleb128 0x19
+ 877 00ab 49       		.uleb128 0x49
+ 878 00ac 13       		.uleb128 0x13
+ 879 00ad 20       		.uleb128 0x20
+ 880 00ae 0B       		.uleb128 0xb
+ 881 00af 01       		.uleb128 0x1
+ 882 00b0 13       		.uleb128 0x13
+ 883 00b1 00       		.byte	0
+ 884 00b2 00       		.byte	0
+ 885 00b3 10       		.uleb128 0x10
+ 886 00b4 05       		.uleb128 0x5
+ 887 00b5 00       		.byte	0
+ 888 00b6 03       		.uleb128 0x3
+ 889 00b7 0E       		.uleb128 0xe
+ 890 00b8 3A       		.uleb128 0x3a
+ 891 00b9 0B       		.uleb128 0xb
+ 892 00ba 3B       		.uleb128 0x3b
+ 893 00bb 05       		.uleb128 0x5
+ 894 00bc 49       		.uleb128 0x49
+ 895 00bd 13       		.uleb128 0x13
+ 896 00be 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 33
 
 
- 895 00a6 0B       		.uleb128 0xb
- 896 00a7 3B       		.uleb128 0x3b
- 897 00a8 05       		.uleb128 0x5
- 898 00a9 27       		.uleb128 0x27
- 899 00aa 19       		.uleb128 0x19
- 900 00ab 49       		.uleb128 0x49
- 901 00ac 13       		.uleb128 0x13
- 902 00ad 20       		.uleb128 0x20
- 903 00ae 0B       		.uleb128 0xb
- 904 00af 01       		.uleb128 0x1
- 905 00b0 13       		.uleb128 0x13
- 906 00b1 00       		.byte	0
- 907 00b2 00       		.byte	0
- 908 00b3 10       		.uleb128 0x10
- 909 00b4 05       		.uleb128 0x5
- 910 00b5 00       		.byte	0
- 911 00b6 03       		.uleb128 0x3
- 912 00b7 0E       		.uleb128 0xe
- 913 00b8 3A       		.uleb128 0x3a
- 914 00b9 0B       		.uleb128 0xb
- 915 00ba 3B       		.uleb128 0x3b
- 916 00bb 05       		.uleb128 0x5
- 917 00bc 49       		.uleb128 0x49
- 918 00bd 13       		.uleb128 0x13
- 919 00be 00       		.byte	0
- 920 00bf 00       		.byte	0
- 921 00c0 11       		.uleb128 0x11
- 922 00c1 2E       		.uleb128 0x2e
- 923 00c2 00       		.byte	0
- 924 00c3 3F       		.uleb128 0x3f
- 925 00c4 19       		.uleb128 0x19
- 926 00c5 03       		.uleb128 0x3
- 927 00c6 0E       		.uleb128 0xe
- 928 00c7 3A       		.uleb128 0x3a
- 929 00c8 0B       		.uleb128 0xb
- 930 00c9 3B       		.uleb128 0x3b
- 931 00ca 0B       		.uleb128 0xb
- 932 00cb 27       		.uleb128 0x27
- 933 00cc 19       		.uleb128 0x19
- 934 00cd 11       		.uleb128 0x11
- 935 00ce 01       		.uleb128 0x1
- 936 00cf 12       		.uleb128 0x12
- 937 00d0 06       		.uleb128 0x6
- 938 00d1 40       		.uleb128 0x40
- 939 00d2 18       		.uleb128 0x18
- 940 00d3 9742     		.uleb128 0x2117
- 941 00d5 19       		.uleb128 0x19
- 942 00d6 00       		.byte	0
- 943 00d7 00       		.byte	0
- 944 00d8 12       		.uleb128 0x12
- 945 00d9 2E       		.uleb128 0x2e
- 946 00da 01       		.byte	0x1
- 947 00db 3F       		.uleb128 0x3f
- 948 00dc 19       		.uleb128 0x19
- 949 00dd 03       		.uleb128 0x3
- 950 00de 0E       		.uleb128 0xe
- 951 00df 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 34
+ 897 00bf 00       		.byte	0
+ 898 00c0 11       		.uleb128 0x11
+ 899 00c1 2E       		.uleb128 0x2e
+ 900 00c2 00       		.byte	0
+ 901 00c3 3F       		.uleb128 0x3f
+ 902 00c4 19       		.uleb128 0x19
+ 903 00c5 03       		.uleb128 0x3
+ 904 00c6 0E       		.uleb128 0xe
+ 905 00c7 3A       		.uleb128 0x3a
+ 906 00c8 0B       		.uleb128 0xb
+ 907 00c9 3B       		.uleb128 0x3b
+ 908 00ca 0B       		.uleb128 0xb
+ 909 00cb 27       		.uleb128 0x27
+ 910 00cc 19       		.uleb128 0x19
+ 911 00cd 11       		.uleb128 0x11
+ 912 00ce 01       		.uleb128 0x1
+ 913 00cf 12       		.uleb128 0x12
+ 914 00d0 06       		.uleb128 0x6
+ 915 00d1 40       		.uleb128 0x40
+ 916 00d2 18       		.uleb128 0x18
+ 917 00d3 9742     		.uleb128 0x2117
+ 918 00d5 19       		.uleb128 0x19
+ 919 00d6 00       		.byte	0
+ 920 00d7 00       		.byte	0
+ 921 00d8 12       		.uleb128 0x12
+ 922 00d9 2E       		.uleb128 0x2e
+ 923 00da 01       		.byte	0x1
+ 924 00db 3F       		.uleb128 0x3f
+ 925 00dc 19       		.uleb128 0x19
+ 926 00dd 03       		.uleb128 0x3
+ 927 00de 0E       		.uleb128 0xe
+ 928 00df 3A       		.uleb128 0x3a
+ 929 00e0 0B       		.uleb128 0xb
+ 930 00e1 3B       		.uleb128 0x3b
+ 931 00e2 0B       		.uleb128 0xb
+ 932 00e3 27       		.uleb128 0x27
+ 933 00e4 19       		.uleb128 0x19
+ 934 00e5 11       		.uleb128 0x11
+ 935 00e6 01       		.uleb128 0x1
+ 936 00e7 12       		.uleb128 0x12
+ 937 00e8 06       		.uleb128 0x6
+ 938 00e9 40       		.uleb128 0x40
+ 939 00ea 18       		.uleb128 0x18
+ 940 00eb 9742     		.uleb128 0x2117
+ 941 00ed 19       		.uleb128 0x19
+ 942 00ee 01       		.uleb128 0x1
+ 943 00ef 13       		.uleb128 0x13
+ 944 00f0 00       		.byte	0
+ 945 00f1 00       		.byte	0
+ 946 00f2 13       		.uleb128 0x13
+ 947 00f3 1D       		.uleb128 0x1d
+ 948 00f4 01       		.byte	0x1
+ 949 00f5 31       		.uleb128 0x31
+ 950 00f6 13       		.uleb128 0x13
+ 951 00f7 11       		.uleb128 0x11
+ 952 00f8 01       		.uleb128 0x1
+ 953 00f9 12       		.uleb128 0x12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 34
 
 
- 952 00e0 0B       		.uleb128 0xb
- 953 00e1 3B       		.uleb128 0x3b
- 954 00e2 0B       		.uleb128 0xb
- 955 00e3 27       		.uleb128 0x27
- 956 00e4 19       		.uleb128 0x19
- 957 00e5 11       		.uleb128 0x11
- 958 00e6 01       		.uleb128 0x1
- 959 00e7 12       		.uleb128 0x12
- 960 00e8 06       		.uleb128 0x6
- 961 00e9 40       		.uleb128 0x40
- 962 00ea 18       		.uleb128 0x18
- 963 00eb 9742     		.uleb128 0x2117
- 964 00ed 19       		.uleb128 0x19
- 965 00ee 01       		.uleb128 0x1
- 966 00ef 13       		.uleb128 0x13
- 967 00f0 00       		.byte	0
- 968 00f1 00       		.byte	0
- 969 00f2 13       		.uleb128 0x13
- 970 00f3 1D       		.uleb128 0x1d
- 971 00f4 01       		.byte	0x1
- 972 00f5 31       		.uleb128 0x31
- 973 00f6 13       		.uleb128 0x13
- 974 00f7 11       		.uleb128 0x11
- 975 00f8 01       		.uleb128 0x1
- 976 00f9 12       		.uleb128 0x12
- 977 00fa 06       		.uleb128 0x6
- 978 00fb 58       		.uleb128 0x58
- 979 00fc 0B       		.uleb128 0xb
- 980 00fd 59       		.uleb128 0x59
- 981 00fe 0B       		.uleb128 0xb
- 982 00ff 01       		.uleb128 0x1
- 983 0100 13       		.uleb128 0x13
- 984 0101 00       		.byte	0
- 985 0102 00       		.byte	0
- 986 0103 14       		.uleb128 0x14
- 987 0104 05       		.uleb128 0x5
- 988 0105 00       		.byte	0
- 989 0106 31       		.uleb128 0x31
- 990 0107 13       		.uleb128 0x13
- 991 0108 02       		.uleb128 0x2
- 992 0109 17       		.uleb128 0x17
- 993 010a 00       		.byte	0
- 994 010b 00       		.byte	0
- 995 010c 15       		.uleb128 0x15
- 996 010d 898201   		.uleb128 0x4109
- 997 0110 01       		.byte	0x1
- 998 0111 11       		.uleb128 0x11
- 999 0112 01       		.uleb128 0x1
- 1000 0113 31       		.uleb128 0x31
- 1001 0114 13       		.uleb128 0x13
- 1002 0115 00       		.byte	0
- 1003 0116 00       		.byte	0
- 1004 0117 16       		.uleb128 0x16
- 1005 0118 8A8201   		.uleb128 0x410a
- 1006 011b 00       		.byte	0
- 1007 011c 02       		.uleb128 0x2
- 1008 011d 18       		.uleb128 0x18
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 35
+ 954 00fa 06       		.uleb128 0x6
+ 955 00fb 58       		.uleb128 0x58
+ 956 00fc 0B       		.uleb128 0xb
+ 957 00fd 59       		.uleb128 0x59
+ 958 00fe 0B       		.uleb128 0xb
+ 959 00ff 01       		.uleb128 0x1
+ 960 0100 13       		.uleb128 0x13
+ 961 0101 00       		.byte	0
+ 962 0102 00       		.byte	0
+ 963 0103 14       		.uleb128 0x14
+ 964 0104 05       		.uleb128 0x5
+ 965 0105 00       		.byte	0
+ 966 0106 31       		.uleb128 0x31
+ 967 0107 13       		.uleb128 0x13
+ 968 0108 02       		.uleb128 0x2
+ 969 0109 17       		.uleb128 0x17
+ 970 010a 00       		.byte	0
+ 971 010b 00       		.byte	0
+ 972 010c 15       		.uleb128 0x15
+ 973 010d 898201   		.uleb128 0x4109
+ 974 0110 01       		.byte	0x1
+ 975 0111 11       		.uleb128 0x11
+ 976 0112 01       		.uleb128 0x1
+ 977 0113 31       		.uleb128 0x31
+ 978 0114 13       		.uleb128 0x13
+ 979 0115 00       		.byte	0
+ 980 0116 00       		.byte	0
+ 981 0117 16       		.uleb128 0x16
+ 982 0118 8A8201   		.uleb128 0x410a
+ 983 011b 00       		.byte	0
+ 984 011c 02       		.uleb128 0x2
+ 985 011d 18       		.uleb128 0x18
+ 986 011e 9142     		.uleb128 0x2111
+ 987 0120 18       		.uleb128 0x18
+ 988 0121 00       		.byte	0
+ 989 0122 00       		.byte	0
+ 990 0123 17       		.uleb128 0x17
+ 991 0124 898201   		.uleb128 0x4109
+ 992 0127 00       		.byte	0
+ 993 0128 11       		.uleb128 0x11
+ 994 0129 01       		.uleb128 0x1
+ 995 012a 31       		.uleb128 0x31
+ 996 012b 13       		.uleb128 0x13
+ 997 012c 00       		.byte	0
+ 998 012d 00       		.byte	0
+ 999 012e 18       		.uleb128 0x18
+ 1000 012f 898201   		.uleb128 0x4109
+ 1001 0132 01       		.byte	0x1
+ 1002 0133 11       		.uleb128 0x11
+ 1003 0134 01       		.uleb128 0x1
+ 1004 0135 31       		.uleb128 0x31
+ 1005 0136 13       		.uleb128 0x13
+ 1006 0137 01       		.uleb128 0x1
+ 1007 0138 13       		.uleb128 0x13
+ 1008 0139 00       		.byte	0
+ 1009 013a 00       		.byte	0
+ 1010 013b 19       		.uleb128 0x19
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 35
 
 
- 1009 011e 9142     		.uleb128 0x2111
- 1010 0120 18       		.uleb128 0x18
- 1011 0121 00       		.byte	0
- 1012 0122 00       		.byte	0
- 1013 0123 17       		.uleb128 0x17
- 1014 0124 898201   		.uleb128 0x4109
- 1015 0127 00       		.byte	0
- 1016 0128 11       		.uleb128 0x11
- 1017 0129 01       		.uleb128 0x1
- 1018 012a 31       		.uleb128 0x31
- 1019 012b 13       		.uleb128 0x13
- 1020 012c 00       		.byte	0
- 1021 012d 00       		.byte	0
- 1022 012e 18       		.uleb128 0x18
- 1023 012f 898201   		.uleb128 0x4109
- 1024 0132 01       		.byte	0x1
- 1025 0133 11       		.uleb128 0x11
- 1026 0134 01       		.uleb128 0x1
- 1027 0135 31       		.uleb128 0x31
- 1028 0136 13       		.uleb128 0x13
- 1029 0137 01       		.uleb128 0x1
- 1030 0138 13       		.uleb128 0x13
- 1031 0139 00       		.byte	0
- 1032 013a 00       		.byte	0
- 1033 013b 19       		.uleb128 0x19
- 1034 013c 2E       		.uleb128 0x2e
- 1035 013d 01       		.byte	0x1
- 1036 013e 3F       		.uleb128 0x3f
- 1037 013f 19       		.uleb128 0x19
- 1038 0140 03       		.uleb128 0x3
- 1039 0141 0E       		.uleb128 0xe
- 1040 0142 3A       		.uleb128 0x3a
- 1041 0143 0B       		.uleb128 0xb
- 1042 0144 3B       		.uleb128 0x3b
- 1043 0145 0B       		.uleb128 0xb
- 1044 0146 27       		.uleb128 0x27
- 1045 0147 19       		.uleb128 0x19
- 1046 0148 11       		.uleb128 0x11
- 1047 0149 01       		.uleb128 0x1
- 1048 014a 12       		.uleb128 0x12
- 1049 014b 06       		.uleb128 0x6
- 1050 014c 40       		.uleb128 0x40
- 1051 014d 18       		.uleb128 0x18
- 1052 014e 9642     		.uleb128 0x2116
- 1053 0150 19       		.uleb128 0x19
- 1054 0151 01       		.uleb128 0x1
- 1055 0152 13       		.uleb128 0x13
- 1056 0153 00       		.byte	0
- 1057 0154 00       		.byte	0
- 1058 0155 1A       		.uleb128 0x1a
- 1059 0156 34       		.uleb128 0x34
- 1060 0157 00       		.byte	0
- 1061 0158 03       		.uleb128 0x3
- 1062 0159 0E       		.uleb128 0xe
- 1063 015a 3A       		.uleb128 0x3a
- 1064 015b 0B       		.uleb128 0xb
- 1065 015c 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 36
+ 1011 013c 2E       		.uleb128 0x2e
+ 1012 013d 01       		.byte	0x1
+ 1013 013e 3F       		.uleb128 0x3f
+ 1014 013f 19       		.uleb128 0x19
+ 1015 0140 03       		.uleb128 0x3
+ 1016 0141 0E       		.uleb128 0xe
+ 1017 0142 3A       		.uleb128 0x3a
+ 1018 0143 0B       		.uleb128 0xb
+ 1019 0144 3B       		.uleb128 0x3b
+ 1020 0145 0B       		.uleb128 0xb
+ 1021 0146 27       		.uleb128 0x27
+ 1022 0147 19       		.uleb128 0x19
+ 1023 0148 11       		.uleb128 0x11
+ 1024 0149 01       		.uleb128 0x1
+ 1025 014a 12       		.uleb128 0x12
+ 1026 014b 06       		.uleb128 0x6
+ 1027 014c 40       		.uleb128 0x40
+ 1028 014d 18       		.uleb128 0x18
+ 1029 014e 9642     		.uleb128 0x2116
+ 1030 0150 19       		.uleb128 0x19
+ 1031 0151 01       		.uleb128 0x1
+ 1032 0152 13       		.uleb128 0x13
+ 1033 0153 00       		.byte	0
+ 1034 0154 00       		.byte	0
+ 1035 0155 1A       		.uleb128 0x1a
+ 1036 0156 34       		.uleb128 0x34
+ 1037 0157 00       		.byte	0
+ 1038 0158 03       		.uleb128 0x3
+ 1039 0159 0E       		.uleb128 0xe
+ 1040 015a 3A       		.uleb128 0x3a
+ 1041 015b 0B       		.uleb128 0xb
+ 1042 015c 3B       		.uleb128 0x3b
+ 1043 015d 0B       		.uleb128 0xb
+ 1044 015e 49       		.uleb128 0x49
+ 1045 015f 13       		.uleb128 0x13
+ 1046 0160 02       		.uleb128 0x2
+ 1047 0161 18       		.uleb128 0x18
+ 1048 0162 00       		.byte	0
+ 1049 0163 00       		.byte	0
+ 1050 0164 1B       		.uleb128 0x1b
+ 1051 0165 34       		.uleb128 0x34
+ 1052 0166 00       		.byte	0
+ 1053 0167 03       		.uleb128 0x3
+ 1054 0168 0E       		.uleb128 0xe
+ 1055 0169 3A       		.uleb128 0x3a
+ 1056 016a 0B       		.uleb128 0xb
+ 1057 016b 3B       		.uleb128 0x3b
+ 1058 016c 0B       		.uleb128 0xb
+ 1059 016d 49       		.uleb128 0x49
+ 1060 016e 13       		.uleb128 0x13
+ 1061 016f 00       		.byte	0
+ 1062 0170 00       		.byte	0
+ 1063 0171 1C       		.uleb128 0x1c
+ 1064 0172 34       		.uleb128 0x34
+ 1065 0173 00       		.byte	0
+ 1066 0174 03       		.uleb128 0x3
+ 1067 0175 08       		.uleb128 0x8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 36
 
 
- 1066 015d 0B       		.uleb128 0xb
- 1067 015e 49       		.uleb128 0x49
- 1068 015f 13       		.uleb128 0x13
- 1069 0160 02       		.uleb128 0x2
- 1070 0161 18       		.uleb128 0x18
- 1071 0162 00       		.byte	0
- 1072 0163 00       		.byte	0
- 1073 0164 1B       		.uleb128 0x1b
- 1074 0165 34       		.uleb128 0x34
- 1075 0166 00       		.byte	0
- 1076 0167 03       		.uleb128 0x3
- 1077 0168 0E       		.uleb128 0xe
- 1078 0169 3A       		.uleb128 0x3a
- 1079 016a 0B       		.uleb128 0xb
- 1080 016b 3B       		.uleb128 0x3b
- 1081 016c 0B       		.uleb128 0xb
- 1082 016d 49       		.uleb128 0x49
- 1083 016e 13       		.uleb128 0x13
- 1084 016f 00       		.byte	0
- 1085 0170 00       		.byte	0
- 1086 0171 1C       		.uleb128 0x1c
- 1087 0172 34       		.uleb128 0x34
- 1088 0173 00       		.byte	0
- 1089 0174 03       		.uleb128 0x3
- 1090 0175 08       		.uleb128 0x8
- 1091 0176 3A       		.uleb128 0x3a
- 1092 0177 0B       		.uleb128 0xb
- 1093 0178 3B       		.uleb128 0x3b
- 1094 0179 0B       		.uleb128 0xb
- 1095 017a 49       		.uleb128 0x49
- 1096 017b 13       		.uleb128 0x13
- 1097 017c 02       		.uleb128 0x2
- 1098 017d 17       		.uleb128 0x17
- 1099 017e 00       		.byte	0
- 1100 017f 00       		.byte	0
- 1101 0180 1D       		.uleb128 0x1d
- 1102 0181 34       		.uleb128 0x34
- 1103 0182 00       		.byte	0
- 1104 0183 03       		.uleb128 0x3
- 1105 0184 0E       		.uleb128 0xe
- 1106 0185 3A       		.uleb128 0x3a
- 1107 0186 0B       		.uleb128 0xb
- 1108 0187 3B       		.uleb128 0x3b
- 1109 0188 0B       		.uleb128 0xb
- 1110 0189 49       		.uleb128 0x49
- 1111 018a 13       		.uleb128 0x13
- 1112 018b 3F       		.uleb128 0x3f
- 1113 018c 19       		.uleb128 0x19
- 1114 018d 3C       		.uleb128 0x3c
- 1115 018e 19       		.uleb128 0x19
- 1116 018f 00       		.byte	0
- 1117 0190 00       		.byte	0
- 1118 0191 1E       		.uleb128 0x1e
- 1119 0192 21       		.uleb128 0x21
- 1120 0193 00       		.byte	0
- 1121 0194 00       		.byte	0
- 1122 0195 00       		.byte	0
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 37
+ 1068 0176 3A       		.uleb128 0x3a
+ 1069 0177 0B       		.uleb128 0xb
+ 1070 0178 3B       		.uleb128 0x3b
+ 1071 0179 0B       		.uleb128 0xb
+ 1072 017a 49       		.uleb128 0x49
+ 1073 017b 13       		.uleb128 0x13
+ 1074 017c 02       		.uleb128 0x2
+ 1075 017d 17       		.uleb128 0x17
+ 1076 017e 00       		.byte	0
+ 1077 017f 00       		.byte	0
+ 1078 0180 1D       		.uleb128 0x1d
+ 1079 0181 34       		.uleb128 0x34
+ 1080 0182 00       		.byte	0
+ 1081 0183 03       		.uleb128 0x3
+ 1082 0184 0E       		.uleb128 0xe
+ 1083 0185 3A       		.uleb128 0x3a
+ 1084 0186 0B       		.uleb128 0xb
+ 1085 0187 3B       		.uleb128 0x3b
+ 1086 0188 0B       		.uleb128 0xb
+ 1087 0189 49       		.uleb128 0x49
+ 1088 018a 13       		.uleb128 0x13
+ 1089 018b 3F       		.uleb128 0x3f
+ 1090 018c 19       		.uleb128 0x19
+ 1091 018d 3C       		.uleb128 0x3c
+ 1092 018e 19       		.uleb128 0x19
+ 1093 018f 00       		.byte	0
+ 1094 0190 00       		.byte	0
+ 1095 0191 1E       		.uleb128 0x1e
+ 1096 0192 21       		.uleb128 0x21
+ 1097 0193 00       		.byte	0
+ 1098 0194 00       		.byte	0
+ 1099 0195 00       		.byte	0
+ 1100 0196 1F       		.uleb128 0x1f
+ 1101 0197 34       		.uleb128 0x34
+ 1102 0198 00       		.byte	0
+ 1103 0199 03       		.uleb128 0x3
+ 1104 019a 0E       		.uleb128 0xe
+ 1105 019b 3A       		.uleb128 0x3a
+ 1106 019c 0B       		.uleb128 0xb
+ 1107 019d 3B       		.uleb128 0x3b
+ 1108 019e 0B       		.uleb128 0xb
+ 1109 019f 49       		.uleb128 0x49
+ 1110 01a0 13       		.uleb128 0x13
+ 1111 01a1 3F       		.uleb128 0x3f
+ 1112 01a2 19       		.uleb128 0x19
+ 1113 01a3 02       		.uleb128 0x2
+ 1114 01a4 18       		.uleb128 0x18
+ 1115 01a5 00       		.byte	0
+ 1116 01a6 00       		.byte	0
+ 1117 01a7 20       		.uleb128 0x20
+ 1118 01a8 2E       		.uleb128 0x2e
+ 1119 01a9 00       		.byte	0
+ 1120 01aa 3F       		.uleb128 0x3f
+ 1121 01ab 19       		.uleb128 0x19
+ 1122 01ac 3C       		.uleb128 0x3c
+ 1123 01ad 19       		.uleb128 0x19
+ 1124 01ae 6E       		.uleb128 0x6e
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 37
 
 
- 1123 0196 1F       		.uleb128 0x1f
- 1124 0197 34       		.uleb128 0x34
- 1125 0198 00       		.byte	0
- 1126 0199 03       		.uleb128 0x3
- 1127 019a 0E       		.uleb128 0xe
- 1128 019b 3A       		.uleb128 0x3a
- 1129 019c 0B       		.uleb128 0xb
- 1130 019d 3B       		.uleb128 0x3b
- 1131 019e 0B       		.uleb128 0xb
- 1132 019f 49       		.uleb128 0x49
- 1133 01a0 13       		.uleb128 0x13
- 1134 01a1 3F       		.uleb128 0x3f
- 1135 01a2 19       		.uleb128 0x19
- 1136 01a3 02       		.uleb128 0x2
- 1137 01a4 18       		.uleb128 0x18
- 1138 01a5 00       		.byte	0
- 1139 01a6 00       		.byte	0
- 1140 01a7 20       		.uleb128 0x20
- 1141 01a8 2E       		.uleb128 0x2e
- 1142 01a9 00       		.byte	0
- 1143 01aa 3F       		.uleb128 0x3f
- 1144 01ab 19       		.uleb128 0x19
- 1145 01ac 3C       		.uleb128 0x3c
- 1146 01ad 19       		.uleb128 0x19
- 1147 01ae 6E       		.uleb128 0x6e
- 1148 01af 0E       		.uleb128 0xe
- 1149 01b0 03       		.uleb128 0x3
- 1150 01b1 0E       		.uleb128 0xe
- 1151 01b2 3A       		.uleb128 0x3a
- 1152 01b3 0B       		.uleb128 0xb
- 1153 01b4 3B       		.uleb128 0x3b
- 1154 01b5 0B       		.uleb128 0xb
- 1155 01b6 00       		.byte	0
- 1156 01b7 00       		.byte	0
- 1157 01b8 21       		.uleb128 0x21
- 1158 01b9 2E       		.uleb128 0x2e
- 1159 01ba 00       		.byte	0
- 1160 01bb 3F       		.uleb128 0x3f
- 1161 01bc 19       		.uleb128 0x19
- 1162 01bd 3C       		.uleb128 0x3c
- 1163 01be 19       		.uleb128 0x19
- 1164 01bf 6E       		.uleb128 0x6e
- 1165 01c0 0E       		.uleb128 0xe
- 1166 01c1 03       		.uleb128 0x3
- 1167 01c2 0E       		.uleb128 0xe
- 1168 01c3 3A       		.uleb128 0x3a
- 1169 01c4 0B       		.uleb128 0xb
- 1170 01c5 3B       		.uleb128 0x3b
- 1171 01c6 05       		.uleb128 0x5
- 1172 01c7 00       		.byte	0
- 1173 01c8 00       		.byte	0
- 1174 01c9 00       		.byte	0
- 1175              		.section	.debug_loc,"",%progbits
- 1176              	.Ldebug_loc0:
- 1177              	.LLST0:
- 1178 0000 0E000000 		.4byte	.LVL1
- 1179 0004 16000000 		.4byte	.LVL2
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 38
+ 1125 01af 0E       		.uleb128 0xe
+ 1126 01b0 03       		.uleb128 0x3
+ 1127 01b1 0E       		.uleb128 0xe
+ 1128 01b2 3A       		.uleb128 0x3a
+ 1129 01b3 0B       		.uleb128 0xb
+ 1130 01b4 3B       		.uleb128 0x3b
+ 1131 01b5 0B       		.uleb128 0xb
+ 1132 01b6 00       		.byte	0
+ 1133 01b7 00       		.byte	0
+ 1134 01b8 21       		.uleb128 0x21
+ 1135 01b9 2E       		.uleb128 0x2e
+ 1136 01ba 00       		.byte	0
+ 1137 01bb 3F       		.uleb128 0x3f
+ 1138 01bc 19       		.uleb128 0x19
+ 1139 01bd 3C       		.uleb128 0x3c
+ 1140 01be 19       		.uleb128 0x19
+ 1141 01bf 6E       		.uleb128 0x6e
+ 1142 01c0 0E       		.uleb128 0xe
+ 1143 01c1 03       		.uleb128 0x3
+ 1144 01c2 0E       		.uleb128 0xe
+ 1145 01c3 3A       		.uleb128 0x3a
+ 1146 01c4 0B       		.uleb128 0xb
+ 1147 01c5 3B       		.uleb128 0x3b
+ 1148 01c6 05       		.uleb128 0x5
+ 1149 01c7 00       		.byte	0
+ 1150 01c8 00       		.byte	0
+ 1151 01c9 00       		.byte	0
+ 1152              		.section	.debug_loc,"",%progbits
+ 1153              	.Ldebug_loc0:
+ 1154              	.LLST0:
+ 1155 0000 0E000000 		.4byte	.LVL1
+ 1156 0004 16000000 		.4byte	.LVL2
+ 1157 0008 0600     		.2byte	0x6
+ 1158 000a 03       		.byte	0x3
+ 1159 000b 00000000 		.4byte	DmaIntHandler
+ 1160 000f 9F       		.byte	0x9f
+ 1161 0010 00000000 		.4byte	0
+ 1162 0014 00000000 		.4byte	0
+ 1163              	.LLST1:
+ 1164 0018 04000000 		.4byte	.LVL4
+ 1165 001c 08000000 		.4byte	.LVL5
+ 1166 0020 0200     		.2byte	0x2
+ 1167 0022 30       		.byte	0x30
+ 1168 0023 9F       		.byte	0x9f
+ 1169 0024 08000000 		.4byte	.LVL5
+ 1170 0028 8A000000 		.4byte	.LVL13
+ 1171 002c 0100     		.2byte	0x1
+ 1172 002e 54       		.byte	0x54
+ 1173 002f 00000000 		.4byte	0
+ 1174 0033 00000000 		.4byte	0
+ 1175              		.section	.debug_aranges,"",%progbits
+ 1176 0000 2C000000 		.4byte	0x2c
+ 1177 0004 0200     		.2byte	0x2
+ 1178 0006 00000000 		.4byte	.Ldebug_info0
+ 1179 000a 04       		.byte	0x4
+ 1180 000b 00       		.byte	0
+ 1181 000c 0000     		.2byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 38
 
 
- 1180 0008 0600     		.2byte	0x6
- 1181 000a 03       		.byte	0x3
- 1182 000b 00000000 		.4byte	DmaIntHandler
- 1183 000f 9F       		.byte	0x9f
- 1184 0010 00000000 		.4byte	0
- 1185 0014 00000000 		.4byte	0
- 1186              	.LLST1:
- 1187 0018 04000000 		.4byte	.LVL4
- 1188 001c 08000000 		.4byte	.LVL5
- 1189 0020 0200     		.2byte	0x2
- 1190 0022 30       		.byte	0x30
- 1191 0023 9F       		.byte	0x9f
- 1192 0024 08000000 		.4byte	.LVL5
- 1193 0028 92000000 		.4byte	.LVL14
- 1194 002c 0100     		.2byte	0x1
- 1195 002e 54       		.byte	0x54
- 1196 002f 00000000 		.4byte	0
- 1197 0033 00000000 		.4byte	0
- 1198              		.section	.debug_aranges,"",%progbits
- 1199 0000 2C000000 		.4byte	0x2c
- 1200 0004 0200     		.2byte	0x2
- 1201 0006 00000000 		.4byte	.Ldebug_info0
- 1202 000a 04       		.byte	0x4
- 1203 000b 00       		.byte	0
- 1204 000c 0000     		.2byte	0
- 1205 000e 0000     		.2byte	0
- 1206 0010 00000000 		.4byte	.LFB34
- 1207 0014 02000000 		.4byte	.LFE34-.LFB34
- 1208 0018 00000000 		.4byte	.LFB35
- 1209 001c 28000000 		.4byte	.LFE35-.LFB35
- 1210 0020 00000000 		.4byte	.LFB36
- 1211 0024 B0000000 		.4byte	.LFE36-.LFB36
- 1212 0028 00000000 		.4byte	0
- 1213 002c 00000000 		.4byte	0
- 1214              		.section	.debug_ranges,"",%progbits
- 1215              	.Ldebug_ranges0:
- 1216 0000 00000000 		.4byte	.LFB34
- 1217 0004 02000000 		.4byte	.LFE34
- 1218 0008 00000000 		.4byte	.LFB35
- 1219 000c 28000000 		.4byte	.LFE35
- 1220 0010 00000000 		.4byte	.LFB36
- 1221 0014 B0000000 		.4byte	.LFE36
- 1222 0018 00000000 		.4byte	0
- 1223 001c 00000000 		.4byte	0
- 1224              		.section	.debug_line,"",%progbits
- 1225              	.Ldebug_line0:
- 1226 0000 C7010000 		.section	.debug_str,"MS",%progbits,1
- 1226      02004D01 
- 1226      00000201 
- 1226      FB0E0D00 
- 1226      01010101 
- 1227              	.LASF16:
- 1228 0000 72656733 		.ascii	"reg32\000"
- 1228      3200
- 1229              	.LASF49:
- 1230 0006 566F6C75 		.ascii	"VolumeControl.c\000"
- 1230      6D65436F 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 39
+ 1182 000e 0000     		.2byte	0
+ 1183 0010 00000000 		.4byte	.LFB34
+ 1184 0014 02000000 		.4byte	.LFE34-.LFB34
+ 1185 0018 00000000 		.4byte	.LFB35
+ 1186 001c 28000000 		.4byte	.LFE35-.LFB35
+ 1187 0020 00000000 		.4byte	.LFB36
+ 1188 0024 A8000000 		.4byte	.LFE36-.LFB36
+ 1189 0028 00000000 		.4byte	0
+ 1190 002c 00000000 		.4byte	0
+ 1191              		.section	.debug_ranges,"",%progbits
+ 1192              	.Ldebug_ranges0:
+ 1193 0000 00000000 		.4byte	.LFB34
+ 1194 0004 02000000 		.4byte	.LFE34
+ 1195 0008 00000000 		.4byte	.LFB35
+ 1196 000c 28000000 		.4byte	.LFE35
+ 1197 0010 00000000 		.4byte	.LFB36
+ 1198 0014 A8000000 		.4byte	.LFE36
+ 1199 0018 00000000 		.4byte	0
+ 1200 001c 00000000 		.4byte	0
+ 1201              		.section	.debug_line,"",%progbits
+ 1202              	.Ldebug_line0:
+ 1203 0000 B7010000 		.section	.debug_str,"MS",%progbits,1
+ 1203      02003E01 
+ 1203      00000201 
+ 1203      FB0E0D00 
+ 1203      01010101 
+ 1204              	.LASF16:
+ 1205 0000 72656733 		.ascii	"reg32\000"
+ 1205      3200
+ 1206              	.LASF48:
+ 1207 0006 566F6C75 		.ascii	"VolumeControl.c\000"
+ 1207      6D65436F 
+ 1207      6E74726F 
+ 1207      6C2E6300 
+ 1208              	.LASF19:
+ 1209 0016 7369676E 		.ascii	"signature\000"
+ 1209      61747572 
+ 1209      6500
+ 1210              	.LASF23:
+ 1211 0020 6C65645F 		.ascii	"led_max_brightness\000"
+ 1211      6D61785F 
+ 1211      62726967 
+ 1211      68746E65 
+ 1211      737300
+ 1212              	.LASF3:
+ 1213 0033 73686F72 		.ascii	"short unsigned int\000"
+ 1213      7420756E 
+ 1213      7369676E 
+ 1213      65642069 
+ 1213      6E7400
+ 1214              	.LASF45:
+ 1215 0046 55534255 		.ascii	"USBUART_PutString\000"
+ 1215      4152545F 
+ 1215      50757453 
+ 1215      7472696E 
+ 1215      6700
+ 1216              	.LASF14:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 39
 
 
- 1230      6E74726F 
- 1230      6C2E6300 
- 1231              	.LASF19:
- 1232 0016 7369676E 		.ascii	"signature\000"
- 1232      61747572 
- 1232      6500
- 1233              	.LASF23:
- 1234 0020 6C65645F 		.ascii	"led_max_brightness\000"
- 1234      6D61785F 
- 1234      62726967 
- 1234      68746E65 
- 1234      737300
- 1235              	.LASF3:
- 1236 0033 73686F72 		.ascii	"short unsigned int\000"
- 1236      7420756E 
- 1236      7369676E 
- 1236      65642069 
- 1236      6E7400
- 1237              	.LASF45:
- 1238 0046 55534255 		.ascii	"USBUART_PutString\000"
- 1238      4152545F 
- 1238      50757453 
- 1238      7472696E 
- 1238      6700
- 1239              	.LASF14:
- 1240 0058 646F7562 		.ascii	"double\000"
- 1240      6C6500
- 1241              	.LASF9:
- 1242 005f 75696E74 		.ascii	"uint8\000"
- 1242      3800
- 1243              	.LASF42:
- 1244 0065 55534255 		.ascii	"USBUART_GetConfiguration\000"
- 1244      4152545F 
- 1244      47657443 
- 1244      6F6E6669 
- 1244      67757261 
- 1245              	.LASF38:
- 1246 007e 4379446D 		.ascii	"CyDmaSetInterruptCallback\000"
- 1246      61536574 
- 1246      496E7465 
- 1246      72727570 
- 1246      7443616C 
- 1247              	.LASF53:
- 1248 0098 446D6149 		.ascii	"DmaIntHandler\000"
- 1248      6E744861 
- 1248      6E646C65 
- 1248      7200
- 1249              	.LASF13:
- 1250 00a6 666C6F61 		.ascii	"float\000"
- 1250      7400
- 1251              	.LASF54:
- 1252 00ac 766F6C75 		.ascii	"volume\000"
- 1252      6D6500
- 1253              	.LASF1:
- 1254 00b3 756E7369 		.ascii	"unsigned char\000"
- 1254      676E6564 
- 1254      20636861 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 40
+ 1217 0058 646F7562 		.ascii	"double\000"
+ 1217      6C6500
+ 1218              	.LASF42:
+ 1219 005f 55534255 		.ascii	"USBUART_GetConfiguration\000"
+ 1219      4152545F 
+ 1219      47657443 
+ 1219      6F6E6669 
+ 1219      67757261 
+ 1220              	.LASF38:
+ 1221 0078 4379446D 		.ascii	"CyDmaSetInterruptCallback\000"
+ 1221      61536574 
+ 1221      496E7465 
+ 1221      72727570 
+ 1221      7443616C 
+ 1222              	.LASF52:
+ 1223 0092 446D6149 		.ascii	"DmaIntHandler\000"
+ 1223      6E744861 
+ 1223      6E646C65 
+ 1223      7200
+ 1224              	.LASF13:
+ 1225 00a0 666C6F61 		.ascii	"float\000"
+ 1225      7400
+ 1226              	.LASF53:
+ 1227 00a6 766F6C75 		.ascii	"volume\000"
+ 1227      6D6500
+ 1228              	.LASF9:
+ 1229 00ad 75696E74 		.ascii	"uint8\000"
+ 1229      3800
+ 1230              	.LASF1:
+ 1231 00b3 756E7369 		.ascii	"unsigned char\000"
+ 1231      676E6564 
+ 1231      20636861 
+ 1231      7200
+ 1232              	.LASF50:
+ 1233 00c1 444D415F 		.ascii	"DMA_SetInterruptCallback\000"
+ 1233      53657449 
+ 1233      6E746572 
+ 1233      72757074 
+ 1233      43616C6C 
+ 1234              	.LASF46:
+ 1235 00da 436F6465 		.ascii	"Codec_AdjustBothHeadphoneVolumeLevel\000"
+ 1235      635F4164 
+ 1235      6A757374 
+ 1235      426F7468 
+ 1235      48656164 
+ 1236              	.LASF11:
+ 1237 00ff 696E7431 		.ascii	"int16\000"
+ 1237      3600
+ 1238              	.LASF49:
+ 1239 0105 433A5C64 		.ascii	"C:\\dev\\git\\icebreaker\\Icebreaker.cydsn\000"
+ 1239      65765C67 
+ 1239      69745C69 
+ 1239      63656272 
+ 1239      65616B65 
+ 1240              	.LASF12:
+ 1241 012c 696E7433 		.ascii	"int32\000"
+ 1241      3200
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 40
 
 
- 1254      7200
- 1255              	.LASF51:
- 1256 00c1 444D415F 		.ascii	"DMA_SetInterruptCallback\000"
- 1256      53657449 
- 1256      6E746572 
- 1256      72757074 
- 1256      43616C6C 
- 1257              	.LASF46:
- 1258 00da 436F6465 		.ascii	"Codec_AdjustBothHeadphoneVolumeLevel\000"
- 1258      635F4164 
- 1258      6A757374 
- 1258      426F7468 
- 1258      48656164 
- 1259              	.LASF11:
- 1260 00ff 696E7431 		.ascii	"int16\000"
- 1260      3600
- 1261              	.LASF50:
- 1262 0105 433A5C64 		.ascii	"C:\\dev\\git\\icebreaker\\Icebreaker.cydsn\000"
- 1262      65765C67 
- 1262      69745C69 
- 1262      63656272 
- 1262      65616B65 
- 1263              	.LASF12:
- 1264 012c 696E7433 		.ascii	"int32\000"
- 1264      3200
- 1265              	.LASF52:
- 1266 0132 63616C6C 		.ascii	"callback\000"
- 1266      6261636B 
- 1266      00
- 1267              	.LASF20:
- 1268 013b 636F756E 		.ascii	"counter\000"
- 1268      74657200 
- 1269              	.LASF28:
- 1270 0143 766F6C5F 		.ascii	"vol_ctrl_both\000"
- 1270      6374726C 
- 1270      5F626F74 
- 1270      6800
- 1271              	.LASF24:
- 1272 0151 64656275 		.ascii	"debug_mask\000"
- 1272      675F6D61 
- 1272      736B00
- 1273              	.LASF2:
- 1274 015c 73686F72 		.ascii	"short int\000"
- 1274      7420696E 
- 1274      7400
- 1275              	.LASF37:
- 1276 0166 4144435F 		.ascii	"ADC_MAX_READING\000"
- 1276      4D41585F 
- 1276      52454144 
- 1276      494E4700 
- 1277              	.LASF33:
- 1278 0176 63616C5F 		.ascii	"cal_data\000"
- 1278      64617461 
- 1278      00
- 1279              	.LASF10:
- 1280 017f 75696E74 		.ascii	"uint32\000"
- 1280      333200
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 41
+ 1242              	.LASF51:
+ 1243 0132 63616C6C 		.ascii	"callback\000"
+ 1243      6261636B 
+ 1243      00
+ 1244              	.LASF20:
+ 1245 013b 636F756E 		.ascii	"counter\000"
+ 1245      74657200 
+ 1246              	.LASF28:
+ 1247 0143 766F6C5F 		.ascii	"vol_ctrl_both\000"
+ 1247      6374726C 
+ 1247      5F626F74 
+ 1247      6800
+ 1248              	.LASF24:
+ 1249 0151 64656275 		.ascii	"debug_mask\000"
+ 1249      675F6D61 
+ 1249      736B00
+ 1250              	.LASF2:
+ 1251 015c 73686F72 		.ascii	"short int\000"
+ 1251      7420696E 
+ 1251      7400
+ 1252              	.LASF37:
+ 1253 0166 4144435F 		.ascii	"ADC_MAX_READING\000"
+ 1253      4D41585F 
+ 1253      52454144 
+ 1253      494E4700 
+ 1254              	.LASF33:
+ 1255 0176 63616C5F 		.ascii	"cal_data\000"
+ 1255      64617461 
+ 1255      00
+ 1256              	.LASF10:
+ 1257 017f 75696E74 		.ascii	"uint32\000"
+ 1257      333200
+ 1258              	.LASF27:
+ 1259 0186 766F6C5F 		.ascii	"vol_ctrl_left\000"
+ 1259      6374726C 
+ 1259      5F6C6566 
+ 1259      7400
+ 1260              	.LASF5:
+ 1261 0194 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1261      20756E73 
+ 1261      69676E65 
+ 1261      6420696E 
+ 1261      7400
+ 1262              	.LASF8:
+ 1263 01a6 756E7369 		.ascii	"unsigned int\000"
+ 1263      676E6564 
+ 1263      20696E74 
+ 1263      00
+ 1264              	.LASF7:
+ 1265 01b3 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1265      206C6F6E 
+ 1265      6720756E 
+ 1265      7369676E 
+ 1265      65642069 
+ 1266              	.LASF22:
+ 1267 01ca 6164635F 		.ascii	"adc_max\000"
+ 1267      6D617800 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 41
 
 
- 1281              	.LASF27:
- 1282 0186 766F6C5F 		.ascii	"vol_ctrl_left\000"
- 1282      6374726C 
- 1282      5F6C6566 
- 1282      7400
- 1283              	.LASF5:
- 1284 0194 6C6F6E67 		.ascii	"long unsigned int\000"
- 1284      20756E73 
- 1284      69676E65 
- 1284      6420696E 
- 1284      7400
- 1285              	.LASF8:
- 1286 01a6 756E7369 		.ascii	"unsigned int\000"
- 1286      676E6564 
- 1286      20696E74 
- 1286      00
- 1287              	.LASF7:
- 1288 01b3 6C6F6E67 		.ascii	"long long unsigned int\000"
- 1288      206C6F6E 
- 1288      6720756E 
- 1288      7369676E 
- 1288      65642069 
- 1289              	.LASF22:
- 1290 01ca 6164635F 		.ascii	"adc_max\000"
- 1290      6D617800 
- 1291              	.LASF43:
- 1292 01d2 55534255 		.ascii	"USBUART_CDCIsReady\000"
- 1292      4152545F 
- 1292      43444349 
- 1292      73526561 
- 1292      647900
- 1293              	.LASF39:
- 1294 01e5 4144435F 		.ascii	"ADC_Start\000"
- 1294      53746172 
- 1294      7400
- 1295              	.LASF29:
- 1296 01ef 6379646D 		.ascii	"cydma_callback_t\000"
- 1296      615F6361 
- 1296      6C6C6261 
- 1296      636B5F74 
- 1296      00
- 1297              	.LASF48:
- 1298 0200 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
- 1298      43313120 
- 1298      352E342E 
- 1298      31203230 
- 1298      31363036 
- 1299 0233 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
- 1299      20726576 
- 1299      6973696F 
- 1299      6E203233 
- 1299      37373135 
- 1300 0266 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 1300      66756E63 
- 1300      74696F6E 
- 1300      2D736563 
- 1300      74696F6E 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 42
+ 1268              	.LASF43:
+ 1269 01d2 55534255 		.ascii	"USBUART_CDCIsReady\000"
+ 1269      4152545F 
+ 1269      43444349 
+ 1269      73526561 
+ 1269      647900
+ 1270              	.LASF39:
+ 1271 01e5 4144435F 		.ascii	"ADC_Start\000"
+ 1271      53746172 
+ 1271      7400
+ 1272              	.LASF29:
+ 1273 01ef 6379646D 		.ascii	"cydma_callback_t\000"
+ 1273      615F6361 
+ 1273      6C6C6261 
+ 1273      636B5F74 
+ 1273      00
+ 1274              	.LASF47:
+ 1275 0200 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1275      43313120 
+ 1275      352E342E 
+ 1275      31203230 
+ 1275      31363036 
+ 1276 0233 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1276      20726576 
+ 1276      6973696F 
+ 1276      6E203233 
+ 1276      37373135 
+ 1277 0266 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1277      66756E63 
+ 1277      74696F6E 
+ 1277      2D736563 
+ 1277      74696F6E 
+ 1278              	.LASF17:
+ 1279 028e 6C6F6E67 		.ascii	"long double\000"
+ 1279      20646F75 
+ 1279      626C6500 
+ 1280              	.LASF18:
+ 1281 029a 73697A65 		.ascii	"sizetype\000"
+ 1281      74797065 
+ 1281      00
+ 1282              	.LASF6:
+ 1283 02a3 6C6F6E67 		.ascii	"long long int\000"
+ 1283      206C6F6E 
+ 1283      6720696E 
+ 1283      7400
+ 1284              	.LASF15:
+ 1285 02b1 63686172 		.ascii	"char\000"
+ 1285      00
+ 1286              	.LASF21:
+ 1287 02b6 6164635F 		.ascii	"adc_min\000"
+ 1287      6D696E00 
+ 1288              	.LASF36:
+ 1289 02be 4144435F 		.ascii	"ADC_MIN_READING\000"
+ 1289      4D494E5F 
+ 1289      52454144 
+ 1289      494E4700 
+ 1290              	.LASF35:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccH5X5kD.s 			page 42
 
 
- 1301              	.LASF17:
- 1302 028e 6C6F6E67 		.ascii	"long double\000"
- 1302      20646F75 
- 1302      626C6500 
- 1303              	.LASF18:
- 1304 029a 73697A65 		.ascii	"sizetype\000"
- 1304      74797065 
- 1304      00
- 1305              	.LASF6:
- 1306 02a3 6C6F6E67 		.ascii	"long long int\000"
- 1306      206C6F6E 
- 1306      6720696E 
- 1306      7400
- 1307              	.LASF15:
- 1308 02b1 63686172 		.ascii	"char\000"
- 1308      00
- 1309              	.LASF21:
- 1310 02b6 6164635F 		.ascii	"adc_min\000"
- 1310      6D696E00 
- 1311              	.LASF36:
- 1312 02be 4144435F 		.ascii	"ADC_MIN_READING\000"
- 1312      4D494E5F 
- 1312      52454144 
- 1312      494E4700 
- 1313              	.LASF47:
- 1314 02ce 70636D31 		.ascii	"pcm1770_volume_set_level\000"
- 1314      3737305F 
- 1314      766F6C75 
- 1314      6D655F73 
- 1314      65745F6C 
- 1315              	.LASF35:
- 1316 02e7 61646353 		.ascii	"adcSample\000"
- 1316      616D706C 
- 1316      6500
- 1317              	.LASF26:
- 1318 02f1 766F6C5F 		.ascii	"vol_ctrl_right\000"
- 1318      6374726C 
- 1318      5F726967 
- 1318      687400
- 1319              	.LASF30:
- 1320 0300 566F6C75 		.ascii	"VolumeControlInit\000"
- 1320      6D65436F 
- 1320      6E74726F 
- 1320      6C496E69 
- 1320      7400
- 1321              	.LASF34:
- 1322 0312 67627566 		.ascii	"gbuf\000"
- 1322      00
- 1323              	.LASF25:
- 1324 0317 63616C69 		.ascii	"calibration_data_s\000"
- 1324      62726174 
- 1324      696F6E5F 
- 1324      64617461 
- 1324      5F7300
- 1325              	.LASF4:
- 1326 032a 6C6F6E67 		.ascii	"long int\000"
- 1326      20696E74 
-ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\ccKyT5Mi.s 			page 43
-
-
- 1326      00
- 1327              	.LASF31:
- 1328 0333 566F6C75 		.ascii	"VolumeControlService\000"
- 1328      6D65436F 
- 1328      6E74726F 
- 1328      6C536572 
- 1328      76696365 
- 1329              	.LASF0:
- 1330 0348 7369676E 		.ascii	"signed char\000"
- 1330      65642063 
- 1330      68617200 
- 1331              	.LASF40:
- 1332 0354 444D415F 		.ascii	"DMA_Start\000"
- 1332      53746172 
- 1332      7400
- 1333              	.LASF41:
- 1334 035e 4144435F 		.ascii	"ADC_StartConvert\000"
- 1334      53746172 
- 1334      74436F6E 
- 1334      76657274 
- 1334      00
- 1335              	.LASF32:
- 1336 036f 70726576 		.ascii	"prevVol\000"
- 1336      566F6C00 
- 1337              	.LASF44:
- 1338 0377 73707269 		.ascii	"sprintf\000"
- 1338      6E746600 
- 1339              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
+ 1291 02ce 61646353 		.ascii	"adcSample\000"
+ 1291      616D706C 
+ 1291      6500
+ 1292              	.LASF26:
+ 1293 02d8 766F6C5F 		.ascii	"vol_ctrl_right\000"
+ 1293      6374726C 
+ 1293      5F726967 
+ 1293      687400
+ 1294              	.LASF30:
+ 1295 02e7 566F6C75 		.ascii	"VolumeControlInit\000"
+ 1295      6D65436F 
+ 1295      6E74726F 
+ 1295      6C496E69 
+ 1295      7400
+ 1296              	.LASF34:
+ 1297 02f9 67627566 		.ascii	"gbuf\000"
+ 1297      00
+ 1298              	.LASF25:
+ 1299 02fe 63616C69 		.ascii	"calibration_data_s\000"
+ 1299      62726174 
+ 1299      696F6E5F 
+ 1299      64617461 
+ 1299      5F7300
+ 1300              	.LASF4:
+ 1301 0311 6C6F6E67 		.ascii	"long int\000"
+ 1301      20696E74 
+ 1301      00
+ 1302              	.LASF31:
+ 1303 031a 566F6C75 		.ascii	"VolumeControlService\000"
+ 1303      6D65436F 
+ 1303      6E74726F 
+ 1303      6C536572 
+ 1303      76696365 
+ 1304              	.LASF0:
+ 1305 032f 7369676E 		.ascii	"signed char\000"
+ 1305      65642063 
+ 1305      68617200 
+ 1306              	.LASF40:
+ 1307 033b 444D415F 		.ascii	"DMA_Start\000"
+ 1307      53746172 
+ 1307      7400
+ 1308              	.LASF41:
+ 1309 0345 4144435F 		.ascii	"ADC_StartConvert\000"
+ 1309      53746172 
+ 1309      74436F6E 
+ 1309      76657274 
+ 1309      00
+ 1310              	.LASF32:
+ 1311 0356 70726576 		.ascii	"prevVol\000"
+ 1311      566F6C00 
+ 1312              	.LASF44:
+ 1313 035e 73707269 		.ascii	"sprintf\000"
+ 1313      6E746600 
+ 1314              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

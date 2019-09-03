@@ -97,22 +97,10 @@
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\POTL.h" value="HEADER;;;;;POTL" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\POTL_aliases.h" value="HEADER;;;;;POTL" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\POTL_PM.c" value="SOURCE_C;CortexM0;;;;POTL" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_CLK.c" value="SOURCE_C;CortexM0;;;;SPI_CLK" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_CLK.h" value="HEADER;;;;;SPI_CLK" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_CLK_aliases.h" value="HEADER;;;;;SPI_CLK" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_CLK_PM.c" value="SOURCE_C;CortexM0;;;;SPI_CLK" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_MOSI.c" value="SOURCE_C;CortexM0;;;;SPI_MOSI" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_MOSI.h" value="HEADER;;;;;SPI_MOSI" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_MOSI_aliases.h" value="HEADER;;;;;SPI_MOSI" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_MOSI_PM.c" value="SOURCE_C;CortexM0;;;;SPI_MOSI" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_CS.c" value="SOURCE_C;CortexM0;;;;SPI_CS" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_CS.h" value="HEADER;;;;;SPI_CS" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_CS_aliases.h" value="HEADER;;;;;SPI_CS" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_CS_PM.c" value="SOURCE_C;CortexM0;;;;SPI_CS" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\PD.c" value="SOURCE_C;CortexM0;;;;PD" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\PD.h" value="HEADER;;;;;PD" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\PD_aliases.h" value="HEADER;;;;;PD" />
-  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\PD_PM.c" value="SOURCE_C;CortexM0;;;;PD" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\RSTn.c" value="SOURCE_C;CortexM0;;;;RSTn" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\RSTn.h" value="HEADER;;;;;RSTn" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\RSTn_aliases.h" value="HEADER;;;;;RSTn" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\RSTn_PM.c" value="SOURCE_C;CortexM0;;;;RSTn" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\USBUART.c" value="SOURCE_C;CortexM0;;;;USBUART" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\USBUART.h" value="HEADER;;;;;USBUART" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\USBUART_audio.c" value="SOURCE_C;CortexM0;;;;USBUART" />
@@ -167,6 +155,19 @@
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_GREEN.h" value="HEADER;;;;;LED_GREEN" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_GREEN_aliases.h" value="HEADER;;;;;LED_GREEN" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\LED_GREEN_PM.c" value="SOURCE_C;CortexM0;;;;LED_GREEN" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI.c" value="SOURCE_C;CortexM0;;;;SPI" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI.h" value="HEADER;;;;;SPI" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_SPI_UART.h" value="HEADER;;;;;SPI" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_SPI_UART.c" value="SOURCE_C;CortexM0;;;;SPI" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_SPI_UART_INT.c" value="SOURCE_C;CortexM0;;;;SPI" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_PM.c" value="SOURCE_C;CortexM0;;;;SPI" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_SPI.c" value="SOURCE_C;CortexM0;;;;SPI" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_BOOT.c" value="SOURCE_C;CortexM0;;;;SPI" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_SPI_BOOT.c" value="SOURCE_C;CortexM0;;;;SPI" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_PINS.h" value="HEADER;;;;;SPI" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_SPI_UART_PVT.h" value="HEADER;;;;;SPI" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_PVT.h" value="HEADER;;;;;SPI" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_BOOT.h" value="HEADER;;;;;SPI" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\UART_SCBCLK.c" value="SOURCE_C;CortexM0;;;;UART_SCBCLK" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\UART_SCBCLK.h" value="HEADER;;;;;UART_SCBCLK" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\UART_tx.c" value="SOURCE_C;CortexM0;;;;UART_tx" />
@@ -201,6 +202,26 @@
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\USBUART_Dm.h" value="HEADER;;;;;USBUART_Dm" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\USBUART_Dm_aliases.h" value="HEADER;;;;;USBUART_Dm" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\USBUART_Dm_PM.c" value="SOURCE_C;CortexM0;;;;USBUART_Dm" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_SCBCLK.c" value="SOURCE_C;CortexM0;;;;SPI_SCBCLK" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_SCBCLK.h" value="HEADER;;;;;SPI_SCBCLK" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_sclk_m.c" value="SOURCE_C;CortexM0;;;;SPI_sclk_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_sclk_m.h" value="HEADER;;;;;SPI_sclk_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_sclk_m_aliases.h" value="HEADER;;;;;SPI_sclk_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_sclk_m_PM.c" value="SOURCE_C;CortexM0;;;;SPI_sclk_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_miso_m.c" value="SOURCE_C;CortexM0;;;;SPI_miso_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_miso_m.h" value="HEADER;;;;;SPI_miso_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_miso_m_aliases.h" value="HEADER;;;;;SPI_miso_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_miso_m_PM.c" value="SOURCE_C;CortexM0;;;;SPI_miso_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_mosi_m.c" value="SOURCE_C;CortexM0;;;;SPI_mosi_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_mosi_m.h" value="HEADER;;;;;SPI_mosi_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_mosi_m_aliases.h" value="HEADER;;;;;SPI_mosi_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_mosi_m_PM.c" value="SOURCE_C;CortexM0;;;;SPI_mosi_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_ss0_m.c" value="SOURCE_C;CortexM0;;;;SPI_ss0_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_ss0_m.h" value="HEADER;;;;;SPI_ss0_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_ss0_m_aliases.h" value="HEADER;;;;;SPI_ss0_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_ss0_m_PM.c" value="SOURCE_C;CortexM0;;;;SPI_ss0_m" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_SCB_IRQ.c" value="SOURCE_C;CortexM0;;;;SPI_SCB_IRQ" />
+  <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\SPI_SCB_IRQ.h" value="HEADER;;;;;SPI_SCB_IRQ" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\cm0gcc.ld" value="LINKER_SCRIPT;;;b98f980c-3bd1-4fc7-a887-c56a20a46fdd;;cy_boot" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\Cm0RealView.scat" value="LINKER_SCRIPT;;;fdb8e1ae-f83a-46cf-9446-1d703716f38a;;cy_boot" />
   <file name="C:\dev\git\icebreaker\Icebreaker.cydsn\codegentemp\Cm0Start.c" value="SOURCE_C;CortexM0;;;;cy_boot" />

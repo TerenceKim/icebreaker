@@ -47,7 +47,6 @@
 #include <Codec.h>
 #include <TkShell.h>
 #include <VolumeControl.h>
-#include <pcm1770.h>
 #include <Calibration.h>
 #include <isr_Button.h>
 #include <ButtonManager.h>
@@ -316,12 +315,10 @@ uint8 Update_VolumeAudioOut(void)
 			{
                 //prevVol = Codec_GetHeadphoneVolume();
 				ret = Codec_SetMute(true);//Codec_AdjustBothHeadphoneVolume(0);
-                pcm1770_mute_set(true, true);
 				D_PRINTF(INFO, "Muted\r\n");
 			}
 			else
 			{
-                pcm1770_mute_set(false, false);
                 #if 0
 				/* If mute is released, then process and update the current volume to codec */
 				prevVol = volume;

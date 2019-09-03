@@ -16,7 +16,6 @@
 #include <DMA.h>
 #include <Codec.h>
 //#include <USBFS.h>
-#include <pcm1770.h>
 
 int32 ADC_MIN_READING[vol_ctrl_both] = { -2, -2 };
 int32 ADC_MAX_READING[vol_ctrl_both] = { 2047, 2047 };
@@ -82,7 +81,6 @@ void VolumeControlService(void)
             }
             else
             {
-                pcm1770_volume_set_level(volume[i]);
             }
             prevVol[i] = volume[i];
         }

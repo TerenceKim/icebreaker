@@ -15,13 +15,13 @@
 #include "TkShell.h"
 #include <Codec.h>
 #include <VolumeControl.h>
-#include <pcm1770.h>
 #include <Calibration.h>
 #include <LED.h>
 #include <USBUART_cdc.h>
 #include <timers.h>
 #include <LedManager.h>
 #include <AudioManager.h>
+#include <cc85xx.h>
 
 #define USBUART_BUFFER_SIZE (64u)
 
@@ -89,11 +89,17 @@ static TK_SHELL_VERBS(wm) =
     { "", NULL, "" }
 };
 
-TK_SHELL_METHOD(pcm, reg);
-static TK_SHELL_VERBS(pcm) = 
+TK_SHELL_METHOD(rf, init);
+TK_SHELL_METHOD(rf, bl_unlock);
+TK_SHELL_METHOD(rf, status);
+TK_SHELL_METHOD(rf, info);
+static TK_SHELL_VERBS(rf) =
 {
-    TK_SHELL_VERB(pcm, reg, "register read (rd) and write (wr) <reg:uint8,data:uint8>"),
-    { "", NULL, "" }
+  TK_SHELL_VERB(rf, init, "initialize RF chip"),
+  TK_SHELL_VERB(rf, bl_unlock, "unlock bootloader SPI"),
+  TK_SHELL_VERB(rf, status, "get status"),
+  TK_SHELL_VERB(rf, info, "print dev_chip_info"),
+  { "", NULL, "" }
 };
 
 TK_SHELL_METHOD(sys, crash);
@@ -143,7 +149,7 @@ static const tk_shell_command_s commands[] =
 {
     TK_SHELL_COMMAND(gpio, "GPIO commands"),
     TK_SHELL_COMMAND(wm, "Wolfson Codec commands"),
-    TK_SHELL_COMMAND(pcm, "Burr-Brown Codec commands"),
+    TK_SHELL_COMMAND(rf, "RF chip commands"),
     TK_SHELL_COMMAND(sys, "System commands"),
     TK_SHELL_COMMAND(led, "LED commands"),
     TK_SHELL_COMMAND(cal, "Calibration data commands"),
@@ -327,31 +333,31 @@ TK_SHELL_METHOD(wm, reg_rd)
     return 0;
 }
 
-TK_SHELL_METHOD(pcm, reg)
+TK_SHELL_METHOD(rf, init)
 {
-    int i = 2;
-    uint8 reg;
-    uint8 data;
-    
-    argc -= i;
-    
-    if (argc != 3)
-    {
-        PRINTF("Invalid number of arguments: %d\n", argc);
-        return -1;
-    }
+  cc85xx_init();
+  PRINTF("> rf:ok\n");
+  return 0;
+}
 
-    reg = atoi(argv[i + 1]);
-    data = strtoul(argv[i + 2], NULL, 16);
+TK_SHELL_METHOD(rf, bl_unlock)
+{
+  cc85xx_bl_unlock_spi();
+  PRINTF("> rf:ok\n");
+  return 0;
+}
 
-    if (strcicmp(argv[i], "wr") == 0)
-    {
-        pcm1770_reg_write(reg, data);
-    }
-    
-    PRINTF("> pcm:ok 0x%02X\n", pcm1770_reg_read(reg));
-    
-    return 0;
+TK_SHELL_METHOD(rf, status)
+{
+  PRINTF("> rf:ok 0x%04X\n", cc85xx_get_status());
+  return 0;
+}
+
+TK_SHELL_METHOD(rf, info)
+{
+  cc85xx_print_info();
+  PRINTF("> rf:ok\n");
+  return 0;
 }
 
 TK_SHELL_METHOD(sys, crash)

@@ -1,0 +1,4106 @@
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"cc85xx.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.cc85xx_spi_read,"ax",%progbits
+  20              		.align	2
+  21              		.code	16
+  22              		.thumb_func
+  23              		.type	cc85xx_spi_read, %function
+  24              	cc85xx_spi_read:
+  25              	.LFB3:
+  26              		.file 1 "cc85xx.c"
+   1:cc85xx.c      **** /* ========================================
+   2:cc85xx.c      ****  *
+   3:cc85xx.c      ****  * Copyright YOUR COMPANY, THE YEAR
+   4:cc85xx.c      ****  * All Rights Reserved
+   5:cc85xx.c      ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:cc85xx.c      ****  *
+   7:cc85xx.c      ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:cc85xx.c      ****  * WHICH IS THE PROPERTY OF your company.
+   9:cc85xx.c      ****  *
+  10:cc85xx.c      ****  * ========================================
+  11:cc85xx.c      **** */
+  12:cc85xx.c      **** #include <cc85xx.h>
+  13:cc85xx.c      **** #include <SPI.h>
+  14:cc85xx.c      **** #include <SPI_SPI_UART.h>
+  15:cc85xx.c      **** #include <RSTn.h>
+  16:cc85xx.c      **** #include <timers.h>
+  17:cc85xx.c      **** #include <Application.h>
+  18:cc85xx.c      **** 
+  19:cc85xx.c      **** #define CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS  (1000)
+  20:cc85xx.c      **** 
+  21:cc85xx.c      **** static bool cc85xx_reset(bool boot)
+  22:cc85xx.c      **** {
+  23:cc85xx.c      ****   uint32_t start;
+  24:cc85xx.c      ****   uint8_t before;
+  25:cc85xx.c      **** 
+  26:cc85xx.c      ****   RSTn_Write(0);
+  27:cc85xx.c      ****   SPI_ss0_m_Write(0);
+  28:cc85xx.c      ****   
+  29:cc85xx.c      ****   SPI_mosi_m_SetDriveMode(SPI_mosi_m_DM_STRONG);
+  30:cc85xx.c      **** 
+  31:cc85xx.c      ****   if (boot)
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 2
+
+
+  32:cc85xx.c      ****   {
+  33:cc85xx.c      ****     SPI_mosi_m_Write(0);
+  34:cc85xx.c      ****   }
+  35:cc85xx.c      ****   else
+  36:cc85xx.c      ****   {
+  37:cc85xx.c      ****     SPI_mosi_m_Write(1);
+  38:cc85xx.c      ****   }
+  39:cc85xx.c      ****   
+  40:cc85xx.c      ****   CyDelay(3);
+  41:cc85xx.c      ****   
+  42:cc85xx.c      ****   RSTn_Write(1);
+  43:cc85xx.c      ****   
+  44:cc85xx.c      ****   CyDelayUs(6);
+  45:cc85xx.c      ****   
+  46:cc85xx.c      ****   SPI_ss0_m_Write(1);
+  47:cc85xx.c      ****   CyDelayUs(1);
+  48:cc85xx.c      ****   SPI_ss0_m_Write(0);
+  49:cc85xx.c      ****   
+  50:cc85xx.c      ****   before = SPI_miso_m_Read();
+  51:cc85xx.c      **** 
+  52:cc85xx.c      ****   start = tmrGetCounter_ms();
+  53:cc85xx.c      ****   while (SPI_miso_m_Read() == 0 && tmrGetElapsedMs(start) < 1000);
+  54:cc85xx.c      ****   
+  55:cc85xx.c      ****   if (SPI_miso_m_Read() && (before != SPI_miso_m_Read()) && (tmrGetElapsedMs(start) < 1000))
+  56:cc85xx.c      ****   {
+  57:cc85xx.c      ****     return true;
+  58:cc85xx.c      ****   }
+  59:cc85xx.c      ****   else
+  60:cc85xx.c      ****   {
+  61:cc85xx.c      ****     return false;
+  62:cc85xx.c      ****   }
+  63:cc85xx.c      **** }
+  64:cc85xx.c      **** 
+  65:cc85xx.c      **** static uint8_t cc85xx_spi_read(void)
+  66:cc85xx.c      **** {
+  27              		.loc 1 66 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 10B5     		push	{r4, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 4, -8
+  34              		.cfi_offset 14, -4
+  67:cc85xx.c      ****   //while (SPI_SpiUartGetRxBufferSize() == 0);
+  68:cc85xx.c      ****   
+  69:cc85xx.c      ****   return (uint8_t)SPI_SpiUartReadRxData();
+  35              		.loc 1 69 0
+  36 0002 FFF7FEFF 		bl	SPI_SpiUartReadRxData
+  37              	.LVL0:
+  38 0006 C0B2     		uxtb	r0, r0
+  70:cc85xx.c      **** }
+  39              		.loc 1 70 0
+  40              		@ sp needed
+  41 0008 10BD     		pop	{r4, pc}
+  42              		.cfi_endproc
+  43              	.LFE3:
+  44              		.size	cc85xx_spi_read, .-cc85xx_spi_read
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 3
+
+
+  45 000a C046     		.section	.text.cc85xx_basic_transaction,"ax",%progbits
+  46              		.align	2
+  47              		.code	16
+  48              		.thumb_func
+  49              		.type	cc85xx_basic_transaction, %function
+  50              	cc85xx_basic_transaction:
+  51              	.LFB7:
+  71:cc85xx.c      **** 
+  72:cc85xx.c      **** static bool cc85xx_sys_reset(void)
+  73:cc85xx.c      **** {
+  74:cc85xx.c      ****   return cc85xx_reset(false);
+  75:cc85xx.c      **** }
+  76:cc85xx.c      **** 
+  77:cc85xx.c      **** static bool cc85xx_boot_reset(void)
+  78:cc85xx.c      **** {
+  79:cc85xx.c      ****   return cc85xx_reset(true);
+  80:cc85xx.c      **** }
+  81:cc85xx.c      **** 
+  82:cc85xx.c      **** uint16_t cc85xx_get_status(void)
+  83:cc85xx.c      **** {
+  84:cc85xx.c      ****   uint16_t sw = 0;
+  85:cc85xx.c      ****   uint8_t txBuffer[] = { 0x80, 0x00 };
+  86:cc85xx.c      **** 
+  87:cc85xx.c      ****   SPI_SpiUartPutArray(txBuffer, sizeof(txBuffer));
+  88:cc85xx.c      ****   
+  89:cc85xx.c      ****   /* Wait for the end of the transfer. The number of transmitted data
+  90:cc85xx.c      ****   * elements has to be equal to the number of received data elements.
+  91:cc85xx.c      ****   */
+  92:cc85xx.c      ****   while(sizeof(txBuffer) != SPI_SpiUartGetRxBufferSize())
+  93:cc85xx.c      ****   {
+  94:cc85xx.c      ****   }
+  95:cc85xx.c      ****   
+  96:cc85xx.c      ****   while(SPI_SpiUartGetRxBufferSize() > 0)
+  97:cc85xx.c      ****   {
+  98:cc85xx.c      ****     sw <<= 8;
+  99:cc85xx.c      ****     sw |= (SPI_SpiUartReadRxData() & 0xFF);
+ 100:cc85xx.c      ****   }
+ 101:cc85xx.c      **** 
+ 102:cc85xx.c      ****   /* Clear dummy bytes from RX buffer */
+ 103:cc85xx.c      ****   SPI_SpiUartClearRxBuffer();
+ 104:cc85xx.c      ****   
+ 105:cc85xx.c      ****   return sw;
+ 106:cc85xx.c      **** }
+ 107:cc85xx.c      **** 
+ 108:cc85xx.c      **** static bool cc85xx_basic_transaction(uint8_t *pTxData, uint32_t txLen, uint16_t *pStatus, uint8_t *
+ 109:cc85xx.c      **** {
+  52              		.loc 1 109 0
+  53              		.cfi_startproc
+  54              		@ args = 4, pretend = 0, frame = 8
+  55              		@ frame_needed = 0, uses_anonymous_args = 0
+  56              	.LVL1:
+  57 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  58              		.cfi_def_cfa_offset 20
+  59              		.cfi_offset 4, -20
+  60              		.cfi_offset 5, -16
+  61              		.cfi_offset 6, -12
+  62              		.cfi_offset 7, -8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 4
+
+
+  63              		.cfi_offset 14, -4
+  64 0002 4746     		mov	r7, r8
+  65 0004 80B4     		push	{r7}
+  66              		.cfi_def_cfa_offset 24
+  67              		.cfi_offset 8, -24
+  68 0006 82B0     		sub	sp, sp, #8
+  69              		.cfi_def_cfa_offset 32
+  70 0008 0190     		str	r0, [sp, #4]
+  71 000a 0E00     		movs	r6, r1
+  72 000c 1500     		movs	r5, r2
+  73 000e 1F00     		movs	r7, r3
+  74 0010 08AB     		add	r3, sp, #32
+  75              	.LVL2:
+  76 0012 1B88     		ldrh	r3, [r3]
+  77              	.LVL3:
+  78 0014 9846     		mov	r8, r3
+ 110:cc85xx.c      ****   uint32_t start = tmrGetCounter_ms();
+  79              		.loc 1 110 0
+  80 0016 254B     		ldr	r3, .L14
+  81 0018 1C68     		ldr	r4, [r3]
+  82              	.LVL4:
+  83              	.L4:
+ 111:cc85xx.c      ****   uint32_t i;
+ 112:cc85xx.c      **** 
+ 113:cc85xx.c      ****   /* Wait for previous operation to complete */
+ 114:cc85xx.c      ****   while (SPI_miso_m_Read() == 0 && tmrGetElapsedMs(start) < CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS);
+  84              		.loc 1 114 0 discriminator 2
+  85 001a FFF7FEFF 		bl	SPI_miso_m_Read
+  86              	.LVL5:
+  87 001e 0028     		cmp	r0, #0
+  88 0020 05D1     		bne	.L3
+  89              		.loc 1 114 0 is_stmt 0 discriminator 1
+  90 0022 224B     		ldr	r3, .L14
+  91 0024 1B68     		ldr	r3, [r3]
+  92 0026 1B1B     		subs	r3, r3, r4
+  93 0028 214A     		ldr	r2, .L14+4
+  94 002a 9342     		cmp	r3, r2
+  95 002c F5D9     		bls	.L4
+  96              	.L3:
+ 115:cc85xx.c      ****   
+ 116:cc85xx.c      ****   if (tmrGetElapsedMs(start) >= CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS)
+  97              		.loc 1 116 0 is_stmt 1
+  98 002e 1F4B     		ldr	r3, .L14
+  99 0030 1B68     		ldr	r3, [r3]
+ 100 0032 1C1B     		subs	r4, r3, r4
+ 101              	.LVL6:
+ 102 0034 1E4B     		ldr	r3, .L14+4
+ 103 0036 9C42     		cmp	r4, r3
+ 104 0038 12D9     		bls	.L5
+ 117:cc85xx.c      ****   {
+ 118:cc85xx.c      ****     PRINTF("ERROR: Timed out waiting for previous SPI operation to complete\n");
+ 105              		.loc 1 118 0
+ 106 003a FFF7FEFF 		bl	USBUART_GetConfiguration
+ 107              	.LVL7:
+ 108 003e 0028     		cmp	r0, #0
+ 109 0040 2FD0     		beq	.L12
+ 110              	.L7:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 5
+
+
+ 111              		.loc 1 118 0 is_stmt 0 discriminator 1
+ 112 0042 FFF7FEFF 		bl	USBUART_CDCIsReady
+ 113              	.LVL8:
+ 114 0046 0028     		cmp	r0, #0
+ 115 0048 FBD0     		beq	.L7
+ 116              		.loc 1 118 0 discriminator 2
+ 117 004a 1A4C     		ldr	r4, .L14+8
+ 118 004c 4122     		movs	r2, #65
+ 119 004e 1A49     		ldr	r1, .L14+12
+ 120 0050 2000     		movs	r0, r4
+ 121 0052 FFF7FEFF 		bl	memcpy
+ 122              	.LVL9:
+ 123 0056 2000     		movs	r0, r4
+ 124 0058 FFF7FEFF 		bl	USBUART_PutString
+ 125              	.LVL10:
+ 119:cc85xx.c      ****     return false;
+ 126              		.loc 1 119 0 is_stmt 1 discriminator 2
+ 127 005c 0020     		movs	r0, #0
+ 128 005e 21E0     		b	.L6
+ 129              	.L5:
+ 120:cc85xx.c      ****   }
+ 121:cc85xx.c      ****   
+ 122:cc85xx.c      ****   /* Start transfer */
+ 123:cc85xx.c      ****   SPI_SpiUartPutArray(pTxData, txLen);
+ 130              		.loc 1 123 0
+ 131 0060 3100     		movs	r1, r6
+ 132 0062 0198     		ldr	r0, [sp, #4]
+ 133 0064 FFF7FEFF 		bl	SPI_SpiUartPutArray
+ 134              	.LVL11:
+ 135              	.L8:
+ 124:cc85xx.c      **** 
+ 125:cc85xx.c      ****   /* Wait for the end of the transfer. The number of transmitted data
+ 126:cc85xx.c      ****   * elements has to be equal to the number of received data elements.
+ 127:cc85xx.c      ****   */
+ 128:cc85xx.c      ****   while(txLen != SPI_SpiUartGetRxBufferSize())
+ 136              		.loc 1 128 0 discriminator 1
+ 137 0068 FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ 138              	.LVL12:
+ 139 006c 8642     		cmp	r6, r0
+ 140 006e FBD1     		bne	.L8
+ 129:cc85xx.c      ****   {
+ 130:cc85xx.c      ****   }
+ 131:cc85xx.c      ****   
+ 132:cc85xx.c      ****   *pStatus = cc85xx_spi_read() << 8;
+ 141              		.loc 1 132 0
+ 142 0070 FFF7FEFF 		bl	cc85xx_spi_read
+ 143              	.LVL13:
+ 144 0074 0002     		lsls	r0, r0, #8
+ 145 0076 2880     		strh	r0, [r5]
+ 133:cc85xx.c      ****   *pStatus |= cc85xx_spi_read();
+ 146              		.loc 1 133 0
+ 147 0078 FFF7FEFF 		bl	cc85xx_spi_read
+ 148              	.LVL14:
+ 149 007c 2B88     		ldrh	r3, [r5]
+ 150 007e 1843     		orrs	r0, r3
+ 151 0080 2880     		strh	r0, [r5]
+ 134:cc85xx.c      ****   
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 6
+
+
+ 135:cc85xx.c      ****   if (pRxData != NULL)
+ 152              		.loc 1 135 0
+ 153 0082 002F     		cmp	r7, #0
+ 154 0084 06D1     		bne	.L13
+ 155 0086 08E0     		b	.L10
+ 156              	.LVL15:
+ 157              	.L11:
+ 136:cc85xx.c      ****   {
+ 137:cc85xx.c      ****     for (i = 0; i < rxLen; i++)
+ 138:cc85xx.c      ****     {
+ 139:cc85xx.c      ****       pRxData[i] = cc85xx_spi_read();
+ 158              		.loc 1 139 0 discriminator 3
+ 159 0088 3D19     		adds	r5, r7, r4
+ 160 008a FFF7FEFF 		bl	cc85xx_spi_read
+ 161              	.LVL16:
+ 162 008e 2870     		strb	r0, [r5]
+ 137:cc85xx.c      ****     {
+ 163              		.loc 1 137 0 discriminator 3
+ 164 0090 0134     		adds	r4, r4, #1
+ 165              	.LVL17:
+ 166 0092 00E0     		b	.L9
+ 167              	.LVL18:
+ 168              	.L13:
+ 169 0094 0024     		movs	r4, #0
+ 170              	.LVL19:
+ 171              	.L9:
+ 137:cc85xx.c      ****     {
+ 172              		.loc 1 137 0 is_stmt 0 discriminator 1
+ 173 0096 4445     		cmp	r4, r8
+ 174 0098 F6D3     		bcc	.L11
+ 175              	.LVL20:
+ 176              	.L10:
+ 140:cc85xx.c      ****     }
+ 141:cc85xx.c      ****   }
+ 142:cc85xx.c      **** 
+ 143:cc85xx.c      ****   /* Clear dummy bytes from RX buffer */
+ 144:cc85xx.c      ****   SPI_SpiUartClearRxBuffer();
+ 177              		.loc 1 144 0 is_stmt 1
+ 178 009a FFF7FEFF 		bl	SPI_SpiUartClearRxBuffer
+ 179              	.LVL21:
+ 145:cc85xx.c      ****   
+ 146:cc85xx.c      ****   return true;
+ 180              		.loc 1 146 0
+ 181 009e 0120     		movs	r0, #1
+ 182 00a0 00E0     		b	.L6
+ 183              	.LVL22:
+ 184              	.L12:
+ 119:cc85xx.c      ****   }
+ 185              		.loc 1 119 0
+ 186 00a2 0020     		movs	r0, #0
+ 187              	.LVL23:
+ 188              	.L6:
+ 147:cc85xx.c      **** }
+ 189              		.loc 1 147 0
+ 190 00a4 02B0     		add	sp, sp, #8
+ 191              		@ sp needed
+ 192              	.LVL24:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 7
+
+
+ 193              	.LVL25:
+ 194 00a6 04BC     		pop	{r2}
+ 195 00a8 9046     		mov	r8, r2
+ 196 00aa F0BD     		pop	{r4, r5, r6, r7, pc}
+ 197              	.L15:
+ 198              		.align	2
+ 199              	.L14:
+ 200 00ac 00000000 		.word	tmrCounter_ms
+ 201 00b0 E7030000 		.word	999
+ 202 00b4 00000000 		.word	gbuf
+ 203 00b8 00000000 		.word	.LC2
+ 204              		.cfi_endproc
+ 205              	.LFE7:
+ 206              		.size	cc85xx_basic_transaction, .-cc85xx_basic_transaction
+ 207              		.section	.text.cc85xx_cmd_req,"ax",%progbits
+ 208              		.align	2
+ 209              		.code	16
+ 210              		.thumb_func
+ 211              		.type	cc85xx_cmd_req, %function
+ 212              	cc85xx_cmd_req:
+ 213              	.LFB8:
+ 148:cc85xx.c      **** 
+ 149:cc85xx.c      **** static bool cc85xx_cmd_req(uint8_t cmdType, uint8_t paramLen, uint8_t *pData, uint16_t *pStatus)
+ 150:cc85xx.c      **** {
+ 214              		.loc 1 150 0
+ 215              		.cfi_startproc
+ 216              		@ args = 0, pretend = 0, frame = 8
+ 217              		@ frame_needed = 0, uses_anonymous_args = 0
+ 218              	.LVL26:
+ 219 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 220              		.cfi_def_cfa_offset 20
+ 221              		.cfi_offset 4, -20
+ 222              		.cfi_offset 5, -16
+ 223              		.cfi_offset 6, -12
+ 224              		.cfi_offset 7, -8
+ 225              		.cfi_offset 14, -4
+ 226 0002 85B0     		sub	sp, sp, #20
+ 227              		.cfi_def_cfa_offset 40
+ 228 0004 0600     		movs	r6, r0
+ 229 0006 0D00     		movs	r5, r1
+ 230 0008 0292     		str	r2, [sp, #8]
+ 231 000a 0393     		str	r3, [sp, #12]
+ 232              	.LVL27:
+ 151:cc85xx.c      ****   bool ret = false;
+ 152:cc85xx.c      **** 
+ 153:cc85xx.c      ****   cc85xx_cmd_req_s *pTxPkt = (cc85xx_cmd_req_s *)malloc(sizeof(cc85xx_cmd_req_hdr_s) + paramLen);
+ 233              		.loc 1 153 0
+ 234 000c 8C1C     		adds	r4, r1, #2
+ 235 000e 2000     		movs	r0, r4
+ 236              	.LVL28:
+ 237 0010 FFF7FEFF 		bl	malloc
+ 238              	.LVL29:
+ 239 0014 0700     		movs	r7, r0
+ 240              	.LVL30:
+ 154:cc85xx.c      **** 
+ 155:cc85xx.c      ****   pTxPkt->hdr.opcode = CC85XX_OP_CMD_REQ;
+ 241              		.loc 1 155 0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 8
+
+
+ 242 0016 0278     		ldrb	r2, [r0]
+ 243 0018 4023     		movs	r3, #64
+ 244 001a 5B42     		rsbs	r3, r3, #0
+ 245 001c 1A43     		orrs	r2, r3
+ 156:cc85xx.c      ****   pTxPkt->hdr.cmd_type = cmdType;
+ 246              		.loc 1 156 0
+ 247 001e 7F33     		adds	r3, r3, #127
+ 248 0020 3340     		ands	r3, r6
+ 249 0022 1900     		movs	r1, r3
+ 250 0024 D3B2     		uxtb	r3, r2
+ 251 0026 3F22     		movs	r2, #63
+ 252 0028 9343     		bics	r3, r2
+ 253 002a 0B43     		orrs	r3, r1
+ 254 002c 0370     		strb	r3, [r0]
+ 157:cc85xx.c      ****   pTxPkt->hdr.param_len = paramLen;
+ 255              		.loc 1 157 0
+ 256 002e 4570     		strb	r5, [r0, #1]
+ 158:cc85xx.c      ****   memcpy(pTxPkt->param, pData, paramLen);
+ 257              		.loc 1 158 0
+ 258 0030 0230     		adds	r0, r0, #2
+ 259              	.LVL31:
+ 260 0032 2A00     		movs	r2, r5
+ 261 0034 0299     		ldr	r1, [sp, #8]
+ 262 0036 FFF7FEFF 		bl	memcpy
+ 263              	.LVL32:
+ 159:cc85xx.c      ****   
+ 160:cc85xx.c      ****   ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_cmd_req_hdr_s) + paramLen, pStatu
+ 264              		.loc 1 160 0
+ 265 003a 0023     		movs	r3, #0
+ 266 003c 0093     		str	r3, [sp]
+ 267 003e 039A     		ldr	r2, [sp, #12]
+ 268 0040 2100     		movs	r1, r4
+ 269 0042 3800     		movs	r0, r7
+ 270 0044 FFF7FEFF 		bl	cc85xx_basic_transaction
+ 271              	.LVL33:
+ 272 0048 0400     		movs	r4, r0
+ 273              	.LVL34:
+ 161:cc85xx.c      ****   
+ 162:cc85xx.c      ****   free(pTxPkt);
+ 274              		.loc 1 162 0
+ 275 004a 3800     		movs	r0, r7
+ 276 004c FFF7FEFF 		bl	free
+ 277              	.LVL35:
+ 163:cc85xx.c      **** 
+ 164:cc85xx.c      ****   if (!ret)
+ 278              		.loc 1 164 0
+ 279 0050 002C     		cmp	r4, #0
+ 280 0052 01D0     		beq	.L18
+ 165:cc85xx.c      ****   {
+ 166:cc85xx.c      ****     return ret;
+ 167:cc85xx.c      ****   }
+ 168:cc85xx.c      ****   
+ 169:cc85xx.c      ****   return true;
+ 281              		.loc 1 169 0
+ 282 0054 0120     		movs	r0, #1
+ 283 0056 00E0     		b	.L17
+ 284              	.L18:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 9
+
+
+ 166:cc85xx.c      ****   }
+ 285              		.loc 1 166 0
+ 286 0058 2000     		movs	r0, r4
+ 287              	.L17:
+ 170:cc85xx.c      **** }
+ 288              		.loc 1 170 0
+ 289 005a 05B0     		add	sp, sp, #20
+ 290              		@ sp needed
+ 291              	.LVL36:
+ 292              	.LVL37:
+ 293 005c F0BD     		pop	{r4, r5, r6, r7, pc}
+ 294              		.cfi_endproc
+ 295              	.LFE8:
+ 296              		.size	cc85xx_cmd_req, .-cc85xx_cmd_req
+ 297 005e C046     		.section	.text.cc85xx_read,"ax",%progbits
+ 298              		.align	2
+ 299              		.code	16
+ 300              		.thumb_func
+ 301              		.type	cc85xx_read, %function
+ 302              	cc85xx_read:
+ 303              	.LFB9:
+ 171:cc85xx.c      **** 
+ 172:cc85xx.c      **** static bool cc85xx_read(uint16_t dataLen, uint16_t *pStatus, uint8_t *pData)
+ 173:cc85xx.c      **** {
+ 304              		.loc 1 173 0
+ 305              		.cfi_startproc
+ 306              		@ args = 0, pretend = 0, frame = 8
+ 307              		@ frame_needed = 0, uses_anonymous_args = 0
+ 308              	.LVL38:
+ 309 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 310              		.cfi_def_cfa_offset 20
+ 311              		.cfi_offset 4, -20
+ 312              		.cfi_offset 5, -16
+ 313              		.cfi_offset 6, -12
+ 314              		.cfi_offset 7, -8
+ 315              		.cfi_offset 14, -4
+ 316 0002 85B0     		sub	sp, sp, #20
+ 317              		.cfi_def_cfa_offset 40
+ 318 0004 0600     		movs	r6, r0
+ 319 0006 0391     		str	r1, [sp, #12]
+ 320 0008 1700     		movs	r7, r2
+ 321              	.LVL39:
+ 174:cc85xx.c      ****   bool ret = false;
+ 175:cc85xx.c      ****   
+ 176:cc85xx.c      ****   cc85xx_read_s *pTxPkt = (cc85xx_read_s *)malloc(sizeof(cc85xx_read_s) + dataLen);
+ 322              		.loc 1 176 0
+ 323 000a 851C     		adds	r5, r0, #2
+ 324 000c 2800     		movs	r0, r5
+ 325              	.LVL40:
+ 326 000e FFF7FEFF 		bl	malloc
+ 327              	.LVL41:
+ 328 0012 0400     		movs	r4, r0
+ 329              	.LVL42:
+ 177:cc85xx.c      ****   
+ 178:cc85xx.c      ****   memset((void *)pTxPkt, 0xCC, sizeof(cc85xx_read_s) + dataLen);
+ 330              		.loc 1 178 0
+ 331 0014 2A00     		movs	r2, r5
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 10
+
+
+ 332 0016 CC21     		movs	r1, #204
+ 333 0018 FFF7FEFF 		bl	memset
+ 334              	.LVL43:
+ 179:cc85xx.c      ****   
+ 180:cc85xx.c      ****   pTxPkt->opcode = CC85XX_OP_READ;
+ 335              		.loc 1 180 0
+ 336 001c 2378     		ldrb	r3, [r4]
+ 337 001e 0F22     		movs	r2, #15
+ 338 0020 1340     		ands	r3, r2
+ 339 0022 7F3A     		subs	r2, r2, #127
+ 340 0024 1343     		orrs	r3, r2
+ 341 0026 2370     		strb	r3, [r4]
+ 181:cc85xx.c      ****   pTxPkt->data_len = dataLen;
+ 342              		.loc 1 181 0
+ 343 0028 6670     		strb	r6, [r4, #1]
+ 182:cc85xx.c      ****   
+ 183:cc85xx.c      ****   ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_read_s) + dataLen, pStatus, pData
+ 344              		.loc 1 183 0
+ 345 002a 0096     		str	r6, [sp]
+ 346 002c 3B00     		movs	r3, r7
+ 347 002e 039A     		ldr	r2, [sp, #12]
+ 348 0030 2900     		movs	r1, r5
+ 349 0032 2000     		movs	r0, r4
+ 350 0034 FFF7FEFF 		bl	cc85xx_basic_transaction
+ 351              	.LVL44:
+ 352 0038 0500     		movs	r5, r0
+ 353              	.LVL45:
+ 184:cc85xx.c      **** 
+ 185:cc85xx.c      ****   free(pTxPkt);
+ 354              		.loc 1 185 0
+ 355 003a 2000     		movs	r0, r4
+ 356 003c FFF7FEFF 		bl	free
+ 357              	.LVL46:
+ 186:cc85xx.c      **** 
+ 187:cc85xx.c      ****   if (!ret)
+ 358              		.loc 1 187 0
+ 359 0040 002D     		cmp	r5, #0
+ 360 0042 01D0     		beq	.L21
+ 188:cc85xx.c      ****   {
+ 189:cc85xx.c      ****     return ret;
+ 190:cc85xx.c      ****   }
+ 191:cc85xx.c      ****   
+ 192:cc85xx.c      ****   return true;
+ 361              		.loc 1 192 0
+ 362 0044 0120     		movs	r0, #1
+ 363 0046 00E0     		b	.L20
+ 364              	.L21:
+ 189:cc85xx.c      ****   }
+ 365              		.loc 1 189 0
+ 366 0048 2800     		movs	r0, r5
+ 367              	.L20:
+ 193:cc85xx.c      **** }
+ 368              		.loc 1 193 0
+ 369 004a 05B0     		add	sp, sp, #20
+ 370              		@ sp needed
+ 371              	.LVL47:
+ 372              	.LVL48:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 11
+
+
+ 373              	.LVL49:
+ 374 004c F0BD     		pop	{r4, r5, r6, r7, pc}
+ 375              		.cfi_endproc
+ 376              	.LFE9:
+ 377              		.size	cc85xx_read, .-cc85xx_read
+ 378 004e C046     		.section	.text.cc85xx_reset,"ax",%progbits
+ 379              		.align	2
+ 380              		.code	16
+ 381              		.thumb_func
+ 382              		.type	cc85xx_reset, %function
+ 383              	cc85xx_reset:
+ 384              	.LFB2:
+  22:cc85xx.c      ****   uint32_t start;
+ 385              		.loc 1 22 0
+ 386              		.cfi_startproc
+ 387              		@ args = 0, pretend = 0, frame = 0
+ 388              		@ frame_needed = 0, uses_anonymous_args = 0
+ 389              	.LVL50:
+ 390 0000 70B5     		push	{r4, r5, r6, lr}
+ 391              		.cfi_def_cfa_offset 16
+ 392              		.cfi_offset 4, -16
+ 393              		.cfi_offset 5, -12
+ 394              		.cfi_offset 6, -8
+ 395              		.cfi_offset 14, -4
+ 396 0002 0400     		movs	r4, r0
+  26:cc85xx.c      ****   SPI_ss0_m_Write(0);
+ 397              		.loc 1 26 0
+ 398 0004 0020     		movs	r0, #0
+ 399              	.LVL51:
+ 400 0006 FFF7FEFF 		bl	RSTn_Write
+ 401              	.LVL52:
+  27:cc85xx.c      ****   
+ 402              		.loc 1 27 0
+ 403 000a 0020     		movs	r0, #0
+ 404 000c FFF7FEFF 		bl	SPI_ss0_m_Write
+ 405              	.LVL53:
+  29:cc85xx.c      **** 
+ 406              		.loc 1 29 0
+ 407 0010 0620     		movs	r0, #6
+ 408 0012 FFF7FEFF 		bl	SPI_mosi_m_SetDriveMode
+ 409              	.LVL54:
+  31:cc85xx.c      ****   {
+ 410              		.loc 1 31 0
+ 411 0016 002C     		cmp	r4, #0
+ 412 0018 03D0     		beq	.L23
+  33:cc85xx.c      ****   }
+ 413              		.loc 1 33 0
+ 414 001a 0020     		movs	r0, #0
+ 415 001c FFF7FEFF 		bl	SPI_mosi_m_Write
+ 416              	.LVL55:
+ 417 0020 02E0     		b	.L24
+ 418              	.L23:
+  37:cc85xx.c      ****   }
+ 419              		.loc 1 37 0
+ 420 0022 0120     		movs	r0, #1
+ 421 0024 FFF7FEFF 		bl	SPI_mosi_m_Write
+ 422              	.LVL56:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 12
+
+
+ 423              	.L24:
+  40:cc85xx.c      ****   
+ 424              		.loc 1 40 0
+ 425 0028 0320     		movs	r0, #3
+ 426 002a FFF7FEFF 		bl	CyDelay
+ 427              	.LVL57:
+  42:cc85xx.c      ****   
+ 428              		.loc 1 42 0
+ 429 002e 0120     		movs	r0, #1
+ 430 0030 FFF7FEFF 		bl	RSTn_Write
+ 431              	.LVL58:
+  44:cc85xx.c      ****   
+ 432              		.loc 1 44 0
+ 433 0034 0620     		movs	r0, #6
+ 434 0036 FFF7FEFF 		bl	CyDelayUs
+ 435              	.LVL59:
+  46:cc85xx.c      ****   CyDelayUs(1);
+ 436              		.loc 1 46 0
+ 437 003a 0120     		movs	r0, #1
+ 438 003c FFF7FEFF 		bl	SPI_ss0_m_Write
+ 439              	.LVL60:
+  47:cc85xx.c      ****   SPI_ss0_m_Write(0);
+ 440              		.loc 1 47 0
+ 441 0040 0120     		movs	r0, #1
+ 442 0042 FFF7FEFF 		bl	CyDelayUs
+ 443              	.LVL61:
+  48:cc85xx.c      ****   
+ 444              		.loc 1 48 0
+ 445 0046 0020     		movs	r0, #0
+ 446 0048 FFF7FEFF 		bl	SPI_ss0_m_Write
+ 447              	.LVL62:
+  50:cc85xx.c      **** 
+ 448              		.loc 1 50 0
+ 449 004c FFF7FEFF 		bl	SPI_miso_m_Read
+ 450              	.LVL63:
+ 451 0050 0400     		movs	r4, r0
+ 452              	.LVL64:
+  52:cc85xx.c      ****   while (SPI_miso_m_Read() == 0 && tmrGetElapsedMs(start) < 1000);
+ 453              		.loc 1 52 0
+ 454 0052 114B     		ldr	r3, .L31
+ 455 0054 1D68     		ldr	r5, [r3]
+ 456              	.LVL65:
+ 457              	.L26:
+  53:cc85xx.c      ****   
+ 458              		.loc 1 53 0 discriminator 2
+ 459 0056 FFF7FEFF 		bl	SPI_miso_m_Read
+ 460              	.LVL66:
+ 461 005a 0028     		cmp	r0, #0
+ 462 005c 05D1     		bne	.L25
+  53:cc85xx.c      ****   
+ 463              		.loc 1 53 0 is_stmt 0 discriminator 1
+ 464 005e 0E4B     		ldr	r3, .L31
+ 465 0060 1B68     		ldr	r3, [r3]
+ 466 0062 5B1B     		subs	r3, r3, r5
+ 467 0064 0D4A     		ldr	r2, .L31+4
+ 468 0066 9342     		cmp	r3, r2
+ 469 0068 F5D9     		bls	.L26
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 13
+
+
+ 470              	.L25:
+  55:cc85xx.c      ****   {
+ 471              		.loc 1 55 0 is_stmt 1
+ 472 006a FFF7FEFF 		bl	SPI_miso_m_Read
+ 473              	.LVL67:
+ 474 006e 0028     		cmp	r0, #0
+ 475 0070 0BD0     		beq	.L28
+  55:cc85xx.c      ****   {
+ 476              		.loc 1 55 0 is_stmt 0 discriminator 1
+ 477 0072 FFF7FEFF 		bl	SPI_miso_m_Read
+ 478              	.LVL68:
+ 479 0076 8442     		cmp	r4, r0
+ 480 0078 09D0     		beq	.L29
+  55:cc85xx.c      ****   {
+ 481              		.loc 1 55 0 discriminator 2
+ 482 007a 074B     		ldr	r3, .L31
+ 483 007c 1B68     		ldr	r3, [r3]
+ 484 007e 5D1B     		subs	r5, r3, r5
+ 485              	.LVL69:
+ 486 0080 064B     		ldr	r3, .L31+4
+ 487 0082 9D42     		cmp	r5, r3
+ 488 0084 05D8     		bhi	.L30
+  57:cc85xx.c      ****   }
+ 489              		.loc 1 57 0 is_stmt 1
+ 490 0086 0120     		movs	r0, #1
+ 491 0088 04E0     		b	.L27
+ 492              	.LVL70:
+ 493              	.L28:
+  61:cc85xx.c      ****   }
+ 494              		.loc 1 61 0
+ 495 008a 0020     		movs	r0, #0
+ 496 008c 02E0     		b	.L27
+ 497              	.L29:
+ 498 008e 0020     		movs	r0, #0
+ 499 0090 00E0     		b	.L27
+ 500              	.LVL71:
+ 501              	.L30:
+ 502 0092 0020     		movs	r0, #0
+ 503              	.L27:
+  63:cc85xx.c      **** 
+ 504              		.loc 1 63 0
+ 505              		@ sp needed
+ 506              	.LVL72:
+ 507 0094 70BD     		pop	{r4, r5, r6, pc}
+ 508              	.L32:
+ 509 0096 C046     		.align	2
+ 510              	.L31:
+ 511 0098 00000000 		.word	tmrCounter_ms
+ 512 009c E7030000 		.word	999
+ 513              		.cfi_endproc
+ 514              	.LFE2:
+ 515              		.size	cc85xx_reset, .-cc85xx_reset
+ 516              		.section	.text.cc85xx_boot_reset,"ax",%progbits
+ 517              		.align	2
+ 518              		.code	16
+ 519              		.thumb_func
+ 520              		.type	cc85xx_boot_reset, %function
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 14
+
+
+ 521              	cc85xx_boot_reset:
+ 522              	.LFB5:
+  78:cc85xx.c      ****   return cc85xx_reset(true);
+ 523              		.loc 1 78 0
+ 524              		.cfi_startproc
+ 525              		@ args = 0, pretend = 0, frame = 0
+ 526              		@ frame_needed = 0, uses_anonymous_args = 0
+ 527 0000 10B5     		push	{r4, lr}
+ 528              		.cfi_def_cfa_offset 8
+ 529              		.cfi_offset 4, -8
+ 530              		.cfi_offset 14, -4
+  79:cc85xx.c      **** }
+ 531              		.loc 1 79 0
+ 532 0002 0120     		movs	r0, #1
+ 533 0004 FFF7FEFF 		bl	cc85xx_reset
+ 534              	.LVL73:
+  80:cc85xx.c      **** 
+ 535              		.loc 1 80 0
+ 536              		@ sp needed
+ 537 0008 10BD     		pop	{r4, pc}
+ 538              		.cfi_endproc
+ 539              	.LFE5:
+ 540              		.size	cc85xx_boot_reset, .-cc85xx_boot_reset
+ 541              		.section	.text.cc85xx_get_status,"ax",%progbits
+ 542              		.align	2
+ 543              		.global	cc85xx_get_status
+ 544              		.code	16
+ 545              		.thumb_func
+ 546              		.type	cc85xx_get_status, %function
+ 547              	cc85xx_get_status:
+ 548              	.LFB6:
+  83:cc85xx.c      ****   uint16_t sw = 0;
+ 549              		.loc 1 83 0
+ 550              		.cfi_startproc
+ 551              		@ args = 0, pretend = 0, frame = 8
+ 552              		@ frame_needed = 0, uses_anonymous_args = 0
+ 553 0000 10B5     		push	{r4, lr}
+ 554              		.cfi_def_cfa_offset 8
+ 555              		.cfi_offset 4, -8
+ 556              		.cfi_offset 14, -4
+ 557 0002 82B0     		sub	sp, sp, #8
+ 558              		.cfi_def_cfa_offset 16
+ 559              	.LVL74:
+  85:cc85xx.c      **** 
+ 560              		.loc 1 85 0
+ 561 0004 01A8     		add	r0, sp, #4
+ 562 0006 8023     		movs	r3, #128
+ 563 0008 0370     		strb	r3, [r0]
+ 564 000a 0023     		movs	r3, #0
+ 565 000c 4370     		strb	r3, [r0, #1]
+  87:cc85xx.c      ****   
+ 566              		.loc 1 87 0
+ 567 000e 0221     		movs	r1, #2
+ 568 0010 FFF7FEFF 		bl	SPI_SpiUartPutArray
+ 569              	.LVL75:
+ 570              	.L35:
+  92:cc85xx.c      ****   {
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 15
+
+
+ 571              		.loc 1 92 0 discriminator 1
+ 572 0014 FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ 573              	.LVL76:
+ 574 0018 0228     		cmp	r0, #2
+ 575 001a FBD1     		bne	.L35
+ 576 001c 0024     		movs	r4, #0
+ 577 001e 06E0     		b	.L36
+ 578              	.LVL77:
+ 579              	.L37:
+  98:cc85xx.c      ****     sw |= (SPI_SpiUartReadRxData() & 0xFF);
+ 580              		.loc 1 98 0
+ 581 0020 2402     		lsls	r4, r4, #8
+ 582              	.LVL78:
+ 583 0022 A4B2     		uxth	r4, r4
+ 584              	.LVL79:
+  99:cc85xx.c      ****   }
+ 585              		.loc 1 99 0
+ 586 0024 FFF7FEFF 		bl	SPI_SpiUartReadRxData
+ 587              	.LVL80:
+ 588 0028 FF23     		movs	r3, #255
+ 589 002a 1840     		ands	r0, r3
+ 590 002c 0443     		orrs	r4, r0
+ 591              	.LVL81:
+ 592              	.L36:
+  96:cc85xx.c      ****   {
+ 593              		.loc 1 96 0
+ 594 002e FFF7FEFF 		bl	SPI_SpiUartGetRxBufferSize
+ 595              	.LVL82:
+ 596 0032 0028     		cmp	r0, #0
+ 597 0034 F4D1     		bne	.L37
+ 103:cc85xx.c      ****   
+ 598              		.loc 1 103 0
+ 599 0036 FFF7FEFF 		bl	SPI_SpiUartClearRxBuffer
+ 600              	.LVL83:
+ 106:cc85xx.c      **** 
+ 601              		.loc 1 106 0
+ 602 003a 2000     		movs	r0, r4
+ 603 003c 02B0     		add	sp, sp, #8
+ 604              		@ sp needed
+ 605              	.LVL84:
+ 606 003e 10BD     		pop	{r4, pc}
+ 607              		.cfi_endproc
+ 608              	.LFE6:
+ 609              		.size	cc85xx_get_status, .-cc85xx_get_status
+ 610              		.section	.text.cc85xx_bl_unlock_spi,"ax",%progbits
+ 611              		.align	2
+ 612              		.global	cc85xx_bl_unlock_spi
+ 613              		.code	16
+ 614              		.thumb_func
+ 615              		.type	cc85xx_bl_unlock_spi, %function
+ 616              	cc85xx_bl_unlock_spi:
+ 617              	.LFB10:
+ 194:cc85xx.c      **** 
+ 195:cc85xx.c      **** bool cc85xx_bl_unlock_spi(void)
+ 196:cc85xx.c      **** {
+ 618              		.loc 1 196 0
+ 619              		.cfi_startproc
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 16
+
+
+ 620              		@ args = 0, pretend = 0, frame = 8
+ 621              		@ frame_needed = 0, uses_anonymous_args = 0
+ 622 0000 30B5     		push	{r4, r5, lr}
+ 623              		.cfi_def_cfa_offset 12
+ 624              		.cfi_offset 4, -12
+ 625              		.cfi_offset 5, -8
+ 626              		.cfi_offset 14, -4
+ 627 0002 85B0     		sub	sp, sp, #20
+ 628              		.cfi_def_cfa_offset 32
+ 629              	.LVL85:
+ 197:cc85xx.c      ****   bool ret = false;
+ 198:cc85xx.c      ****   uint32_t key = CC85XX_BOOTLOADER_KEY;
+ 630              		.loc 1 198 0
+ 631 0004 174B     		ldr	r3, .L44
+ 632 0006 0393     		str	r3, [sp, #12]
+ 199:cc85xx.c      ****   uint16_t sw = 0xCCCC;
+ 633              		.loc 1 199 0
+ 634 0008 0A23     		movs	r3, #10
+ 635 000a 6B44     		add	r3, r3, sp
+ 636 000c 164A     		ldr	r2, .L44+4
+ 637 000e 1A80     		strh	r2, [r3]
+ 200:cc85xx.c      **** 
+ 201:cc85xx.c      ****   ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_BL_UNLOCK_SPI, sizeof(key), (uint8_t *)&key, &sw);
+ 638              		.loc 1 201 0
+ 639 0010 03AA     		add	r2, sp, #12
+ 640 0012 0421     		movs	r1, #4
+ 641 0014 0020     		movs	r0, #0
+ 642 0016 FFF7FEFF 		bl	cc85xx_cmd_req
+ 643              	.LVL86:
+ 644 001a 041E     		subs	r4, r0, #0
+ 645              	.LVL87:
+ 202:cc85xx.c      ****   
+ 203:cc85xx.c      ****   if (!ret || (sw != CC85XX_SW_BL_UNLOCK_SPI_SUCCESS))
+ 646              		.loc 1 203 0
+ 647 001c 05D0     		beq	.L39
+ 648              		.loc 1 203 0 is_stmt 0 discriminator 1
+ 649 001e 0A23     		movs	r3, #10
+ 650 0020 6B44     		add	r3, r3, sp
+ 651 0022 1A88     		ldrh	r2, [r3]
+ 652 0024 114B     		ldr	r3, .L44+8
+ 653 0026 9A42     		cmp	r2, r3
+ 654 0028 17D0     		beq	.L42
+ 655              	.L39:
+ 204:cc85xx.c      ****   {
+ 205:cc85xx.c      ****     PRINTF("ERROR: %s: ret=%d, status=0x%04X\n", __FUNCTION__, ret, sw);
+ 656              		.loc 1 205 0 is_stmt 1
+ 657 002a FFF7FEFF 		bl	USBUART_GetConfiguration
+ 658              	.LVL88:
+ 659 002e 0028     		cmp	r0, #0
+ 660 0030 15D0     		beq	.L43
+ 661              	.L41:
+ 662              		.loc 1 205 0 is_stmt 0 discriminator 1
+ 663 0032 FFF7FEFF 		bl	USBUART_CDCIsReady
+ 664              	.LVL89:
+ 665 0036 0028     		cmp	r0, #0
+ 666 0038 FBD0     		beq	.L41
+ 667              		.loc 1 205 0 discriminator 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 17
+
+
+ 668 003a 0D4D     		ldr	r5, .L44+12
+ 669 003c 0A23     		movs	r3, #10
+ 670 003e 6B44     		add	r3, r3, sp
+ 671 0040 1B88     		ldrh	r3, [r3]
+ 672 0042 0093     		str	r3, [sp]
+ 673 0044 2300     		movs	r3, r4
+ 674 0046 0B4A     		ldr	r2, .L44+16
+ 675 0048 0B49     		ldr	r1, .L44+20
+ 676 004a 2800     		movs	r0, r5
+ 677 004c FFF7FEFF 		bl	sprintf
+ 678              	.LVL90:
+ 679 0050 2800     		movs	r0, r5
+ 680 0052 FFF7FEFF 		bl	USBUART_PutString
+ 681              	.LVL91:
+ 206:cc85xx.c      ****     return false;
+ 682              		.loc 1 206 0 is_stmt 1 discriminator 2
+ 683 0056 0020     		movs	r0, #0
+ 684 0058 02E0     		b	.L40
+ 685              	.LVL92:
+ 686              	.L42:
+ 207:cc85xx.c      ****   }
+ 208:cc85xx.c      ****   
+ 209:cc85xx.c      ****   return true;
+ 687              		.loc 1 209 0
+ 688 005a 0120     		movs	r0, #1
+ 689              	.LVL93:
+ 690 005c 00E0     		b	.L40
+ 691              	.L43:
+ 206:cc85xx.c      ****     return false;
+ 692              		.loc 1 206 0
+ 693 005e 0020     		movs	r0, #0
+ 694              	.L40:
+ 210:cc85xx.c      **** }
+ 695              		.loc 1 210 0
+ 696 0060 05B0     		add	sp, sp, #20
+ 697              		@ sp needed
+ 698 0062 30BD     		pop	{r4, r5, pc}
+ 699              	.L45:
+ 700              		.align	2
+ 701              	.L44:
+ 702 0064 07B00525 		.word	621129735
+ 703 0068 CCCCFFFF 		.word	-13108
+ 704 006c 20800000 		.word	32800
+ 705 0070 00000000 		.word	gbuf
+ 706 0074 00000000 		.word	.LANCHOR0
+ 707 0078 44000000 		.word	.LC6
+ 708              		.cfi_endproc
+ 709              	.LFE10:
+ 710              		.size	cc85xx_bl_unlock_spi, .-cc85xx_bl_unlock_spi
+ 711              		.section	.text.cc85xx_print_info,"ax",%progbits
+ 712              		.align	2
+ 713              		.global	cc85xx_print_info
+ 714              		.code	16
+ 715              		.thumb_func
+ 716              		.type	cc85xx_print_info, %function
+ 717              	cc85xx_print_info:
+ 718              	.LFB11:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 18
+
+
+ 211:cc85xx.c      **** 
+ 212:cc85xx.c      **** bool cc85xx_print_info(void)
+ 213:cc85xx.c      **** {
+ 719              		.loc 1 213 0
+ 720              		.cfi_startproc
+ 721              		@ args = 0, pretend = 0, frame = 32
+ 722              		@ frame_needed = 0, uses_anonymous_args = 0
+ 723 0000 70B5     		push	{r4, r5, r6, lr}
+ 724              		.cfi_def_cfa_offset 16
+ 725              		.cfi_offset 4, -16
+ 726              		.cfi_offset 5, -12
+ 727              		.cfi_offset 6, -8
+ 728              		.cfi_offset 14, -4
+ 729 0002 88B0     		sub	sp, sp, #32
+ 730              		.cfi_def_cfa_offset 48
+ 214:cc85xx.c      ****   uint32_t i;
+ 215:cc85xx.c      ****   uint8_t rsp[24];
+ 216:cc85xx.c      ****   const uint16_t rsvd = 0x00B0;
+ 731              		.loc 1 216 0
+ 732 0004 6B46     		mov	r3, sp
+ 733 0006 9A1D     		adds	r2, r3, #6
+ 734 0008 B023     		movs	r3, #176
+ 735 000a 1380     		strh	r3, [r2]
+ 217:cc85xx.c      ****   uint16_t sw = 0;
+ 736              		.loc 1 217 0
+ 737 000c 01AB     		add	r3, sp, #4
+ 738 000e 0021     		movs	r1, #0
+ 739 0010 1980     		strh	r1, [r3]
+ 740              	.LVL94:
+ 218:cc85xx.c      ****   bool ret = false;
+ 219:cc85xx.c      ****   
+ 220:cc85xx.c      ****   ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_DI_GET_CHIP_INFO, sizeof(rsvd), (uint8_t *)&rsvd, &sw);
+ 741              		.loc 1 220 0
+ 742 0012 0231     		adds	r1, r1, #2
+ 743 0014 1F20     		movs	r0, #31
+ 744 0016 FFF7FEFF 		bl	cc85xx_cmd_req
+ 745              	.LVL95:
+ 746 001a 051E     		subs	r5, r0, #0
+ 747              	.LVL96:
+ 221:cc85xx.c      ****   if (!ret)
+ 748              		.loc 1 221 0
+ 749 001c 14D1     		bne	.L47
+ 222:cc85xx.c      ****   {
+ 223:cc85xx.c      ****     PRINTF("ERROR: CMD_REQ 0x%02X failed: sw=0x%04X\n", CC85XX_CMD_TYPE_DI_GET_CHIP_INFO, sw);
+ 750              		.loc 1 223 0
+ 751 001e FFF7FEFF 		bl	USBUART_GetConfiguration
+ 752              	.LVL97:
+ 753 0022 0028     		cmp	r0, #0
+ 754 0024 45D0     		beq	.L55
+ 755              	.L49:
+ 756              		.loc 1 223 0 is_stmt 0 discriminator 1
+ 757 0026 FFF7FEFF 		bl	USBUART_CDCIsReady
+ 758              	.LVL98:
+ 759 002a 0028     		cmp	r0, #0
+ 760 002c FBD0     		beq	.L49
+ 761              		.loc 1 223 0 discriminator 2
+ 762 002e 01AB     		add	r3, sp, #4
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 19
+
+
+ 763 0030 1B88     		ldrh	r3, [r3]
+ 764 0032 224C     		ldr	r4, .L58
+ 765 0034 1F22     		movs	r2, #31
+ 766 0036 2249     		ldr	r1, .L58+4
+ 767 0038 2000     		movs	r0, r4
+ 768 003a FFF7FEFF 		bl	sprintf
+ 769              	.LVL99:
+ 770 003e 2000     		movs	r0, r4
+ 771 0040 FFF7FEFF 		bl	USBUART_PutString
+ 772              	.LVL100:
+ 224:cc85xx.c      ****     return ret;
+ 773              		.loc 1 224 0 is_stmt 1 discriminator 2
+ 774 0044 2800     		movs	r0, r5
+ 775 0046 37E0     		b	.L48
+ 776              	.LVL101:
+ 777              	.L47:
+ 225:cc85xx.c      ****   }
+ 226:cc85xx.c      **** 
+ 227:cc85xx.c      ****   ret = cc85xx_read(24, &sw, rsp);
+ 778              		.loc 1 227 0
+ 779 0048 02AA     		add	r2, sp, #8
+ 780 004a 01A9     		add	r1, sp, #4
+ 781 004c 1820     		movs	r0, #24
+ 782              	.LVL102:
+ 783 004e FFF7FEFF 		bl	cc85xx_read
+ 784              	.LVL103:
+ 785 0052 051E     		subs	r5, r0, #0
+ 786              	.LVL104:
+ 228:cc85xx.c      ****   if (!ret)
+ 787              		.loc 1 228 0
+ 788 0054 28D1     		bne	.L56
+ 229:cc85xx.c      ****   {
+ 230:cc85xx.c      ****     PRINTF("ERROR: READ failed: sw=0x%04X\n", sw);
+ 789              		.loc 1 230 0
+ 790 0056 FFF7FEFF 		bl	USBUART_GetConfiguration
+ 791              	.LVL105:
+ 792 005a 0028     		cmp	r0, #0
+ 793 005c 2BD0     		beq	.L57
+ 794              	.L51:
+ 795              		.loc 1 230 0 is_stmt 0 discriminator 1
+ 796 005e FFF7FEFF 		bl	USBUART_CDCIsReady
+ 797              	.LVL106:
+ 798 0062 0028     		cmp	r0, #0
+ 799 0064 FBD0     		beq	.L51
+ 800              		.loc 1 230 0 discriminator 2
+ 801 0066 01AB     		add	r3, sp, #4
+ 802 0068 1A88     		ldrh	r2, [r3]
+ 803 006a 144C     		ldr	r4, .L58
+ 804 006c 1549     		ldr	r1, .L58+8
+ 805 006e 2000     		movs	r0, r4
+ 806 0070 FFF7FEFF 		bl	sprintf
+ 807              	.LVL107:
+ 808 0074 2000     		movs	r0, r4
+ 809 0076 FFF7FEFF 		bl	USBUART_PutString
+ 810              	.LVL108:
+ 231:cc85xx.c      ****     return ret;
+ 811              		.loc 1 231 0 is_stmt 1 discriminator 2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 20
+
+
+ 812 007a 2800     		movs	r0, r5
+ 813 007c 1CE0     		b	.L48
+ 814              	.LVL109:
+ 815              	.L54:
+ 232:cc85xx.c      ****   }
+ 233:cc85xx.c      ****   
+ 234:cc85xx.c      ****   for (i = 0; i < 24; i++)
+ 235:cc85xx.c      ****   {
+ 236:cc85xx.c      ****     PRINTF("0x%02X: %02X\n", i, rsp[i]);
+ 816              		.loc 1 236 0
+ 817 007e FFF7FEFF 		bl	USBUART_GetConfiguration
+ 818              	.LVL110:
+ 819 0082 0028     		cmp	r0, #0
+ 820 0084 0ED0     		beq	.L52
+ 821              	.L53:
+ 822              		.loc 1 236 0 is_stmt 0 discriminator 1
+ 823 0086 FFF7FEFF 		bl	USBUART_CDCIsReady
+ 824              	.LVL111:
+ 825 008a 0028     		cmp	r0, #0
+ 826 008c FBD0     		beq	.L53
+ 827              		.loc 1 236 0 discriminator 2
+ 828 008e 02AB     		add	r3, sp, #8
+ 829 0090 1B5D     		ldrb	r3, [r3, r4]
+ 830 0092 0A4E     		ldr	r6, .L58
+ 831 0094 2200     		movs	r2, r4
+ 832 0096 0C49     		ldr	r1, .L58+12
+ 833 0098 3000     		movs	r0, r6
+ 834 009a FFF7FEFF 		bl	sprintf
+ 835              	.LVL112:
+ 836 009e 3000     		movs	r0, r6
+ 837 00a0 FFF7FEFF 		bl	USBUART_PutString
+ 838              	.LVL113:
+ 839              	.L52:
+ 234:cc85xx.c      ****   {
+ 840              		.loc 1 234 0 is_stmt 1 discriminator 2
+ 841 00a4 0134     		adds	r4, r4, #1
+ 842              	.LVL114:
+ 843 00a6 00E0     		b	.L50
+ 844              	.LVL115:
+ 845              	.L56:
+ 846 00a8 0024     		movs	r4, #0
+ 847              	.LVL116:
+ 848              	.L50:
+ 234:cc85xx.c      ****   {
+ 849              		.loc 1 234 0 is_stmt 0 discriminator 1
+ 850 00aa 172C     		cmp	r4, #23
+ 851 00ac E7D9     		bls	.L54
+ 237:cc85xx.c      ****   }
+ 238:cc85xx.c      **** 
+ 239:cc85xx.c      ****   return ret;
+ 852              		.loc 1 239 0 is_stmt 1
+ 853 00ae 2800     		movs	r0, r5
+ 854 00b0 02E0     		b	.L48
+ 855              	.LVL117:
+ 856              	.L55:
+ 224:cc85xx.c      ****   }
+ 857              		.loc 1 224 0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 21
+
+
+ 858 00b2 2800     		movs	r0, r5
+ 859 00b4 00E0     		b	.L48
+ 860              	.L57:
+ 231:cc85xx.c      ****   }
+ 861              		.loc 1 231 0
+ 862 00b6 2800     		movs	r0, r5
+ 863              	.L48:
+ 240:cc85xx.c      **** }
+ 864              		.loc 1 240 0
+ 865 00b8 08B0     		add	sp, sp, #32
+ 866              		@ sp needed
+ 867 00ba 70BD     		pop	{r4, r5, r6, pc}
+ 868              	.L59:
+ 869              		.align	2
+ 870              	.L58:
+ 871 00bc 00000000 		.word	gbuf
+ 872 00c0 68000000 		.word	.LC9
+ 873 00c4 94000000 		.word	.LC12
+ 874 00c8 B4000000 		.word	.LC14
+ 875              		.cfi_endproc
+ 876              	.LFE11:
+ 877              		.size	cc85xx_print_info, .-cc85xx_print_info
+ 878              		.section	.text.cc85xx_init,"ax",%progbits
+ 879              		.align	2
+ 880              		.global	cc85xx_init
+ 881              		.code	16
+ 882              		.thumb_func
+ 883              		.type	cc85xx_init, %function
+ 884              	cc85xx_init:
+ 885              	.LFB12:
+ 241:cc85xx.c      **** 
+ 242:cc85xx.c      **** void cc85xx_init(void)
+ 243:cc85xx.c      **** {
+ 886              		.loc 1 243 0
+ 887              		.cfi_startproc
+ 888              		@ args = 0, pretend = 0, frame = 0
+ 889              		@ frame_needed = 0, uses_anonymous_args = 0
+ 890 0000 10B5     		push	{r4, lr}
+ 891              		.cfi_def_cfa_offset 8
+ 892              		.cfi_offset 4, -8
+ 893              		.cfi_offset 14, -4
+ 244:cc85xx.c      ****   SPI_Stop();
+ 894              		.loc 1 244 0
+ 895 0002 FFF7FEFF 		bl	SPI_Stop
+ 896              	.LVL118:
+ 245:cc85xx.c      **** 
+ 246:cc85xx.c      ****   if (cc85xx_boot_reset() == false)
+ 897              		.loc 1 246 0
+ 898 0006 FFF7FEFF 		bl	cc85xx_boot_reset
+ 899              	.LVL119:
+ 900 000a 0028     		cmp	r0, #0
+ 901 000c 11D1     		bne	.L61
+ 247:cc85xx.c      ****   {
+ 248:cc85xx.c      ****     PRINTF("Failed to boot cc8520 into bootloader\n");
+ 902              		.loc 1 248 0
+ 903 000e FFF7FEFF 		bl	USBUART_GetConfiguration
+ 904              	.LVL120:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 22
+
+
+ 905 0012 0028     		cmp	r0, #0
+ 906 0014 0FD0     		beq	.L60
+ 907              	.L63:
+ 908              		.loc 1 248 0 is_stmt 0 discriminator 1
+ 909 0016 FFF7FEFF 		bl	USBUART_CDCIsReady
+ 910              	.LVL121:
+ 911 001a 0028     		cmp	r0, #0
+ 912 001c FBD0     		beq	.L63
+ 913              		.loc 1 248 0 discriminator 2
+ 914 001e 064C     		ldr	r4, .L64
+ 915 0020 2722     		movs	r2, #39
+ 916 0022 0649     		ldr	r1, .L64+4
+ 917 0024 2000     		movs	r0, r4
+ 918 0026 FFF7FEFF 		bl	memcpy
+ 919              	.LVL122:
+ 920 002a 2000     		movs	r0, r4
+ 921 002c FFF7FEFF 		bl	USBUART_PutString
+ 922              	.LVL123:
+ 923 0030 01E0     		b	.L60
+ 924              	.L61:
+ 249:cc85xx.c      ****     return;
+ 250:cc85xx.c      ****   }
+ 251:cc85xx.c      **** 
+ 252:cc85xx.c      ****   SPI_Start();
+ 925              		.loc 1 252 0 is_stmt 1
+ 926 0032 FFF7FEFF 		bl	SPI_Start
+ 927              	.LVL124:
+ 928              	.L60:
+ 253:cc85xx.c      **** }
+ 929              		.loc 1 253 0
+ 930              		@ sp needed
+ 931 0036 10BD     		pop	{r4, pc}
+ 932              	.L65:
+ 933              		.align	2
+ 934              	.L64:
+ 935 0038 00000000 		.word	gbuf
+ 936 003c C4000000 		.word	.LC17
+ 937              		.cfi_endproc
+ 938              	.LFE12:
+ 939              		.size	cc85xx_init, .-cc85xx_init
+ 940              		.section	.rodata
+ 941              		.align	2
+ 942              		.set	.LANCHOR0,. + 0
+ 943              		.type	__FUNCTION__.6838, %object
+ 944              		.size	__FUNCTION__.6838, 21
+ 945              	__FUNCTION__.6838:
+ 946 0000 63633835 		.ascii	"cc85xx_bl_unlock_spi\000"
+ 946      78785F62 
+ 946      6C5F756E 
+ 946      6C6F636B 
+ 946      5F737069 
+ 947              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 948              		.align	2
+ 949              	.LC2:
+ 950 0000 4552524F 		.ascii	"ERROR: Timed out waiting for previous SPI operation"
+ 950      523A2054 
+ 950      696D6564 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 23
+
+
+ 950      206F7574 
+ 950      20776169 
+ 951 0033 20746F20 		.ascii	" to complete\012\000"
+ 951      636F6D70 
+ 951      6C657465 
+ 951      0A00
+ 952 0041 000000   		.space	3
+ 953              	.LC6:
+ 954 0044 4552524F 		.ascii	"ERROR: %s: ret=%d, status=0x%04X\012\000"
+ 954      523A2025 
+ 954      733A2072 
+ 954      65743D25 
+ 954      642C2073 
+ 955 0066 0000     		.space	2
+ 956              	.LC9:
+ 957 0068 4552524F 		.ascii	"ERROR: CMD_REQ 0x%02X failed: sw=0x%04X\012\000"
+ 957      523A2043 
+ 957      4D445F52 
+ 957      45512030 
+ 957      78253032 
+ 958 0091 000000   		.space	3
+ 959              	.LC12:
+ 960 0094 4552524F 		.ascii	"ERROR: READ failed: sw=0x%04X\012\000"
+ 960      523A2052 
+ 960      45414420 
+ 960      6661696C 
+ 960      65643A20 
+ 961 00b3 00       		.space	1
+ 962              	.LC14:
+ 963 00b4 30782530 		.ascii	"0x%02X: %02X\012\000"
+ 963      32583A20 
+ 963      25303258 
+ 963      0A00
+ 964 00c2 0000     		.space	2
+ 965              	.LC17:
+ 966 00c4 4661696C 		.ascii	"Failed to boot cc8520 into bootloader\012\000"
+ 966      65642074 
+ 966      6F20626F 
+ 966      6F742063 
+ 966      63383532 
+ 967              		.text
+ 968              	.Letext0:
+ 969              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 970              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 971              		.file 4 "./cc85xx.h"
+ 972              		.file 5 "./timers.h"
+ 973              		.file 6 "./Application.h"
+ 974              		.file 7 "Generated_Source\\PSoC4/SPI_SPI_UART.h"
+ 975              		.file 8 "Generated_Source\\PSoC4/SPI_miso_m.h"
+ 976              		.file 9 "Generated_Source\\PSoC4/USBUART.h"
+ 977              		.file 10 "Generated_Source\\PSoC4/USBUART_cdc.h"
+ 978              		.file 11 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4
+ 979              		.file 12 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4
+ 980              		.file 13 "Generated_Source\\PSoC4/RSTn.h"
+ 981              		.file 14 "Generated_Source\\PSoC4/SPI_ss0_m.h"
+ 982              		.file 15 "Generated_Source\\PSoC4/SPI_mosi_m.h"
+ 983              		.file 16 "Generated_Source\\PSoC4/CyLib.h"
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 24
+
+
+ 984              		.file 17 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4
+ 985              		.file 18 "Generated_Source\\PSoC4/SPI.h"
+ 986              		.section	.debug_info,"",%progbits
+ 987              	.Ldebug_info0:
+ 988 0000 6D0A0000 		.4byte	0xa6d
+ 989 0004 0400     		.2byte	0x4
+ 990 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 991 000a 04       		.byte	0x4
+ 992 000b 01       		.uleb128 0x1
+ 993 000c 79030000 		.4byte	.LASF75
+ 994 0010 0C       		.byte	0xc
+ 995 0011 00000000 		.4byte	.LASF76
+ 996 0015 B9020000 		.4byte	.LASF77
+ 997 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 998 001d 00000000 		.4byte	0
+ 999 0021 00000000 		.4byte	.Ldebug_line0
+ 1000 0025 02       		.uleb128 0x2
+ 1001 0026 01       		.byte	0x1
+ 1002 0027 06       		.byte	0x6
+ 1003 0028 1B020000 		.4byte	.LASF0
+ 1004 002c 03       		.uleb128 0x3
+ 1005 002d 6D020000 		.4byte	.LASF3
+ 1006 0031 02       		.byte	0x2
+ 1007 0032 1D       		.byte	0x1d
+ 1008 0033 37000000 		.4byte	0x37
+ 1009 0037 02       		.uleb128 0x2
+ 1010 0038 01       		.byte	0x1
+ 1011 0039 08       		.byte	0x8
+ 1012 003a 94010000 		.4byte	.LASF1
+ 1013 003e 02       		.uleb128 0x2
+ 1014 003f 02       		.byte	0x2
+ 1015 0040 05       		.byte	0x5
+ 1016 0041 4D000000 		.4byte	.LASF2
+ 1017 0045 03       		.uleb128 0x3
+ 1018 0046 9E000000 		.4byte	.LASF4
+ 1019 004a 02       		.byte	0x2
+ 1020 004b 2B       		.byte	0x2b
+ 1021 004c 50000000 		.4byte	0x50
+ 1022 0050 02       		.uleb128 0x2
+ 1023 0051 02       		.byte	0x2
+ 1024 0052 07       		.byte	0x7
+ 1025 0053 8C020000 		.4byte	.LASF5
+ 1026 0057 02       		.uleb128 0x2
+ 1027 0058 04       		.byte	0x4
+ 1028 0059 05       		.byte	0x5
+ 1029 005a 48010000 		.4byte	.LASF6
+ 1030 005e 03       		.uleb128 0x3
+ 1031 005f 78000000 		.4byte	.LASF7
+ 1032 0063 02       		.byte	0x2
+ 1033 0064 41       		.byte	0x41
+ 1034 0065 69000000 		.4byte	0x69
+ 1035 0069 02       		.uleb128 0x2
+ 1036 006a 04       		.byte	0x4
+ 1037 006b 07       		.byte	0x7
+ 1038 006c 1D030000 		.4byte	.LASF8
+ 1039 0070 02       		.uleb128 0x2
+ 1040 0071 08       		.byte	0x8
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 25
+
+
+ 1041 0072 05       		.byte	0x5
+ 1042 0073 35010000 		.4byte	.LASF9
+ 1043 0077 02       		.uleb128 0x2
+ 1044 0078 08       		.byte	0x8
+ 1045 0079 07       		.byte	0x7
+ 1046 007a 27020000 		.4byte	.LASF10
+ 1047 007e 04       		.uleb128 0x4
+ 1048 007f 04       		.byte	0x4
+ 1049 0080 05       		.byte	0x5
+ 1050 0081 696E7400 		.ascii	"int\000"
+ 1051 0085 02       		.uleb128 0x2
+ 1052 0086 04       		.byte	0x4
+ 1053 0087 07       		.byte	0x7
+ 1054 0088 58020000 		.4byte	.LASF11
+ 1055 008c 03       		.uleb128 0x3
+ 1056 008d BF000000 		.4byte	.LASF12
+ 1057 0091 03       		.byte	0x3
+ 1058 0092 18       		.byte	0x18
+ 1059 0093 2C000000 		.4byte	0x2c
+ 1060 0097 03       		.uleb128 0x3
+ 1061 0098 E0020000 		.4byte	.LASF13
+ 1062 009c 03       		.byte	0x3
+ 1063 009d 24       		.byte	0x24
+ 1064 009e 45000000 		.4byte	0x45
+ 1065 00a2 03       		.uleb128 0x3
+ 1066 00a3 46020000 		.4byte	.LASF14
+ 1067 00a7 03       		.byte	0x3
+ 1068 00a8 30       		.byte	0x30
+ 1069 00a9 5E000000 		.4byte	0x5e
+ 1070 00ad 05       		.uleb128 0x5
+ 1071 00ae 02       		.byte	0x2
+ 1072 00af 04       		.byte	0x4
+ 1073 00b0 20       		.byte	0x20
+ 1074 00b1 E3000000 		.4byte	0xe3
+ 1075 00b5 06       		.uleb128 0x6
+ 1076 00b6 2C010000 		.4byte	.LASF15
+ 1077 00ba 04       		.byte	0x4
+ 1078 00bb 22       		.byte	0x22
+ 1079 00bc 85000000 		.4byte	0x85
+ 1080 00c0 04       		.byte	0x4
+ 1081 00c1 06       		.byte	0x6
+ 1082 00c2 1A       		.byte	0x1a
+ 1083 00c3 00       		.byte	0
+ 1084 00c4 06       		.uleb128 0x6
+ 1085 00c5 DC000000 		.4byte	.LASF16
+ 1086 00c9 04       		.byte	0x4
+ 1087 00ca 23       		.byte	0x23
+ 1088 00cb 85000000 		.4byte	0x85
+ 1089 00cf 04       		.byte	0x4
+ 1090 00d0 02       		.byte	0x2
+ 1091 00d1 18       		.byte	0x18
+ 1092 00d2 00       		.byte	0
+ 1093 00d3 06       		.uleb128 0x6
+ 1094 00d4 18040000 		.4byte	.LASF17
+ 1095 00d8 04       		.byte	0x4
+ 1096 00d9 25       		.byte	0x25
+ 1097 00da 85000000 		.4byte	0x85
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 26
+
+
+ 1098 00de 04       		.byte	0x4
+ 1099 00df 08       		.byte	0x8
+ 1100 00e0 10       		.byte	0x10
+ 1101 00e1 00       		.byte	0
+ 1102 00e2 00       		.byte	0
+ 1103 00e3 03       		.uleb128 0x3
+ 1104 00e4 C7000000 		.4byte	.LASF18
+ 1105 00e8 04       		.byte	0x4
+ 1106 00e9 26       		.byte	0x26
+ 1107 00ea AD000000 		.4byte	0xad
+ 1108 00ee 05       		.uleb128 0x5
+ 1109 00ef 03       		.byte	0x3
+ 1110 00f0 04       		.byte	0x4
+ 1111 00f1 28       		.byte	0x28
+ 1112 00f2 0F010000 		.4byte	0x10f
+ 1113 00f6 07       		.uleb128 0x7
+ 1114 00f7 68647200 		.ascii	"hdr\000"
+ 1115 00fb 04       		.byte	0x4
+ 1116 00fc 2A       		.byte	0x2a
+ 1117 00fd E3000000 		.4byte	0xe3
+ 1118 0101 00       		.byte	0
+ 1119 0102 08       		.uleb128 0x8
+ 1120 0103 80020000 		.4byte	.LASF19
+ 1121 0107 04       		.byte	0x4
+ 1122 0108 2B       		.byte	0x2b
+ 1123 0109 0F010000 		.4byte	0x10f
+ 1124 010d 02       		.byte	0x2
+ 1125 010e 00       		.byte	0
+ 1126 010f 09       		.uleb128 0x9
+ 1127 0110 8C000000 		.4byte	0x8c
+ 1128 0114 1F010000 		.4byte	0x11f
+ 1129 0118 0A       		.uleb128 0xa
+ 1130 0119 1F010000 		.4byte	0x11f
+ 1131 011d 00       		.byte	0
+ 1132 011e 00       		.byte	0
+ 1133 011f 02       		.uleb128 0x2
+ 1134 0120 04       		.byte	0x4
+ 1135 0121 07       		.byte	0x7
+ 1136 0122 5E000000 		.4byte	.LASF20
+ 1137 0126 03       		.uleb128 0x3
+ 1138 0127 3A040000 		.4byte	.LASF21
+ 1139 012b 04       		.byte	0x4
+ 1140 012c 2C       		.byte	0x2c
+ 1141 012d EE000000 		.4byte	0xee
+ 1142 0131 05       		.uleb128 0x5
+ 1143 0132 02       		.byte	0x2
+ 1144 0133 04       		.byte	0x4
+ 1145 0134 2E       		.byte	0x2e
+ 1146 0135 58010000 		.4byte	0x158
+ 1147 0139 06       		.uleb128 0x6
+ 1148 013a DC000000 		.4byte	.LASF16
+ 1149 013e 04       		.byte	0x4
+ 1150 013f 31       		.byte	0x31
+ 1151 0140 85000000 		.4byte	0x85
+ 1152 0144 04       		.byte	0x4
+ 1153 0145 04       		.byte	0x4
+ 1154 0146 18       		.byte	0x18
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 27
+
+
+ 1155 0147 00       		.byte	0
+ 1156 0148 06       		.uleb128 0x6
+ 1157 0149 4F020000 		.4byte	.LASF22
+ 1158 014d 04       		.byte	0x4
+ 1159 014e 33       		.byte	0x33
+ 1160 014f 85000000 		.4byte	0x85
+ 1161 0153 04       		.byte	0x4
+ 1162 0154 08       		.byte	0x8
+ 1163 0155 10       		.byte	0x10
+ 1164 0156 00       		.byte	0
+ 1165 0157 00       		.byte	0
+ 1166 0158 03       		.uleb128 0x3
+ 1167 0159 86010000 		.4byte	.LASF23
+ 1168 015d 04       		.byte	0x4
+ 1169 015e 34       		.byte	0x34
+ 1170 015f 31010000 		.4byte	0x131
+ 1171 0163 02       		.uleb128 0x2
+ 1172 0164 04       		.byte	0x4
+ 1173 0165 04       		.byte	0x4
+ 1174 0166 02010000 		.4byte	.LASF24
+ 1175 016a 02       		.uleb128 0x2
+ 1176 016b 08       		.byte	0x8
+ 1177 016c 04       		.byte	0x4
+ 1178 016d 2F030000 		.4byte	.LASF25
+ 1179 0171 02       		.uleb128 0x2
+ 1180 0172 01       		.byte	0x1
+ 1181 0173 08       		.byte	0x8
+ 1182 0174 43010000 		.4byte	.LASF26
+ 1183 0178 02       		.uleb128 0x2
+ 1184 0179 08       		.byte	0x8
+ 1185 017a 04       		.byte	0x4
+ 1186 017b D3010000 		.4byte	.LASF27
+ 1187 017f 0B       		.uleb128 0xb
+ 1188 0180 71010000 		.4byte	0x171
+ 1189 0184 0C       		.uleb128 0xc
+ 1190 0185 53040000 		.4byte	.LASF28
+ 1191 0189 01       		.byte	0x1
+ 1192 018a 41       		.byte	0x41
+ 1193 018b 8C000000 		.4byte	0x8c
+ 1194 018f 00000000 		.4byte	.LFB3
+ 1195 0193 0A000000 		.4byte	.LFE3-.LFB3
+ 1196 0197 01       		.uleb128 0x1
+ 1197 0198 9C       		.byte	0x9c
+ 1198 0199 A7010000 		.4byte	0x1a7
+ 1199 019d 0D       		.uleb128 0xd
+ 1200 019e 06000000 		.4byte	.LVL0
+ 1201 01a2 86090000 		.4byte	0x986
+ 1202 01a6 00       		.byte	0
+ 1203 01a7 0C       		.uleb128 0xc
+ 1204 01a8 F4020000 		.4byte	.LASF29
+ 1205 01ac 01       		.byte	0x1
+ 1206 01ad 6C       		.byte	0x6c
+ 1207 01ae C2020000 		.4byte	0x2c2
+ 1208 01b2 00000000 		.4byte	.LFB7
+ 1209 01b6 BC000000 		.4byte	.LFE7-.LFB7
+ 1210 01ba 01       		.uleb128 0x1
+ 1211 01bb 9C       		.byte	0x9c
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 28
+
+
+ 1212 01bc C2020000 		.4byte	0x2c2
+ 1213 01c0 0E       		.uleb128 0xe
+ 1214 01c1 3E020000 		.4byte	.LASF30
+ 1215 01c5 01       		.byte	0x1
+ 1216 01c6 6C       		.byte	0x6c
+ 1217 01c7 C9020000 		.4byte	0x2c9
+ 1218 01cb 00000000 		.4byte	.LLST0
+ 1219 01cf 0E       		.uleb128 0xe
+ 1220 01d0 22040000 		.4byte	.LASF31
+ 1221 01d4 01       		.byte	0x1
+ 1222 01d5 6C       		.byte	0x6c
+ 1223 01d6 A2000000 		.4byte	0xa2
+ 1224 01da 1F000000 		.4byte	.LLST1
+ 1225 01de 0E       		.uleb128 0xe
+ 1226 01df FA000000 		.4byte	.LASF32
+ 1227 01e3 01       		.byte	0x1
+ 1228 01e4 6C       		.byte	0x6c
+ 1229 01e5 CF020000 		.4byte	0x2cf
+ 1230 01e9 4B000000 		.4byte	.LLST2
+ 1231 01ed 0E       		.uleb128 0xe
+ 1232 01ee 65020000 		.4byte	.LASF33
+ 1233 01f2 01       		.byte	0x1
+ 1234 01f3 6C       		.byte	0x6c
+ 1235 01f4 C9020000 		.4byte	0x2c9
+ 1236 01f8 A9000000 		.4byte	.LLST3
+ 1237 01fc 0E       		.uleb128 0xe
+ 1238 01fd B9000000 		.4byte	.LASF34
+ 1239 0201 01       		.byte	0x1
+ 1240 0202 6C       		.byte	0x6c
+ 1241 0203 97000000 		.4byte	0x97
+ 1242 0207 D5000000 		.4byte	.LLST4
+ 1243 020b 0F       		.uleb128 0xf
+ 1244 020c 86020000 		.4byte	.LASF35
+ 1245 0210 01       		.byte	0x1
+ 1246 0211 6E       		.byte	0x6e
+ 1247 0212 A2000000 		.4byte	0xa2
+ 1248 0216 01010000 		.4byte	.LLST5
+ 1249 021a 10       		.uleb128 0x10
+ 1250 021b 6900     		.ascii	"i\000"
+ 1251 021d 01       		.byte	0x1
+ 1252 021e 6F       		.byte	0x6f
+ 1253 021f A2000000 		.4byte	0xa2
+ 1254 0223 14010000 		.4byte	.LLST6
+ 1255 0227 0D       		.uleb128 0xd
+ 1256 0228 1E000000 		.4byte	.LVL5
+ 1257 022c 92090000 		.4byte	0x992
+ 1258 0230 0D       		.uleb128 0xd
+ 1259 0231 3E000000 		.4byte	.LVL7
+ 1260 0235 9D090000 		.4byte	0x99d
+ 1261 0239 0D       		.uleb128 0xd
+ 1262 023a 46000000 		.4byte	.LVL8
+ 1263 023e A9090000 		.4byte	0x9a9
+ 1264 0242 11       		.uleb128 0x11
+ 1265 0243 56000000 		.4byte	.LVL9
+ 1266 0247 B4090000 		.4byte	0x9b4
+ 1267 024b 65020000 		.4byte	0x265
+ 1268 024f 12       		.uleb128 0x12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 29
+
+
+ 1269 0250 01       		.uleb128 0x1
+ 1270 0251 50       		.byte	0x50
+ 1271 0252 02       		.uleb128 0x2
+ 1272 0253 74       		.byte	0x74
+ 1273 0254 00       		.sleb128 0
+ 1274 0255 12       		.uleb128 0x12
+ 1275 0256 01       		.uleb128 0x1
+ 1276 0257 51       		.byte	0x51
+ 1277 0258 05       		.uleb128 0x5
+ 1278 0259 03       		.byte	0x3
+ 1279 025a 00000000 		.4byte	.LC2
+ 1280 025e 12       		.uleb128 0x12
+ 1281 025f 01       		.uleb128 0x1
+ 1282 0260 52       		.byte	0x52
+ 1283 0261 02       		.uleb128 0x2
+ 1284 0262 08       		.byte	0x8
+ 1285 0263 41       		.byte	0x41
+ 1286 0264 00       		.byte	0
+ 1287 0265 11       		.uleb128 0x11
+ 1288 0266 5C000000 		.4byte	.LVL10
+ 1289 026a BD090000 		.4byte	0x9bd
+ 1290 026e 79020000 		.4byte	0x279
+ 1291 0272 12       		.uleb128 0x12
+ 1292 0273 01       		.uleb128 0x1
+ 1293 0274 50       		.byte	0x50
+ 1294 0275 02       		.uleb128 0x2
+ 1295 0276 74       		.byte	0x74
+ 1296 0277 00       		.sleb128 0
+ 1297 0278 00       		.byte	0
+ 1298 0279 11       		.uleb128 0x11
+ 1299 027a 68000000 		.4byte	.LVL11
+ 1300 027e C8090000 		.4byte	0x9c8
+ 1301 0282 94020000 		.4byte	0x294
+ 1302 0286 12       		.uleb128 0x12
+ 1303 0287 01       		.uleb128 0x1
+ 1304 0288 50       		.byte	0x50
+ 1305 0289 03       		.uleb128 0x3
+ 1306 028a 91       		.byte	0x91
+ 1307 028b 64       		.sleb128 -28
+ 1308 028c 06       		.byte	0x6
+ 1309 028d 12       		.uleb128 0x12
+ 1310 028e 01       		.uleb128 0x1
+ 1311 028f 51       		.byte	0x51
+ 1312 0290 02       		.uleb128 0x2
+ 1313 0291 76       		.byte	0x76
+ 1314 0292 00       		.sleb128 0
+ 1315 0293 00       		.byte	0
+ 1316 0294 0D       		.uleb128 0xd
+ 1317 0295 6C000000 		.4byte	.LVL12
+ 1318 0299 D4090000 		.4byte	0x9d4
+ 1319 029d 0D       		.uleb128 0xd
+ 1320 029e 74000000 		.4byte	.LVL13
+ 1321 02a2 84010000 		.4byte	0x184
+ 1322 02a6 0D       		.uleb128 0xd
+ 1323 02a7 7C000000 		.4byte	.LVL14
+ 1324 02ab 84010000 		.4byte	0x184
+ 1325 02af 0D       		.uleb128 0xd
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 30
+
+
+ 1326 02b0 8E000000 		.4byte	.LVL16
+ 1327 02b4 84010000 		.4byte	0x184
+ 1328 02b8 0D       		.uleb128 0xd
+ 1329 02b9 9E000000 		.4byte	.LVL21
+ 1330 02bd E0090000 		.4byte	0x9e0
+ 1331 02c1 00       		.byte	0
+ 1332 02c2 02       		.uleb128 0x2
+ 1333 02c3 01       		.byte	0x1
+ 1334 02c4 02       		.byte	0x2
+ 1335 02c5 EE020000 		.4byte	.LASF36
+ 1336 02c9 13       		.uleb128 0x13
+ 1337 02ca 04       		.byte	0x4
+ 1338 02cb 8C000000 		.4byte	0x8c
+ 1339 02cf 13       		.uleb128 0x13
+ 1340 02d0 04       		.byte	0x4
+ 1341 02d1 97000000 		.4byte	0x97
+ 1342 02d5 0C       		.uleb128 0xc
+ 1343 02d6 77010000 		.4byte	.LASF37
+ 1344 02da 01       		.byte	0x1
+ 1345 02db 95       		.byte	0x95
+ 1346 02dc C2020000 		.4byte	0x2c2
+ 1347 02e0 00000000 		.4byte	.LFB8
+ 1348 02e4 5E000000 		.4byte	.LFE8-.LFB8
+ 1349 02e8 01       		.uleb128 0x1
+ 1350 02e9 9C       		.byte	0x9c
+ 1351 02ea BA030000 		.4byte	0x3ba
+ 1352 02ee 0E       		.uleb128 0xe
+ 1353 02ef 9F020000 		.4byte	.LASF38
+ 1354 02f3 01       		.byte	0x1
+ 1355 02f4 95       		.byte	0x95
+ 1356 02f5 8C000000 		.4byte	0x8c
+ 1357 02f9 32010000 		.4byte	.LLST7
+ 1358 02fd 0E       		.uleb128 0xe
+ 1359 02fe 51010000 		.4byte	.LASF39
+ 1360 0302 01       		.byte	0x1
+ 1361 0303 95       		.byte	0x95
+ 1362 0304 8C000000 		.4byte	0x8c
+ 1363 0308 53010000 		.4byte	.LLST8
+ 1364 030c 0E       		.uleb128 0xe
+ 1365 030d 35000000 		.4byte	.LASF40
+ 1366 0311 01       		.byte	0x1
+ 1367 0312 95       		.byte	0x95
+ 1368 0313 C9020000 		.4byte	0x2c9
+ 1369 0317 74010000 		.4byte	.LLST9
+ 1370 031b 0E       		.uleb128 0xe
+ 1371 031c FA000000 		.4byte	.LASF32
+ 1372 0320 01       		.byte	0x1
+ 1373 0321 95       		.byte	0x95
+ 1374 0322 CF020000 		.4byte	0x2cf
+ 1375 0326 93010000 		.4byte	.LLST10
+ 1376 032a 10       		.uleb128 0x10
+ 1377 032b 72657400 		.ascii	"ret\000"
+ 1378 032f 01       		.byte	0x1
+ 1379 0330 97       		.byte	0x97
+ 1380 0331 C2020000 		.4byte	0x2c2
+ 1381 0335 B2010000 		.4byte	.LLST11
+ 1382 0339 0F       		.uleb128 0xf
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 31
+
+
+ 1383 033a 07040000 		.4byte	.LASF41
+ 1384 033e 01       		.byte	0x1
+ 1385 033f 99       		.byte	0x99
+ 1386 0340 BA030000 		.4byte	0x3ba
+ 1387 0344 D1010000 		.4byte	.LLST12
+ 1388 0348 11       		.uleb128 0x11
+ 1389 0349 14000000 		.4byte	.LVL29
+ 1390 034d EC090000 		.4byte	0x9ec
+ 1391 0351 5C030000 		.4byte	0x35c
+ 1392 0355 12       		.uleb128 0x12
+ 1393 0356 01       		.uleb128 0x1
+ 1394 0357 50       		.byte	0x50
+ 1395 0358 02       		.uleb128 0x2
+ 1396 0359 74       		.byte	0x74
+ 1397 035a 00       		.sleb128 0
+ 1398 035b 00       		.byte	0
+ 1399 035c 11       		.uleb128 0x11
+ 1400 035d 3A000000 		.4byte	.LVL32
+ 1401 0361 B4090000 		.4byte	0x9b4
+ 1402 0365 7D030000 		.4byte	0x37d
+ 1403 0369 12       		.uleb128 0x12
+ 1404 036a 01       		.uleb128 0x1
+ 1405 036b 50       		.byte	0x50
+ 1406 036c 02       		.uleb128 0x2
+ 1407 036d 77       		.byte	0x77
+ 1408 036e 02       		.sleb128 2
+ 1409 036f 12       		.uleb128 0x12
+ 1410 0370 01       		.uleb128 0x1
+ 1411 0371 51       		.byte	0x51
+ 1412 0372 03       		.uleb128 0x3
+ 1413 0373 91       		.byte	0x91
+ 1414 0374 60       		.sleb128 -32
+ 1415 0375 06       		.byte	0x6
+ 1416 0376 12       		.uleb128 0x12
+ 1417 0377 01       		.uleb128 0x1
+ 1418 0378 52       		.byte	0x52
+ 1419 0379 02       		.uleb128 0x2
+ 1420 037a 75       		.byte	0x75
+ 1421 037b 00       		.sleb128 0
+ 1422 037c 00       		.byte	0
+ 1423 037d 11       		.uleb128 0x11
+ 1424 037e 48000000 		.4byte	.LVL33
+ 1425 0382 A7010000 		.4byte	0x1a7
+ 1426 0386 A9030000 		.4byte	0x3a9
+ 1427 038a 12       		.uleb128 0x12
+ 1428 038b 01       		.uleb128 0x1
+ 1429 038c 50       		.byte	0x50
+ 1430 038d 02       		.uleb128 0x2
+ 1431 038e 77       		.byte	0x77
+ 1432 038f 00       		.sleb128 0
+ 1433 0390 12       		.uleb128 0x12
+ 1434 0391 01       		.uleb128 0x1
+ 1435 0392 51       		.byte	0x51
+ 1436 0393 02       		.uleb128 0x2
+ 1437 0394 74       		.byte	0x74
+ 1438 0395 00       		.sleb128 0
+ 1439 0396 12       		.uleb128 0x12
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 32
+
+
+ 1440 0397 01       		.uleb128 0x1
+ 1441 0398 52       		.byte	0x52
+ 1442 0399 03       		.uleb128 0x3
+ 1443 039a 91       		.byte	0x91
+ 1444 039b 64       		.sleb128 -28
+ 1445 039c 06       		.byte	0x6
+ 1446 039d 12       		.uleb128 0x12
+ 1447 039e 01       		.uleb128 0x1
+ 1448 039f 53       		.byte	0x53
+ 1449 03a0 01       		.uleb128 0x1
+ 1450 03a1 30       		.byte	0x30
+ 1451 03a2 12       		.uleb128 0x12
+ 1452 03a3 02       		.uleb128 0x2
+ 1453 03a4 7D       		.byte	0x7d
+ 1454 03a5 00       		.sleb128 0
+ 1455 03a6 01       		.uleb128 0x1
+ 1456 03a7 30       		.byte	0x30
+ 1457 03a8 00       		.byte	0
+ 1458 03a9 14       		.uleb128 0x14
+ 1459 03aa 50000000 		.4byte	.LVL35
+ 1460 03ae F7090000 		.4byte	0x9f7
+ 1461 03b2 12       		.uleb128 0x12
+ 1462 03b3 01       		.uleb128 0x1
+ 1463 03b4 50       		.byte	0x50
+ 1464 03b5 02       		.uleb128 0x2
+ 1465 03b6 77       		.byte	0x77
+ 1466 03b7 00       		.sleb128 0
+ 1467 03b8 00       		.byte	0
+ 1468 03b9 00       		.byte	0
+ 1469 03ba 13       		.uleb128 0x13
+ 1470 03bb 04       		.byte	0x4
+ 1471 03bc 26010000 		.4byte	0x126
+ 1472 03c0 0C       		.uleb128 0xc
+ 1473 03c1 63040000 		.4byte	.LASF42
+ 1474 03c5 01       		.byte	0x1
+ 1475 03c6 AC       		.byte	0xac
+ 1476 03c7 C2020000 		.4byte	0x2c2
+ 1477 03cb 00000000 		.4byte	.LFB9
+ 1478 03cf 4E000000 		.4byte	.LFE9-.LFB9
+ 1479 03d3 01       		.uleb128 0x1
+ 1480 03d4 9C       		.byte	0x9c
+ 1481 03d5 97040000 		.4byte	0x497
+ 1482 03d9 0E       		.uleb128 0xe
+ 1483 03da 1C000000 		.4byte	.LASF43
+ 1484 03de 01       		.byte	0x1
+ 1485 03df AC       		.byte	0xac
+ 1486 03e0 97000000 		.4byte	0x97
+ 1487 03e4 EF010000 		.4byte	.LLST13
+ 1488 03e8 0E       		.uleb128 0xe
+ 1489 03e9 FA000000 		.4byte	.LASF32
+ 1490 03ed 01       		.byte	0x1
+ 1491 03ee AC       		.byte	0xac
+ 1492 03ef CF020000 		.4byte	0x2cf
+ 1493 03f3 10020000 		.4byte	.LLST14
+ 1494 03f7 0E       		.uleb128 0xe
+ 1495 03f8 35000000 		.4byte	.LASF40
+ 1496 03fc 01       		.byte	0x1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 33
+
+
+ 1497 03fd AC       		.byte	0xac
+ 1498 03fe C9020000 		.4byte	0x2c9
+ 1499 0402 2F020000 		.4byte	.LLST15
+ 1500 0406 10       		.uleb128 0x10
+ 1501 0407 72657400 		.ascii	"ret\000"
+ 1502 040b 01       		.byte	0x1
+ 1503 040c AE       		.byte	0xae
+ 1504 040d C2020000 		.4byte	0x2c2
+ 1505 0411 5B020000 		.4byte	.LLST16
+ 1506 0415 0F       		.uleb128 0xf
+ 1507 0416 07040000 		.4byte	.LASF41
+ 1508 041a 01       		.byte	0x1
+ 1509 041b B0       		.byte	0xb0
+ 1510 041c 97040000 		.4byte	0x497
+ 1511 0420 7A020000 		.4byte	.LLST17
+ 1512 0424 11       		.uleb128 0x11
+ 1513 0425 12000000 		.4byte	.LVL41
+ 1514 0429 EC090000 		.4byte	0x9ec
+ 1515 042d 38040000 		.4byte	0x438
+ 1516 0431 12       		.uleb128 0x12
+ 1517 0432 01       		.uleb128 0x1
+ 1518 0433 50       		.byte	0x50
+ 1519 0434 02       		.uleb128 0x2
+ 1520 0435 75       		.byte	0x75
+ 1521 0436 00       		.sleb128 0
+ 1522 0437 00       		.byte	0
+ 1523 0438 11       		.uleb128 0x11
+ 1524 0439 1C000000 		.4byte	.LVL43
+ 1525 043d 020A0000 		.4byte	0xa02
+ 1526 0441 58040000 		.4byte	0x458
+ 1527 0445 12       		.uleb128 0x12
+ 1528 0446 01       		.uleb128 0x1
+ 1529 0447 50       		.byte	0x50
+ 1530 0448 02       		.uleb128 0x2
+ 1531 0449 74       		.byte	0x74
+ 1532 044a 00       		.sleb128 0
+ 1533 044b 12       		.uleb128 0x12
+ 1534 044c 01       		.uleb128 0x1
+ 1535 044d 51       		.byte	0x51
+ 1536 044e 02       		.uleb128 0x2
+ 1537 044f 08       		.byte	0x8
+ 1538 0450 CC       		.byte	0xcc
+ 1539 0451 12       		.uleb128 0x12
+ 1540 0452 01       		.uleb128 0x1
+ 1541 0453 52       		.byte	0x52
+ 1542 0454 02       		.uleb128 0x2
+ 1543 0455 75       		.byte	0x75
+ 1544 0456 00       		.sleb128 0
+ 1545 0457 00       		.byte	0
+ 1546 0458 11       		.uleb128 0x11
+ 1547 0459 38000000 		.4byte	.LVL44
+ 1548 045d A7010000 		.4byte	0x1a7
+ 1549 0461 86040000 		.4byte	0x486
+ 1550 0465 12       		.uleb128 0x12
+ 1551 0466 01       		.uleb128 0x1
+ 1552 0467 50       		.byte	0x50
+ 1553 0468 02       		.uleb128 0x2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 34
+
+
+ 1554 0469 74       		.byte	0x74
+ 1555 046a 00       		.sleb128 0
+ 1556 046b 12       		.uleb128 0x12
+ 1557 046c 01       		.uleb128 0x1
+ 1558 046d 51       		.byte	0x51
+ 1559 046e 02       		.uleb128 0x2
+ 1560 046f 75       		.byte	0x75
+ 1561 0470 00       		.sleb128 0
+ 1562 0471 12       		.uleb128 0x12
+ 1563 0472 01       		.uleb128 0x1
+ 1564 0473 52       		.byte	0x52
+ 1565 0474 03       		.uleb128 0x3
+ 1566 0475 91       		.byte	0x91
+ 1567 0476 64       		.sleb128 -28
+ 1568 0477 06       		.byte	0x6
+ 1569 0478 12       		.uleb128 0x12
+ 1570 0479 01       		.uleb128 0x1
+ 1571 047a 53       		.byte	0x53
+ 1572 047b 02       		.uleb128 0x2
+ 1573 047c 77       		.byte	0x77
+ 1574 047d 00       		.sleb128 0
+ 1575 047e 12       		.uleb128 0x12
+ 1576 047f 02       		.uleb128 0x2
+ 1577 0480 7D       		.byte	0x7d
+ 1578 0481 00       		.sleb128 0
+ 1579 0482 02       		.uleb128 0x2
+ 1580 0483 76       		.byte	0x76
+ 1581 0484 00       		.sleb128 0
+ 1582 0485 00       		.byte	0
+ 1583 0486 14       		.uleb128 0x14
+ 1584 0487 40000000 		.4byte	.LVL46
+ 1585 048b F7090000 		.4byte	0x9f7
+ 1586 048f 12       		.uleb128 0x12
+ 1587 0490 01       		.uleb128 0x1
+ 1588 0491 50       		.byte	0x50
+ 1589 0492 02       		.uleb128 0x2
+ 1590 0493 74       		.byte	0x74
+ 1591 0494 00       		.sleb128 0
+ 1592 0495 00       		.byte	0
+ 1593 0496 00       		.byte	0
+ 1594 0497 13       		.uleb128 0x13
+ 1595 0498 04       		.byte	0x4
+ 1596 0499 58010000 		.4byte	0x158
+ 1597 049d 0C       		.uleb128 0xc
+ 1598 049e E9010000 		.4byte	.LASF44
+ 1599 04a2 01       		.byte	0x1
+ 1600 04a3 15       		.byte	0x15
+ 1601 04a4 C2020000 		.4byte	0x2c2
+ 1602 04a8 00000000 		.4byte	.LFB2
+ 1603 04ac A0000000 		.4byte	.LFE2-.LFB2
+ 1604 04b0 01       		.uleb128 0x1
+ 1605 04b1 9C       		.byte	0x9c
+ 1606 04b2 D9050000 		.4byte	0x5d9
+ 1607 04b6 0E       		.uleb128 0xe
+ 1608 04b7 67000000 		.4byte	.LASF45
+ 1609 04bb 01       		.byte	0x1
+ 1610 04bc 15       		.byte	0x15
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 35
+
+
+ 1611 04bd C2020000 		.4byte	0x2c2
+ 1612 04c1 98020000 		.4byte	.LLST18
+ 1613 04c5 0F       		.uleb128 0xf
+ 1614 04c6 86020000 		.4byte	.LASF35
+ 1615 04ca 01       		.byte	0x1
+ 1616 04cb 17       		.byte	0x17
+ 1617 04cc A2000000 		.4byte	0xa2
+ 1618 04d0 B9020000 		.4byte	.LLST19
+ 1619 04d4 0F       		.uleb128 0xf
+ 1620 04d5 F6010000 		.4byte	.LASF46
+ 1621 04d9 01       		.byte	0x1
+ 1622 04da 18       		.byte	0x18
+ 1623 04db 8C000000 		.4byte	0x8c
+ 1624 04df D7020000 		.4byte	.LLST20
+ 1625 04e3 11       		.uleb128 0x11
+ 1626 04e4 0A000000 		.4byte	.LVL52
+ 1627 04e8 0D0A0000 		.4byte	0xa0d
+ 1628 04ec F6040000 		.4byte	0x4f6
+ 1629 04f0 12       		.uleb128 0x12
+ 1630 04f1 01       		.uleb128 0x1
+ 1631 04f2 50       		.byte	0x50
+ 1632 04f3 01       		.uleb128 0x1
+ 1633 04f4 30       		.byte	0x30
+ 1634 04f5 00       		.byte	0
+ 1635 04f6 11       		.uleb128 0x11
+ 1636 04f7 10000000 		.4byte	.LVL53
+ 1637 04fb 180A0000 		.4byte	0xa18
+ 1638 04ff 09050000 		.4byte	0x509
+ 1639 0503 12       		.uleb128 0x12
+ 1640 0504 01       		.uleb128 0x1
+ 1641 0505 50       		.byte	0x50
+ 1642 0506 01       		.uleb128 0x1
+ 1643 0507 30       		.byte	0x30
+ 1644 0508 00       		.byte	0
+ 1645 0509 11       		.uleb128 0x11
+ 1646 050a 16000000 		.4byte	.LVL54
+ 1647 050e 230A0000 		.4byte	0xa23
+ 1648 0512 1C050000 		.4byte	0x51c
+ 1649 0516 12       		.uleb128 0x12
+ 1650 0517 01       		.uleb128 0x1
+ 1651 0518 50       		.byte	0x50
+ 1652 0519 01       		.uleb128 0x1
+ 1653 051a 36       		.byte	0x36
+ 1654 051b 00       		.byte	0
+ 1655 051c 11       		.uleb128 0x11
+ 1656 051d 20000000 		.4byte	.LVL55
+ 1657 0521 2E0A0000 		.4byte	0xa2e
+ 1658 0525 2F050000 		.4byte	0x52f
+ 1659 0529 12       		.uleb128 0x12
+ 1660 052a 01       		.uleb128 0x1
+ 1661 052b 50       		.byte	0x50
+ 1662 052c 01       		.uleb128 0x1
+ 1663 052d 30       		.byte	0x30
+ 1664 052e 00       		.byte	0
+ 1665 052f 11       		.uleb128 0x11
+ 1666 0530 28000000 		.4byte	.LVL56
+ 1667 0534 2E0A0000 		.4byte	0xa2e
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 36
+
+
+ 1668 0538 42050000 		.4byte	0x542
+ 1669 053c 12       		.uleb128 0x12
+ 1670 053d 01       		.uleb128 0x1
+ 1671 053e 50       		.byte	0x50
+ 1672 053f 01       		.uleb128 0x1
+ 1673 0540 31       		.byte	0x31
+ 1674 0541 00       		.byte	0
+ 1675 0542 11       		.uleb128 0x11
+ 1676 0543 2E000000 		.4byte	.LVL57
+ 1677 0547 390A0000 		.4byte	0xa39
+ 1678 054b 55050000 		.4byte	0x555
+ 1679 054f 12       		.uleb128 0x12
+ 1680 0550 01       		.uleb128 0x1
+ 1681 0551 50       		.byte	0x50
+ 1682 0552 01       		.uleb128 0x1
+ 1683 0553 33       		.byte	0x33
+ 1684 0554 00       		.byte	0
+ 1685 0555 11       		.uleb128 0x11
+ 1686 0556 34000000 		.4byte	.LVL58
+ 1687 055a 0D0A0000 		.4byte	0xa0d
+ 1688 055e 68050000 		.4byte	0x568
+ 1689 0562 12       		.uleb128 0x12
+ 1690 0563 01       		.uleb128 0x1
+ 1691 0564 50       		.byte	0x50
+ 1692 0565 01       		.uleb128 0x1
+ 1693 0566 31       		.byte	0x31
+ 1694 0567 00       		.byte	0
+ 1695 0568 11       		.uleb128 0x11
+ 1696 0569 3A000000 		.4byte	.LVL59
+ 1697 056d 440A0000 		.4byte	0xa44
+ 1698 0571 7B050000 		.4byte	0x57b
+ 1699 0575 12       		.uleb128 0x12
+ 1700 0576 01       		.uleb128 0x1
+ 1701 0577 50       		.byte	0x50
+ 1702 0578 01       		.uleb128 0x1
+ 1703 0579 36       		.byte	0x36
+ 1704 057a 00       		.byte	0
+ 1705 057b 11       		.uleb128 0x11
+ 1706 057c 40000000 		.4byte	.LVL60
+ 1707 0580 180A0000 		.4byte	0xa18
+ 1708 0584 8E050000 		.4byte	0x58e
+ 1709 0588 12       		.uleb128 0x12
+ 1710 0589 01       		.uleb128 0x1
+ 1711 058a 50       		.byte	0x50
+ 1712 058b 01       		.uleb128 0x1
+ 1713 058c 31       		.byte	0x31
+ 1714 058d 00       		.byte	0
+ 1715 058e 11       		.uleb128 0x11
+ 1716 058f 46000000 		.4byte	.LVL61
+ 1717 0593 440A0000 		.4byte	0xa44
+ 1718 0597 A1050000 		.4byte	0x5a1
+ 1719 059b 12       		.uleb128 0x12
+ 1720 059c 01       		.uleb128 0x1
+ 1721 059d 50       		.byte	0x50
+ 1722 059e 01       		.uleb128 0x1
+ 1723 059f 31       		.byte	0x31
+ 1724 05a0 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 37
+
+
+ 1725 05a1 11       		.uleb128 0x11
+ 1726 05a2 4C000000 		.4byte	.LVL62
+ 1727 05a6 180A0000 		.4byte	0xa18
+ 1728 05aa B4050000 		.4byte	0x5b4
+ 1729 05ae 12       		.uleb128 0x12
+ 1730 05af 01       		.uleb128 0x1
+ 1731 05b0 50       		.byte	0x50
+ 1732 05b1 01       		.uleb128 0x1
+ 1733 05b2 30       		.byte	0x30
+ 1734 05b3 00       		.byte	0
+ 1735 05b4 0D       		.uleb128 0xd
+ 1736 05b5 50000000 		.4byte	.LVL63
+ 1737 05b9 92090000 		.4byte	0x992
+ 1738 05bd 0D       		.uleb128 0xd
+ 1739 05be 5A000000 		.4byte	.LVL66
+ 1740 05c2 92090000 		.4byte	0x992
+ 1741 05c6 0D       		.uleb128 0xd
+ 1742 05c7 6E000000 		.4byte	.LVL67
+ 1743 05cb 92090000 		.4byte	0x992
+ 1744 05cf 0D       		.uleb128 0xd
+ 1745 05d0 76000000 		.4byte	.LVL68
+ 1746 05d4 92090000 		.4byte	0x992
+ 1747 05d8 00       		.byte	0
+ 1748 05d9 0C       		.uleb128 0xc
+ 1749 05da 28040000 		.4byte	.LASF47
+ 1750 05de 01       		.byte	0x1
+ 1751 05df 4D       		.byte	0x4d
+ 1752 05e0 C2020000 		.4byte	0x2c2
+ 1753 05e4 00000000 		.4byte	.LFB5
+ 1754 05e8 0A000000 		.4byte	.LFE5-.LFB5
+ 1755 05ec 01       		.uleb128 0x1
+ 1756 05ed 9C       		.byte	0x9c
+ 1757 05ee 02060000 		.4byte	0x602
+ 1758 05f2 14       		.uleb128 0x14
+ 1759 05f3 08000000 		.4byte	.LVL73
+ 1760 05f7 9D040000 		.4byte	0x49d
+ 1761 05fb 12       		.uleb128 0x12
+ 1762 05fc 01       		.uleb128 0x1
+ 1763 05fd 50       		.byte	0x50
+ 1764 05fe 01       		.uleb128 0x1
+ 1765 05ff 31       		.byte	0x31
+ 1766 0600 00       		.byte	0
+ 1767 0601 00       		.byte	0
+ 1768 0602 15       		.uleb128 0x15
+ 1769 0603 3B000000 		.4byte	.LASF49
+ 1770 0607 01       		.byte	0x1
+ 1771 0608 52       		.byte	0x52
+ 1772 0609 97000000 		.4byte	0x97
+ 1773 060d 00000000 		.4byte	.LFB6
+ 1774 0611 40000000 		.4byte	.LFE6-.LFB6
+ 1775 0615 01       		.uleb128 0x1
+ 1776 0616 9C       		.byte	0x9c
+ 1777 0617 75060000 		.4byte	0x675
+ 1778 061b 10       		.uleb128 0x10
+ 1779 061c 737700   		.ascii	"sw\000"
+ 1780 061f 01       		.byte	0x1
+ 1781 0620 54       		.byte	0x54
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 38
+
+
+ 1782 0621 97000000 		.4byte	0x97
+ 1783 0625 F5020000 		.4byte	.LLST21
+ 1784 0629 16       		.uleb128 0x16
+ 1785 062a A9000000 		.4byte	.LASF48
+ 1786 062e 01       		.byte	0x1
+ 1787 062f 55       		.byte	0x55
+ 1788 0630 75060000 		.4byte	0x675
+ 1789 0634 02       		.uleb128 0x2
+ 1790 0635 91       		.byte	0x91
+ 1791 0636 74       		.sleb128 -12
+ 1792 0637 11       		.uleb128 0x11
+ 1793 0638 14000000 		.4byte	.LVL75
+ 1794 063c C8090000 		.4byte	0x9c8
+ 1795 0640 50060000 		.4byte	0x650
+ 1796 0644 12       		.uleb128 0x12
+ 1797 0645 01       		.uleb128 0x1
+ 1798 0646 50       		.byte	0x50
+ 1799 0647 02       		.uleb128 0x2
+ 1800 0648 91       		.byte	0x91
+ 1801 0649 74       		.sleb128 -12
+ 1802 064a 12       		.uleb128 0x12
+ 1803 064b 01       		.uleb128 0x1
+ 1804 064c 51       		.byte	0x51
+ 1805 064d 01       		.uleb128 0x1
+ 1806 064e 32       		.byte	0x32
+ 1807 064f 00       		.byte	0
+ 1808 0650 0D       		.uleb128 0xd
+ 1809 0651 18000000 		.4byte	.LVL76
+ 1810 0655 D4090000 		.4byte	0x9d4
+ 1811 0659 0D       		.uleb128 0xd
+ 1812 065a 28000000 		.4byte	.LVL80
+ 1813 065e 86090000 		.4byte	0x986
+ 1814 0662 0D       		.uleb128 0xd
+ 1815 0663 32000000 		.4byte	.LVL82
+ 1816 0667 D4090000 		.4byte	0x9d4
+ 1817 066b 0D       		.uleb128 0xd
+ 1818 066c 3A000000 		.4byte	.LVL83
+ 1819 0670 E0090000 		.4byte	0x9e0
+ 1820 0674 00       		.byte	0
+ 1821 0675 09       		.uleb128 0x9
+ 1822 0676 8C000000 		.4byte	0x8c
+ 1823 067a 85060000 		.4byte	0x685
+ 1824 067e 0A       		.uleb128 0xa
+ 1825 067f 1F010000 		.4byte	0x11f
+ 1826 0683 01       		.byte	0x1
+ 1827 0684 00       		.byte	0
+ 1828 0685 15       		.uleb128 0x15
+ 1829 0686 5D030000 		.4byte	.LASF50
+ 1830 068a 01       		.byte	0x1
+ 1831 068b C3       		.byte	0xc3
+ 1832 068c C2020000 		.4byte	0x2c2
+ 1833 0690 00000000 		.4byte	.LFB10
+ 1834 0694 7C000000 		.4byte	.LFE10-.LFB10
+ 1835 0698 01       		.uleb128 0x1
+ 1836 0699 9C       		.byte	0x9c
+ 1837 069a 4A070000 		.4byte	0x74a
+ 1838 069e 10       		.uleb128 0x10
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 39
+
+
+ 1839 069f 72657400 		.ascii	"ret\000"
+ 1840 06a3 01       		.byte	0x1
+ 1841 06a4 C5       		.byte	0xc5
+ 1842 06a5 C2020000 		.4byte	0x2c2
+ 1843 06a9 1F030000 		.4byte	.LLST22
+ 1844 06ad 17       		.uleb128 0x17
+ 1845 06ae 6B657900 		.ascii	"key\000"
+ 1846 06b2 01       		.byte	0x1
+ 1847 06b3 C6       		.byte	0xc6
+ 1848 06b4 A2000000 		.4byte	0xa2
+ 1849 06b8 02       		.uleb128 0x2
+ 1850 06b9 91       		.byte	0x91
+ 1851 06ba 6C       		.sleb128 -20
+ 1852 06bb 17       		.uleb128 0x17
+ 1853 06bc 737700   		.ascii	"sw\000"
+ 1854 06bf 01       		.byte	0x1
+ 1855 06c0 C7       		.byte	0xc7
+ 1856 06c1 97000000 		.4byte	0x97
+ 1857 06c5 02       		.uleb128 0x2
+ 1858 06c6 91       		.byte	0x91
+ 1859 06c7 6A       		.sleb128 -22
+ 1860 06c8 18       		.uleb128 0x18
+ 1861 06c9 5A010000 		.4byte	.LASF78
+ 1862 06cd 5A070000 		.4byte	0x75a
+ 1863 06d1 05       		.uleb128 0x5
+ 1864 06d2 03       		.byte	0x3
+ 1865 06d3 00000000 		.4byte	__FUNCTION__.6838
+ 1866 06d7 11       		.uleb128 0x11
+ 1867 06d8 1A000000 		.4byte	.LVL86
+ 1868 06dc D5020000 		.4byte	0x2d5
+ 1869 06e0 FB060000 		.4byte	0x6fb
+ 1870 06e4 12       		.uleb128 0x12
+ 1871 06e5 01       		.uleb128 0x1
+ 1872 06e6 50       		.byte	0x50
+ 1873 06e7 01       		.uleb128 0x1
+ 1874 06e8 30       		.byte	0x30
+ 1875 06e9 12       		.uleb128 0x12
+ 1876 06ea 01       		.uleb128 0x1
+ 1877 06eb 51       		.byte	0x51
+ 1878 06ec 01       		.uleb128 0x1
+ 1879 06ed 34       		.byte	0x34
+ 1880 06ee 12       		.uleb128 0x12
+ 1881 06ef 01       		.uleb128 0x1
+ 1882 06f0 52       		.byte	0x52
+ 1883 06f1 02       		.uleb128 0x2
+ 1884 06f2 91       		.byte	0x91
+ 1885 06f3 6C       		.sleb128 -20
+ 1886 06f4 12       		.uleb128 0x12
+ 1887 06f5 01       		.uleb128 0x1
+ 1888 06f6 53       		.byte	0x53
+ 1889 06f7 02       		.uleb128 0x2
+ 1890 06f8 91       		.byte	0x91
+ 1891 06f9 6A       		.sleb128 -22
+ 1892 06fa 00       		.byte	0
+ 1893 06fb 0D       		.uleb128 0xd
+ 1894 06fc 2E000000 		.4byte	.LVL88
+ 1895 0700 9D090000 		.4byte	0x99d
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 40
+
+
+ 1896 0704 0D       		.uleb128 0xd
+ 1897 0705 36000000 		.4byte	.LVL89
+ 1898 0709 A9090000 		.4byte	0x9a9
+ 1899 070d 11       		.uleb128 0x11
+ 1900 070e 50000000 		.4byte	.LVL90
+ 1901 0712 4F0A0000 		.4byte	0xa4f
+ 1902 0716 39070000 		.4byte	0x739
+ 1903 071a 12       		.uleb128 0x12
+ 1904 071b 01       		.uleb128 0x1
+ 1905 071c 50       		.byte	0x50
+ 1906 071d 02       		.uleb128 0x2
+ 1907 071e 75       		.byte	0x75
+ 1908 071f 00       		.sleb128 0
+ 1909 0720 12       		.uleb128 0x12
+ 1910 0721 01       		.uleb128 0x1
+ 1911 0722 51       		.byte	0x51
+ 1912 0723 05       		.uleb128 0x5
+ 1913 0724 03       		.byte	0x3
+ 1914 0725 44000000 		.4byte	.LC6
+ 1915 0729 12       		.uleb128 0x12
+ 1916 072a 01       		.uleb128 0x1
+ 1917 072b 52       		.byte	0x52
+ 1918 072c 05       		.uleb128 0x5
+ 1919 072d 03       		.byte	0x3
+ 1920 072e 00000000 		.4byte	.LANCHOR0
+ 1921 0732 12       		.uleb128 0x12
+ 1922 0733 01       		.uleb128 0x1
+ 1923 0734 53       		.byte	0x53
+ 1924 0735 02       		.uleb128 0x2
+ 1925 0736 74       		.byte	0x74
+ 1926 0737 00       		.sleb128 0
+ 1927 0738 00       		.byte	0
+ 1928 0739 14       		.uleb128 0x14
+ 1929 073a 56000000 		.4byte	.LVL91
+ 1930 073e BD090000 		.4byte	0x9bd
+ 1931 0742 12       		.uleb128 0x12
+ 1932 0743 01       		.uleb128 0x1
+ 1933 0744 50       		.byte	0x50
+ 1934 0745 02       		.uleb128 0x2
+ 1935 0746 75       		.byte	0x75
+ 1936 0747 00       		.sleb128 0
+ 1937 0748 00       		.byte	0
+ 1938 0749 00       		.byte	0
+ 1939 074a 09       		.uleb128 0x9
+ 1940 074b 7F010000 		.4byte	0x17f
+ 1941 074f 5A070000 		.4byte	0x75a
+ 1942 0753 0A       		.uleb128 0xa
+ 1943 0754 1F010000 		.4byte	0x11f
+ 1944 0758 14       		.byte	0x14
+ 1945 0759 00       		.byte	0
+ 1946 075a 0B       		.uleb128 0xb
+ 1947 075b 4A070000 		.4byte	0x74a
+ 1948 075f 15       		.uleb128 0x15
+ 1949 0760 A7020000 		.4byte	.LASF51
+ 1950 0764 01       		.byte	0x1
+ 1951 0765 D4       		.byte	0xd4
+ 1952 0766 C2020000 		.4byte	0x2c2
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 41
+
+
+ 1953 076a 00000000 		.4byte	.LFB11
+ 1954 076e CC000000 		.4byte	.LFE11-.LFB11
+ 1955 0772 01       		.uleb128 0x1
+ 1956 0773 9C       		.byte	0x9c
+ 1957 0774 D1080000 		.4byte	0x8d1
+ 1958 0778 10       		.uleb128 0x10
+ 1959 0779 6900     		.ascii	"i\000"
+ 1960 077b 01       		.byte	0x1
+ 1961 077c D6       		.byte	0xd6
+ 1962 077d A2000000 		.4byte	0xa2
+ 1963 0781 49030000 		.4byte	.LLST23
+ 1964 0785 17       		.uleb128 0x17
+ 1965 0786 72737000 		.ascii	"rsp\000"
+ 1966 078a 01       		.byte	0x1
+ 1967 078b D7       		.byte	0xd7
+ 1968 078c D1080000 		.4byte	0x8d1
+ 1969 0790 02       		.uleb128 0x2
+ 1970 0791 91       		.byte	0x91
+ 1971 0792 58       		.sleb128 -40
+ 1972 0793 16       		.uleb128 0x16
+ 1973 0794 36030000 		.4byte	.LASF52
+ 1974 0798 01       		.byte	0x1
+ 1975 0799 D8       		.byte	0xd8
+ 1976 079a E1080000 		.4byte	0x8e1
+ 1977 079e 02       		.uleb128 0x2
+ 1978 079f 91       		.byte	0x91
+ 1979 07a0 56       		.sleb128 -42
+ 1980 07a1 17       		.uleb128 0x17
+ 1981 07a2 737700   		.ascii	"sw\000"
+ 1982 07a5 01       		.byte	0x1
+ 1983 07a6 D9       		.byte	0xd9
+ 1984 07a7 97000000 		.4byte	0x97
+ 1985 07ab 02       		.uleb128 0x2
+ 1986 07ac 91       		.byte	0x91
+ 1987 07ad 54       		.sleb128 -44
+ 1988 07ae 10       		.uleb128 0x10
+ 1989 07af 72657400 		.ascii	"ret\000"
+ 1990 07b3 01       		.byte	0x1
+ 1991 07b4 DA       		.byte	0xda
+ 1992 07b5 C2020000 		.4byte	0x2c2
+ 1993 07b9 67030000 		.4byte	.LLST24
+ 1994 07bd 11       		.uleb128 0x11
+ 1995 07be 1A000000 		.4byte	.LVL95
+ 1996 07c2 D5020000 		.4byte	0x2d5
+ 1997 07c6 E1070000 		.4byte	0x7e1
+ 1998 07ca 12       		.uleb128 0x12
+ 1999 07cb 01       		.uleb128 0x1
+ 2000 07cc 50       		.byte	0x50
+ 2001 07cd 01       		.uleb128 0x1
+ 2002 07ce 4F       		.byte	0x4f
+ 2003 07cf 12       		.uleb128 0x12
+ 2004 07d0 01       		.uleb128 0x1
+ 2005 07d1 51       		.byte	0x51
+ 2006 07d2 01       		.uleb128 0x1
+ 2007 07d3 32       		.byte	0x32
+ 2008 07d4 12       		.uleb128 0x12
+ 2009 07d5 01       		.uleb128 0x1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 42
+
+
+ 2010 07d6 52       		.byte	0x52
+ 2011 07d7 02       		.uleb128 0x2
+ 2012 07d8 7D       		.byte	0x7d
+ 2013 07d9 06       		.sleb128 6
+ 2014 07da 12       		.uleb128 0x12
+ 2015 07db 01       		.uleb128 0x1
+ 2016 07dc 53       		.byte	0x53
+ 2017 07dd 02       		.uleb128 0x2
+ 2018 07de 91       		.byte	0x91
+ 2019 07df 54       		.sleb128 -44
+ 2020 07e0 00       		.byte	0
+ 2021 07e1 0D       		.uleb128 0xd
+ 2022 07e2 22000000 		.4byte	.LVL97
+ 2023 07e6 9D090000 		.4byte	0x99d
+ 2024 07ea 0D       		.uleb128 0xd
+ 2025 07eb 2A000000 		.4byte	.LVL98
+ 2026 07ef A9090000 		.4byte	0x9a9
+ 2027 07f3 11       		.uleb128 0x11
+ 2028 07f4 3E000000 		.4byte	.LVL99
+ 2029 07f8 4F0A0000 		.4byte	0xa4f
+ 2030 07fc 15080000 		.4byte	0x815
+ 2031 0800 12       		.uleb128 0x12
+ 2032 0801 01       		.uleb128 0x1
+ 2033 0802 50       		.byte	0x50
+ 2034 0803 02       		.uleb128 0x2
+ 2035 0804 74       		.byte	0x74
+ 2036 0805 00       		.sleb128 0
+ 2037 0806 12       		.uleb128 0x12
+ 2038 0807 01       		.uleb128 0x1
+ 2039 0808 51       		.byte	0x51
+ 2040 0809 05       		.uleb128 0x5
+ 2041 080a 03       		.byte	0x3
+ 2042 080b 68000000 		.4byte	.LC9
+ 2043 080f 12       		.uleb128 0x12
+ 2044 0810 01       		.uleb128 0x1
+ 2045 0811 52       		.byte	0x52
+ 2046 0812 01       		.uleb128 0x1
+ 2047 0813 4F       		.byte	0x4f
+ 2048 0814 00       		.byte	0
+ 2049 0815 11       		.uleb128 0x11
+ 2050 0816 44000000 		.4byte	.LVL100
+ 2051 081a BD090000 		.4byte	0x9bd
+ 2052 081e 29080000 		.4byte	0x829
+ 2053 0822 12       		.uleb128 0x12
+ 2054 0823 01       		.uleb128 0x1
+ 2055 0824 50       		.byte	0x50
+ 2056 0825 02       		.uleb128 0x2
+ 2057 0826 74       		.byte	0x74
+ 2058 0827 00       		.sleb128 0
+ 2059 0828 00       		.byte	0
+ 2060 0829 11       		.uleb128 0x11
+ 2061 082a 52000000 		.4byte	.LVL103
+ 2062 082e C0030000 		.4byte	0x3c0
+ 2063 0832 48080000 		.4byte	0x848
+ 2064 0836 12       		.uleb128 0x12
+ 2065 0837 01       		.uleb128 0x1
+ 2066 0838 50       		.byte	0x50
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 43
+
+
+ 2067 0839 01       		.uleb128 0x1
+ 2068 083a 48       		.byte	0x48
+ 2069 083b 12       		.uleb128 0x12
+ 2070 083c 01       		.uleb128 0x1
+ 2071 083d 51       		.byte	0x51
+ 2072 083e 02       		.uleb128 0x2
+ 2073 083f 91       		.byte	0x91
+ 2074 0840 54       		.sleb128 -44
+ 2075 0841 12       		.uleb128 0x12
+ 2076 0842 01       		.uleb128 0x1
+ 2077 0843 52       		.byte	0x52
+ 2078 0844 02       		.uleb128 0x2
+ 2079 0845 91       		.byte	0x91
+ 2080 0846 58       		.sleb128 -40
+ 2081 0847 00       		.byte	0
+ 2082 0848 0D       		.uleb128 0xd
+ 2083 0849 5A000000 		.4byte	.LVL105
+ 2084 084d 9D090000 		.4byte	0x99d
+ 2085 0851 0D       		.uleb128 0xd
+ 2086 0852 62000000 		.4byte	.LVL106
+ 2087 0856 A9090000 		.4byte	0x9a9
+ 2088 085a 11       		.uleb128 0x11
+ 2089 085b 74000000 		.4byte	.LVL107
+ 2090 085f 4F0A0000 		.4byte	0xa4f
+ 2091 0863 77080000 		.4byte	0x877
+ 2092 0867 12       		.uleb128 0x12
+ 2093 0868 01       		.uleb128 0x1
+ 2094 0869 50       		.byte	0x50
+ 2095 086a 02       		.uleb128 0x2
+ 2096 086b 74       		.byte	0x74
+ 2097 086c 00       		.sleb128 0
+ 2098 086d 12       		.uleb128 0x12
+ 2099 086e 01       		.uleb128 0x1
+ 2100 086f 51       		.byte	0x51
+ 2101 0870 05       		.uleb128 0x5
+ 2102 0871 03       		.byte	0x3
+ 2103 0872 94000000 		.4byte	.LC12
+ 2104 0876 00       		.byte	0
+ 2105 0877 11       		.uleb128 0x11
+ 2106 0878 7A000000 		.4byte	.LVL108
+ 2107 087c BD090000 		.4byte	0x9bd
+ 2108 0880 8B080000 		.4byte	0x88b
+ 2109 0884 12       		.uleb128 0x12
+ 2110 0885 01       		.uleb128 0x1
+ 2111 0886 50       		.byte	0x50
+ 2112 0887 02       		.uleb128 0x2
+ 2113 0888 74       		.byte	0x74
+ 2114 0889 00       		.sleb128 0
+ 2115 088a 00       		.byte	0
+ 2116 088b 0D       		.uleb128 0xd
+ 2117 088c 82000000 		.4byte	.LVL110
+ 2118 0890 9D090000 		.4byte	0x99d
+ 2119 0894 0D       		.uleb128 0xd
+ 2120 0895 8A000000 		.4byte	.LVL111
+ 2121 0899 A9090000 		.4byte	0x9a9
+ 2122 089d 11       		.uleb128 0x11
+ 2123 089e 9E000000 		.4byte	.LVL112
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 44
+
+
+ 2124 08a2 4F0A0000 		.4byte	0xa4f
+ 2125 08a6 C0080000 		.4byte	0x8c0
+ 2126 08aa 12       		.uleb128 0x12
+ 2127 08ab 01       		.uleb128 0x1
+ 2128 08ac 50       		.byte	0x50
+ 2129 08ad 02       		.uleb128 0x2
+ 2130 08ae 76       		.byte	0x76
+ 2131 08af 00       		.sleb128 0
+ 2132 08b0 12       		.uleb128 0x12
+ 2133 08b1 01       		.uleb128 0x1
+ 2134 08b2 51       		.byte	0x51
+ 2135 08b3 05       		.uleb128 0x5
+ 2136 08b4 03       		.byte	0x3
+ 2137 08b5 B4000000 		.4byte	.LC14
+ 2138 08b9 12       		.uleb128 0x12
+ 2139 08ba 01       		.uleb128 0x1
+ 2140 08bb 52       		.byte	0x52
+ 2141 08bc 02       		.uleb128 0x2
+ 2142 08bd 74       		.byte	0x74
+ 2143 08be 00       		.sleb128 0
+ 2144 08bf 00       		.byte	0
+ 2145 08c0 14       		.uleb128 0x14
+ 2146 08c1 A4000000 		.4byte	.LVL113
+ 2147 08c5 BD090000 		.4byte	0x9bd
+ 2148 08c9 12       		.uleb128 0x12
+ 2149 08ca 01       		.uleb128 0x1
+ 2150 08cb 50       		.byte	0x50
+ 2151 08cc 02       		.uleb128 0x2
+ 2152 08cd 76       		.byte	0x76
+ 2153 08ce 00       		.sleb128 0
+ 2154 08cf 00       		.byte	0
+ 2155 08d0 00       		.byte	0
+ 2156 08d1 09       		.uleb128 0x9
+ 2157 08d2 8C000000 		.4byte	0x8c
+ 2158 08d6 E1080000 		.4byte	0x8e1
+ 2159 08da 0A       		.uleb128 0xa
+ 2160 08db 1F010000 		.4byte	0x11f
+ 2161 08df 17       		.byte	0x17
+ 2162 08e0 00       		.byte	0
+ 2163 08e1 0B       		.uleb128 0xb
+ 2164 08e2 97000000 		.4byte	0x97
+ 2165 08e6 19       		.uleb128 0x19
+ 2166 08e7 6C000000 		.4byte	.LASF79
+ 2167 08eb 01       		.byte	0x1
+ 2168 08ec F2       		.byte	0xf2
+ 2169 08ed 00000000 		.4byte	.LFB12
+ 2170 08f1 40000000 		.4byte	.LFE12-.LFB12
+ 2171 08f5 01       		.uleb128 0x1
+ 2172 08f6 9C       		.byte	0x9c
+ 2173 08f7 60090000 		.4byte	0x960
+ 2174 08fb 0D       		.uleb128 0xd
+ 2175 08fc 06000000 		.4byte	.LVL118
+ 2176 0900 5A0A0000 		.4byte	0xa5a
+ 2177 0904 0D       		.uleb128 0xd
+ 2178 0905 0A000000 		.4byte	.LVL119
+ 2179 0909 D9050000 		.4byte	0x5d9
+ 2180 090d 0D       		.uleb128 0xd
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 45
+
+
+ 2181 090e 12000000 		.4byte	.LVL120
+ 2182 0912 9D090000 		.4byte	0x99d
+ 2183 0916 0D       		.uleb128 0xd
+ 2184 0917 1A000000 		.4byte	.LVL121
+ 2185 091b A9090000 		.4byte	0x9a9
+ 2186 091f 11       		.uleb128 0x11
+ 2187 0920 2A000000 		.4byte	.LVL122
+ 2188 0924 B4090000 		.4byte	0x9b4
+ 2189 0928 42090000 		.4byte	0x942
+ 2190 092c 12       		.uleb128 0x12
+ 2191 092d 01       		.uleb128 0x1
+ 2192 092e 50       		.byte	0x50
+ 2193 092f 02       		.uleb128 0x2
+ 2194 0930 74       		.byte	0x74
+ 2195 0931 00       		.sleb128 0
+ 2196 0932 12       		.uleb128 0x12
+ 2197 0933 01       		.uleb128 0x1
+ 2198 0934 51       		.byte	0x51
+ 2199 0935 05       		.uleb128 0x5
+ 2200 0936 03       		.byte	0x3
+ 2201 0937 C4000000 		.4byte	.LC17
+ 2202 093b 12       		.uleb128 0x12
+ 2203 093c 01       		.uleb128 0x1
+ 2204 093d 52       		.byte	0x52
+ 2205 093e 02       		.uleb128 0x2
+ 2206 093f 08       		.byte	0x8
+ 2207 0940 27       		.byte	0x27
+ 2208 0941 00       		.byte	0
+ 2209 0942 11       		.uleb128 0x11
+ 2210 0943 30000000 		.4byte	.LVL123
+ 2211 0947 BD090000 		.4byte	0x9bd
+ 2212 094b 56090000 		.4byte	0x956
+ 2213 094f 12       		.uleb128 0x12
+ 2214 0950 01       		.uleb128 0x1
+ 2215 0951 50       		.byte	0x50
+ 2216 0952 02       		.uleb128 0x2
+ 2217 0953 74       		.byte	0x74
+ 2218 0954 00       		.sleb128 0
+ 2219 0955 00       		.byte	0
+ 2220 0956 0D       		.uleb128 0xd
+ 2221 0957 36000000 		.4byte	.LVL124
+ 2222 095b 650A0000 		.4byte	0xa65
+ 2223 095f 00       		.byte	0
+ 2224 0960 1A       		.uleb128 0x1a
+ 2225 0961 4F030000 		.4byte	.LASF53
+ 2226 0965 05       		.byte	0x5
+ 2227 0966 13       		.byte	0x13
+ 2228 0967 6B090000 		.4byte	0x96b
+ 2229 096b 1B       		.uleb128 0x1b
+ 2230 096c A2000000 		.4byte	0xa2
+ 2231 0970 09       		.uleb128 0x9
+ 2232 0971 71010000 		.4byte	0x171
+ 2233 0975 7B090000 		.4byte	0x97b
+ 2234 0979 1C       		.uleb128 0x1c
+ 2235 097a 00       		.byte	0
+ 2236 097b 1A       		.uleb128 0x1a
+ 2237 097c E9020000 		.4byte	.LASF54
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 46
+
+
+ 2238 0980 06       		.byte	0x6
+ 2239 0981 3C       		.byte	0x3c
+ 2240 0982 70090000 		.4byte	0x970
+ 2241 0986 1D       		.uleb128 0x1d
+ 2242 0987 05020000 		.4byte	.LASF55
+ 2243 098b 05020000 		.4byte	.LASF55
+ 2244 098f 07       		.byte	0x7
+ 2245 0990 3D03     		.2byte	0x33d
+ 2246 0992 1E       		.uleb128 0x1e
+ 2247 0993 67010000 		.4byte	.LASF56
+ 2248 0997 67010000 		.4byte	.LASF56
+ 2249 099b 08       		.byte	0x8
+ 2250 099c 32       		.byte	0x32
+ 2251 099d 1D       		.uleb128 0x1d
+ 2252 099e 08010000 		.4byte	.LASF57
+ 2253 09a2 08010000 		.4byte	.LASF57
+ 2254 09a6 09       		.byte	0x9
+ 2255 09a7 3201     		.2byte	0x132
+ 2256 09a9 1E       		.uleb128 0x1e
+ 2257 09aa 09000000 		.4byte	.LASF58
+ 2258 09ae 09000000 		.4byte	.LASF58
+ 2259 09b2 0A       		.byte	0xa
+ 2260 09b3 28       		.byte	0x28
+ 2261 09b4 1F       		.uleb128 0x1f
+ 2262 09b5 B2000000 		.4byte	.LASF80
+ 2263 09b9 B2000000 		.4byte	.LASF80
+ 2264 09bd 1E       		.uleb128 0x1e
+ 2265 09be E8000000 		.4byte	.LASF59
+ 2266 09c2 E8000000 		.4byte	.LASF59
+ 2267 09c6 0A       		.byte	0xa
+ 2268 09c7 24       		.byte	0x24
+ 2269 09c8 1D       		.uleb128 0x1d
+ 2270 09c9 3B030000 		.4byte	.LASF60
+ 2271 09cd 3B030000 		.4byte	.LASF60
+ 2272 09d1 07       		.byte	0x7
+ 2273 09d2 4503     		.2byte	0x345
+ 2274 09d4 1D       		.uleb128 0x1d
+ 2275 09d5 83000000 		.4byte	.LASF61
+ 2276 09d9 83000000 		.4byte	.LASF61
+ 2277 09dd 07       		.byte	0x7
+ 2278 09de 3E03     		.2byte	0x33e
+ 2279 09e0 1D       		.uleb128 0x1d
+ 2280 09e1 A2010000 		.4byte	.LASF62
+ 2281 09e5 A2010000 		.4byte	.LASF62
+ 2282 09e9 07       		.byte	0x7
+ 2283 09ea 3F03     		.2byte	0x33f
+ 2284 09ec 1E       		.uleb128 0x1e
+ 2285 09ed 57000000 		.4byte	.LASF63
+ 2286 09f1 57000000 		.4byte	.LASF63
+ 2287 09f5 0B       		.byte	0xb
+ 2288 09f6 64       		.byte	0x64
+ 2289 09f7 1E       		.uleb128 0x1e
+ 2290 09f8 E3000000 		.4byte	.LASF64
+ 2291 09fc E3000000 		.4byte	.LASF64
+ 2292 0a00 0B       		.byte	0xb
+ 2293 0a01 59       		.byte	0x59
+ 2294 0a02 1E       		.uleb128 0x1e
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 47
+
+
+ 2295 0a03 72030000 		.4byte	.LASF65
+ 2296 0a07 72030000 		.4byte	.LASF65
+ 2297 0a0b 0C       		.byte	0xc
+ 2298 0a0c 19       		.byte	0x19
+ 2299 0a0d 1E       		.uleb128 0x1e
+ 2300 0a0e 21010000 		.4byte	.LASF66
+ 2301 0a12 21010000 		.4byte	.LASF66
+ 2302 0a16 0D       		.byte	0xd
+ 2303 0a17 33       		.byte	0x33
+ 2304 0a18 1E       		.uleb128 0x1e
+ 2305 0a19 0D030000 		.4byte	.LASF67
+ 2306 0a1d 0D030000 		.4byte	.LASF67
+ 2307 0a21 0E       		.byte	0xe
+ 2308 0a22 33       		.byte	0x33
+ 2309 0a23 1E       		.uleb128 0x1e
+ 2310 0a24 BB010000 		.4byte	.LASF68
+ 2311 0a28 BB010000 		.4byte	.LASF68
+ 2312 0a2c 0F       		.byte	0xf
+ 2313 0a2d 36       		.byte	0x36
+ 2314 0a2e 1E       		.uleb128 0x1e
+ 2315 0a2f 24000000 		.4byte	.LASF69
+ 2316 0a33 24000000 		.4byte	.LASF69
+ 2317 0a37 0F       		.byte	0xf
+ 2318 0a38 33       		.byte	0x33
+ 2319 0a39 1E       		.uleb128 0x1e
+ 2320 0a3a 4B040000 		.4byte	.LASF70
+ 2321 0a3e 4B040000 		.4byte	.LASF70
+ 2322 0a42 10       		.byte	0x10
+ 2323 0a43 D9       		.byte	0xd9
+ 2324 0a44 1E       		.uleb128 0x1e
+ 2325 0a45 DF010000 		.4byte	.LASF71
+ 2326 0a49 DF010000 		.4byte	.LASF71
+ 2327 0a4d 10       		.byte	0x10
+ 2328 0a4e DA       		.byte	0xda
+ 2329 0a4f 1E       		.uleb128 0x1e
+ 2330 0a50 FD010000 		.4byte	.LASF72
+ 2331 0a54 FD010000 		.4byte	.LASF72
+ 2332 0a58 11       		.byte	0x11
+ 2333 0a59 E7       		.byte	0xe7
+ 2334 0a5a 1E       		.uleb128 0x1e
+ 2335 0a5b 77020000 		.4byte	.LASF73
+ 2336 0a5f 77020000 		.4byte	.LASF73
+ 2337 0a63 12       		.byte	0x12
+ 2338 0a64 73       		.byte	0x73
+ 2339 0a65 1E       		.uleb128 0x1e
+ 2340 0a66 0E040000 		.4byte	.LASF74
+ 2341 0a6a 0E040000 		.4byte	.LASF74
+ 2342 0a6e 12       		.byte	0x12
+ 2343 0a6f 72       		.byte	0x72
+ 2344 0a70 00       		.byte	0
+ 2345              		.section	.debug_abbrev,"",%progbits
+ 2346              	.Ldebug_abbrev0:
+ 2347 0000 01       		.uleb128 0x1
+ 2348 0001 11       		.uleb128 0x11
+ 2349 0002 01       		.byte	0x1
+ 2350 0003 25       		.uleb128 0x25
+ 2351 0004 0E       		.uleb128 0xe
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 48
+
+
+ 2352 0005 13       		.uleb128 0x13
+ 2353 0006 0B       		.uleb128 0xb
+ 2354 0007 03       		.uleb128 0x3
+ 2355 0008 0E       		.uleb128 0xe
+ 2356 0009 1B       		.uleb128 0x1b
+ 2357 000a 0E       		.uleb128 0xe
+ 2358 000b 55       		.uleb128 0x55
+ 2359 000c 17       		.uleb128 0x17
+ 2360 000d 11       		.uleb128 0x11
+ 2361 000e 01       		.uleb128 0x1
+ 2362 000f 10       		.uleb128 0x10
+ 2363 0010 17       		.uleb128 0x17
+ 2364 0011 00       		.byte	0
+ 2365 0012 00       		.byte	0
+ 2366 0013 02       		.uleb128 0x2
+ 2367 0014 24       		.uleb128 0x24
+ 2368 0015 00       		.byte	0
+ 2369 0016 0B       		.uleb128 0xb
+ 2370 0017 0B       		.uleb128 0xb
+ 2371 0018 3E       		.uleb128 0x3e
+ 2372 0019 0B       		.uleb128 0xb
+ 2373 001a 03       		.uleb128 0x3
+ 2374 001b 0E       		.uleb128 0xe
+ 2375 001c 00       		.byte	0
+ 2376 001d 00       		.byte	0
+ 2377 001e 03       		.uleb128 0x3
+ 2378 001f 16       		.uleb128 0x16
+ 2379 0020 00       		.byte	0
+ 2380 0021 03       		.uleb128 0x3
+ 2381 0022 0E       		.uleb128 0xe
+ 2382 0023 3A       		.uleb128 0x3a
+ 2383 0024 0B       		.uleb128 0xb
+ 2384 0025 3B       		.uleb128 0x3b
+ 2385 0026 0B       		.uleb128 0xb
+ 2386 0027 49       		.uleb128 0x49
+ 2387 0028 13       		.uleb128 0x13
+ 2388 0029 00       		.byte	0
+ 2389 002a 00       		.byte	0
+ 2390 002b 04       		.uleb128 0x4
+ 2391 002c 24       		.uleb128 0x24
+ 2392 002d 00       		.byte	0
+ 2393 002e 0B       		.uleb128 0xb
+ 2394 002f 0B       		.uleb128 0xb
+ 2395 0030 3E       		.uleb128 0x3e
+ 2396 0031 0B       		.uleb128 0xb
+ 2397 0032 03       		.uleb128 0x3
+ 2398 0033 08       		.uleb128 0x8
+ 2399 0034 00       		.byte	0
+ 2400 0035 00       		.byte	0
+ 2401 0036 05       		.uleb128 0x5
+ 2402 0037 13       		.uleb128 0x13
+ 2403 0038 01       		.byte	0x1
+ 2404 0039 0B       		.uleb128 0xb
+ 2405 003a 0B       		.uleb128 0xb
+ 2406 003b 3A       		.uleb128 0x3a
+ 2407 003c 0B       		.uleb128 0xb
+ 2408 003d 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 49
+
+
+ 2409 003e 0B       		.uleb128 0xb
+ 2410 003f 01       		.uleb128 0x1
+ 2411 0040 13       		.uleb128 0x13
+ 2412 0041 00       		.byte	0
+ 2413 0042 00       		.byte	0
+ 2414 0043 06       		.uleb128 0x6
+ 2415 0044 0D       		.uleb128 0xd
+ 2416 0045 00       		.byte	0
+ 2417 0046 03       		.uleb128 0x3
+ 2418 0047 0E       		.uleb128 0xe
+ 2419 0048 3A       		.uleb128 0x3a
+ 2420 0049 0B       		.uleb128 0xb
+ 2421 004a 3B       		.uleb128 0x3b
+ 2422 004b 0B       		.uleb128 0xb
+ 2423 004c 49       		.uleb128 0x49
+ 2424 004d 13       		.uleb128 0x13
+ 2425 004e 0B       		.uleb128 0xb
+ 2426 004f 0B       		.uleb128 0xb
+ 2427 0050 0D       		.uleb128 0xd
+ 2428 0051 0B       		.uleb128 0xb
+ 2429 0052 0C       		.uleb128 0xc
+ 2430 0053 0B       		.uleb128 0xb
+ 2431 0054 38       		.uleb128 0x38
+ 2432 0055 0B       		.uleb128 0xb
+ 2433 0056 00       		.byte	0
+ 2434 0057 00       		.byte	0
+ 2435 0058 07       		.uleb128 0x7
+ 2436 0059 0D       		.uleb128 0xd
+ 2437 005a 00       		.byte	0
+ 2438 005b 03       		.uleb128 0x3
+ 2439 005c 08       		.uleb128 0x8
+ 2440 005d 3A       		.uleb128 0x3a
+ 2441 005e 0B       		.uleb128 0xb
+ 2442 005f 3B       		.uleb128 0x3b
+ 2443 0060 0B       		.uleb128 0xb
+ 2444 0061 49       		.uleb128 0x49
+ 2445 0062 13       		.uleb128 0x13
+ 2446 0063 38       		.uleb128 0x38
+ 2447 0064 0B       		.uleb128 0xb
+ 2448 0065 00       		.byte	0
+ 2449 0066 00       		.byte	0
+ 2450 0067 08       		.uleb128 0x8
+ 2451 0068 0D       		.uleb128 0xd
+ 2452 0069 00       		.byte	0
+ 2453 006a 03       		.uleb128 0x3
+ 2454 006b 0E       		.uleb128 0xe
+ 2455 006c 3A       		.uleb128 0x3a
+ 2456 006d 0B       		.uleb128 0xb
+ 2457 006e 3B       		.uleb128 0x3b
+ 2458 006f 0B       		.uleb128 0xb
+ 2459 0070 49       		.uleb128 0x49
+ 2460 0071 13       		.uleb128 0x13
+ 2461 0072 38       		.uleb128 0x38
+ 2462 0073 0B       		.uleb128 0xb
+ 2463 0074 00       		.byte	0
+ 2464 0075 00       		.byte	0
+ 2465 0076 09       		.uleb128 0x9
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 50
+
+
+ 2466 0077 01       		.uleb128 0x1
+ 2467 0078 01       		.byte	0x1
+ 2468 0079 49       		.uleb128 0x49
+ 2469 007a 13       		.uleb128 0x13
+ 2470 007b 01       		.uleb128 0x1
+ 2471 007c 13       		.uleb128 0x13
+ 2472 007d 00       		.byte	0
+ 2473 007e 00       		.byte	0
+ 2474 007f 0A       		.uleb128 0xa
+ 2475 0080 21       		.uleb128 0x21
+ 2476 0081 00       		.byte	0
+ 2477 0082 49       		.uleb128 0x49
+ 2478 0083 13       		.uleb128 0x13
+ 2479 0084 2F       		.uleb128 0x2f
+ 2480 0085 0B       		.uleb128 0xb
+ 2481 0086 00       		.byte	0
+ 2482 0087 00       		.byte	0
+ 2483 0088 0B       		.uleb128 0xb
+ 2484 0089 26       		.uleb128 0x26
+ 2485 008a 00       		.byte	0
+ 2486 008b 49       		.uleb128 0x49
+ 2487 008c 13       		.uleb128 0x13
+ 2488 008d 00       		.byte	0
+ 2489 008e 00       		.byte	0
+ 2490 008f 0C       		.uleb128 0xc
+ 2491 0090 2E       		.uleb128 0x2e
+ 2492 0091 01       		.byte	0x1
+ 2493 0092 03       		.uleb128 0x3
+ 2494 0093 0E       		.uleb128 0xe
+ 2495 0094 3A       		.uleb128 0x3a
+ 2496 0095 0B       		.uleb128 0xb
+ 2497 0096 3B       		.uleb128 0x3b
+ 2498 0097 0B       		.uleb128 0xb
+ 2499 0098 27       		.uleb128 0x27
+ 2500 0099 19       		.uleb128 0x19
+ 2501 009a 49       		.uleb128 0x49
+ 2502 009b 13       		.uleb128 0x13
+ 2503 009c 11       		.uleb128 0x11
+ 2504 009d 01       		.uleb128 0x1
+ 2505 009e 12       		.uleb128 0x12
+ 2506 009f 06       		.uleb128 0x6
+ 2507 00a0 40       		.uleb128 0x40
+ 2508 00a1 18       		.uleb128 0x18
+ 2509 00a2 9742     		.uleb128 0x2117
+ 2510 00a4 19       		.uleb128 0x19
+ 2511 00a5 01       		.uleb128 0x1
+ 2512 00a6 13       		.uleb128 0x13
+ 2513 00a7 00       		.byte	0
+ 2514 00a8 00       		.byte	0
+ 2515 00a9 0D       		.uleb128 0xd
+ 2516 00aa 898201   		.uleb128 0x4109
+ 2517 00ad 00       		.byte	0
+ 2518 00ae 11       		.uleb128 0x11
+ 2519 00af 01       		.uleb128 0x1
+ 2520 00b0 31       		.uleb128 0x31
+ 2521 00b1 13       		.uleb128 0x13
+ 2522 00b2 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 51
+
+
+ 2523 00b3 00       		.byte	0
+ 2524 00b4 0E       		.uleb128 0xe
+ 2525 00b5 05       		.uleb128 0x5
+ 2526 00b6 00       		.byte	0
+ 2527 00b7 03       		.uleb128 0x3
+ 2528 00b8 0E       		.uleb128 0xe
+ 2529 00b9 3A       		.uleb128 0x3a
+ 2530 00ba 0B       		.uleb128 0xb
+ 2531 00bb 3B       		.uleb128 0x3b
+ 2532 00bc 0B       		.uleb128 0xb
+ 2533 00bd 49       		.uleb128 0x49
+ 2534 00be 13       		.uleb128 0x13
+ 2535 00bf 02       		.uleb128 0x2
+ 2536 00c0 17       		.uleb128 0x17
+ 2537 00c1 00       		.byte	0
+ 2538 00c2 00       		.byte	0
+ 2539 00c3 0F       		.uleb128 0xf
+ 2540 00c4 34       		.uleb128 0x34
+ 2541 00c5 00       		.byte	0
+ 2542 00c6 03       		.uleb128 0x3
+ 2543 00c7 0E       		.uleb128 0xe
+ 2544 00c8 3A       		.uleb128 0x3a
+ 2545 00c9 0B       		.uleb128 0xb
+ 2546 00ca 3B       		.uleb128 0x3b
+ 2547 00cb 0B       		.uleb128 0xb
+ 2548 00cc 49       		.uleb128 0x49
+ 2549 00cd 13       		.uleb128 0x13
+ 2550 00ce 02       		.uleb128 0x2
+ 2551 00cf 17       		.uleb128 0x17
+ 2552 00d0 00       		.byte	0
+ 2553 00d1 00       		.byte	0
+ 2554 00d2 10       		.uleb128 0x10
+ 2555 00d3 34       		.uleb128 0x34
+ 2556 00d4 00       		.byte	0
+ 2557 00d5 03       		.uleb128 0x3
+ 2558 00d6 08       		.uleb128 0x8
+ 2559 00d7 3A       		.uleb128 0x3a
+ 2560 00d8 0B       		.uleb128 0xb
+ 2561 00d9 3B       		.uleb128 0x3b
+ 2562 00da 0B       		.uleb128 0xb
+ 2563 00db 49       		.uleb128 0x49
+ 2564 00dc 13       		.uleb128 0x13
+ 2565 00dd 02       		.uleb128 0x2
+ 2566 00de 17       		.uleb128 0x17
+ 2567 00df 00       		.byte	0
+ 2568 00e0 00       		.byte	0
+ 2569 00e1 11       		.uleb128 0x11
+ 2570 00e2 898201   		.uleb128 0x4109
+ 2571 00e5 01       		.byte	0x1
+ 2572 00e6 11       		.uleb128 0x11
+ 2573 00e7 01       		.uleb128 0x1
+ 2574 00e8 31       		.uleb128 0x31
+ 2575 00e9 13       		.uleb128 0x13
+ 2576 00ea 01       		.uleb128 0x1
+ 2577 00eb 13       		.uleb128 0x13
+ 2578 00ec 00       		.byte	0
+ 2579 00ed 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 52
+
+
+ 2580 00ee 12       		.uleb128 0x12
+ 2581 00ef 8A8201   		.uleb128 0x410a
+ 2582 00f2 00       		.byte	0
+ 2583 00f3 02       		.uleb128 0x2
+ 2584 00f4 18       		.uleb128 0x18
+ 2585 00f5 9142     		.uleb128 0x2111
+ 2586 00f7 18       		.uleb128 0x18
+ 2587 00f8 00       		.byte	0
+ 2588 00f9 00       		.byte	0
+ 2589 00fa 13       		.uleb128 0x13
+ 2590 00fb 0F       		.uleb128 0xf
+ 2591 00fc 00       		.byte	0
+ 2592 00fd 0B       		.uleb128 0xb
+ 2593 00fe 0B       		.uleb128 0xb
+ 2594 00ff 49       		.uleb128 0x49
+ 2595 0100 13       		.uleb128 0x13
+ 2596 0101 00       		.byte	0
+ 2597 0102 00       		.byte	0
+ 2598 0103 14       		.uleb128 0x14
+ 2599 0104 898201   		.uleb128 0x4109
+ 2600 0107 01       		.byte	0x1
+ 2601 0108 11       		.uleb128 0x11
+ 2602 0109 01       		.uleb128 0x1
+ 2603 010a 31       		.uleb128 0x31
+ 2604 010b 13       		.uleb128 0x13
+ 2605 010c 00       		.byte	0
+ 2606 010d 00       		.byte	0
+ 2607 010e 15       		.uleb128 0x15
+ 2608 010f 2E       		.uleb128 0x2e
+ 2609 0110 01       		.byte	0x1
+ 2610 0111 3F       		.uleb128 0x3f
+ 2611 0112 19       		.uleb128 0x19
+ 2612 0113 03       		.uleb128 0x3
+ 2613 0114 0E       		.uleb128 0xe
+ 2614 0115 3A       		.uleb128 0x3a
+ 2615 0116 0B       		.uleb128 0xb
+ 2616 0117 3B       		.uleb128 0x3b
+ 2617 0118 0B       		.uleb128 0xb
+ 2618 0119 27       		.uleb128 0x27
+ 2619 011a 19       		.uleb128 0x19
+ 2620 011b 49       		.uleb128 0x49
+ 2621 011c 13       		.uleb128 0x13
+ 2622 011d 11       		.uleb128 0x11
+ 2623 011e 01       		.uleb128 0x1
+ 2624 011f 12       		.uleb128 0x12
+ 2625 0120 06       		.uleb128 0x6
+ 2626 0121 40       		.uleb128 0x40
+ 2627 0122 18       		.uleb128 0x18
+ 2628 0123 9742     		.uleb128 0x2117
+ 2629 0125 19       		.uleb128 0x19
+ 2630 0126 01       		.uleb128 0x1
+ 2631 0127 13       		.uleb128 0x13
+ 2632 0128 00       		.byte	0
+ 2633 0129 00       		.byte	0
+ 2634 012a 16       		.uleb128 0x16
+ 2635 012b 34       		.uleb128 0x34
+ 2636 012c 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 53
+
+
+ 2637 012d 03       		.uleb128 0x3
+ 2638 012e 0E       		.uleb128 0xe
+ 2639 012f 3A       		.uleb128 0x3a
+ 2640 0130 0B       		.uleb128 0xb
+ 2641 0131 3B       		.uleb128 0x3b
+ 2642 0132 0B       		.uleb128 0xb
+ 2643 0133 49       		.uleb128 0x49
+ 2644 0134 13       		.uleb128 0x13
+ 2645 0135 02       		.uleb128 0x2
+ 2646 0136 18       		.uleb128 0x18
+ 2647 0137 00       		.byte	0
+ 2648 0138 00       		.byte	0
+ 2649 0139 17       		.uleb128 0x17
+ 2650 013a 34       		.uleb128 0x34
+ 2651 013b 00       		.byte	0
+ 2652 013c 03       		.uleb128 0x3
+ 2653 013d 08       		.uleb128 0x8
+ 2654 013e 3A       		.uleb128 0x3a
+ 2655 013f 0B       		.uleb128 0xb
+ 2656 0140 3B       		.uleb128 0x3b
+ 2657 0141 0B       		.uleb128 0xb
+ 2658 0142 49       		.uleb128 0x49
+ 2659 0143 13       		.uleb128 0x13
+ 2660 0144 02       		.uleb128 0x2
+ 2661 0145 18       		.uleb128 0x18
+ 2662 0146 00       		.byte	0
+ 2663 0147 00       		.byte	0
+ 2664 0148 18       		.uleb128 0x18
+ 2665 0149 34       		.uleb128 0x34
+ 2666 014a 00       		.byte	0
+ 2667 014b 03       		.uleb128 0x3
+ 2668 014c 0E       		.uleb128 0xe
+ 2669 014d 49       		.uleb128 0x49
+ 2670 014e 13       		.uleb128 0x13
+ 2671 014f 34       		.uleb128 0x34
+ 2672 0150 19       		.uleb128 0x19
+ 2673 0151 02       		.uleb128 0x2
+ 2674 0152 18       		.uleb128 0x18
+ 2675 0153 00       		.byte	0
+ 2676 0154 00       		.byte	0
+ 2677 0155 19       		.uleb128 0x19
+ 2678 0156 2E       		.uleb128 0x2e
+ 2679 0157 01       		.byte	0x1
+ 2680 0158 3F       		.uleb128 0x3f
+ 2681 0159 19       		.uleb128 0x19
+ 2682 015a 03       		.uleb128 0x3
+ 2683 015b 0E       		.uleb128 0xe
+ 2684 015c 3A       		.uleb128 0x3a
+ 2685 015d 0B       		.uleb128 0xb
+ 2686 015e 3B       		.uleb128 0x3b
+ 2687 015f 0B       		.uleb128 0xb
+ 2688 0160 27       		.uleb128 0x27
+ 2689 0161 19       		.uleb128 0x19
+ 2690 0162 11       		.uleb128 0x11
+ 2691 0163 01       		.uleb128 0x1
+ 2692 0164 12       		.uleb128 0x12
+ 2693 0165 06       		.uleb128 0x6
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 54
+
+
+ 2694 0166 40       		.uleb128 0x40
+ 2695 0167 18       		.uleb128 0x18
+ 2696 0168 9742     		.uleb128 0x2117
+ 2697 016a 19       		.uleb128 0x19
+ 2698 016b 01       		.uleb128 0x1
+ 2699 016c 13       		.uleb128 0x13
+ 2700 016d 00       		.byte	0
+ 2701 016e 00       		.byte	0
+ 2702 016f 1A       		.uleb128 0x1a
+ 2703 0170 34       		.uleb128 0x34
+ 2704 0171 00       		.byte	0
+ 2705 0172 03       		.uleb128 0x3
+ 2706 0173 0E       		.uleb128 0xe
+ 2707 0174 3A       		.uleb128 0x3a
+ 2708 0175 0B       		.uleb128 0xb
+ 2709 0176 3B       		.uleb128 0x3b
+ 2710 0177 0B       		.uleb128 0xb
+ 2711 0178 49       		.uleb128 0x49
+ 2712 0179 13       		.uleb128 0x13
+ 2713 017a 3F       		.uleb128 0x3f
+ 2714 017b 19       		.uleb128 0x19
+ 2715 017c 3C       		.uleb128 0x3c
+ 2716 017d 19       		.uleb128 0x19
+ 2717 017e 00       		.byte	0
+ 2718 017f 00       		.byte	0
+ 2719 0180 1B       		.uleb128 0x1b
+ 2720 0181 35       		.uleb128 0x35
+ 2721 0182 00       		.byte	0
+ 2722 0183 49       		.uleb128 0x49
+ 2723 0184 13       		.uleb128 0x13
+ 2724 0185 00       		.byte	0
+ 2725 0186 00       		.byte	0
+ 2726 0187 1C       		.uleb128 0x1c
+ 2727 0188 21       		.uleb128 0x21
+ 2728 0189 00       		.byte	0
+ 2729 018a 00       		.byte	0
+ 2730 018b 00       		.byte	0
+ 2731 018c 1D       		.uleb128 0x1d
+ 2732 018d 2E       		.uleb128 0x2e
+ 2733 018e 00       		.byte	0
+ 2734 018f 3F       		.uleb128 0x3f
+ 2735 0190 19       		.uleb128 0x19
+ 2736 0191 3C       		.uleb128 0x3c
+ 2737 0192 19       		.uleb128 0x19
+ 2738 0193 6E       		.uleb128 0x6e
+ 2739 0194 0E       		.uleb128 0xe
+ 2740 0195 03       		.uleb128 0x3
+ 2741 0196 0E       		.uleb128 0xe
+ 2742 0197 3A       		.uleb128 0x3a
+ 2743 0198 0B       		.uleb128 0xb
+ 2744 0199 3B       		.uleb128 0x3b
+ 2745 019a 05       		.uleb128 0x5
+ 2746 019b 00       		.byte	0
+ 2747 019c 00       		.byte	0
+ 2748 019d 1E       		.uleb128 0x1e
+ 2749 019e 2E       		.uleb128 0x2e
+ 2750 019f 00       		.byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 55
+
+
+ 2751 01a0 3F       		.uleb128 0x3f
+ 2752 01a1 19       		.uleb128 0x19
+ 2753 01a2 3C       		.uleb128 0x3c
+ 2754 01a3 19       		.uleb128 0x19
+ 2755 01a4 6E       		.uleb128 0x6e
+ 2756 01a5 0E       		.uleb128 0xe
+ 2757 01a6 03       		.uleb128 0x3
+ 2758 01a7 0E       		.uleb128 0xe
+ 2759 01a8 3A       		.uleb128 0x3a
+ 2760 01a9 0B       		.uleb128 0xb
+ 2761 01aa 3B       		.uleb128 0x3b
+ 2762 01ab 0B       		.uleb128 0xb
+ 2763 01ac 00       		.byte	0
+ 2764 01ad 00       		.byte	0
+ 2765 01ae 1F       		.uleb128 0x1f
+ 2766 01af 2E       		.uleb128 0x2e
+ 2767 01b0 00       		.byte	0
+ 2768 01b1 3F       		.uleb128 0x3f
+ 2769 01b2 19       		.uleb128 0x19
+ 2770 01b3 3C       		.uleb128 0x3c
+ 2771 01b4 19       		.uleb128 0x19
+ 2772 01b5 6E       		.uleb128 0x6e
+ 2773 01b6 0E       		.uleb128 0xe
+ 2774 01b7 03       		.uleb128 0x3
+ 2775 01b8 0E       		.uleb128 0xe
+ 2776 01b9 00       		.byte	0
+ 2777 01ba 00       		.byte	0
+ 2778 01bb 00       		.byte	0
+ 2779              		.section	.debug_loc,"",%progbits
+ 2780              	.Ldebug_loc0:
+ 2781              	.LLST0:
+ 2782 0000 00000000 		.4byte	.LVL1
+ 2783 0004 1A000000 		.4byte	.LVL4
+ 2784 0008 0100     		.2byte	0x1
+ 2785 000a 50       		.byte	0x50
+ 2786 000b 1A000000 		.4byte	.LVL4
+ 2787 000f BC000000 		.4byte	.LFE7
+ 2788 0013 0200     		.2byte	0x2
+ 2789 0015 91       		.byte	0x91
+ 2790 0016 64       		.sleb128 -28
+ 2791 0017 00000000 		.4byte	0
+ 2792 001b 00000000 		.4byte	0
+ 2793              	.LLST1:
+ 2794 001f 00000000 		.4byte	.LVL1
+ 2795 0023 1A000000 		.4byte	.LVL4
+ 2796 0027 0100     		.2byte	0x1
+ 2797 0029 51       		.byte	0x51
+ 2798 002a 1A000000 		.4byte	.LVL4
+ 2799 002e A6000000 		.4byte	.LVL24
+ 2800 0032 0100     		.2byte	0x1
+ 2801 0034 56       		.byte	0x56
+ 2802 0035 A6000000 		.4byte	.LVL24
+ 2803 0039 BC000000 		.4byte	.LFE7
+ 2804 003d 0400     		.2byte	0x4
+ 2805 003f F3       		.byte	0xf3
+ 2806 0040 01       		.uleb128 0x1
+ 2807 0041 51       		.byte	0x51
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 56
+
+
+ 2808 0042 9F       		.byte	0x9f
+ 2809 0043 00000000 		.4byte	0
+ 2810 0047 00000000 		.4byte	0
+ 2811              	.LLST2:
+ 2812 004b 00000000 		.4byte	.LVL1
+ 2813 004f 1A000000 		.4byte	.LVL4
+ 2814 0053 0100     		.2byte	0x1
+ 2815 0055 52       		.byte	0x52
+ 2816 0056 1A000000 		.4byte	.LVL4
+ 2817 005a 88000000 		.4byte	.LVL15
+ 2818 005e 0100     		.2byte	0x1
+ 2819 0060 55       		.byte	0x55
+ 2820 0061 88000000 		.4byte	.LVL15
+ 2821 0065 94000000 		.4byte	.LVL18
+ 2822 0069 0400     		.2byte	0x4
+ 2823 006b F3       		.byte	0xf3
+ 2824 006c 01       		.uleb128 0x1
+ 2825 006d 52       		.byte	0x52
+ 2826 006e 9F       		.byte	0x9f
+ 2827 006f 94000000 		.4byte	.LVL18
+ 2828 0073 96000000 		.4byte	.LVL19
+ 2829 0077 0100     		.2byte	0x1
+ 2830 0079 55       		.byte	0x55
+ 2831 007a 96000000 		.4byte	.LVL19
+ 2832 007e A2000000 		.4byte	.LVL22
+ 2833 0082 0400     		.2byte	0x4
+ 2834 0084 F3       		.byte	0xf3
+ 2835 0085 01       		.uleb128 0x1
+ 2836 0086 52       		.byte	0x52
+ 2837 0087 9F       		.byte	0x9f
+ 2838 0088 A2000000 		.4byte	.LVL22
+ 2839 008c A4000000 		.4byte	.LVL23
+ 2840 0090 0100     		.2byte	0x1
+ 2841 0092 55       		.byte	0x55
+ 2842 0093 A4000000 		.4byte	.LVL23
+ 2843 0097 BC000000 		.4byte	.LFE7
+ 2844 009b 0400     		.2byte	0x4
+ 2845 009d F3       		.byte	0xf3
+ 2846 009e 01       		.uleb128 0x1
+ 2847 009f 52       		.byte	0x52
+ 2848 00a0 9F       		.byte	0x9f
+ 2849 00a1 00000000 		.4byte	0
+ 2850 00a5 00000000 		.4byte	0
+ 2851              	.LLST3:
+ 2852 00a9 00000000 		.4byte	.LVL1
+ 2853 00ad 12000000 		.4byte	.LVL2
+ 2854 00b1 0100     		.2byte	0x1
+ 2855 00b3 53       		.byte	0x53
+ 2856 00b4 12000000 		.4byte	.LVL2
+ 2857 00b8 A6000000 		.4byte	.LVL25
+ 2858 00bc 0100     		.2byte	0x1
+ 2859 00be 57       		.byte	0x57
+ 2860 00bf A6000000 		.4byte	.LVL25
+ 2861 00c3 BC000000 		.4byte	.LFE7
+ 2862 00c7 0400     		.2byte	0x4
+ 2863 00c9 F3       		.byte	0xf3
+ 2864 00ca 01       		.uleb128 0x1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 57
+
+
+ 2865 00cb 53       		.byte	0x53
+ 2866 00cc 9F       		.byte	0x9f
+ 2867 00cd 00000000 		.4byte	0
+ 2868 00d1 00000000 		.4byte	0
+ 2869              	.LLST4:
+ 2870 00d5 00000000 		.4byte	.LVL1
+ 2871 00d9 12000000 		.4byte	.LVL2
+ 2872 00dd 0200     		.2byte	0x2
+ 2873 00df 91       		.byte	0x91
+ 2874 00e0 00       		.sleb128 0
+ 2875 00e1 12000000 		.4byte	.LVL2
+ 2876 00e5 14000000 		.4byte	.LVL3
+ 2877 00e9 0200     		.2byte	0x2
+ 2878 00eb 73       		.byte	0x73
+ 2879 00ec 00       		.sleb128 0
+ 2880 00ed 14000000 		.4byte	.LVL3
+ 2881 00f1 BC000000 		.4byte	.LFE7
+ 2882 00f5 0200     		.2byte	0x2
+ 2883 00f7 91       		.byte	0x91
+ 2884 00f8 00       		.sleb128 0
+ 2885 00f9 00000000 		.4byte	0
+ 2886 00fd 00000000 		.4byte	0
+ 2887              	.LLST5:
+ 2888 0101 1A000000 		.4byte	.LVL4
+ 2889 0105 34000000 		.4byte	.LVL6
+ 2890 0109 0100     		.2byte	0x1
+ 2891 010b 54       		.byte	0x54
+ 2892 010c 00000000 		.4byte	0
+ 2893 0110 00000000 		.4byte	0
+ 2894              	.LLST6:
+ 2895 0114 88000000 		.4byte	.LVL15
+ 2896 0118 94000000 		.4byte	.LVL18
+ 2897 011c 0100     		.2byte	0x1
+ 2898 011e 54       		.byte	0x54
+ 2899 011f 96000000 		.4byte	.LVL19
+ 2900 0123 9A000000 		.4byte	.LVL20
+ 2901 0127 0100     		.2byte	0x1
+ 2902 0129 54       		.byte	0x54
+ 2903 012a 00000000 		.4byte	0
+ 2904 012e 00000000 		.4byte	0
+ 2905              	.LLST7:
+ 2906 0132 00000000 		.4byte	.LVL26
+ 2907 0136 10000000 		.4byte	.LVL28
+ 2908 013a 0100     		.2byte	0x1
+ 2909 013c 50       		.byte	0x50
+ 2910 013d 10000000 		.4byte	.LVL28
+ 2911 0141 5E000000 		.4byte	.LFE8
+ 2912 0145 0400     		.2byte	0x4
+ 2913 0147 F3       		.byte	0xf3
+ 2914 0148 01       		.uleb128 0x1
+ 2915 0149 50       		.byte	0x50
+ 2916 014a 9F       		.byte	0x9f
+ 2917 014b 00000000 		.4byte	0
+ 2918 014f 00000000 		.4byte	0
+ 2919              	.LLST8:
+ 2920 0153 00000000 		.4byte	.LVL26
+ 2921 0157 13000000 		.4byte	.LVL29-1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 58
+
+
+ 2922 015b 0100     		.2byte	0x1
+ 2923 015d 51       		.byte	0x51
+ 2924 015e 13000000 		.4byte	.LVL29-1
+ 2925 0162 5E000000 		.4byte	.LFE8
+ 2926 0166 0400     		.2byte	0x4
+ 2927 0168 F3       		.byte	0xf3
+ 2928 0169 01       		.uleb128 0x1
+ 2929 016a 51       		.byte	0x51
+ 2930 016b 9F       		.byte	0x9f
+ 2931 016c 00000000 		.4byte	0
+ 2932 0170 00000000 		.4byte	0
+ 2933              	.LLST9:
+ 2934 0174 00000000 		.4byte	.LVL26
+ 2935 0178 13000000 		.4byte	.LVL29-1
+ 2936 017c 0100     		.2byte	0x1
+ 2937 017e 52       		.byte	0x52
+ 2938 017f 13000000 		.4byte	.LVL29-1
+ 2939 0183 5E000000 		.4byte	.LFE8
+ 2940 0187 0200     		.2byte	0x2
+ 2941 0189 91       		.byte	0x91
+ 2942 018a 60       		.sleb128 -32
+ 2943 018b 00000000 		.4byte	0
+ 2944 018f 00000000 		.4byte	0
+ 2945              	.LLST10:
+ 2946 0193 00000000 		.4byte	.LVL26
+ 2947 0197 13000000 		.4byte	.LVL29-1
+ 2948 019b 0100     		.2byte	0x1
+ 2949 019d 53       		.byte	0x53
+ 2950 019e 13000000 		.4byte	.LVL29-1
+ 2951 01a2 5E000000 		.4byte	.LFE8
+ 2952 01a6 0200     		.2byte	0x2
+ 2953 01a8 91       		.byte	0x91
+ 2954 01a9 64       		.sleb128 -28
+ 2955 01aa 00000000 		.4byte	0
+ 2956 01ae 00000000 		.4byte	0
+ 2957              	.LLST11:
+ 2958 01b2 0C000000 		.4byte	.LVL27
+ 2959 01b6 4A000000 		.4byte	.LVL34
+ 2960 01ba 0200     		.2byte	0x2
+ 2961 01bc 30       		.byte	0x30
+ 2962 01bd 9F       		.byte	0x9f
+ 2963 01be 4A000000 		.4byte	.LVL34
+ 2964 01c2 5C000000 		.4byte	.LVL36
+ 2965 01c6 0100     		.2byte	0x1
+ 2966 01c8 54       		.byte	0x54
+ 2967 01c9 00000000 		.4byte	0
+ 2968 01cd 00000000 		.4byte	0
+ 2969              	.LLST12:
+ 2970 01d1 16000000 		.4byte	.LVL30
+ 2971 01d5 32000000 		.4byte	.LVL31
+ 2972 01d9 0100     		.2byte	0x1
+ 2973 01db 50       		.byte	0x50
+ 2974 01dc 32000000 		.4byte	.LVL31
+ 2975 01e0 5C000000 		.4byte	.LVL37
+ 2976 01e4 0100     		.2byte	0x1
+ 2977 01e6 57       		.byte	0x57
+ 2978 01e7 00000000 		.4byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 59
+
+
+ 2979 01eb 00000000 		.4byte	0
+ 2980              	.LLST13:
+ 2981 01ef 00000000 		.4byte	.LVL38
+ 2982 01f3 0E000000 		.4byte	.LVL40
+ 2983 01f7 0100     		.2byte	0x1
+ 2984 01f9 50       		.byte	0x50
+ 2985 01fa 0E000000 		.4byte	.LVL40
+ 2986 01fe 4E000000 		.4byte	.LFE9
+ 2987 0202 0400     		.2byte	0x4
+ 2988 0204 F3       		.byte	0xf3
+ 2989 0205 01       		.uleb128 0x1
+ 2990 0206 50       		.byte	0x50
+ 2991 0207 9F       		.byte	0x9f
+ 2992 0208 00000000 		.4byte	0
+ 2993 020c 00000000 		.4byte	0
+ 2994              	.LLST14:
+ 2995 0210 00000000 		.4byte	.LVL38
+ 2996 0214 11000000 		.4byte	.LVL41-1
+ 2997 0218 0100     		.2byte	0x1
+ 2998 021a 51       		.byte	0x51
+ 2999 021b 11000000 		.4byte	.LVL41-1
+ 3000 021f 4E000000 		.4byte	.LFE9
+ 3001 0223 0200     		.2byte	0x2
+ 3002 0225 91       		.byte	0x91
+ 3003 0226 64       		.sleb128 -28
+ 3004 0227 00000000 		.4byte	0
+ 3005 022b 00000000 		.4byte	0
+ 3006              	.LLST15:
+ 3007 022f 00000000 		.4byte	.LVL38
+ 3008 0233 11000000 		.4byte	.LVL41-1
+ 3009 0237 0100     		.2byte	0x1
+ 3010 0239 52       		.byte	0x52
+ 3011 023a 11000000 		.4byte	.LVL41-1
+ 3012 023e 4C000000 		.4byte	.LVL49
+ 3013 0242 0100     		.2byte	0x1
+ 3014 0244 57       		.byte	0x57
+ 3015 0245 4C000000 		.4byte	.LVL49
+ 3016 0249 4E000000 		.4byte	.LFE9
+ 3017 024d 0400     		.2byte	0x4
+ 3018 024f F3       		.byte	0xf3
+ 3019 0250 01       		.uleb128 0x1
+ 3020 0251 52       		.byte	0x52
+ 3021 0252 9F       		.byte	0x9f
+ 3022 0253 00000000 		.4byte	0
+ 3023 0257 00000000 		.4byte	0
+ 3024              	.LLST16:
+ 3025 025b 0A000000 		.4byte	.LVL39
+ 3026 025f 3A000000 		.4byte	.LVL45
+ 3027 0263 0200     		.2byte	0x2
+ 3028 0265 30       		.byte	0x30
+ 3029 0266 9F       		.byte	0x9f
+ 3030 0267 3A000000 		.4byte	.LVL45
+ 3031 026b 4C000000 		.4byte	.LVL48
+ 3032 026f 0100     		.2byte	0x1
+ 3033 0271 55       		.byte	0x55
+ 3034 0272 00000000 		.4byte	0
+ 3035 0276 00000000 		.4byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 60
+
+
+ 3036              	.LLST17:
+ 3037 027a 14000000 		.4byte	.LVL42
+ 3038 027e 1B000000 		.4byte	.LVL43-1
+ 3039 0282 0100     		.2byte	0x1
+ 3040 0284 50       		.byte	0x50
+ 3041 0285 1B000000 		.4byte	.LVL43-1
+ 3042 0289 4C000000 		.4byte	.LVL47
+ 3043 028d 0100     		.2byte	0x1
+ 3044 028f 54       		.byte	0x54
+ 3045 0290 00000000 		.4byte	0
+ 3046 0294 00000000 		.4byte	0
+ 3047              	.LLST18:
+ 3048 0298 00000000 		.4byte	.LVL50
+ 3049 029c 06000000 		.4byte	.LVL51
+ 3050 02a0 0100     		.2byte	0x1
+ 3051 02a2 50       		.byte	0x50
+ 3052 02a3 06000000 		.4byte	.LVL51
+ 3053 02a7 A0000000 		.4byte	.LFE2
+ 3054 02ab 0400     		.2byte	0x4
+ 3055 02ad F3       		.byte	0xf3
+ 3056 02ae 01       		.uleb128 0x1
+ 3057 02af 50       		.byte	0x50
+ 3058 02b0 9F       		.byte	0x9f
+ 3059 02b1 00000000 		.4byte	0
+ 3060 02b5 00000000 		.4byte	0
+ 3061              	.LLST19:
+ 3062 02b9 56000000 		.4byte	.LVL65
+ 3063 02bd 80000000 		.4byte	.LVL69
+ 3064 02c1 0100     		.2byte	0x1
+ 3065 02c3 55       		.byte	0x55
+ 3066 02c4 8A000000 		.4byte	.LVL70
+ 3067 02c8 92000000 		.4byte	.LVL71
+ 3068 02cc 0100     		.2byte	0x1
+ 3069 02ce 55       		.byte	0x55
+ 3070 02cf 00000000 		.4byte	0
+ 3071 02d3 00000000 		.4byte	0
+ 3072              	.LLST20:
+ 3073 02d7 52000000 		.4byte	.LVL64
+ 3074 02db 56000000 		.4byte	.LVL65
+ 3075 02df 0100     		.2byte	0x1
+ 3076 02e1 50       		.byte	0x50
+ 3077 02e2 56000000 		.4byte	.LVL65
+ 3078 02e6 94000000 		.4byte	.LVL72
+ 3079 02ea 0100     		.2byte	0x1
+ 3080 02ec 54       		.byte	0x54
+ 3081 02ed 00000000 		.4byte	0
+ 3082 02f1 00000000 		.4byte	0
+ 3083              	.LLST21:
+ 3084 02f5 04000000 		.4byte	.LVL74
+ 3085 02f9 20000000 		.4byte	.LVL77
+ 3086 02fd 0200     		.2byte	0x2
+ 3087 02ff 30       		.byte	0x30
+ 3088 0300 9F       		.byte	0x9f
+ 3089 0301 20000000 		.4byte	.LVL77
+ 3090 0305 22000000 		.4byte	.LVL78
+ 3091 0309 0100     		.2byte	0x1
+ 3092 030b 54       		.byte	0x54
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 61
+
+
+ 3093 030c 24000000 		.4byte	.LVL79
+ 3094 0310 3E000000 		.4byte	.LVL84
+ 3095 0314 0100     		.2byte	0x1
+ 3096 0316 54       		.byte	0x54
+ 3097 0317 00000000 		.4byte	0
+ 3098 031b 00000000 		.4byte	0
+ 3099              	.LLST22:
+ 3100 031f 04000000 		.4byte	.LVL85
+ 3101 0323 1C000000 		.4byte	.LVL87
+ 3102 0327 0200     		.2byte	0x2
+ 3103 0329 30       		.byte	0x30
+ 3104 032a 9F       		.byte	0x9f
+ 3105 032b 1C000000 		.4byte	.LVL87
+ 3106 032f 2D000000 		.4byte	.LVL88-1
+ 3107 0333 0100     		.2byte	0x1
+ 3108 0335 50       		.byte	0x50
+ 3109 0336 5A000000 		.4byte	.LVL92
+ 3110 033a 5C000000 		.4byte	.LVL93
+ 3111 033e 0100     		.2byte	0x1
+ 3112 0340 50       		.byte	0x50
+ 3113 0341 00000000 		.4byte	0
+ 3114 0345 00000000 		.4byte	0
+ 3115              	.LLST23:
+ 3116 0349 7E000000 		.4byte	.LVL109
+ 3117 034d A8000000 		.4byte	.LVL115
+ 3118 0351 0100     		.2byte	0x1
+ 3119 0353 54       		.byte	0x54
+ 3120 0354 AA000000 		.4byte	.LVL116
+ 3121 0358 B2000000 		.4byte	.LVL117
+ 3122 035c 0100     		.2byte	0x1
+ 3123 035e 54       		.byte	0x54
+ 3124 035f 00000000 		.4byte	0
+ 3125 0363 00000000 		.4byte	0
+ 3126              	.LLST24:
+ 3127 0367 12000000 		.4byte	.LVL94
+ 3128 036b 1C000000 		.4byte	.LVL96
+ 3129 036f 0200     		.2byte	0x2
+ 3130 0371 30       		.byte	0x30
+ 3131 0372 9F       		.byte	0x9f
+ 3132 0373 1C000000 		.4byte	.LVL96
+ 3133 0377 21000000 		.4byte	.LVL97-1
+ 3134 037b 0100     		.2byte	0x1
+ 3135 037d 50       		.byte	0x50
+ 3136 037e 48000000 		.4byte	.LVL101
+ 3137 0382 4E000000 		.4byte	.LVL102
+ 3138 0386 0100     		.2byte	0x1
+ 3139 0388 50       		.byte	0x50
+ 3140 0389 54000000 		.4byte	.LVL104
+ 3141 038d 59000000 		.4byte	.LVL105-1
+ 3142 0391 0100     		.2byte	0x1
+ 3143 0393 50       		.byte	0x50
+ 3144 0394 A8000000 		.4byte	.LVL115
+ 3145 0398 AA000000 		.4byte	.LVL116
+ 3146 039c 0100     		.2byte	0x1
+ 3147 039e 50       		.byte	0x50
+ 3148 039f 00000000 		.4byte	0
+ 3149 03a3 00000000 		.4byte	0
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 62
+
+
+ 3150              		.section	.debug_aranges,"",%progbits
+ 3151 0000 64000000 		.4byte	0x64
+ 3152 0004 0200     		.2byte	0x2
+ 3153 0006 00000000 		.4byte	.Ldebug_info0
+ 3154 000a 04       		.byte	0x4
+ 3155 000b 00       		.byte	0
+ 3156 000c 0000     		.2byte	0
+ 3157 000e 0000     		.2byte	0
+ 3158 0010 00000000 		.4byte	.LFB3
+ 3159 0014 0A000000 		.4byte	.LFE3-.LFB3
+ 3160 0018 00000000 		.4byte	.LFB7
+ 3161 001c BC000000 		.4byte	.LFE7-.LFB7
+ 3162 0020 00000000 		.4byte	.LFB8
+ 3163 0024 5E000000 		.4byte	.LFE8-.LFB8
+ 3164 0028 00000000 		.4byte	.LFB9
+ 3165 002c 4E000000 		.4byte	.LFE9-.LFB9
+ 3166 0030 00000000 		.4byte	.LFB2
+ 3167 0034 A0000000 		.4byte	.LFE2-.LFB2
+ 3168 0038 00000000 		.4byte	.LFB5
+ 3169 003c 0A000000 		.4byte	.LFE5-.LFB5
+ 3170 0040 00000000 		.4byte	.LFB6
+ 3171 0044 40000000 		.4byte	.LFE6-.LFB6
+ 3172 0048 00000000 		.4byte	.LFB10
+ 3173 004c 7C000000 		.4byte	.LFE10-.LFB10
+ 3174 0050 00000000 		.4byte	.LFB11
+ 3175 0054 CC000000 		.4byte	.LFE11-.LFB11
+ 3176 0058 00000000 		.4byte	.LFB12
+ 3177 005c 40000000 		.4byte	.LFE12-.LFB12
+ 3178 0060 00000000 		.4byte	0
+ 3179 0064 00000000 		.4byte	0
+ 3180              		.section	.debug_ranges,"",%progbits
+ 3181              	.Ldebug_ranges0:
+ 3182 0000 00000000 		.4byte	.LFB3
+ 3183 0004 0A000000 		.4byte	.LFE3
+ 3184 0008 00000000 		.4byte	.LFB7
+ 3185 000c BC000000 		.4byte	.LFE7
+ 3186 0010 00000000 		.4byte	.LFB8
+ 3187 0014 5E000000 		.4byte	.LFE8
+ 3188 0018 00000000 		.4byte	.LFB9
+ 3189 001c 4E000000 		.4byte	.LFE9
+ 3190 0020 00000000 		.4byte	.LFB2
+ 3191 0024 A0000000 		.4byte	.LFE2
+ 3192 0028 00000000 		.4byte	.LFB5
+ 3193 002c 0A000000 		.4byte	.LFE5
+ 3194 0030 00000000 		.4byte	.LFB6
+ 3195 0034 40000000 		.4byte	.LFE6
+ 3196 0038 00000000 		.4byte	.LFB10
+ 3197 003c 7C000000 		.4byte	.LFE10
+ 3198 0040 00000000 		.4byte	.LFB11
+ 3199 0044 CC000000 		.4byte	.LFE11
+ 3200 0048 00000000 		.4byte	.LFB12
+ 3201 004c 40000000 		.4byte	.LFE12
+ 3202 0050 00000000 		.4byte	0
+ 3203 0054 00000000 		.4byte	0
+ 3204              		.section	.debug_line,"",%progbits
+ 3205              	.Ldebug_line0:
+ 3206 0000 1C040000 		.section	.debug_str,"MS",%progbits,1
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 63
+
+
+ 3206      02006A02 
+ 3206      00000201 
+ 3206      FB0E0D00 
+ 3206      01010101 
+ 3207              	.LASF76:
+ 3208 0000 63633835 		.ascii	"cc85xx.c\000"
+ 3208      78782E63 
+ 3208      00
+ 3209              	.LASF58:
+ 3210 0009 55534255 		.ascii	"USBUART_CDCIsReady\000"
+ 3210      4152545F 
+ 3210      43444349 
+ 3210      73526561 
+ 3210      647900
+ 3211              	.LASF43:
+ 3212 001c 64617461 		.ascii	"dataLen\000"
+ 3212      4C656E00 
+ 3213              	.LASF69:
+ 3214 0024 5350495F 		.ascii	"SPI_mosi_m_Write\000"
+ 3214      6D6F7369 
+ 3214      5F6D5F57 
+ 3214      72697465 
+ 3214      00
+ 3215              	.LASF40:
+ 3216 0035 70446174 		.ascii	"pData\000"
+ 3216      6100
+ 3217              	.LASF49:
+ 3218 003b 63633835 		.ascii	"cc85xx_get_status\000"
+ 3218      78785F67 
+ 3218      65745F73 
+ 3218      74617475 
+ 3218      7300
+ 3219              	.LASF2:
+ 3220 004d 73686F72 		.ascii	"short int\000"
+ 3220      7420696E 
+ 3220      7400
+ 3221              	.LASF63:
+ 3222 0057 6D616C6C 		.ascii	"malloc\000"
+ 3222      6F6300
+ 3223              	.LASF20:
+ 3224 005e 73697A65 		.ascii	"sizetype\000"
+ 3224      74797065 
+ 3224      00
+ 3225              	.LASF45:
+ 3226 0067 626F6F74 		.ascii	"boot\000"
+ 3226      00
+ 3227              	.LASF79:
+ 3228 006c 63633835 		.ascii	"cc85xx_init\000"
+ 3228      78785F69 
+ 3228      6E697400 
+ 3229              	.LASF7:
+ 3230 0078 5F5F7569 		.ascii	"__uint32_t\000"
+ 3230      6E743332 
+ 3230      5F7400
+ 3231              	.LASF61:
+ 3232 0083 5350495F 		.ascii	"SPI_SpiUartGetRxBufferSize\000"
+ 3232      53706955 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 64
+
+
+ 3232      61727447 
+ 3232      65745278 
+ 3232      42756666 
+ 3233              	.LASF4:
+ 3234 009e 5F5F7569 		.ascii	"__uint16_t\000"
+ 3234      6E743136 
+ 3234      5F7400
+ 3235              	.LASF48:
+ 3236 00a9 74784275 		.ascii	"txBuffer\000"
+ 3236      66666572 
+ 3236      00
+ 3237              	.LASF80:
+ 3238 00b2 6D656D63 		.ascii	"memcpy\000"
+ 3238      707900
+ 3239              	.LASF34:
+ 3240 00b9 72784C65 		.ascii	"rxLen\000"
+ 3240      6E00
+ 3241              	.LASF12:
+ 3242 00bf 75696E74 		.ascii	"uint8_t\000"
+ 3242      385F7400 
+ 3243              	.LASF18:
+ 3244 00c7 63633835 		.ascii	"cc85xx_cmd_req_hdr_s\000"
+ 3244      78785F63 
+ 3244      6D645F72 
+ 3244      65715F68 
+ 3244      64725F73 
+ 3245              	.LASF16:
+ 3246 00dc 6F70636F 		.ascii	"opcode\000"
+ 3246      646500
+ 3247              	.LASF64:
+ 3248 00e3 66726565 		.ascii	"free\000"
+ 3248      00
+ 3249              	.LASF59:
+ 3250 00e8 55534255 		.ascii	"USBUART_PutString\000"
+ 3250      4152545F 
+ 3250      50757453 
+ 3250      7472696E 
+ 3250      6700
+ 3251              	.LASF32:
+ 3252 00fa 70537461 		.ascii	"pStatus\000"
+ 3252      74757300 
+ 3253              	.LASF24:
+ 3254 0102 666C6F61 		.ascii	"float\000"
+ 3254      7400
+ 3255              	.LASF57:
+ 3256 0108 55534255 		.ascii	"USBUART_GetConfiguration\000"
+ 3256      4152545F 
+ 3256      47657443 
+ 3256      6F6E6669 
+ 3256      67757261 
+ 3257              	.LASF66:
+ 3258 0121 5253546E 		.ascii	"RSTn_Write\000"
+ 3258      5F577269 
+ 3258      746500
+ 3259              	.LASF15:
+ 3260 012c 636D645F 		.ascii	"cmd_type\000"
+ 3260      74797065 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 65
+
+
+ 3260      00
+ 3261              	.LASF9:
+ 3262 0135 6C6F6E67 		.ascii	"long long int\000"
+ 3262      206C6F6E 
+ 3262      6720696E 
+ 3262      7400
+ 3263              	.LASF26:
+ 3264 0143 63686172 		.ascii	"char\000"
+ 3264      00
+ 3265              	.LASF6:
+ 3266 0148 6C6F6E67 		.ascii	"long int\000"
+ 3266      20696E74 
+ 3266      00
+ 3267              	.LASF39:
+ 3268 0151 70617261 		.ascii	"paramLen\000"
+ 3268      6D4C656E 
+ 3268      00
+ 3269              	.LASF78:
+ 3270 015a 5F5F4655 		.ascii	"__FUNCTION__\000"
+ 3270      4E435449 
+ 3270      4F4E5F5F 
+ 3270      00
+ 3271              	.LASF56:
+ 3272 0167 5350495F 		.ascii	"SPI_miso_m_Read\000"
+ 3272      6D69736F 
+ 3272      5F6D5F52 
+ 3272      65616400 
+ 3273              	.LASF37:
+ 3274 0177 63633835 		.ascii	"cc85xx_cmd_req\000"
+ 3274      78785F63 
+ 3274      6D645F72 
+ 3274      657100
+ 3275              	.LASF23:
+ 3276 0186 63633835 		.ascii	"cc85xx_read_s\000"
+ 3276      78785F72 
+ 3276      6561645F 
+ 3276      7300
+ 3277              	.LASF1:
+ 3278 0194 756E7369 		.ascii	"unsigned char\000"
+ 3278      676E6564 
+ 3278      20636861 
+ 3278      7200
+ 3279              	.LASF62:
+ 3280 01a2 5350495F 		.ascii	"SPI_SpiUartClearRxBuffer\000"
+ 3280      53706955 
+ 3280      61727443 
+ 3280      6C656172 
+ 3280      52784275 
+ 3281              	.LASF68:
+ 3282 01bb 5350495F 		.ascii	"SPI_mosi_m_SetDriveMode\000"
+ 3282      6D6F7369 
+ 3282      5F6D5F53 
+ 3282      65744472 
+ 3282      6976654D 
+ 3283              	.LASF27:
+ 3284 01d3 6C6F6E67 		.ascii	"long double\000"
+ 3284      20646F75 
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 66
+
+
+ 3284      626C6500 
+ 3285              	.LASF71:
+ 3286 01df 43794465 		.ascii	"CyDelayUs\000"
+ 3286      6C617955 
+ 3286      7300
+ 3287              	.LASF44:
+ 3288 01e9 63633835 		.ascii	"cc85xx_reset\000"
+ 3288      78785F72 
+ 3288      65736574 
+ 3288      00
+ 3289              	.LASF46:
+ 3290 01f6 6265666F 		.ascii	"before\000"
+ 3290      726500
+ 3291              	.LASF72:
+ 3292 01fd 73707269 		.ascii	"sprintf\000"
+ 3292      6E746600 
+ 3293              	.LASF55:
+ 3294 0205 5350495F 		.ascii	"SPI_SpiUartReadRxData\000"
+ 3294      53706955 
+ 3294      61727452 
+ 3294      65616452 
+ 3294      78446174 
+ 3295              	.LASF0:
+ 3296 021b 7369676E 		.ascii	"signed char\000"
+ 3296      65642063 
+ 3296      68617200 
+ 3297              	.LASF10:
+ 3298 0227 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 3298      206C6F6E 
+ 3298      6720756E 
+ 3298      7369676E 
+ 3298      65642069 
+ 3299              	.LASF30:
+ 3300 023e 70547844 		.ascii	"pTxData\000"
+ 3300      61746100 
+ 3301              	.LASF14:
+ 3302 0246 75696E74 		.ascii	"uint32_t\000"
+ 3302      33325F74 
+ 3302      00
+ 3303              	.LASF22:
+ 3304 024f 64617461 		.ascii	"data_len\000"
+ 3304      5F6C656E 
+ 3304      00
+ 3305              	.LASF11:
+ 3306 0258 756E7369 		.ascii	"unsigned int\000"
+ 3306      676E6564 
+ 3306      20696E74 
+ 3306      00
+ 3307              	.LASF33:
+ 3308 0265 70527844 		.ascii	"pRxData\000"
+ 3308      61746100 
+ 3309              	.LASF3:
+ 3310 026d 5F5F7569 		.ascii	"__uint8_t\000"
+ 3310      6E74385F 
+ 3310      7400
+ 3311              	.LASF73:
+ 3312 0277 5350495F 		.ascii	"SPI_Stop\000"
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 67
+
+
+ 3312      53746F70 
+ 3312      00
+ 3313              	.LASF19:
+ 3314 0280 70617261 		.ascii	"param\000"
+ 3314      6D00
+ 3315              	.LASF35:
+ 3316 0286 73746172 		.ascii	"start\000"
+ 3316      7400
+ 3317              	.LASF5:
+ 3318 028c 73686F72 		.ascii	"short unsigned int\000"
+ 3318      7420756E 
+ 3318      7369676E 
+ 3318      65642069 
+ 3318      6E7400
+ 3319              	.LASF38:
+ 3320 029f 636D6454 		.ascii	"cmdType\000"
+ 3320      79706500 
+ 3321              	.LASF51:
+ 3322 02a7 63633835 		.ascii	"cc85xx_print_info\000"
+ 3322      78785F70 
+ 3322      72696E74 
+ 3322      5F696E66 
+ 3322      6F00
+ 3323              	.LASF77:
+ 3324 02b9 433A5C64 		.ascii	"C:\\dev\\git\\icebreaker\\Icebreaker.cydsn\000"
+ 3324      65765C67 
+ 3324      69745C69 
+ 3324      63656272 
+ 3324      65616B65 
+ 3325              	.LASF13:
+ 3326 02e0 75696E74 		.ascii	"uint16_t\000"
+ 3326      31365F74 
+ 3326      00
+ 3327              	.LASF54:
+ 3328 02e9 67627566 		.ascii	"gbuf\000"
+ 3328      00
+ 3329              	.LASF36:
+ 3330 02ee 5F426F6F 		.ascii	"_Bool\000"
+ 3330      6C00
+ 3331              	.LASF29:
+ 3332 02f4 63633835 		.ascii	"cc85xx_basic_transaction\000"
+ 3332      78785F62 
+ 3332      61736963 
+ 3332      5F747261 
+ 3332      6E736163 
+ 3333              	.LASF67:
+ 3334 030d 5350495F 		.ascii	"SPI_ss0_m_Write\000"
+ 3334      7373305F 
+ 3334      6D5F5772 
+ 3334      69746500 
+ 3335              	.LASF8:
+ 3336 031d 6C6F6E67 		.ascii	"long unsigned int\000"
+ 3336      20756E73 
+ 3336      69676E65 
+ 3336      6420696E 
+ 3336      7400
+ 3337              	.LASF25:
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 68
+
+
+ 3338 032f 646F7562 		.ascii	"double\000"
+ 3338      6C6500
+ 3339              	.LASF52:
+ 3340 0336 72737664 		.ascii	"rsvd\000"
+ 3340      00
+ 3341              	.LASF60:
+ 3342 033b 5350495F 		.ascii	"SPI_SpiUartPutArray\000"
+ 3342      53706955 
+ 3342      61727450 
+ 3342      75744172 
+ 3342      72617900 
+ 3343              	.LASF53:
+ 3344 034f 746D7243 		.ascii	"tmrCounter_ms\000"
+ 3344      6F756E74 
+ 3344      65725F6D 
+ 3344      7300
+ 3345              	.LASF50:
+ 3346 035d 63633835 		.ascii	"cc85xx_bl_unlock_spi\000"
+ 3346      78785F62 
+ 3346      6C5F756E 
+ 3346      6C6F636B 
+ 3346      5F737069 
+ 3347              	.LASF65:
+ 3348 0372 6D656D73 		.ascii	"memset\000"
+ 3348      657400
+ 3349              	.LASF75:
+ 3350 0379 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 3350      43313120 
+ 3350      352E342E 
+ 3350      31203230 
+ 3350      31363036 
+ 3351 03ac 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 3351      20726576 
+ 3351      6973696F 
+ 3351      6E203233 
+ 3351      37373135 
+ 3352 03df 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 3352      66756E63 
+ 3352      74696F6E 
+ 3352      2D736563 
+ 3352      74696F6E 
+ 3353              	.LASF41:
+ 3354 0407 70547850 		.ascii	"pTxPkt\000"
+ 3354      6B7400
+ 3355              	.LASF74:
+ 3356 040e 5350495F 		.ascii	"SPI_Start\000"
+ 3356      53746172 
+ 3356      7400
+ 3357              	.LASF17:
+ 3358 0418 70617261 		.ascii	"param_len\000"
+ 3358      6D5F6C65 
+ 3358      6E00
+ 3359              	.LASF31:
+ 3360 0422 74784C65 		.ascii	"txLen\000"
+ 3360      6E00
+ 3361              	.LASF47:
+ 3362 0428 63633835 		.ascii	"cc85xx_boot_reset\000"
+ARM GAS  C:\Users\TERENC~1\AppData\Local\Temp\cc7H4W3g.s 			page 69
+
+
+ 3362      78785F62 
+ 3362      6F6F745F 
+ 3362      72657365 
+ 3362      7400
+ 3363              	.LASF21:
+ 3364 043a 63633835 		.ascii	"cc85xx_cmd_req_s\000"
+ 3364      78785F63 
+ 3364      6D645F72 
+ 3364      65715F73 
+ 3364      00
+ 3365              	.LASF70:
+ 3366 044b 43794465 		.ascii	"CyDelay\000"
+ 3366      6C617900 
+ 3367              	.LASF28:
+ 3368 0453 63633835 		.ascii	"cc85xx_spi_read\000"
+ 3368      78785F73 
+ 3368      70695F72 
+ 3368      65616400 
+ 3369              	.LASF42:
+ 3370 0463 63633835 		.ascii	"cc85xx_read\000"
+ 3370      78785F72 
+ 3370      65616400 
+ 3371              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

@@ -26,6 +26,7 @@ typedef struct _tmrFuncType
 } tmrFuncType;
 
 #define tmrGetCounter_ms()          (tmrCounter_ms)
+#define tmrGetElapsedMs(start)      (tmrCounter_ms - start)
 #define tmrGetTimeToExpiry(pTmr)    (pTmr->mS)
     
 void tmrInit(void);
