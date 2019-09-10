@@ -90,13 +90,23 @@ static TK_SHELL_VERBS(wm) =
 };
 
 TK_SHELL_METHOD(rf, init);
+TK_SHELL_METHOD(rf, reset);
+TK_SHELL_METHOD(rf, bl_reset);
 TK_SHELL_METHOD(rf, bl_unlock);
+TK_SHELL_METHOD(rf, bl_erase);
+TK_SHELL_METHOD(rf, bl_verify);
+TK_SHELL_METHOD(rf, bl_flash);
 TK_SHELL_METHOD(rf, status);
 TK_SHELL_METHOD(rf, info);
 static TK_SHELL_VERBS(rf) =
 {
   TK_SHELL_VERB(rf, init, "initialize RF chip"),
+  TK_SHELL_VERB(rf, reset, "perform sys reset"),
+  TK_SHELL_VERB(rf, bl_reset, "perform boot reset"),
   TK_SHELL_VERB(rf, bl_unlock, "unlock bootloader SPI"),
+  TK_SHELL_VERB(rf, bl_erase, "perform mass erase"),
+  TK_SHELL_VERB(rf, bl_verify, "perform image verification"),
+  TK_SHELL_VERB(rf, bl_flash, "flash a chunk: <addr> <data:uint8[]>"),
   TK_SHELL_VERB(rf, status, "get status"),
   TK_SHELL_VERB(rf, info, "print dev_chip_info"),
   { "", NULL, "" }
@@ -156,6 +166,9 @@ static const tk_shell_command_s commands[] =
     TK_SHELL_COMMAND(audio, "Audio commands"),
     { "", NULL, "" }
 };
+
+static const char OK_STR[] = "ok";
+static const char ER_STR[] = "er";
 
 static char cmd_buf[CMD_BUF_LEN];
 static uint8_t cmd_char_count;
@@ -340,10 +353,66 @@ TK_SHELL_METHOD(rf, init)
   return 0;
 }
 
+TK_SHELL_METHOD(rf, reset)
+{
+  PRINTF("> rf:%s\n", (cc85xx_sys_reset()) ? OK_STR : ER_STR);
+  return 0;
+}
+
+TK_SHELL_METHOD(rf, bl_reset)
+{
+  PRINTF("> rf:%s\n", (cc85xx_boot_reset()) ? OK_STR : ER_STR);
+  return 0;
+}
+
 TK_SHELL_METHOD(rf, bl_unlock)
 {
-  cc85xx_bl_unlock_spi();
-  PRINTF("> rf:ok\n");
+  PRINTF("> rf:%s\n", (cc85xx_bl_unlock_spi()) ? OK_STR : ER_STR);
+  return 0;
+}
+
+TK_SHELL_METHOD(rf, bl_erase)
+{
+  PRINTF("> rf:%s\n", (cc85xx_bl_mass_erase()) ? OK_STR : ER_STR);
+  return 0;
+}
+
+TK_SHELL_METHOD(rf, bl_verify)
+{
+  uint32_t crc;
+  bool ret = cc85xx_bl_flash_verify(&crc);
+
+  PRINTF("> rf:%s 0x%08X\n", (ret) ? OK_STR : ER_STR, crc);
+
+  return 0;
+}
+
+TK_SHELL_METHOD(rf, bl_flash)
+{
+  int i = 2, j;
+  uint16_t addr;
+  uint8_t data[CMD_BUF_LEN];
+  char hex[3];
+  
+  argc -= i;
+  
+  if (argc != 2)
+  {
+      PRINTF("Invalid number of arguments: %d\n", argc);
+      return -1;
+  }
+  
+  addr = strtoul(argv[i++], NULL, 16);
+  
+  for (j = 0; j < (int)strlen(argv[i]); j += 2)
+  {
+    hex[0] = argv[i][j];
+    hex[1] = argv[i][j + 1];
+    hex[2] = '\0';
+    data[j/2] = strtoul(hex, NULL, 16);
+  }
+  
+  PRINTF("> rf:%s\n", (cc85xx_flash_bytes(addr, data, j/2)) ? OK_STR : ER_STR);
   return 0;
 }
 
@@ -355,8 +424,7 @@ TK_SHELL_METHOD(rf, status)
 
 TK_SHELL_METHOD(rf, info)
 {
-  cc85xx_print_info();
-  PRINTF("> rf:ok\n");
+  PRINTF("> rf:%s\n", (cc85xx_print_info()) ? OK_STR : ER_STR);
   return 0;
 }
 

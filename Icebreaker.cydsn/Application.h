@@ -64,7 +64,8 @@
             { \
                 if (0u != USBUART_GetConfiguration()) \
                 { \
-                    while (0u == USBUART_CDCIsReady()); \
+                    uint32_t s1 = tmrGetCounter_ms(); \
+                    while (0u == USBUART_CDCIsReady() && (tmrGetElapsedMs(s1) < 1000)); \
                     sprintf(&gbuf[0], __VA_ARGS__); \
                     USBUART_PutString(gbuf); \
                 } \
