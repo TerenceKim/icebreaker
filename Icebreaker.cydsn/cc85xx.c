@@ -17,22 +17,41 @@
 #include <Application.h>
 #include <utils.h>
 
+#ifdef FEATURE_DEBUG_CC85XX
+#define CC85XX_PRINTF     PRINTF
+#else
+#define CC85XX_PRINTF
+#endif /* FEATURE_DEBUG_CC85XX */
+
 #define CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS  (1000)
 #define CC85XX_PAGE_SIZE                      (1024) // 1KB
 
-static uint32_t nImageBytes;
+typedef struct __attribute__((packed))
+{
+  uint32_t nImageBytes;
+  uint16_t statusWord; 
+} cc85xx_control_block_s;
 
+static cc85xx_control_block_s cc85xxCb;
 
-static bool cc85xx_wait_for_status(uint16_t expectedStatus, uint32_t timeout, uint16_t *pStatus)
+static bool cc85xx_wait_for_status(uint16_t expectedStatus, uint32_t timeout)
 {
   uint32_t start = tmrGetCounter_ms();
+  bool ret = false;
   
   do
   {
-    *pStatus = cc85xx_get_status();
-  } while ((*pStatus != expectedStatus) && (tmrGetElapsedMs(start) < timeout));
+    cc85xx_get_cached_status() = cc85xx_get_status();
+  } while ((cc85xx_get_cached_status() != expectedStatus) && (tmrGetElapsedMs(start) < timeout));
   
-  return (*pStatus == expectedStatus);
+  ret = (cc85xx_get_cached_status() == expectedStatus);
+
+  if (!ret)
+  {
+    CC85XX_PRINTF("ERROR: expected vs. actual status (0x%04X, 0x%04X)\n";, expectedStatus, cc85xx_get_cached_status());
+  }
+
+  return ret;
 }
 
 static bool cc85xx_reset(bool boot)
@@ -107,7 +126,7 @@ static uint8_t cc85xx_spi_read(void)
   return (uint8_t)SPI_SpiUartReadRxData();
 }
 
-static bool cc85xx_basic_transaction(uint8_t *pTxData, uint32_t txLen, uint16_t *pStatus, uint8_t *pRxData, uint16_t rxLen, uint16_t *pRxLen)
+static bool cc85xx_basic_transaction(uint8_t *pTxData, uint32_t txLen, uint8_t *pRxData, uint16_t rxLen, uint16_t *pRxLen)
 {
   uint32_t start = tmrGetCounter_ms();
   uint32_t i;
@@ -117,7 +136,7 @@ static bool cc85xx_basic_transaction(uint8_t *pTxData, uint32_t txLen, uint16_t 
   
   if (tmrGetElapsedMs(start) >= CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS)
   {
-    PRINTF("ERROR: Timed out waiting for previous SPI operation to complete\n");
+    CC85XX_PRINTF("ERROR: Timed out waiting for previous SPI operation to complete\n");
     return false;
   }
   
@@ -133,11 +152,8 @@ static bool cc85xx_basic_transaction(uint8_t *pTxData, uint32_t txLen, uint16_t 
   {
   }
   
-  if (pStatus)
-  {
-    *pStatus = cc85xx_spi_read() << 8;
-    *pStatus |= cc85xx_spi_read();
-  }
+  cc85xxCb.statusWord = cc85xx_spi_read() << 8;
+  cc85xxCb.statusWord |= cc85xx_spi_read();
   
   if (pRxLen)
   {
@@ -161,7 +177,7 @@ static bool cc85xx_basic_transaction(uint8_t *pTxData, uint32_t txLen, uint16_t 
   return true;
 }
 
-static bool cc85xx_cmd_req(uint8_t cmdType, uint8_t paramLen, uint8_t *pData, uint16_t *pStatus)
+static bool cc85xx_cmd_req(uint8_t cmdType, uint8_t paramLen, uint8_t *pData)
 {
   bool ret = false;
 
@@ -172,7 +188,7 @@ static bool cc85xx_cmd_req(uint8_t cmdType, uint8_t paramLen, uint8_t *pData, ui
   pTxPkt->hdr.param_len = paramLen;
   memcpy(pTxPkt->param, pData, paramLen);
   
-  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_cmd_req_hdr_s) + paramLen, pStatus, NULL, 0, NULL);
+  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_cmd_req_hdr_s) + paramLen, NULL, 0, NULL);
   
   free(pTxPkt);
 
@@ -184,7 +200,7 @@ static bool cc85xx_cmd_req(uint8_t cmdType, uint8_t paramLen, uint8_t *pData, ui
   return true;
 }
 
-static bool cc85xx_read(uint16_t dataLen, uint16_t *pStatus, uint8_t *pData)
+static bool cc85xx_read(uint16_t dataLen, uint8_t *pData)
 {
   bool ret = false;
   
@@ -195,29 +211,30 @@ static bool cc85xx_read(uint16_t dataLen, uint16_t *pStatus, uint8_t *pData)
   pTxPkt->opcode = CC85XX_OP_READ;
   pTxPkt->data_len = dataLen;
   
-  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_read_s) + dataLen, pStatus, pData, dataLen, NULL);
+  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_read_s) + dataLen, pData, dataLen, NULL);
 
   free(pTxPkt);
 
   if (!ret)
   {
+    CC85XX_PRINTF("ERROR: READ failed: sw=0x%04X\n", cc85xx_get_cached_status());
     return ret;
   }
   
   return true;
 }
 
-static bool cc85xx_readbc(uint8_t *pRxData, uint16_t *pRxLen, uint16_t *pStatus)
+static bool cc85xx_readbc(uint8_t *pRxData, uint16_t *pRxLen)
 {
   cc85xx_readbc_cmd_s cmd = 
   {
     .opcode = CC85XX_OP_READBC
   };
 
-  return cc85xx_basic_transaction((uint8_t *)&cmd, sizeof(cc85xx_readbc_cmd_s), pStatus, pRxData, *pRxLen, pRxLen);
+  return cc85xx_basic_transaction((uint8_t *)&cmd, sizeof(cc85xx_readbc_cmd_s), pRxData, *pRxLen, pRxLen);
 }
 
-static bool cc85xx_set_addr(uint16_t addr, uint16_t *pStatus)
+static bool cc85xx_set_addr(uint16_t addr)
 {
   bool ret = false;
   
@@ -227,7 +244,7 @@ static bool cc85xx_set_addr(uint16_t addr, uint16_t *pStatus)
   pTxPkt->addr_hi = (addr >> 8) & 0xFF;
   pTxPkt->addr_lo = (addr & 0xFF);
   
-  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_set_addr_s), pStatus, NULL, 0, NULL);
+  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_set_addr_s), NULL, 0, NULL);
   
   free(pTxPkt);
   
@@ -239,7 +256,7 @@ static bool cc85xx_set_addr(uint16_t addr, uint16_t *pStatus)
   return true;
 }
 
-static bool cc85xx_write(uint16_t dataLen, uint8_t *pData, uint16_t *pStatus)
+static bool cc85xx_write(uint16_t dataLen, uint8_t *pData)
 {
   bool ret = false;
   
@@ -250,7 +267,7 @@ static bool cc85xx_write(uint16_t dataLen, uint8_t *pData, uint16_t *pStatus)
   pTxPkt->len_lo = (dataLen & 0xFF);
   memcpy(pTxPkt->param, pData, dataLen);
   
-  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_write_s) + dataLen, pStatus, NULL, 0, NULL);
+  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_write_s) + dataLen, NULL, 0, NULL);
   
   free(pTxPkt);
   
@@ -265,7 +282,6 @@ static bool cc85xx_write(uint16_t dataLen, uint8_t *pData, uint16_t *pStatus)
 static bool cc85xx_bl_flash_page_prog(uint16_t ramAddr, uint16_t flashAddr, uint16_t dwordCount)
 {
   bool ret = false;
-  uint16_t sw;
   cc85xx_bl_flash_page_prog_s *pTxPkt = (cc85xx_bl_flash_page_prog_s *)malloc(sizeof(cc85xx_bl_flash_page_prog_s));
 
   pTxPkt->ram_addr = BE16(ramAddr);
@@ -273,13 +289,13 @@ static bool cc85xx_bl_flash_page_prog(uint16_t ramAddr, uint16_t flashAddr, uint
   pTxPkt->dword_count = BE16(dwordCount);
   pTxPkt->key = BE32(CC85XX_BL_MASS_ERASE_KEY);
 
-  ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_BL_FLASH_PAGE_PROG, sizeof(cc85xx_bl_flash_page_prog_s), (uint8_t *)pTxPkt, &sw);
+  ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_BL_FLASH_PAGE_PROG, sizeof(cc85xx_bl_flash_page_prog_s), (uint8_t *)pTxPkt);
   
   free(pTxPkt);
 
-  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_FLASH_PAGE_PROG_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS, &sw))
+  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_FLASH_PAGE_PROG_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS, &cc85xxCb.statusWord))
   {
-    PRINTF("ERROR: %s: ret=%d, status=0x%04X\n", __FUNCTION__, ret, sw);
+    
     return false;
   }
   
@@ -290,13 +306,13 @@ bool cc85xx_bl_unlock_spi(void)
 {
   bool ret = false;
   uint32_t key = BE32(CC85XX_BL_UNLOCK_SPI_KEY);
-  uint16_t sw = 0xCCCC;
+  cc85xxCb.statusWord = 0xCCCC;
 
-  ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_BL_UNLOCK_SPI, sizeof(key), (uint8_t *)&key, &sw);
+  ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_BL_UNLOCK_SPI, sizeof(key), (uint8_t *)&key);
   
-  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_UNLOCK_SPI_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS, &sw))
+  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_UNLOCK_SPI_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS, &cc85xxCb.statusWord))
   {
-    PRINTF("ERROR: %s: ret=%d, status=0x%04X\n", __FUNCTION__, ret, sw);
+    
     return false;
   }
 
@@ -307,13 +323,13 @@ bool cc85xx_bl_mass_erase(void)
 {
   bool ret = false;
   uint32_t key = BE32(CC85XX_BL_MASS_ERASE_KEY);
-  uint16_t sw = 0xCCCC;
+  cc85xxCb.statusWord = 0xCCCC;
 
-  ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_BL_MASS_ERASE, sizeof(key), (uint8_t *)&key, &sw);
+  ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_BL_MASS_ERASE, sizeof(key), (uint8_t *)&key);
   
-  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_MASS_ERASE_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS, &sw))
+  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_MASS_ERASE_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS, &cc85xxCb.statusWord))
   {
-    PRINTF("ERROR: %s: ret=%d, status=0x%04X\n", __FUNCTION__, ret, sw);
+    
     return false;
   }
 
@@ -324,19 +340,18 @@ bool cc85xx_bl_flash_verify(uint32_t *pCrc32)
 {
   bool ret = false;
   bool rv = true;
-  uint16_t sw;
 
   cc85xx_bl_flash_verify_s *pTxPkt = (cc85xx_bl_flash_verify_s *)malloc(sizeof(cc85xx_bl_flash_verify_s));
 
-  pTxPkt->byte_count = BE32(nImageBytes);
+  pTxPkt->byte_count = BE32(cc85xxCb.nImageBytes);
   pTxPkt->data_addr = BE32(0x8000UL);
-  ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_BL_FLASH_VERIFY, sizeof(cc85xx_bl_flash_verify_s), (uint8_t *)pTxPkt, &sw);
+  ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_BL_FLASH_VERIFY, sizeof(cc85xx_bl_flash_verify_s), (uint8_t *)pTxPkt);
 
   free(pTxPkt);
 
-  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_FLASH_VERIFY_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS, &sw))
+  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_FLASH_VERIFY_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS, &cc85xxCb.statusWord))
   {
-    PRINTF("ERROR: %s: ret=%d, status=0x%04X\n", __FUNCTION__, ret, sw);
+    
     rv = false;
   }
   
@@ -346,7 +361,7 @@ bool cc85xx_bl_flash_verify(uint32_t *pCrc32)
     if (ret)
     {
       *pCrc32 = BE32(*pCrc32);
-      PRINTF("nImageBytes = %u (0x%08x)\nCRC_VAL = 0x%08X\nsw = 0x%04X\n", nImageBytes, nImageBytes, *pCrc32, sw);
+      CC85XX_PRINTF("nImageBytes = %u (0x%08x)\nCRC_VAL = 0x%08X\nsw = 0x%04X\n", cc85xxCb.nImageBytes, cc85xxCb.nImageBytes, *pCrc32, cc85xxCb.statusWord);
     }
   }
   
@@ -356,20 +371,17 @@ bool cc85xx_bl_flash_verify(uint32_t *pCrc32)
 bool cc85xx_di_get_chip_info(cc85xx_di_get_chip_info_rsp_s *pInfo)
 {
   const uint16_t rsvd = 0x00B0;
-  uint16_t sw = 0;
   bool ret = false;
   
-  ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_DI_GET_CHIP_INFO, sizeof(rsvd), (uint8_t *)&rsvd, &sw);
+  ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_DI_GET_CHIP_INFO, sizeof(rsvd), (uint8_t *)&rsvd);
   if (!ret)
   {
-    PRINTF("ERROR: CMD_REQ 0x%02X failed: sw=0x%04X\n", CC85XX_CMD_TYPE_DI_GET_CHIP_INFO, sw);
     return ret;
   }
 
-  ret = cc85xx_read(sizeof(cc85xx_di_get_chip_info_rsp_s), &sw, (uint8_t *)pInfo);
+  ret = cc85xx_read(sizeof(cc85xx_di_get_chip_info_rsp_s), &cc85xxCb.statusWord, (uint8_t *)pInfo);
   if (!ret)
   {
-    PRINTF("ERROR: READ failed: sw=0x%04X\n", sw);
     return ret;
   }
   
@@ -378,74 +390,18 @@ bool cc85xx_di_get_chip_info(cc85xx_di_get_chip_info_rsp_s *pInfo)
 
 bool cc85xx_di_get_device_info(cc85xx_di_get_device_info_rsp_s *pInfo)
 {
-  uint16_t sw = 0;
-  bool ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_DI_GET_DEVICE_INFO, 0, NULL, &sw);
+  bool ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_DI_GET_DEVICE_INFO, 0, NULL);
   if (!ret)
   {
-    PRINTF("ERROR: CMD_REQ 0x%02X failed: sw=0x%04X\n", CC85XX_CMD_TYPE_DI_GET_CHIP_INFO, sw);
     return ret;
   }
   
-  ret = cc85xx_read(sizeof(cc85xx_di_get_device_info_rsp_s), &sw, (uint8_t *)pInfo);
+  ret = cc85xx_read(sizeof(cc85xx_di_get_device_info_rsp_s), &cc85xxCb.statusWord, (uint8_t *)pInfo);
   if (!ret)
   {
-    PRINTF("ERROR: READ failed: sw=0x%04X\n", sw);
     return ret;
   }
   
-  return ret;
-}
-
-bool cc85xx_print_info(void)
-{
-  uint8_t rsp[sizeof(cc85xx_di_get_chip_info_rsp_s)];
-  cc85xx_di_get_chip_info_rsp_s *pRsp = (cc85xx_di_get_chip_info_rsp_s *)rsp;
-  cc85xx_di_get_device_info_rsp_s *pInfo = (cc85xx_di_get_device_info_rsp_s *)rsp;
-  bool ret = cc85xx_di_get_chip_info(pRsp);
-  if (!ret)
-  {
-    PRINTF("ERROR: Failed to fetch chip info\n");
-    return ret;
-  }
-
-#if 0
-  uint32_t i;
-  for (i = 0; i < 24; i++)
-  {
-    PRINTF("0x%02X: %02X\n", i, rsp[i]);
-  }
-#endif
-  
-  PRINTF("\tfamily_id: 0x%04X\n", BE16(pRsp->family_id));
-  
-  PRINTF("\tsil_min_rev: %d\n", pRsp->sil_min_rev);
-  PRINTF("\tsil_maj_rev: %d\n", pRsp->sil_maj_rev);
-  
-  PRINTF("\trom_min_rev: %d\n", pRsp->rom_min_rev);
-  PRINTF("\trom_maj_rev: %d\n", pRsp->rom_maj_rev);
-  PRINTF("\trom_type: 0x%04X\n", BE16(pRsp->rom_type));
-  
-  PRINTF("\tfw_patch_rev: %d\n", pRsp->fw_patch_rev);
-  PRINTF("\tfw_min_rev: %d\n", pRsp->fw_min_rev);
-  PRINTF("\tfw_maj_rev: %d\n", pRsp->fw_maj_rev);
-  PRINTF("\tfw_type: 0x%04X\n", BE16(pRsp->fw_type));
-  
-  PRINTF("\tfw_image_size: %d\n", BE32(pRsp->fw_image_size));
-  
-  PRINTF("\tchip_id: 0x%04X\n", BE16(pRsp->chip_id));
-  PRINTF("\tchip_caps: 0x%04X\n", BE16(pRsp->chip_caps));
-  
-  ret = cc85xx_di_get_device_info(pInfo);
-  if (!ret)
-  {
-    PRINTF("ERROR: Failed to get device info\n");
-    return ret;
-  }
-  
-  PRINTF("\tdevice_id: 0x%08X\n", BE32(pInfo->device_id));
-  PRINTF("\tmanf_id: 0x%08X\n", BE32(pInfo->manf_id));
-  PRINTF("\tprod_id: 0x%08X\n", BE32(pInfo->prod_id));
-
   return ret;
 }
 
@@ -474,30 +430,35 @@ bool cc85xx_boot_reset(void)
 
 uint16_t cc85xx_get_status(void)
 {
-  uint16_t sw = 0;
   uint8_t txBuffer[] = { 0x80, 0x00 };
 
-  (void)cc85xx_basic_transaction(txBuffer, sizeof(txBuffer), &sw, NULL, 0, NULL);
+  (void)cc85xx_basic_transaction(txBuffer, sizeof(txBuffer), NULL, 0, NULL);
   
-  return sw;
+  return cc85xxCb.statusWord;
+}
+
+uint16_t cc85xx_get_cached_status(void)
+{
+  return cc85xxCb.statusWord;
 }
 
 void cc85xx_init(void)
 {
-  SPI_Start();
+  memset((void *)&cc85xxCb, 0, sizeof(cc85xx_control_block_s));
+
+  cc85xx_sys_reset();
 }
 
 bool cc85xx_flash_bytes(uint16_t addr, uint8_t *pData, uint16_t dataLen)
 {
   bool ret = true;
-  uint16_t sw;
   uint16_t ram_addr = 0x6000 + (addr % CC85XX_PAGE_SIZE);
   
   // SET_ADDR
-  cc85xx_set_addr(ram_addr, &sw);
+  cc85xx_set_addr(ram_addr);
   
   // WRITE
-  cc85xx_write(dataLen, pData, &sw);
+  cc85xx_write(dataLen, pData);
   
   if ((dataLen + (addr % CC85XX_PAGE_SIZE)) >= CC85XX_PAGE_SIZE)
   {
@@ -523,5 +484,37 @@ bool cc85xx_ehc_evt_clr(cc85xx_ehc_evt_clr_cmd_s *pCmd)
 {
   return cc85xx_cmd_req(CC85XX_CMD_TYPE_EHC_EVT_CLR, sizeof(cc85xx_ehc_evt_clr_cmd_s), (uint8_t *)pCmd, NULL);
 }
+
+bool cc85xx_nvs_get_data(uint8_t slotIdx, uint32_t *pData)
+{
+  uint8_t param = slotIdx;
+  bool ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_NVS_GET_DATA, sizeof(slotIdx), &param);
+  if (!ret)
+  {
+    return ret;
+  }
+
+  return cc85xx_read(sizeof(uint32_t), &cc85xxCb.statusWord, (uint8_t *)pData);
+}
+
+bool cc85xx_nvs_set_data(uint8_t slotIdx, uint32_t data)
+{
+  uint8_t pars[] = { slotIdx, 0, 0, 0, 0 };
+
+  memcpy((void *)&pars[1], (void *)&data, sizeof(uint32_t));
+
+  return cc85xx_cmd_req(CC85XX_CMD_TYPE_NVS_SET_DATA, sizeof(pars), pars);
+}
+
+bool cc85xx_nwm_do_scan(cc85xx_nwm_do_scan_cmd_s *pCmd)
+{
+  return cc85xx_cmd_req(CC85XX_CMD_TYPE_NWM_DO_SCAN, sizeof(cc85xx_nwm_do_scan_cmd_s), (uint8_t *)pCmd);
+}
+
+bool cc85xx_nwm_get_scan_results(cc85xx_nwm_do_scan_rsp_s *pRsp, uint16_t *pRxLen)
+{
+  return cc85xx_readbc((uint8_t *)pRsp, pRxLen);
+}
+
 
 /* [] END OF FILE */

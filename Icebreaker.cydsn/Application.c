@@ -179,6 +179,8 @@ void InitApp(void)
     USBUART_Start(USBFS_DEVICE, USBUART_5V_OPERATION);
     
     CyIntSetPriority(CYDMA_INTR_NUMBER, 0);
+
+    RfControllerInit();
  #endif
 }
 
@@ -238,6 +240,7 @@ void RunApplication(void)
         
         buttonManagerService();
         AudioManagerService();
+        RfControllerService();
     }
 #endif
 }

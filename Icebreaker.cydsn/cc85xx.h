@@ -40,6 +40,8 @@
 #define CC85XX_CMD_TYPE_EHC_EVT_MASK          (0x1A)
 #define CC85XX_CMD_TYPE_DI_GET_DEVICE_INFO    (0x1E)
 #define CC85XX_CMD_TYPE_DI_GET_CHIP_INFO      (0x1F)
+#define CC85XX_CMD_TYPE_NVS_GET_DATA          (0x2B)
+#define CC85XX_CMD_TYPE_NVS_GET_DATA          (0x2C)
   
 #define CC85XX_BL_UNLOCK_SPI_KEY              (0x2505B007)
 #define CC85XX_BL_MASS_ERASE_KEY              (0x25051337)
@@ -212,10 +214,10 @@ typedef struct __attribute__((packed))
 
 typedef struct __attribute__((packed))
 {
-  unsigned ach_format1:3;
-  unsigned ach_active1:1;
-  unsigned ach_format0:3;
-  unsigned ach_active0:1;
+  unsigned format1:3;
+  unsigned active1:1;
+  unsigned format0:3;
+  unsigned active0:1;
 } cc85xx_audio_channel_s;
 
 typedef struct __attribute__((packed))
@@ -252,13 +254,17 @@ bool cc85xx_bl_unlock_spi(void);
 bool cc85xx_bl_mass_erase(void);
 bool cc85xx_bl_flash_verify(uint32_t *pCrc32);
 uint16_t cc85xx_get_status(void);
-bool cc85xx_print_info(void);
+uint16_t cc85xx_get_cached_status(void);
 bool cc85xx_flash_bytes(uint16_t addr, uint8_t *pData, uint16_t dataLen);
 bool cc85xx_di_get_chip_info(cc85xx_di_get_chip_info_rsp_s *pInfo);
 bool cc85xx_di_get_device_info(cc85xx_di_get_device_info_rsp_s *pInfo);
 bool cc85xx_ehc_evt_mask(cc85xx_ehc_evt_mask_cmd_s *pCmd);
 bool cc85xx_ehc_evt_clr(cc85xx_ehc_evt_clr_cmd_s *pCmd);
-bool cc85xx_nwm_do_scan(cc85xx_nwm_do_scan_cmd_s *pCmd, cc85xx_nwm_do_scan_rsp_s *pRsp);
+bool cc85xx_nwm_do_scan(cc85xx_nwm_do_scan_cmd_s *pCmd);
+bool cc85xx_nwm_get_scan_results(cc85xx_nwm_do_scan_rsp_s *pRsp, uint16_t *pRxLen);
+bool cc85xx_nvs_set_data(uint8_t slotIdx, uint32_t data);
+bool cc85xx_nvs_get_data(uint8_t slotIdx, uint32_t *pData);
+
 
 #endif /* CC85XX_H */
 /* [] END OF FILE */

@@ -40,7 +40,8 @@
 
 #ifndef APP_H
 	#define APP_H
-		
+
+  #include <Features.h>		
 	#include "Config.h"
 	#include <UART.h>
     #include <UART_SPI_UART.h>

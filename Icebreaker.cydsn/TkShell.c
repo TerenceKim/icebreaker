@@ -21,6 +21,7 @@
 #include <timers.h>
 #include <LedManager.h>
 #include <AudioManager.h>
+#include <RfController.h>
 #include <cc85xx.h>
 
 #define USBUART_BUFFER_SIZE (64u)
@@ -98,6 +99,9 @@ TK_SHELL_METHOD(rf, bl_verify);
 TK_SHELL_METHOD(rf, bl_flash);
 TK_SHELL_METHOD(rf, status);
 TK_SHELL_METHOD(rf, info);
+TK_SHELL_METHOD(rf, write32);
+TK_SHELL_METHOD(rf, read32);
+TK_SHELL_METHOD(rf, scan);
 static TK_SHELL_VERBS(rf) =
 {
   TK_SHELL_VERB(rf, init, "initialize RF chip"),
@@ -109,6 +113,9 @@ static TK_SHELL_VERBS(rf) =
   TK_SHELL_VERB(rf, bl_flash, "flash a chunk: <addr> <data:uint8[]>"),
   TK_SHELL_VERB(rf, status, "get status"),
   TK_SHELL_VERB(rf, info, "print dev_chip_info"),
+  TK_SHELL_VERB(rf, write32, "write word for storage"),
+  TK_SHELL_VERB(rf, read32, "read word from storage"),
+  TK_SHELL_VERB(rf, scan, "perform a scan"),
   { "", NULL, "" }
 };
 
@@ -440,19 +447,77 @@ TK_SHELL_METHOD(rf, status)
 
 TK_SHELL_METHOD(rf, info)
 {
-  PRINTF("> rf:%s\n", (cc85xx_print_info()) ? OK_STR : ER_STR);
+  PRINTF("> rf:%s\n", (RfControllerPrintInfo()) ? OK_STR : ER_STR);
+  return 0;
+}
+
+TK_SHELL_METHOD(rf, write32)
+{
+  int i = 2;
+  uint8_t slotIdx;
+  uint32_t ui32;
+  
+  argc -= i;
+  
+  if (argc != 2)
+  {
+      PRINTF("Invalid number of arguments: %d\n", argc);
+      return -1;
+  }
+  
+  slotIdx = atoi(argv[i++]);
+  ui32 = strtoul(argv[i], NULL, 16);
+  
+  PRINTF("> rf:%s\n", (cc85xx_nvs_set_data(slotIdx, ui32)) ? OK_STR : ER_STR);
+  return 0;
+}
+
+TK_SHELL_METHOD(rf, read32)
+{
+  int i = 2;
+  uint8_t slotIdx;
+  uint32_t ui32;
+  
+  argc -= i;
+  
+  if (argc != 1)
+  {
+      PRINTF("Invalid number of arguments: %d\n", argc);
+      return -1;
+  }
+  
+  slotIdx = atoi(argv[i++]);
+  
+  PRINTF("> rf:%s 0x%08X\n", (cc85xx_nvs_get_data(slotIdx, &ui32)) ? OK_STR : ER_STR, ui32);
+  return 0;
+}
+
+TK_SHELL_METHOD(rf, scan)
+{
+  bool ret = RfControllerStartScan();
+  uint32_t start = tmrGetCounter_ms();
+
+  if (ret)
+  {
+    do
+    {
+      ret = RfControllerPrintScanResults();
+    } while (!ret && tmrGetElapsedMs(start) < 2000);
+  }
+
+  PRINTF("> rf:%s\n", (ret) ? OK_STR : ER_STR);
   return 0;
 }
 
 TK_SHELL_METHOD(sys, crash)
 {
-    void (*fp)(void) = NULL;
-    
-    fp();
-    
-    PRINTF("> sys:er\n");
-    
-    return 0;
+  void (*fp)(void) = NULL;
+
+  fp();
+
+  PRINTF("> sys:er\n");
+
+  return 0;
 }
 
 TK_SHELL_METHOD(sys, info)

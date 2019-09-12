@@ -51,3 +51,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 *Terence Kim*
+
+# Apple file storage files
+.DS_Store
