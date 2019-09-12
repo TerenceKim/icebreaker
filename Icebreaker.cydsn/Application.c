@@ -51,6 +51,7 @@
 #include <isr_Button.h>
 #include <ButtonManager.h>
 #include <AudioManager.h>
+#include <RfController.h>
 
 #define USBFS_DEVICE    (0u)
 #define USBUART_BUFFER_SIZE (64u)

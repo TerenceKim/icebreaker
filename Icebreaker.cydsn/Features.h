@@ -15,6 +15,6 @@
 /**
  * Debug features.
  */
-#define FEATURE_DEBUG_CC85XX
+#define FEATURE_DEBUG_PRINTS
 
 #endif /* FEATURES_H */

@@ -36,12 +36,13 @@
 #define CC85XX_CMD_TYPE_BL_FLASH_PAGE_PROG    (0x07)
 #define CC85XX_CMD_TYPE_NWM_DO_SCAN           (0x08)
 #define CC85XX_CMD_TYPE_BL_FLASH_VERIFY       (0x0F)
+#define CC85XX_CMD_TYPE_PS_RF_STATS           (0x10)
 #define CC85XX_CMD_TYPE_EHC_EVT_CLR           (0x19)
 #define CC85XX_CMD_TYPE_EHC_EVT_MASK          (0x1A)
 #define CC85XX_CMD_TYPE_DI_GET_DEVICE_INFO    (0x1E)
 #define CC85XX_CMD_TYPE_DI_GET_CHIP_INFO      (0x1F)
 #define CC85XX_CMD_TYPE_NVS_GET_DATA          (0x2B)
-#define CC85XX_CMD_TYPE_NVS_GET_DATA          (0x2C)
+#define CC85XX_CMD_TYPE_NVS_SET_DATA          (0x2C)
   
 #define CC85XX_BL_UNLOCK_SPI_KEY              (0x2505B007)
 #define CC85XX_BL_MASS_ERASE_KEY              (0x25051337)
@@ -199,8 +200,7 @@ typedef struct __attribute__((packed))
  */
 typedef struct __attribute__((packed))
 {
-  unsigned scan_to:12;
-  unsigned scan_max:4;
+  uint16_t scan;
   
   uint32_t manf_id;
   uint32_t prod_id_mask;
@@ -238,14 +238,37 @@ typedef struct __attribute__((packed))
   cc85xx_audio_channel_s ach[8];
   
   uint8_t rssi;
-  unsigned :16;
 
-  unsigned sample_rate:12;
+  unsigned sample_rate_hi:4;
   unsigned :4;
   
-  unsigned :16;
+  unsigned sample_rate_lo:8;
+  
+  unsigned audio_latency_hi:4;
+  unsigned :4;
+  
+  unsigned audio_latency_lo:8;
 } cc85xx_nwm_do_scan_rsp_s;
 
+/**
+ * RF and Audio Statistics Commands.
+ */
+typedef struct __attribute__((packed))
+{
+  uint32_t timeslot_count;
+  uint32_t rx_pkt_count;
+  
+  uint32_t rx_pkt_fail_count;
+  uint32_t rx_slice_count;
+  
+  uint32_t rx_slice_err_count;
+
+  uint8_t  nwk_join_count;
+  uint8_t  nwk_drop_count;
+  uint16_t afh_swap_count;
+  
+  uint16_t afh_ch_usage_count[20];
+} cc85xx_ps_rf_stats_s;
 
 void cc85xx_init(void);
 bool cc85xx_sys_reset(void);
@@ -264,6 +287,7 @@ bool cc85xx_nwm_do_scan(cc85xx_nwm_do_scan_cmd_s *pCmd);
 bool cc85xx_nwm_get_scan_results(cc85xx_nwm_do_scan_rsp_s *pRsp, uint16_t *pRxLen);
 bool cc85xx_nvs_set_data(uint8_t slotIdx, uint32_t data);
 bool cc85xx_nvs_get_data(uint8_t slotIdx, uint32_t *pData);
+bool cc85xx_ps_rf_stats(cc85xx_ps_rf_stats_s *pRsp, uint16_t *pRxLen);
 
 
 #endif /* CC85XX_H */

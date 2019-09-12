@@ -47,7 +47,10 @@ void CalibrationInit(void)
 
         cal_data->led_max_brightness = 50;
         
-        cal_data->debug_mask = 0xFF;
+        cal_data->debug_mask = 
+          DM_LVL_ERROR | \
+          DM_LVL_WARNING | \
+          DM_LVL_INFO;
     }
 }
 

@@ -11,6 +11,8 @@
 */
 #ifndef UTILS_H
 #define UTILS_H
+
+#include <stdint.h>
   
 #define BE16(h) (((h & 0xFF00) >> 8) | \
                  ((h & 0x00FF) << 8))
@@ -20,6 +22,7 @@
                  ((i & 0x0000FF00) <<  8) | \
                  ((i & 0x000000FF) << 24))
                   
+void printArray(uint8_t *p, uint32_t len);
 
 #endif /* UTILS_H */
 

@@ -102,6 +102,7 @@ TK_SHELL_METHOD(rf, info);
 TK_SHELL_METHOD(rf, write32);
 TK_SHELL_METHOD(rf, read32);
 TK_SHELL_METHOD(rf, scan);
+TK_SHELL_METHOD(rf, stats);
 static TK_SHELL_VERBS(rf) =
 {
   TK_SHELL_VERB(rf, init, "initialize RF chip"),
@@ -116,6 +117,7 @@ static TK_SHELL_VERBS(rf) =
   TK_SHELL_VERB(rf, write32, "write word for storage"),
   TK_SHELL_VERB(rf, read32, "read word from storage"),
   TK_SHELL_VERB(rf, scan, "perform a scan"),
+  TK_SHELL_VERB(rf, stats, "print stats"),
   { "", NULL, "" }
 };
 
@@ -425,6 +427,16 @@ TK_SHELL_METHOD(rf, bl_flash)
 
 TK_SHELL_METHOD(rf, status)
 {
+  cc85xx_ehc_evt_clr_cmd_s cmd;
+  cmd.evt.sr_chg = 1;
+  cmd.evt.nwk_chg = 1;
+  cmd.evt.ps_chg = 1;
+  cmd.evt.vol_chg = 1;
+  cmd.evt.spi_error = 1;
+  cmd.evt.dsc_reset = 1;
+  cmd.evt.dsc_tx_avail = 0;
+  cmd.evt.dsc_rx_avail = 0;
+  
   uint16_t val = cc85xx_get_status();
   cc85xx_get_status_s *pStatus = (cc85xx_get_status_s *)&val;
   
@@ -440,6 +452,8 @@ TK_SHELL_METHOD(rf, status)
   PRINTF("\twasp_conn:%d\n", pStatus->wasp_conn);
   PRINTF("\tpwr_state:%d\n", pStatus->pwr_state);
   PRINTF("\tcmdreq_rdy:%d\n", pStatus->cmdreq_rdy);
+  
+  (void)cc85xx_ehc_evt_clr(&cmd);
   
   PRINTF("> rf:ok 0x%04X\n", val);
   return 0;
@@ -494,18 +508,32 @@ TK_SHELL_METHOD(rf, read32)
 
 TK_SHELL_METHOD(rf, scan)
 {
-  bool ret = RfControllerStartScan();
+  RfControllerStartScan();
   uint32_t start = tmrGetCounter_ms();
+  bool ret = false;
 
-  if (ret)
+#if 0
+  while (!ret && tmrGetElapsedMs(start) < 2000)
   {
-    do
-    {
-      ret = RfControllerPrintScanResults();
-    } while (!ret && tmrGetElapsedMs(start) < 2000);
+    ret = RfControllerPrintScanResults();
   }
+#else
+  while ((ret == false) && (tmrGetElapsedMs(start) < (RF_SCAN_TIME_SECONDS * 1000)))
+  {
+    CyDelay(1000);
+    ret = RfControllerPrintScanResults();
+  }
+#endif
 
   PRINTF("> rf:%s\n", (ret) ? OK_STR : ER_STR);
+  return 0;
+}
+
+TK_SHELL_METHOD(rf, stats)
+{
+  RfControllerPrintStats();
+  
+  PRINTF("> rf:ok\n");
   return 0;
 }
 

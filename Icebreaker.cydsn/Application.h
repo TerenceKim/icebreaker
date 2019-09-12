@@ -71,12 +71,16 @@
                     USBUART_PutString(gbuf); \
                 } \
             } while (0)
-        #define DM_LVL_ERROR    0
-        #define DM_LVL_WARNING  1
-        #define DM_LVL_INFO     2
-        #define DM_LVL_DEBUG    3
+        #define DM_LVL_ERROR    (1 << 0)
+        #define DM_LVL_WARNING  (1 << 1)
+        #define DM_LVL_INFO     (1 << 2)
+        #define DM_LVL_DEBUG    (1 << 3)
         
-        #define D_PRINTF(lvl, ...) do { if ((cal_data != NULL) && (DM_LVL_ ## lvl & cal_data->debug_mask)) { PRINTF(__VA_ARGS__); } } while (0)
+        #ifdef FEATURE_DEBUG_PRINTS
+          #define D_PRINTF(lvl, ...) do { if ((cal_data != NULL) && (DM_LVL_ ## lvl & cal_data->debug_mask)) { PRINTF(__VA_ARGS__); } } while (0)
+        #else
+          #define D_PRINT(lvl, ...)
+        #endif
 	#else	
 		#define PRINT(x)
         #define PRINTF(...)

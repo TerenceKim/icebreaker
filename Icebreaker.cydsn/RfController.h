@@ -14,6 +14,8 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+  
+#define RF_SCAN_TIME_SECONDS          (10)
 
 #define RF_EVENTS_POWER_ON            (1 <<  0)
 #define RF_EVENTS_POWER_OFF           (1 <<  1)
@@ -32,5 +34,6 @@ void RfControllerService(void);
 bool RfControllerPrintInfo(void);
 void RfControllerStartScan(void);
 bool RfControllerPrintScanResults(void);
+void RfControllerPrintStats(void);
 
 #endif /* RF_CONTROLLER_H */

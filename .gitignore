@@ -54,3 +54,9 @@ dkms.conf
 
 # Apple file storage files
 .DS_Store
+
+# Artifacts
+Icebreaker.cydsn/codegentemp
+Icebreaker.cydsn/CortexM0
+*.log
+*.html

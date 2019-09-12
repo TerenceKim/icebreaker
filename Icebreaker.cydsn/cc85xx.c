@@ -17,17 +17,14 @@
 #include <Application.h>
 #include <utils.h>
 
-#ifdef FEATURE_DEBUG_CC85XX
-#define CC85XX_PRINTF     PRINTF
-#else
-#define CC85XX_PRINTF
-#endif /* FEATURE_DEBUG_CC85XX */
-
 #define CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS  (1000)
 #define CC85XX_PAGE_SIZE                      (1024) // 1KB
 
 typedef struct __attribute__((packed))
 {
+  cc85xx_di_get_chip_info_rsp_s chip_info;
+  cc85xx_di_get_device_info_rsp_s device_info;
+  
   uint32_t nImageBytes;
   uint16_t statusWord; 
 } cc85xx_control_block_s;
@@ -41,14 +38,14 @@ static bool cc85xx_wait_for_status(uint16_t expectedStatus, uint32_t timeout)
   
   do
   {
-    cc85xx_get_cached_status() = cc85xx_get_status();
+    (void)cc85xx_get_status();
   } while ((cc85xx_get_cached_status() != expectedStatus) && (tmrGetElapsedMs(start) < timeout));
   
   ret = (cc85xx_get_cached_status() == expectedStatus);
 
   if (!ret)
   {
-    CC85XX_PRINTF("ERROR: expected vs. actual status (0x%04X, 0x%04X)\n";, expectedStatus, cc85xx_get_cached_status());
+    D_PRINTF(ERROR, "ERROR: expected vs. actual status (0x%04X, 0x%04X)\n", expectedStatus, cc85xx_get_cached_status());
   }
 
   return ret;
@@ -123,6 +120,8 @@ static bool cc85xx_reset(bool boot)
 
 static uint8_t cc85xx_spi_read(void)
 {
+  uint32_t start = tmrGetCounter_ms();
+  while((SPI_SpiUartGetRxBufferSize() == 0) && (tmrGetElapsedMs(start) < CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS));
   return (uint8_t)SPI_SpiUartReadRxData();
 }
 
@@ -136,39 +135,66 @@ static bool cc85xx_basic_transaction(uint8_t *pTxData, uint32_t txLen, uint8_t *
   
   if (tmrGetElapsedMs(start) >= CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS)
   {
-    CC85XX_PRINTF("ERROR: Timed out waiting for previous SPI operation to complete\n");
+    D_PRINTF(ERROR, "ERROR: Timed out waiting for previous SPI operation to complete\n");
     return false;
   }
+  
+  D_PRINTF(DEBUG, "TX: ");
+  printArray(pTxData, txLen);
+  
+  /* Clear dummy bytes from RX buffer */
+  SPI_SpiUartClearRxBuffer();
   
   /* Start transfer */
   SPI_SpiUartPutArray(pTxData, txLen);
 
   /* Wait for the end of the transfer. The number of transmitted data
   * elements has to be equal to the number of received data elements.
-  */  
-  start = tmrGetCounter_ms();
-
-  while(txLen != SPI_SpiUartGetRxBufferSize() && (tmrGetElapsedMs(start) < CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS))
-  {
-  }
+  */
+  while((SPI_SpiUartGetRxBufferSize() < 2) && (tmrGetElapsedMs(start) < CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS));
   
+  D_PRINTF(DEBUG, "RX: ");
   cc85xxCb.statusWord = cc85xx_spi_read() << 8;
   cc85xxCb.statusWord |= cc85xx_spi_read();
   
+  D_PRINTF(DEBUG, "%02X %02X ", (cc85xxCb.statusWord >> 8) & 0xFF, (cc85xxCb.statusWord & 0xFF));
+  
   if (pRxLen)
   {
+    while((SPI_SpiUartGetRxBufferSize() < 2) && (tmrGetElapsedMs(start) < CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS));
+  
     *pRxLen = cc85xx_spi_read() << 8;
     *pRxLen |= cc85xx_spi_read();
     
+    D_PRINTF(DEBUG, "%02X %02X ", (*pRxLen >> 8) & 0xFF, (*pRxLen & 0xFF));
+    
     rxLen = (*pRxLen < rxLen) ? *pRxLen : rxLen;
+    
+    if (rxLen == 0)
+    {
+      /* Wait for operation to finish. */
+      while((SPI_SpiUartGetTxBufferSize() > 0) && (tmrGetElapsedMs(start) < CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS));
+  
+      /* Clear dummy bytes from RX buffer */
+      SPI_SpiUartClearRxBuffer();
+      
+      return true;
+    }
   }
   
-  if (pRxData != NULL)
+  if (pRxData)
   {
+    while((SPI_SpiUartGetRxBufferSize() < rxLen) && (tmrGetElapsedMs(start) < CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS));
+  
     for (i = 0; i < rxLen; i++)
     {
       pRxData[i] = cc85xx_spi_read();
     }
+    printArray(pRxData, rxLen);
+  }
+  else
+  {
+    D_PRINTF(DEBUG, "\n");
   }
 
   /* Clear dummy bytes from RX buffer */
@@ -206,8 +232,9 @@ static bool cc85xx_read(uint16_t dataLen, uint8_t *pData)
   
   cc85xx_read_s *pTxPkt = (cc85xx_read_s *)malloc(sizeof(cc85xx_read_s) + dataLen);
   
-  memset((void *)pTxPkt, 0xCC, sizeof(cc85xx_read_s) + dataLen);
-  
+  memset((void *)pTxPkt, 0x80, sizeof(cc85xx_read_s) + dataLen);
+  memset((void *)pTxPkt, 0, sizeof(cc85xx_read_s));
+
   pTxPkt->opcode = CC85XX_OP_READ;
   pTxPkt->data_len = dataLen;
   
@@ -217,7 +244,7 @@ static bool cc85xx_read(uint16_t dataLen, uint8_t *pData)
 
   if (!ret)
   {
-    CC85XX_PRINTF("ERROR: READ failed: sw=0x%04X\n", cc85xx_get_cached_status());
+    D_PRINTF(ERROR, "ERROR: READ failed: sw=0x%04X\n", cc85xx_get_cached_status());
     return ret;
   }
   
@@ -226,12 +253,21 @@ static bool cc85xx_read(uint16_t dataLen, uint8_t *pData)
 
 static bool cc85xx_readbc(uint8_t *pRxData, uint16_t *pRxLen)
 {
-  cc85xx_readbc_cmd_s cmd = 
-  {
-    .opcode = CC85XX_OP_READBC
-  };
+  bool ret = false;
+  uint8_t *pTxBuf = (uint8_t *)malloc(sizeof(cc85xx_readbc_cmd_s) + sizeof(uint16_t) + *pRxLen);
+  
+  memset(pTxBuf, 0x80, sizeof(cc85xx_readbc_cmd_s) + sizeof(uint16_t) + *pRxLen);
+  
+  cc85xx_readbc_cmd_s *pCmd = (cc85xx_readbc_cmd_s *)pTxBuf;
 
-  return cc85xx_basic_transaction((uint8_t *)&cmd, sizeof(cc85xx_readbc_cmd_s), pRxData, *pRxLen, pRxLen);
+  memset(pCmd, 0, sizeof(cc85xx_readbc_cmd_s));
+  pCmd->opcode = CC85XX_OP_READBC;
+
+  ret = cc85xx_basic_transaction(pTxBuf, sizeof(cc85xx_readbc_cmd_s) + sizeof(uint16_t) + *pRxLen, pRxData, *pRxLen, pRxLen);
+  
+  free(pTxBuf);
+  
+  return ret;
 }
 
 static bool cc85xx_set_addr(uint16_t addr)
@@ -293,7 +329,7 @@ static bool cc85xx_bl_flash_page_prog(uint16_t ramAddr, uint16_t flashAddr, uint
   
   free(pTxPkt);
 
-  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_FLASH_PAGE_PROG_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS, &cc85xxCb.statusWord))
+  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_FLASH_PAGE_PROG_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS))
   {
     
     return false;
@@ -310,7 +346,7 @@ bool cc85xx_bl_unlock_spi(void)
 
   ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_BL_UNLOCK_SPI, sizeof(key), (uint8_t *)&key);
   
-  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_UNLOCK_SPI_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS, &cc85xxCb.statusWord))
+  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_UNLOCK_SPI_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS))
   {
     
     return false;
@@ -327,7 +363,7 @@ bool cc85xx_bl_mass_erase(void)
 
   ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_BL_MASS_ERASE, sizeof(key), (uint8_t *)&key);
   
-  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_MASS_ERASE_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS, &cc85xxCb.statusWord))
+  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_MASS_ERASE_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS))
   {
     
     return false;
@@ -349,7 +385,7 @@ bool cc85xx_bl_flash_verify(uint32_t *pCrc32)
 
   free(pTxPkt);
 
-  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_FLASH_VERIFY_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS, &cc85xxCb.statusWord))
+  if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_FLASH_VERIFY_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS))
   {
     
     rv = false;
@@ -357,11 +393,11 @@ bool cc85xx_bl_flash_verify(uint32_t *pCrc32)
   
   if (pCrc32)
   {
-    ret = cc85xx_read(sizeof(uint32_t), &sw, (uint8_t *)pCrc32);
+    ret = cc85xx_read(sizeof(uint32_t), (uint8_t *)pCrc32);
     if (ret)
     {
       *pCrc32 = BE32(*pCrc32);
-      CC85XX_PRINTF("nImageBytes = %u (0x%08x)\nCRC_VAL = 0x%08X\nsw = 0x%04X\n", cc85xxCb.nImageBytes, cc85xxCb.nImageBytes, *pCrc32, cc85xxCb.statusWord);
+      D_PRINTF(ERROR, "nImageBytes = %u (0x%08x)\nCRC_VAL = 0x%08X\nsw = 0x%04X\n", cc85xxCb.nImageBytes, cc85xxCb.nImageBytes, *pCrc32, cc85xxCb.statusWord);
     }
   }
   
@@ -379,7 +415,7 @@ bool cc85xx_di_get_chip_info(cc85xx_di_get_chip_info_rsp_s *pInfo)
     return ret;
   }
 
-  ret = cc85xx_read(sizeof(cc85xx_di_get_chip_info_rsp_s), &cc85xxCb.statusWord, (uint8_t *)pInfo);
+  ret = cc85xx_read(sizeof(cc85xx_di_get_chip_info_rsp_s), (uint8_t *)pInfo);
   if (!ret)
   {
     return ret;
@@ -396,7 +432,7 @@ bool cc85xx_di_get_device_info(cc85xx_di_get_device_info_rsp_s *pInfo)
     return ret;
   }
   
-  ret = cc85xx_read(sizeof(cc85xx_di_get_device_info_rsp_s), &cc85xxCb.statusWord, (uint8_t *)pInfo);
+  ret = cc85xx_read(sizeof(cc85xx_di_get_device_info_rsp_s), (uint8_t *)pInfo);
   if (!ret)
   {
     return ret;
@@ -447,6 +483,16 @@ void cc85xx_init(void)
   memset((void *)&cc85xxCb, 0, sizeof(cc85xx_control_block_s));
 
   cc85xx_sys_reset();
+  
+  if (cc85xx_di_get_chip_info(&cc85xxCb.chip_info))
+  {
+    D_PRINTF(ERROR, "ERROR: Failed to fetch chip info\n");
+  }
+  
+  if (cc85xx_di_get_device_info(&cc85xxCb.device_info))
+  {
+    D_PRINTF(ERROR, "ERROR: Failed to fetch device info\n");
+  }
 }
 
 bool cc85xx_flash_bytes(uint16_t addr, uint8_t *pData, uint16_t dataLen)
@@ -469,7 +515,7 @@ bool cc85xx_flash_bytes(uint16_t addr, uint8_t *pData, uint16_t dataLen)
   if (addr <= 0x801C && (addr + dataLen) >= 0x801C)
   {
     addr = 0x801C - addr;
-    nImageBytes = BE32(*((uint32_t *)&pData[addr]));
+    cc85xxCb.nImageBytes = BE32(*((uint32_t *)&pData[addr]));
   }
 
   return ret;
@@ -477,12 +523,12 @@ bool cc85xx_flash_bytes(uint16_t addr, uint8_t *pData, uint16_t dataLen)
 
 bool cc85xx_ehc_evt_mask(cc85xx_ehc_evt_mask_cmd_s *pCmd)
 {
-  return cc85xx_cmd_req(CC85XX_CMD_TYPE_EHC_EVT_MASK, sizeof(cc85xx_ehc_evt_mask_cmd_s), (uint8_t *)pCmd, NULL);
+  return cc85xx_cmd_req(CC85XX_CMD_TYPE_EHC_EVT_MASK, sizeof(cc85xx_ehc_evt_mask_cmd_s), (uint8_t *)pCmd);
 }
 
 bool cc85xx_ehc_evt_clr(cc85xx_ehc_evt_clr_cmd_s *pCmd)
 {
-  return cc85xx_cmd_req(CC85XX_CMD_TYPE_EHC_EVT_CLR, sizeof(cc85xx_ehc_evt_clr_cmd_s), (uint8_t *)pCmd, NULL);
+  return cc85xx_cmd_req(CC85XX_CMD_TYPE_EHC_EVT_CLR, sizeof(cc85xx_ehc_evt_clr_cmd_s), (uint8_t *)pCmd);
 }
 
 bool cc85xx_nvs_get_data(uint8_t slotIdx, uint32_t *pData)
@@ -494,7 +540,7 @@ bool cc85xx_nvs_get_data(uint8_t slotIdx, uint32_t *pData)
     return ret;
   }
 
-  return cc85xx_read(sizeof(uint32_t), &cc85xxCb.statusWord, (uint8_t *)pData);
+  return cc85xx_read(sizeof(uint32_t), (uint8_t *)pData);
 }
 
 bool cc85xx_nvs_set_data(uint8_t slotIdx, uint32_t data)
@@ -513,6 +559,17 @@ bool cc85xx_nwm_do_scan(cc85xx_nwm_do_scan_cmd_s *pCmd)
 
 bool cc85xx_nwm_get_scan_results(cc85xx_nwm_do_scan_rsp_s *pRsp, uint16_t *pRxLen)
 {
+  return cc85xx_readbc((uint8_t *)pRsp, pRxLen);
+}
+
+bool cc85xx_ps_rf_stats(cc85xx_ps_rf_stats_s *pRsp, uint16_t *pRxLen)
+{
+  bool ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_PS_RF_STATS, 0, NULL);
+  if (!ret)
+  {
+    return ret;
+  }
+  
   return cc85xx_readbc((uint8_t *)pRsp, pRxLen);
 }
 

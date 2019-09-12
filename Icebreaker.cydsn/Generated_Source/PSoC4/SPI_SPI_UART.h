@@ -38,8 +38,8 @@
 #define SPI_SPI_BITS_ORDER             (1u)
 #define SPI_SPI_TRANSFER_SEPARATION    (1u)
 #define SPI_SPI_NUMBER_OF_SS_LINES     (1u)
-#define SPI_SPI_RX_BUFFER_SIZE         (32u)
-#define SPI_SPI_TX_BUFFER_SIZE         (32u)
+#define SPI_SPI_RX_BUFFER_SIZE         (64u)
+#define SPI_SPI_TX_BUFFER_SIZE         (64u)
 
 #define SPI_SPI_INTERRUPT_MODE         (1u)
 

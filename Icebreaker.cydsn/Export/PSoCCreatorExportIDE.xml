@@ -49,6 +49,8 @@
           <File BuildType="BUILD" Toolchain="">LedManager.c</File>
           <File BuildType="BUILD" Toolchain="">AudioManager.c</File>
           <File BuildType="BUILD" Toolchain="">cc85xx.c</File>
+          <File BuildType="BUILD" Toolchain="">RfController.c</File>
+          <File BuildType="BUILD" Toolchain="">utils.c</File>
           <File BuildType="BUILD" Toolchain="">cyapicallbacks.h</File>
           <File BuildType="BUILD" Toolchain="">Codec.h</File>
           <File BuildType="BUILD" Toolchain="">Application.h</File>
@@ -68,6 +70,8 @@
           <File BuildType="BUILD" Toolchain="">AudioManager.h</File>
           <File BuildType="BUILD" Toolchain="">cc85xx.h</File>
           <File BuildType="BUILD" Toolchain="">utils.h</File>
+          <File BuildType="BUILD" Toolchain="">RfController.h</File>
+          <File BuildType="BUILD" Toolchain="">Features.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="C:\dev\git\icebreaker\Icebreaker.cydsn\Generated_Source\PSoC4">
