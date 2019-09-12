@@ -418,7 +418,23 @@ TK_SHELL_METHOD(rf, bl_flash)
 
 TK_SHELL_METHOD(rf, status)
 {
-  PRINTF("> rf:ok 0x%04X\n", cc85xx_get_status());
+  uint16_t val = cc85xx_get_status();
+  cc85xx_get_status_s *pStatus = (cc85xx_get_status_s *)&val;
+  
+  PRINTF("\tevt_sr_chg:%d\n", pStatus->evt.sr_chg);
+  PRINTF("\tevt_nwk_chg:%d\n", pStatus->evt.nwk_chg);
+  PRINTF("\tevt_ps_chg:%d\n", pStatus->evt.ps_chg);
+  PRINTF("\tevt_vol_chg:%d\n", pStatus->evt.vol_chg);
+  PRINTF("\tevt_spi_error:%d\n", pStatus->evt.spi_error);
+  PRINTF("\tevt_dsc_reset:%d\n", pStatus->evt.dsc_reset);
+  PRINTF("\tevt_dsc_tx_avail:%d\n", pStatus->evt.dsc_tx_avail);
+  PRINTF("\tevt_dsc_rx_avail:%d\n", pStatus->evt.dsc_rx_avail);
+  
+  PRINTF("\twasp_conn:%d\n", pStatus->wasp_conn);
+  PRINTF("\tpwr_state:%d\n", pStatus->pwr_state);
+  PRINTF("\tcmdreq_rdy:%d\n", pStatus->cmdreq_rdy);
+  
+  PRINTF("> rf:ok 0x%04X\n", val);
   return 0;
 }
 

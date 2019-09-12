@@ -104,63 +104,10 @@ static bool cc85xx_reset(bool boot)
 
 static uint8_t cc85xx_spi_read(void)
 {
-  //while (SPI_SpiUartGetRxBufferSize() == 0);
-  
   return (uint8_t)SPI_SpiUartReadRxData();
 }
 
-bool cc85xx_sys_reset(void)
-{
-  bool ret;
-
-  SPI_Stop();
-  ret = cc85xx_reset(false);
-  SPI_Start();
-
-  return ret;
-}
-
-bool cc85xx_boot_reset(void)
-{
-  bool ret;
-  
-  SPI_Stop();
-  ret = cc85xx_reset(true);
-  SPI_Start();
-  
-  return ret;
-}
-
-uint16_t cc85xx_get_status(void)
-{
-  uint16_t sw = 0;
-  uint8_t txBuffer[] = { 0x80, 0x00 };
-  uint32_t start;
-
-  SPI_SpiUartPutArray(txBuffer, sizeof(txBuffer));
-  
-  /* Wait for the end of the transfer. The number of transmitted data
-  * elements has to be equal to the number of received data elements.
-  */
-  start = tmrGetCounter_ms();
-  
-  while((sizeof(txBuffer) != SPI_SpiUartGetRxBufferSize()) && (tmrGetElapsedMs(start) < CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS))
-  {
-  }
-  
-  while(SPI_SpiUartGetRxBufferSize() > 0)
-  {
-    sw <<= 8;
-    sw |= (SPI_SpiUartReadRxData() & 0xFF);
-  }
-
-  /* Clear dummy bytes from RX buffer */
-  SPI_SpiUartClearRxBuffer();
-  
-  return sw;
-}
-
-static bool cc85xx_basic_transaction(uint8_t *pTxData, uint32_t txLen, uint16_t *pStatus, uint8_t *pRxData, uint16_t rxLen)
+static bool cc85xx_basic_transaction(uint8_t *pTxData, uint32_t txLen, uint16_t *pStatus, uint8_t *pRxData, uint16_t rxLen, uint16_t *pRxLen)
 {
   uint32_t start = tmrGetCounter_ms();
   uint32_t i;
@@ -192,6 +139,14 @@ static bool cc85xx_basic_transaction(uint8_t *pTxData, uint32_t txLen, uint16_t 
     *pStatus |= cc85xx_spi_read();
   }
   
+  if (pRxLen)
+  {
+    *pRxLen = cc85xx_spi_read() << 8;
+    *pRxLen |= cc85xx_spi_read();
+    
+    rxLen = (*pRxLen < rxLen) ? *pRxLen : rxLen;
+  }
+  
   if (pRxData != NULL)
   {
     for (i = 0; i < rxLen; i++)
@@ -217,7 +172,7 @@ static bool cc85xx_cmd_req(uint8_t cmdType, uint8_t paramLen, uint8_t *pData, ui
   pTxPkt->hdr.param_len = paramLen;
   memcpy(pTxPkt->param, pData, paramLen);
   
-  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_cmd_req_hdr_s) + paramLen, pStatus, NULL, 0);
+  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_cmd_req_hdr_s) + paramLen, pStatus, NULL, 0, NULL);
   
   free(pTxPkt);
 
@@ -240,7 +195,7 @@ static bool cc85xx_read(uint16_t dataLen, uint16_t *pStatus, uint8_t *pData)
   pTxPkt->opcode = CC85XX_OP_READ;
   pTxPkt->data_len = dataLen;
   
-  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_read_s) + dataLen, pStatus, pData, dataLen);
+  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_read_s) + dataLen, pStatus, pData, dataLen, NULL);
 
   free(pTxPkt);
 
@@ -250,6 +205,16 @@ static bool cc85xx_read(uint16_t dataLen, uint16_t *pStatus, uint8_t *pData)
   }
   
   return true;
+}
+
+static bool cc85xx_readbc(uint8_t *pRxData, uint16_t *pRxLen, uint16_t *pStatus)
+{
+  cc85xx_readbc_cmd_s cmd = 
+  {
+    .opcode = CC85XX_OP_READBC
+  };
+
+  return cc85xx_basic_transaction((uint8_t *)&cmd, sizeof(cc85xx_readbc_cmd_s), pStatus, pRxData, *pRxLen, pRxLen);
 }
 
 static bool cc85xx_set_addr(uint16_t addr, uint16_t *pStatus)
@@ -262,7 +227,7 @@ static bool cc85xx_set_addr(uint16_t addr, uint16_t *pStatus)
   pTxPkt->addr_hi = (addr >> 8) & 0xFF;
   pTxPkt->addr_lo = (addr & 0xFF);
   
-  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_set_addr_s), pStatus, NULL, 0);
+  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_set_addr_s), pStatus, NULL, 0, NULL);
   
   free(pTxPkt);
   
@@ -285,7 +250,7 @@ static bool cc85xx_write(uint16_t dataLen, uint8_t *pData, uint16_t *pStatus)
   pTxPkt->len_lo = (dataLen & 0xFF);
   memcpy(pTxPkt->param, pData, dataLen);
   
-  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_write_s) + dataLen, pStatus, NULL, 0);
+  ret = cc85xx_basic_transaction((uint8_t *)pTxPkt, sizeof(cc85xx_write_s) + dataLen, pStatus, NULL, 0, NULL);
   
   free(pTxPkt);
   
@@ -380,21 +345,19 @@ bool cc85xx_bl_flash_verify(uint32_t *pCrc32)
     ret = cc85xx_read(sizeof(uint32_t), &sw, (uint8_t *)pCrc32);
     if (ret)
     {
-      PRINTF("nImageBytes = %u (0x%08x)\nCRC_VAL = 0x%08X\nsw = 0x%04X\n", nImageBytes, nImageBytes, BE32(*pCrc32), sw);
+      *pCrc32 = BE32(*pCrc32);
+      PRINTF("nImageBytes = %u (0x%08x)\nCRC_VAL = 0x%08X\nsw = 0x%04X\n", nImageBytes, nImageBytes, *pCrc32, sw);
     }
   }
   
   return rv;
 }
 
-bool cc85xx_print_info(void)
+bool cc85xx_di_get_chip_info(cc85xx_di_get_chip_info_rsp_s *pInfo)
 {
-  uint32_t i;
-  uint8_t rsp[24];
   const uint16_t rsvd = 0x00B0;
   uint16_t sw = 0;
   bool ret = false;
-  cc85xx_di_get_chip_info_rsp_s *pRsp;
   
   ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_DI_GET_CHIP_INFO, sizeof(rsvd), (uint8_t *)&rsvd, &sw);
   if (!ret)
@@ -403,21 +366,55 @@ bool cc85xx_print_info(void)
     return ret;
   }
 
-  ret = cc85xx_read(24, &sw, rsp);
+  ret = cc85xx_read(sizeof(cc85xx_di_get_chip_info_rsp_s), &sw, (uint8_t *)pInfo);
   if (!ret)
   {
     PRINTF("ERROR: READ failed: sw=0x%04X\n", sw);
     return ret;
   }
   
+  return ret;
+}
+
+bool cc85xx_di_get_device_info(cc85xx_di_get_device_info_rsp_s *pInfo)
+{
+  uint16_t sw = 0;
+  bool ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_DI_GET_DEVICE_INFO, 0, NULL, &sw);
+  if (!ret)
+  {
+    PRINTF("ERROR: CMD_REQ 0x%02X failed: sw=0x%04X\n", CC85XX_CMD_TYPE_DI_GET_CHIP_INFO, sw);
+    return ret;
+  }
+  
+  ret = cc85xx_read(sizeof(cc85xx_di_get_device_info_rsp_s), &sw, (uint8_t *)pInfo);
+  if (!ret)
+  {
+    PRINTF("ERROR: READ failed: sw=0x%04X\n", sw);
+    return ret;
+  }
+  
+  return ret;
+}
+
+bool cc85xx_print_info(void)
+{
+  uint8_t rsp[sizeof(cc85xx_di_get_chip_info_rsp_s)];
+  cc85xx_di_get_chip_info_rsp_s *pRsp = (cc85xx_di_get_chip_info_rsp_s *)rsp;
+  cc85xx_di_get_device_info_rsp_s *pInfo = (cc85xx_di_get_device_info_rsp_s *)rsp;
+  bool ret = cc85xx_di_get_chip_info(pRsp);
+  if (!ret)
+  {
+    PRINTF("ERROR: Failed to fetch chip info\n");
+    return ret;
+  }
+
 #if 0
+  uint32_t i;
   for (i = 0; i < 24; i++)
   {
     PRINTF("0x%02X: %02X\n", i, rsp[i]);
   }
 #endif
-  
-  pRsp = (cc85xx_di_get_chip_info_rsp_s *)rsp;
   
   PRINTF("\tfamily_id: 0x%04X\n", BE16(pRsp->family_id));
   
@@ -437,22 +434,56 @@ bool cc85xx_print_info(void)
   
   PRINTF("\tchip_id: 0x%04X\n", BE16(pRsp->chip_id));
   PRINTF("\tchip_caps: 0x%04X\n", BE16(pRsp->chip_caps));
+  
+  ret = cc85xx_di_get_device_info(pInfo);
+  if (!ret)
+  {
+    PRINTF("ERROR: Failed to get device info\n");
+    return ret;
+  }
+  
+  PRINTF("\tdevice_id: 0x%08X\n", BE32(pInfo->device_id));
+  PRINTF("\tmanf_id: 0x%08X\n", BE32(pInfo->manf_id));
+  PRINTF("\tprod_id: 0x%08X\n", BE32(pInfo->prod_id));
 
   return ret;
 }
 
+
+bool cc85xx_sys_reset(void)
+{
+  bool ret;
+
+  SPI_Stop();
+  ret = cc85xx_reset(false);
+  SPI_Start();
+
+  return ret;
+}
+
+bool cc85xx_boot_reset(void)
+{
+  bool ret;
+  
+  SPI_Stop();
+  ret = cc85xx_reset(true);
+  SPI_Start();
+  
+  return ret;
+}
+
+uint16_t cc85xx_get_status(void)
+{
+  uint16_t sw = 0;
+  uint8_t txBuffer[] = { 0x80, 0x00 };
+
+  (void)cc85xx_basic_transaction(txBuffer, sizeof(txBuffer), &sw, NULL, 0, NULL);
+  
+  return sw;
+}
+
 void cc85xx_init(void)
 {
-  /*
-  SPI_Stop();
-
-  if (cc85xx_boot_reset() == false)
-  {
-    PRINTF("Failed to initialize cc85xx\n");
-    return;
-  }
-  */
-
   SPI_Start();
 }
 
@@ -481,6 +512,16 @@ bool cc85xx_flash_bytes(uint16_t addr, uint8_t *pData, uint16_t dataLen)
   }
 
   return ret;
+}
+
+bool cc85xx_ehc_evt_mask(cc85xx_ehc_evt_mask_cmd_s *pCmd)
+{
+  return cc85xx_cmd_req(CC85XX_CMD_TYPE_EHC_EVT_MASK, sizeof(cc85xx_ehc_evt_mask_cmd_s), (uint8_t *)pCmd, NULL);
+}
+
+bool cc85xx_ehc_evt_clr(cc85xx_ehc_evt_clr_cmd_s *pCmd)
+{
+  return cc85xx_cmd_req(CC85XX_CMD_TYPE_EHC_EVT_CLR, sizeof(cc85xx_ehc_evt_clr_cmd_s), (uint8_t *)pCmd, NULL);
 }
 
 /* [] END OF FILE */
