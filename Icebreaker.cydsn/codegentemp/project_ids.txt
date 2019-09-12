@@ -1,6 +1,0 @@
-C:\dev\git\icebreaker\Icebreaker.cydsn\Icebreaker.cyprj|4193c2e2-e288-49f6-8484-06518e5cdaa4
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|8e75d4e8-965e-4e6c-a469-2ea309f9f42a
-C:\Users\Terence Kim\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|ff7026b5-38f8-4e8a-bb15-42959e665acb
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|7761c126-b02a-4c19-84cc-aafb4f0b04fc
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|aee14409-0e99-4da3-953c-505e3356e2f8
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|b3994fda-c4ce-4155-919e-21aff598599c
