@@ -60,3 +60,6 @@ Icebreaker.cydsn/codegentemp
 Icebreaker.cydsn/CortexM0
 *.log
 *.html
+*.cycdx
+*.rpt
+*.svd
