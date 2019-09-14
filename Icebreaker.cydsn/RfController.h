@@ -14,14 +14,15 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-  
-#define RF_SCAN_TIME_SECONDS          (10)
 
 #define RF_EVENTS_POWER_ON            (1 <<  0)
 #define RF_EVENTS_POWER_OFF           (1 <<  1)
 #define RF_EVENTS_EHIF_IRQ            (1 <<  2)
 #define RF_EVENTS_SCAN_START          (1 <<  3)
-#define RF_EVENTS_SCAN_STOP           (1 <<  4)
+#define RF_EVENTS_SCAN_CHECK          (1 <<  4)
+#define RF_EVENTS_SCAN_STOP			      (1 <<  5)
+#define RF_EVENTS_JOIN_CHECK		      (1 <<  6)
+#define RF_EVENTS_AUTO_CONN_CHECK	    (1 <<  7)
 
 extern volatile uint32_t rfEvents;
   
@@ -32,8 +33,10 @@ extern volatile uint32_t rfEvents;
 void RfControllerInit(void);
 void RfControllerService(void);
 bool RfControllerPrintInfo(void);
-void RfControllerStartScan(void);
+void RfControllerNetworkScan(void);
 bool RfControllerPrintScanResults(void);
 void RfControllerPrintStats(void);
+void RfControllerAutoConnect(void);
+void RfControllerNetworkJoin(uint32_t deviceId);
 
 #endif /* RF_CONTROLLER_H */

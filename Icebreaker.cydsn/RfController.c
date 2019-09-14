@@ -2,18 +2,348 @@
 #include <Application.h>
 #include <cc85xx.h>
 
+#define IS_MASTER()                 (rfControllerCb.role == PROTOCOL_ROLE_master)
+#define IS_SLAVE()                  (rfControllerCb.role == PROTOCOL_ROLE_slave)
+
+#define RF_SCAN_INTERVAL_MS         (1000)
+#define RF_JOIN_INTERVAL_MS         (1000)
+
+#define RF_MANF_ID                  (0x00000001)
+#define RF_PRODUCT_ID_SLAVE         (0xB3F1233D)
+
+#define RF_NVS_ID_AUTO_CONN_DEV_ID  (0)
+
 volatile uint32_t rfEvents;
 
+typedef enum
+{
+  RUN_MODE_unknown,
+  RUN_MODE_bootloader,
+  RUN_MODE_app,
+  RUN_MODE_factorytest
+} rf_controller_run_mode_e;
 
+typedef enum
+{
+  PROTOCOL_ROLE_unknown,
+  PROTOCOL_ROLE_master,
+  PROTOCOL_ROLE_slave
+} rf_controller_protocol_role_e;
+
+typedef enum
+{
+  NWK_STATE_idle,
+  NWK_STATE_scanning,
+  NWK_STATE_auto_joining,
+  NWK_STATE_joining,
+  NWK_STATE_connected,
+  NWK_STATE_master_discoverable
+} rf_controller_nwk_state_e;
+
+typedef struct
+{
+  rf_controller_nwk_state_e nwkState;
+} rf_controller_master_cb_s;
+
+typedef struct
+{
+  rf_controller_nwk_state_e nwkState;
+  uint32_t                  lastConnectedDeviceId;
+  uint32_t                  foundDeviceId;
+} rf_controller_slave_cb_s;
+
+typedef struct
+{
+  rf_controller_run_mode_e        runMode;
+  rf_controller_protocol_role_e   role;
+  union role_cb_u
+  {
+    rf_controller_master_cb_s     master;
+    rf_controller_slave_cb_s      slave;
+  } roleCb;
+  uint32_t                        startTime;
+  tmrFuncType                     tmr;
+  uint32_t                        tmrEvent;
+} rf_controller_cb_s;
+
+static const char nwkStateStr[] =
+{
+  "idle",
+  "scanning",
+  "auto_joining",
+  "joining",
+  "connected",
+  "master_discoverable",
+};
+
+static rf_controller_cb_s rfControllerCb;
+
+static rf_controller_nwk_state_e rfControllerGetState(void);
+
+static uint16_t rfControllerSendEvent(void)
+{
+  rfSetEvents(rfControllerCb.tmrEvent);
+
+  return 0;
+}
+
+static void rfClearLaterEvents(void)
+{
+  tmrFuncDelete(&rfControllerCb.tmr);
+}
+
+static void rfSetEventsLater(uint32_t e, uint16_t mS)
+{
+  rfControllerCb.tmr.mS = mS;
+  rfControllerCb.tmr.func = rfControllerSendEvent;
+  rfControllerCb.tmrEvent = e;
+  tmrFuncAdd(&rfControllerCb.tmr);
+}
+
+static bool rfControllerCheckNetworkScanResults(void)
+{
+  uint16_t rxLen = sizeof(cc85xx_nwm_do_scan_rsp_s);
+  cc85xx_nwm_do_scan_rsp_s rsp;
+  bool ret = false;
+
+  memset(&rsp, 0, sizeof(cc85xx_nwm_do_scan_rsp_s));
+  
+  ret = cc85xx_nwm_get_scan_results(&rsp, &rxLen);
+  if (ret)
+  {
+    rfControllerCb.foundDeviceId = rsp.device_id;
+  }
+
+  return ret;
+}
+
+static bool rfControllerNetworkGetStatus(void)
+{
+  bool ret = false;
+  uint16_t rxLen = 0;
+  uint8_t rsp[256];
+  cc85xx_nwm_get_status_rsp_slave_s *pStatus = (cc85xx_nwm_get_status_rsp_slave_s *)rsp;
+
+  if (IS_SLAVE())
+  {
+    rxLen = sizeof(cc85xx_nwm_get_status_rsp_slave_s);
+
+    ret = cc85xx_nws_get_status((uint8_t *)pStatus, &rxLen);
+    if (!ret)
+    {
+      return ret;
+    }
+
+    return (rxLen != 0);
+  }
+  else if (IS_MASTER())
+  {
+    // TODO: Add master logic
+  }
+
+  return ret;
+}
+
+static void rfControllerSlaveSetState(rf_controller_nwk_state_e newState)
+{
+  if (newState == rfControllerCb.roleCb.slave.nwkState)
+  {
+    return;
+  }
+
+  switch (newState)
+  {
+    case NWK_STATE_idle:
+    {
+      rfClearLaterEvents();
+      if (rfControllerGetState() == NWK_STATE_connected)
+      {
+        // Disconnect
+        RfControllerNetworkJoin(0);
+      }
+    } break;
+
+    case NWK_STATE_auto_joining:
+    {
+      // Start auto-connect
+      RfControllerAutoConnect();
+    } break;
+
+    case NWK_STATE_scanning:
+    {
+      // Start searching
+      RfControllerNetworkScan();
+    } break;
+
+    case NWK_STATE_joining:
+    {
+      // Start join
+      RfControllerNetworkJoin(rfControllerCb.roleCb.slave.foundDeviceId);
+    } break;
+
+    case NWK_STATE_connected:
+    {
+
+    } break;
+
+    default:
+      break;
+  }
+
+  D_PRINTF(INFO, "RF Slave state: %s -> %s\n", nwkStateStr[rfControllerCb.roleCb.slave.nwkState], nwkStateStr[newState]);
+
+  rfControllerCb.roleCb.slave.nwkState = newState;
+}
+
+static rf_controller_nwk_state_e rfControllerGetState(void)
+{
+  if (IS_SLAVE())
+  {
+    return rfControllerCb.roleCb.slave.nwkState;
+  }
+  else
+  {
+    return rfControllerCb.roleCb.master.nwkState;
+  }
+}
 
 void RfControllerInit(void)
 {
+  uint8_t rsp[256];
+  cc85xx_di_get_chip_info_rsp_s *pChipInfo = (cc85xx_di_get_chip_info_rsp_s *)rsp;
+  cc85xx_di_get_device_info_rsp_s *pDevInfo = (cc85xx_di_get_device_info_rsp_s *)rsp;
+
+  memset((void *)&rfControllerCb, 0, sizeof(rf_controller_cb_s));
+
   cc85xx_init();
+
+  cc85xx_di_get_chip_info(pChipInfo);
+
+  // Sanity check
+  if (BE16(pChipInfo->family_id) != CC85XX_FAMILY_ID)
+  {
+    D_PRINTF("ERROR: Wrong family ID 0x%04X\n", BE16(pChipInfo->family_id));
+    return;
+  }
+
+  cc85xx_di_get_device_info(pDevInfo);
+
+  switch (BE16(pDevInfo->chip_id))
+  {
+    case 0:
+    {
+      D_PRINTF(INFO, "cc85xx in bootloader mode\n");
+      rfControllerCb.runMode = RUN_MODE_bootloader;
+    } break;
+
+    case 0xFFFF:
+    {
+      rfControllerCb.runMode = RUN_MODE_app;
+      D_PRINTF(INFO, "Device ID: 0x%08X\n", BE32(pDevInfo->device_id));
+
+      if (BE32(pDevInfo->prod_id) == RF_PRODUCT_ID_SLAVE)
+      {
+        D_PRINTF(INFO, "Protocol Role: slave\n");
+        rfControllerCb.role = PROTOCOL_ROLE_slave;
+      }
+      else
+      {
+        D_PRINTF(INFO, "Protocol Role: master\n");
+        rfControllerCb.role = PROTOCOL_ROLE_master;
+      }
+    } break;
+
+    default:
+      break;
+  }
+
+  if (rfControllerCb.role == PROTOCOL_ROLE_slave)
+  {
+    cc85xx_nvs_get_data(RF_NVS_ID_AUTO_CONN_DEV_ID, &rfControllerCb.roleCb.slave.lastConnectedDeviceId);
+  }
 }
 
 void RfControllerService(void)
 {
+  bool ret = false;
 
+  if (rfCheckEvents(RF_EVENTS_POWER_ON))
+  {
+    rfClearEvents(RF_EVENTS_POWER_ON);
+
+    if (IS_MASTER())
+    {
+      // TODO: NWM_CONTROL_ENABLE - to go "discoverable"
+
+      // TODO: NWM_CONTROL_SIGNAL - to notify slaves of connectability
+    }
+    else if (IS_SLAVE())
+    {
+      if (rfControllerCb.roleCb.slave.lastConnectedDeviceId)
+      {
+        rfControllerSlaveSetState(NWK_STATE_auto_joining);
+      }
+      else
+      {
+        rfControllerSlaveSetState(NWK_STATE_scanning);
+      }
+    }
+  }
+
+  if (rfCheckEvents(RF_EVENTS_POWER_OFF))
+  {
+    rfClearEvents(RF_EVENTS_POWER_OFF);
+
+    if (IS_SLAVE())
+    {
+      rfControllerSlaveSetState(NWK_STATE_idle);
+    }
+  }
+
+  if (rfCheckEvents(RF_EVENTS_SCAN_CHECK))
+  {
+    rfClearEvents(RF_EVENTS_SCAN_CHECK);
+
+    if (rfControllerCheckNetworkScanResults())
+    {
+      rfControllerSlaveSetState(NWK_STATE_joining);
+    }
+    else
+    {
+      // Keep searching
+      RfControllerNetworkScan();
+    }
+  }
+
+  if (rfCheckEvents(RF_EVENTS_JOIN_CHECK))
+  {
+    rfClearEvents(RF_EVENTS_JOIN_CHECK);
+
+    if (rfControllerNetworkGetStatus())
+    {
+      rfControllerSlaveSetState(NWK_STATE_connected);
+    }
+    else
+    {
+      // Keep attempting to connect
+      RfControllerNetworkJoin(rfControllerCb.roleCb.slave.foundDeviceId);
+    }
+  }
+
+  if (rfCheckEvents(RF_EVENTS_AUTO_CONN_CHECK))
+  {
+    rfClearEvents(RF_EVENTS_AUTO_CONN_CHECK);
+
+    if (rfControllerNetworkGetStatus())
+    {
+      rfControllerSlaveSetState(NWK_STATE_connected);
+    }
+    else
+    {
+      // Keep attempting to connect
+      RfControllerAutoConnect();
+    }
+  }
 }
 
 bool RfControllerPrintInfo(void)
@@ -69,30 +399,57 @@ bool RfControllerPrintInfo(void)
   return ret;
 }
 
-void RfControllerStartScan(void)
+void RfControllerNetworkJoin(uint32_t deviceId)
+{
+  cc85xx_nwm_do_join_cmd_s cmd = 
+  {
+    .join_to = BE16(RF_JOIN_INTERVAL_MS / 10),
+    .device_id = BE32(deviceId),
+    .manf_id = 0,
+    .prod_id_mask = 0,
+    .prod_id_ref = 0
+  };
+  cc85xx_nwm_do_join(&cmd);
+
+  // Check for connection later
+  rfSetEventsLater(RF_EVENTS_JOIN_CHECK, RF_JOIN_INTERVAL_MS);
+}
+
+void RfControllerAutoConnect(void)
+{
+  RfControllerNetworkJoin(rfControllerCb.roleCb.slave.lastConnectedDeviceId);
+
+  // Check for connection later
+  rfSetEventsLater(RF_EVENTS_AUTO_CONN_CHECK, RF_JOIN_INTERVAL_MS);
+}
+
+void RfControllerNetworkScan(void)
 {
   uint32_t i;
   uint8_t *pData;
   cc85xx_nwm_do_scan_cmd_s cmd;
 
   memset(&cmd, 0, sizeof(cc85xx_nwm_do_scan_cmd_s));
-  cmd.scan = RF_SCAN_TIME_SECONDS * 100; // in 10's of ms
+  cmd.scan = RF_SCAN_INTERVAL_MS / 10; // in 10's of ms
   cmd.scan |= (1 & 0xF) << 12;
   cmd.scan = BE16(cmd.scan);
   cmd.req_rssi = 0x80; // -128dB to disable filtering
   
   pData = (uint8_t *)&cmd;
   
-  PRINTF("Scan command: ");
+  D_PRINTF(DEBUG, "Scan command: ");
   for (i = 0; i < sizeof(cc85xx_nwm_do_scan_cmd_s); i++)
   {
-    PRINTF("%02X ", pData[i]);
+    D_PRINTF(DEBUG, "%02X ", pData[i]);
   }
-  PRINTF("\n");
+  D_PRINTF(DEBUG, "\n");
 
   cc85xx_nwm_do_scan(&cmd);
   
-  PRINTF("SW: 0x%04X\n", cc85xx_get_cached_status());
+  D_PRINTF(DEBUG, "SW: 0x%04X\n", cc85xx_get_cached_status());
+
+  // Check for scan results later
+  rfSetEventsLater(RF_EVENTS_SCAN_CHECK, RF_SCAN_INTERVAL_MS);
 }
 
 bool RfControllerPrintScanResults(void)

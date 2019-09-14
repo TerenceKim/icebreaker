@@ -22,9 +22,6 @@
 
 typedef struct __attribute__((packed))
 {
-  cc85xx_di_get_chip_info_rsp_s chip_info;
-  cc85xx_di_get_device_info_rsp_s device_info;
-  
   uint32_t nImageBytes;
   uint16_t statusWord; 
 } cc85xx_control_block_s;
@@ -480,19 +477,7 @@ uint16_t cc85xx_get_cached_status(void)
 
 void cc85xx_init(void)
 {
-  memset((void *)&cc85xxCb, 0, sizeof(cc85xx_control_block_s));
-
   cc85xx_sys_reset();
-  
-  if (cc85xx_di_get_chip_info(&cc85xxCb.chip_info))
-  {
-    D_PRINTF(ERROR, "ERROR: Failed to fetch chip info\n");
-  }
-  
-  if (cc85xx_di_get_device_info(&cc85xxCb.device_info))
-  {
-    D_PRINTF(ERROR, "ERROR: Failed to fetch device info\n");
-  }
 }
 
 bool cc85xx_flash_bytes(uint16_t addr, uint8_t *pData, uint16_t dataLen)
@@ -560,6 +545,33 @@ bool cc85xx_nwm_do_scan(cc85xx_nwm_do_scan_cmd_s *pCmd)
 bool cc85xx_nwm_get_scan_results(cc85xx_nwm_do_scan_rsp_s *pRsp, uint16_t *pRxLen)
 {
   return cc85xx_readbc((uint8_t *)pRsp, pRxLen);
+}
+
+bool cc85xx_nwm_do_join(cc85xx_nwm_do_join_cmd_s *pCmd)
+{
+  uint16_t join_to = (pCmd->join_to_hi << 8) | pCmd->join_to_lo;
+
+  if (pCmd->device_id != 0)
+  {
+    // Not a request to leave a network, check join_to parameter
+    if (join_to < 50)
+    {
+      // JOIN_TO must be 500ms or higher to account for one-time RF channel scan
+      return false;
+    }
+  }
+  return cc85xx_cmd_req(CC85XX_CMD_TYPE_NWM_DO_JOIN, sizeof(cc85xx_nwm_do_join_cmd_s), (uint8_t *)pCmd);
+}
+
+bool cc85xx_nwm_get_status(uint8_t *pRsp, uint16_t *pRxLen)
+{
+  bool ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_NWM_GET_STATUS, 0, NULL);
+  if (!ret)
+  {
+    return ret;
+  }
+
+  return cc85xx_readbc(pRsp, pRxLen);
 }
 
 bool cc85xx_ps_rf_stats(cc85xx_ps_rf_stats_s *pRsp, uint16_t *pRxLen)

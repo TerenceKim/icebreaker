@@ -15,7 +15,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <utils.h>
-  
+
+#define CC85XX_FAMILY_ID                      (0x2505)
+
 #define CC85XX_CMD_REQ_HDR_SIZE               (2)
     
 #define CC85XX_SW_BL_MASS_ERASE_SUCCESS       (0x8003)
@@ -35,6 +37,8 @@
 #define CC85XX_CMD_TYPE_BL_MASS_ERASE         (0x03)
 #define CC85XX_CMD_TYPE_BL_FLASH_PAGE_PROG    (0x07)
 #define CC85XX_CMD_TYPE_NWM_DO_SCAN           (0x08)
+#define CC85XX_CMD_TYPE_NWM_DO_JOIN           (0x09)
+#define CC85XX_CMD_TYPE_NWM_GET_STATUS        (0x0A)
 #define CC85XX_CMD_TYPE_BL_FLASH_VERIFY       (0x0F)
 #define CC85XX_CMD_TYPE_PS_RF_STATS           (0x10)
 #define CC85XX_CMD_TYPE_EHC_EVT_CLR           (0x19)
@@ -250,6 +254,76 @@ typedef struct __attribute__((packed))
   unsigned audio_latency_lo:8;
 } cc85xx_nwm_do_scan_rsp_s;
 
+typedef struct __attribute__((packed))
+{
+  uint16_t join_to;
+
+  uint32_t device_id;
+
+  uint32_t manf_id;
+
+  uint32_t prod_id_mask;
+  uint32_t prod_id_ref;
+} cc85xx_nwm_do_join_cmd_s;
+
+typedef struct __attribute__((packed))
+{
+  uint32_t device_id;
+  uint32_t man_id;
+  uint32_t prod_id;
+
+  unsigned :1;
+  unsigned wpm_allows_join:1;
+  unsigned wpm_pair_signal:1;
+  unsigned wpm_mfc_filt:1;
+  unsigned wpm_dsc_en:1;
+  unsigned wpm_pm_state:3;
+
+  cc85xx_audio_channel_s ach[8];
+
+  uint8_t  rssi;
+
+  unsigned sample_rate_hi:4;
+  unsigned :4;
+
+  unsigned sample_rate_lo:8;
+
+  unsigned latency_hi:4;
+  unsigned nwk_status:4;
+
+  unsigned latency_lo:8;
+
+  uint16_t ach_used;
+} cc85xx_nwm_get_status_rsp_slave_s;
+
+typedef struct __attribute__((packed))
+{
+  uint32_t device_id;
+  uint32_t manf_id;
+  uint32_t prod_id;
+  uint16_t ach_used;
+} cc85xx_nwm_get_status_slave_info_s;
+
+typedef struct __attribute__((packed))
+{
+  unsigned nwk_status:4;
+  unsigned :4;
+
+  unsigned sample_rate_hi:4;
+  unsigned :4;
+
+  unsigned sample_rate_lo:8;
+
+  uint16_t ach_used;
+
+  unsigned :8;
+
+  unsigned wps_dsc_en:1;
+  unsigned slave_short_id:3;
+  unsigned :4;
+  cc85xx_nwm_get_status_slave_info_s slave[1];
+} cc85xx_nwm_get_status_rsp_master_s;
+
 /**
  * RF and Audio Statistics Commands.
  */
@@ -285,6 +359,8 @@ bool cc85xx_ehc_evt_mask(cc85xx_ehc_evt_mask_cmd_s *pCmd);
 bool cc85xx_ehc_evt_clr(cc85xx_ehc_evt_clr_cmd_s *pCmd);
 bool cc85xx_nwm_do_scan(cc85xx_nwm_do_scan_cmd_s *pCmd);
 bool cc85xx_nwm_get_scan_results(cc85xx_nwm_do_scan_rsp_s *pRsp, uint16_t *pRxLen);
+bool cc85xx_nwm_do_join(cc85xx_nwm_do_join_cmd_s *pCmd);
+bool cc85xx_nwm_get_status(uint8_t *pRsp, uint16_t *pRxLen);
 bool cc85xx_nvs_set_data(uint8_t slotIdx, uint32_t data);
 bool cc85xx_nvs_get_data(uint8_t slotIdx, uint32_t *pData);
 bool cc85xx_ps_rf_stats(cc85xx_ps_rf_stats_s *pRsp, uint16_t *pRxLen);

@@ -508,7 +508,7 @@ TK_SHELL_METHOD(rf, read32)
 
 TK_SHELL_METHOD(rf, scan)
 {
-  RfControllerStartScan();
+  RfControllerNetworkScan();
   uint32_t start = tmrGetCounter_ms();
   bool ret = false;
 
