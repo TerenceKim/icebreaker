@@ -24,6 +24,7 @@
 #include <RfController.h>
 #include <cc85xx.h>
 
+#define TK_PROMPT_STR       "WIEM"//"\U00002744 "
 #define USBUART_BUFFER_SIZE (64u)
 
 #define TK_SHELL_METHOD(c, verb)              int __tk_shell_ ## c ## _ ## verb(int __unused argc, char __unused **argv)
@@ -103,6 +104,10 @@ TK_SHELL_METHOD(rf, write32);
 TK_SHELL_METHOD(rf, read32);
 TK_SHELL_METHOD(rf, scan);
 TK_SHELL_METHOD(rf, stats);
+TK_SHELL_METHOD(rf, join);
+TK_SHELL_METHOD(rf, nwk_stats);
+TK_SHELL_METHOD(rf, pm_data);
+TK_SHELL_METHOD(rf, pm_state);
 static TK_SHELL_VERBS(rf) =
 {
   TK_SHELL_VERB(rf, init, "initialize RF chip"),
@@ -118,6 +123,10 @@ static TK_SHELL_VERBS(rf) =
   TK_SHELL_VERB(rf, read32, "read word from storage"),
   TK_SHELL_VERB(rf, scan, "perform a scan"),
   TK_SHELL_VERB(rf, stats, "print stats"),
+  TK_SHELL_VERB(rf, join, "join specified ID: <deviceId>"),
+  TK_SHELL_VERB(rf, nwk_stats, "print network stats"),
+  TK_SHELL_VERB(rf, pm_data, "print power manager data"),
+  TK_SHELL_VERB(rf, pm_state, "get/set power manager state: [state]"),
   { "", NULL, "" }
 };
 
@@ -508,24 +517,44 @@ TK_SHELL_METHOD(rf, read32)
 
 TK_SHELL_METHOD(rf, scan)
 {
-  RfControllerNetworkScan();
   uint32_t start = tmrGetCounter_ms();
-  bool ret = false;
 
-#if 0
-  while (!ret && tmrGetElapsedMs(start) < 2000)
-  {
-    ret = RfControllerPrintScanResults();
-  }
-#else
-  while ((ret == false) && (tmrGetElapsedMs(start) < (RF_SCAN_TIME_SECONDS * 1000)))
-  {
-    CyDelay(1000);
-    ret = RfControllerPrintScanResults();
-  }
-#endif
+  RfControllerPrintScanResults();
+  rfSetEvents(RF_EVENTS_SCAN_START);
 
-  PRINTF("> rf:%s\n", (ret) ? OK_STR : ER_STR);
+  while ((RfControllerGetState() != NWK_STATE_idle) && tmrGetElapsedMs(start) < (5 * 1000))
+  {
+    RfControllerService();
+  }
+  
+  if (RfControllerGetState() != NWK_STATE_idle)
+  {
+    rfSetEvents(RF_EVENTS_SCAN_STOP);
+  }
+
+  PRINTF("> rf:ok\n");
+  return 0;
+}
+
+TK_SHELL_METHOD(rf, join)
+{
+  int i = 2;
+  uint32_t joinId;
+  
+  argc -= i;
+  
+  if (argc != 1)
+  {
+      PRINTF("Invalid number of arguments: %d\n", argc);
+      return -1;
+  }
+  
+  joinId = strtoul(argv[i++], NULL, 16);
+  
+  RfControllerNetworkJoinById(joinId);
+  
+  PRINTF("> rf:%s\n", OK_STR);
+
   return 0;
 }
 
@@ -534,6 +563,52 @@ TK_SHELL_METHOD(rf, stats)
   RfControllerPrintStats();
   
   PRINTF("> rf:ok\n");
+  return 0;
+}
+
+TK_SHELL_METHOD(rf, nwk_stats)
+{
+  PRINTF("> rf:%s\n", (RfControllerPrintNetworkStats()) ? OK_STR : ER_STR);
+  return 0;
+}
+
+TK_SHELL_METHOD(rf, pm_data)
+{
+  PRINTF("> rf:%s\n", (RfControllerPrintPmData()) ? OK_STR : ER_STR);
+  return 0;
+}
+
+TK_SHELL_METHOD(rf, pm_state)
+{
+  int i = 2;
+  
+  argc -= i;
+  
+  if (argc == 0)
+  {
+    static const char *pmStateStr[] = 
+    {
+      "OFF",
+      "1",
+      "NETWORK_STANDBY",
+      "LOCAL_STANDBY",
+      "LOW_POWER",
+      "ACTIVE",
+      "6",
+      "7"
+    };
+    uint16_t status;
+    cc85xx_get_status_s *pStatus = (cc85xx_get_status_s *)&status;
+
+    status = cc85xx_get_status();
+
+    // Get
+    PRINTF("> rf:ok %s\n", pmStateStr[pStatus->pwr_state]);
+  }
+  else
+  {
+    PRINTF("> rf:%s\n", cc85xx_pm_set_state(atoi(argv[i])) ? OK_STR : ER_STR);
+  }
   return 0;
 }
 
@@ -866,7 +941,7 @@ void TkShellService(void)
                 {
                     TkShellProcessCommand();
                 }
-                PRINTF("\U00002744 ] ");
+                PRINTF("%s] ", TK_PROMPT_STR);
                 cmd_char_count = 0;
                 cmd_buf[0] = '\0';
                 break;

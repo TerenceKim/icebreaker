@@ -31,7 +31,7 @@ volatile uint32_t audioEvents;
                              // the signals are, and can be any value from 0 to 2**31 - 1.  Start with
                              // a low value to prevent damaging speakers!
 
-#define WAV_SIZE      1024    // The size of each generated waveform.  The larger the size the higher
+#define WAV_SIZE      256    // The size of each generated waveform.  The larger the size the higher
                              // quality the signal.  A size of 256 is more than enough for these simple
                              // waveforms.
 
@@ -144,7 +144,7 @@ void AudioManagerInit(void)
   
   
 }
-#if 0
+#if 1
 void playWave(int32_t* buffer, uint16_t length, float frequency, int seconds)
 {
   // Play back the provided waveform buffer for the specified
@@ -165,7 +165,9 @@ void playWave(int32_t* buffer, uint16_t length, float frequency, int seconds)
     // Duplicate the sample so it's sent to both the left and right channel.
     // It appears the order is right channel, left channel if you want to write
     // stereo sound.
-    i2s.write(sample, sample);
+    //i2s.write(sample, sample);
+    I2S_WriteByte(sample, 0);
+    I2S_WriteByte(sample, 1);
   }
 }
 #endif
@@ -215,7 +217,7 @@ void AudioManagerToneStart(uint32_t word)
 
   I2S_ClearTxFIFO(); /* Clear the I2S internal FIFO */
 
-  TxDMA_ChEnable();
+  //TxDMA_ChEnable();
   
   I2S_EnableTx(); /* Unmute the TX output */
   
@@ -223,6 +225,8 @@ void AudioManagerToneStart(uint32_t word)
 
   /* Enable power to speaker output */
   Codec_PowerOnControl(CODEC_POWER_CTRL_OUTPD);
+  
+  playWave((int32_t *)triangle, sizeof(triangle) / 4, C4_HZ, 10);
 }
 
 void AudioManagerToneStop(void)

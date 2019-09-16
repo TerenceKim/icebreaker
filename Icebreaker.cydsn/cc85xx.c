@@ -28,6 +28,26 @@ typedef struct __attribute__((packed))
 
 static cc85xx_control_block_s cc85xxCb;
 
+static bool cc85xx_wait_for_cmdreq_ready(void)
+{
+  uint32_t start = tmrGetCounter_ms();
+  uint16_t status;
+  cc85xx_get_status_s *pStatus = (cc85xx_get_status_s *)&status;
+
+  while (tmrGetElapsedMs(start) < CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS)
+  {
+    status = cc85xx_get_status();
+    if (pStatus->cmdreq_rdy)
+    {
+      return true;
+    }
+  }
+  
+  D_PRINTF(ERROR, "ERROR: Timed out waiting for CMDREQ_READY\n");
+
+  return false;
+}
+
 static bool cc85xx_wait_for_status(uint16_t expectedStatus, uint32_t timeout)
 {
   uint32_t start = tmrGetCounter_ms();
@@ -203,8 +223,14 @@ static bool cc85xx_basic_transaction(uint8_t *pTxData, uint32_t txLen, uint8_t *
 static bool cc85xx_cmd_req(uint8_t cmdType, uint8_t paramLen, uint8_t *pData)
 {
   bool ret = false;
-
-  cc85xx_cmd_req_s *pTxPkt = (cc85xx_cmd_req_s *)malloc(sizeof(cc85xx_cmd_req_hdr_s) + paramLen);
+  cc85xx_cmd_req_s *pTxPkt;
+  
+  if (cc85xx_wait_for_cmdreq_ready() == false)
+  {
+    return false;
+  }
+  
+  pTxPkt = (cc85xx_cmd_req_s *)malloc(sizeof(cc85xx_cmd_req_hdr_s) + paramLen);
 
   pTxPkt->hdr.opcode = CC85XX_OP_CMD_REQ;
   pTxPkt->hdr.cmd_type = cmdType;
@@ -226,8 +252,14 @@ static bool cc85xx_cmd_req(uint8_t cmdType, uint8_t paramLen, uint8_t *pData)
 static bool cc85xx_read(uint16_t dataLen, uint8_t *pData)
 {
   bool ret = false;
+  cc85xx_read_s *pTxPkt;
   
-  cc85xx_read_s *pTxPkt = (cc85xx_read_s *)malloc(sizeof(cc85xx_read_s) + dataLen);
+  if (cc85xx_wait_for_cmdreq_ready() == false)
+  {
+    return false;
+  }
+  
+  pTxPkt = (cc85xx_read_s *)malloc(sizeof(cc85xx_read_s) + dataLen);
   
   memset((void *)pTxPkt, 0x80, sizeof(cc85xx_read_s) + dataLen);
   memset((void *)pTxPkt, 0, sizeof(cc85xx_read_s));
@@ -251,7 +283,14 @@ static bool cc85xx_read(uint16_t dataLen, uint8_t *pData)
 static bool cc85xx_readbc(uint8_t *pRxData, uint16_t *pRxLen)
 {
   bool ret = false;
-  uint8_t *pTxBuf = (uint8_t *)malloc(sizeof(cc85xx_readbc_cmd_s) + sizeof(uint16_t) + *pRxLen);
+  uint8_t *pTxBuf;
+  
+  if (cc85xx_wait_for_cmdreq_ready() == false)
+  {
+    return false;
+  }
+  
+  pTxBuf = (uint8_t *)malloc(sizeof(cc85xx_readbc_cmd_s) + sizeof(uint16_t) + *pRxLen);
   
   memset(pTxBuf, 0x80, sizeof(cc85xx_readbc_cmd_s) + sizeof(uint16_t) + *pRxLen);
   
@@ -270,7 +309,6 @@ static bool cc85xx_readbc(uint8_t *pRxData, uint16_t *pRxLen)
 static bool cc85xx_set_addr(uint16_t addr)
 {
   bool ret = false;
-  
   cc85xx_set_addr_s *pTxPkt = (cc85xx_set_addr_s *)malloc(sizeof(cc85xx_set_addr_s));
   
   pTxPkt->opcode = CC85XX_OP_SET_ADDR;
@@ -292,8 +330,14 @@ static bool cc85xx_set_addr(uint16_t addr)
 static bool cc85xx_write(uint16_t dataLen, uint8_t *pData)
 {
   bool ret = false;
+  cc85xx_write_s *pTxPkt;
   
-  cc85xx_write_s *pTxPkt = (cc85xx_write_s *)malloc(sizeof(cc85xx_write_s) + dataLen);
+  if (cc85xx_wait_for_cmdreq_ready() == false)
+  {
+    return false;
+  }
+  
+  pTxPkt = (cc85xx_write_s *)malloc(sizeof(cc85xx_write_s) + dataLen);
   
   pTxPkt->opcode = CC85XX_OP_WRITE;
   pTxPkt->len_hi = (dataLen >> 8) & 0xFF;
@@ -478,6 +522,8 @@ uint16_t cc85xx_get_cached_status(void)
 void cc85xx_init(void)
 {
   cc85xx_sys_reset();
+  
+  CyDelay(5);
 }
 
 bool cc85xx_flash_bytes(uint16_t addr, uint8_t *pData, uint16_t dataLen)
@@ -549,12 +595,10 @@ bool cc85xx_nwm_get_scan_results(cc85xx_nwm_do_scan_rsp_s *pRsp, uint16_t *pRxLe
 
 bool cc85xx_nwm_do_join(cc85xx_nwm_do_join_cmd_s *pCmd)
 {
-  uint16_t join_to = (pCmd->join_to_hi << 8) | pCmd->join_to_lo;
-
   if (pCmd->device_id != 0)
   {
     // Not a request to leave a network, check join_to parameter
-    if (join_to < 50)
+    if (pCmd->join_to < 50 || pCmd->join_to & 0x80)
     {
       // JOIN_TO must be 500ms or higher to account for one-time RF channel scan
       return false;
@@ -574,12 +618,48 @@ bool cc85xx_nwm_get_status(uint8_t *pRsp, uint16_t *pRxLen)
   return cc85xx_readbc(pRsp, pRxLen);
 }
 
+bool cc85xx_nwm_ach_set_usage(cc85xx_nwm_ach_set_usage_cmd_s *pCmd)
+{
+  return cc85xx_cmd_req(CC85XX_CMD_TYPE_NWM_ACH_SET_USAGE, sizeof(cc85xx_nwm_ach_set_usage_cmd_s), (uint8_t *)pCmd);
+}
+
 bool cc85xx_ps_rf_stats(cc85xx_ps_rf_stats_s *pRsp, uint16_t *pRxLen)
 {
   bool ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_PS_RF_STATS, 0, NULL);
   if (!ret)
   {
     return ret;
+  }
+  
+  return cc85xx_readbc((uint8_t *)pRsp, pRxLen);
+}
+
+bool cc85xx_pm_set_state(cc85xx_pm_state_e pmState)
+{
+  uint32_t start = tmrGetCounter_ms();
+  uint16_t status;
+  cc85xx_get_status_s *pStatus = (cc85xx_get_status_s *)&status;
+  uint8_t state = (uint8_t)pmState;
+  bool ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_PM_SET_STATE, sizeof(uint8_t), &state);
+  if (!ret)
+  {
+    return false;
+  }
+  
+  do
+  {
+    status = cc85xx_get_status();
+  } while (pStatus->pwr_state != state && tmrGetElapsedMs(start) < CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS);
+  
+  return (pStatus->pwr_state == state);
+}
+
+bool cc85xx_pm_get_data(cc85xx_pm_get_data_s *pRsp, uint16_t *pRxLen)
+{
+  bool ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_PM_GET_DATA, 0, NULL);
+  if (!ret)
+  {
+    return false;
   }
   
   return cc85xx_readbc((uint8_t *)pRsp, pRxLen);

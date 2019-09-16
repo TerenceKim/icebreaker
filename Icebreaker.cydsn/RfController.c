@@ -1,12 +1,13 @@
 #include <RfController.h>
 #include <Application.h>
 #include <cc85xx.h>
+#include <utils.h>
 
 #define IS_MASTER()                 (rfControllerCb.role == PROTOCOL_ROLE_master)
 #define IS_SLAVE()                  (rfControllerCb.role == PROTOCOL_ROLE_slave)
 
 #define RF_SCAN_INTERVAL_MS         (1000)
-#define RF_JOIN_INTERVAL_MS         (1000)
+#define RF_JOIN_INTERVAL_MS         ( 500)
 
 #define RF_MANF_ID                  (0x00000001)
 #define RF_PRODUCT_ID_SLAVE         (0xB3F1233D)
@@ -30,16 +31,6 @@ typedef enum
   PROTOCOL_ROLE_slave
 } rf_controller_protocol_role_e;
 
-typedef enum
-{
-  NWK_STATE_idle,
-  NWK_STATE_scanning,
-  NWK_STATE_auto_joining,
-  NWK_STATE_joining,
-  NWK_STATE_connected,
-  NWK_STATE_master_discoverable
-} rf_controller_nwk_state_e;
-
 typedef struct
 {
   rf_controller_nwk_state_e nwkState;
@@ -50,6 +41,8 @@ typedef struct
   rf_controller_nwk_state_e nwkState;
   uint32_t                  lastConnectedDeviceId;
   uint32_t                  foundDeviceId;
+  uint32_t                  joinDeviceId;
+  bool                      printScanResults;
 } rf_controller_slave_cb_s;
 
 typedef struct
@@ -66,7 +59,7 @@ typedef struct
   uint32_t                        tmrEvent;
 } rf_controller_cb_s;
 
-static const char nwkStateStr[] =
+static const char *nwkStateStr[] =
 {
   "idle",
   "scanning",
@@ -78,7 +71,9 @@ static const char nwkStateStr[] =
 
 static rf_controller_cb_s rfControllerCb;
 
-static rf_controller_nwk_state_e rfControllerGetState(void);
+static void rfControllerNetworkJoin(void);
+static void rfControllerAutoConnect(void);
+static void rfControllerNetworkScan(void);
 
 static uint16_t rfControllerSendEvent(void)
 {
@@ -105,16 +100,62 @@ static bool rfControllerCheckNetworkScanResults(void)
   uint16_t rxLen = sizeof(cc85xx_nwm_do_scan_rsp_s);
   cc85xx_nwm_do_scan_rsp_s rsp;
   bool ret = false;
+  uint32_t i;
+  int rssi;
 
   memset(&rsp, 0, sizeof(cc85xx_nwm_do_scan_rsp_s));
   
   ret = cc85xx_nwm_get_scan_results(&rsp, &rxLen);
   if (ret)
   {
-    rfControllerCb.foundDeviceId = rsp.device_id;
+    rfControllerCb.roleCb.slave.foundDeviceId = rsp.device_id;
+    
+    if (rfControllerCb.roleCb.slave.printScanResults)
+    {
+      if (rxLen > 0)
+      {
+        PRINTF("RXLEN = %d\n", rxLen);
+        PRINTF("\tdevice_id\t= 0x%08X\n", BE32(rsp.device_id));
+        PRINTF("\tmanf_id\t= 0x%08X\n", BE32(rsp.manf_id));
+        PRINTF("\tprod_id\t= 0x%08X\n", BE32(rsp.prod_id));
+        
+        PRINTF("\twpm_allows_join\t= %d\n", rsp.wpm_allows_join);
+        PRINTF("\twpm_pair_signal\t= %d\n", rsp.wpm_pair_signal);
+        PRINTF("\twpm_mfct_filt\t= %d\n", rsp.wpm_mfct_filt);
+        PRINTF("\twpm_dsc_en\t= %d\n", rsp.wpm_dsc_en);
+        PRINTF("\twpm_pm_state\t= %d\n", rsp.wpm_pm_state);
+        
+        PRINTF("\tach_support\t= 0x%04X\n", BE16(rsp.ach_support));
+
+        for (i = 0; i < 8; i++)
+        {
+          PRINTF("\tach[%d][1].format = %d\n", i, rsp.ach[i].format1);
+          PRINTF("\tach[%d][1].active = %d\n", i, rsp.ach[i].active1);
+          PRINTF("\tach[%d][0].format = %d\n", i, rsp.ach[i].format0);
+          PRINTF("\tach[%d][0].active = %d\n", i, rsp.ach[i].active0);
+        }
+        
+        if (rsp.rssi & 0x80)
+        {
+          rssi = ((rsp.rssi ^ 0xFF) + 0x1) * -1;
+        }
+        else
+        {
+          rssi = rsp.rssi;
+        }
+
+        PRINTF("\trssi\t= %d dBm\n", rssi);
+
+        PRINTF("\tsample_rate\t= %d Hz\n", ((rsp.sample_rate_hi << 8 | rsp.sample_rate_lo) * 25));
+        PRINTF("\taudio_latency\t= %d samples\n", ((rsp.audio_latency_hi << 8 | rsp.audio_latency_lo)));
+        
+        return true;
+      }
+      rfControllerCb.roleCb.slave.printScanResults = false;   
+    }
   }
 
-  return ret;
+  return false;
 }
 
 static bool rfControllerNetworkGetStatus(void)
@@ -128,11 +169,14 @@ static bool rfControllerNetworkGetStatus(void)
   {
     rxLen = sizeof(cc85xx_nwm_get_status_rsp_slave_s);
 
-    ret = cc85xx_nws_get_status((uint8_t *)pStatus, &rxLen);
+    ret = cc85xx_nwm_get_status((uint8_t *)pStatus, &rxLen);
     if (!ret)
     {
       return ret;
     }
+    
+    D_PRINTF(INFO, "RXLEN = %d\n", rxLen);
+    printArray(rsp, rxLen);
 
     return (rxLen != 0);
   }
@@ -156,34 +200,43 @@ static void rfControllerSlaveSetState(rf_controller_nwk_state_e newState)
     case NWK_STATE_idle:
     {
       rfClearLaterEvents();
-      if (rfControllerGetState() == NWK_STATE_connected)
+      if (RfControllerGetState() == NWK_STATE_connected)
       {
         // Disconnect
-        RfControllerNetworkJoin(0);
+        RfControllerNetworkDisconnect();
       }
     } break;
 
     case NWK_STATE_auto_joining:
     {
       // Start auto-connect
-      RfControllerAutoConnect();
+      rfControllerAutoConnect();
     } break;
 
     case NWK_STATE_scanning:
     {
       // Start searching
-      RfControllerNetworkScan();
+      rfControllerNetworkScan();
     } break;
 
     case NWK_STATE_joining:
     {
       // Start join
-      RfControllerNetworkJoin(rfControllerCb.roleCb.slave.foundDeviceId);
+      rfControllerNetworkJoin();
     } break;
 
     case NWK_STATE_connected:
     {
+      cc85xx_nwm_ach_set_usage_cmd_s cmd;
+      
+      // Disable all other audio channels
+      memset((void *)&cmd, 0xFF, sizeof(cc85xx_nwm_ach_set_usage_cmd_s));
+      
+      cmd.ach[CC85XX_ACH_front_primary_left] = 0x00;
+      cmd.ach[CC85XX_ACH_front_primary_right] = 0x01;
 
+      // Enable audio channels
+      cc85xx_nwm_ach_set_usage(&cmd);
     } break;
 
     default:
@@ -195,16 +248,54 @@ static void rfControllerSlaveSetState(rf_controller_nwk_state_e newState)
   rfControllerCb.roleCb.slave.nwkState = newState;
 }
 
-static rf_controller_nwk_state_e rfControllerGetState(void)
+static void rfControllerNetworkJoin(void)
 {
-  if (IS_SLAVE())
+  cc85xx_nwm_do_join_cmd_s cmd = 
   {
-    return rfControllerCb.roleCb.slave.nwkState;
-  }
-  else
+    .join_to = BE16(RF_JOIN_INTERVAL_MS / 10),
+    .device_id = BE32(rfControllerCb.roleCb.slave.joinDeviceId),
+    .manf_id = 0,
+    .prod_id_mask = 0,
+    .prod_id_ref = 0
+  };
+  cc85xx_nwm_do_join(&cmd);
+
+  // Check for connection later
+  rfSetEventsLater(RF_EVENTS_JOIN_CHECK, RF_JOIN_INTERVAL_MS);
+}
+
+static void rfControllerAutoConnect(void)
+{
+  RfControllerNetworkJoinById(rfControllerCb.roleCb.slave.lastConnectedDeviceId);
+}
+
+static void rfControllerNetworkScan(void)
+{
+  uint32_t i;
+  uint8_t *pData;
+  cc85xx_nwm_do_scan_cmd_s cmd;
+
+  memset(&cmd, 0, sizeof(cc85xx_nwm_do_scan_cmd_s));
+  cmd.scan = RF_SCAN_INTERVAL_MS / 10; // in 10's of ms
+  cmd.scan |= (1 & 0xF) << 12;
+  cmd.scan = BE16(cmd.scan);
+  cmd.req_rssi = 0x80; // -128dB to disable filtering
+  
+  pData = (uint8_t *)&cmd;
+  
+  D_PRINTF(DEBUG, "Scan command: ");
+  for (i = 0; i < sizeof(cc85xx_nwm_do_scan_cmd_s); i++)
   {
-    return rfControllerCb.roleCb.master.nwkState;
+    D_PRINTF(DEBUG, "%02X ", pData[i]);
   }
+  D_PRINTF(DEBUG, "\n");
+
+  cc85xx_nwm_do_scan(&cmd);
+  
+  D_PRINTF(DEBUG, "SW: 0x%04X\n", cc85xx_get_cached_status());
+
+  // Check for scan results later
+  rfSetEventsLater(RF_EVENTS_SCAN_CHECK, RF_SCAN_INTERVAL_MS);
 }
 
 void RfControllerInit(void)
@@ -222,13 +313,13 @@ void RfControllerInit(void)
   // Sanity check
   if (BE16(pChipInfo->family_id) != CC85XX_FAMILY_ID)
   {
-    D_PRINTF("ERROR: Wrong family ID 0x%04X\n", BE16(pChipInfo->family_id));
+    D_PRINTF(ERROR, "ERROR: Wrong family ID 0x%04X\n", BE16(pChipInfo->family_id));
     return;
   }
 
   cc85xx_di_get_device_info(pDevInfo);
 
-  switch (BE16(pDevInfo->chip_id))
+  switch (BE16(pChipInfo->chip_id))
   {
     case 0:
     {
@@ -261,6 +352,11 @@ void RfControllerInit(void)
   {
     cc85xx_nvs_get_data(RF_NVS_ID_AUTO_CONN_DEV_ID, &rfControllerCb.roleCb.slave.lastConnectedDeviceId);
   }
+}
+
+void RfControllerDeinit(void)
+{
+  cc85xx_pm_set_state(CC85XX_PM_STATE_off);
 }
 
 void RfControllerService(void)
@@ -299,20 +395,55 @@ void RfControllerService(void)
       rfControllerSlaveSetState(NWK_STATE_idle);
     }
   }
+  
+  if (rfCheckEvents(RF_EVENTS_SCAN_START))
+  {
+    rfClearEvents(RF_EVENTS_SCAN_START);
+    
+    rfControllerSlaveSetState(NWK_STATE_scanning);
+  }
 
   if (rfCheckEvents(RF_EVENTS_SCAN_CHECK))
   {
+    // Save flag since it may be modified later by rfControllerCheckNetworkScanResults() 
+    ret = rfControllerCb.roleCb.slave.printScanResults;
+        
     rfClearEvents(RF_EVENTS_SCAN_CHECK);
 
     if (rfControllerCheckNetworkScanResults())
     {
-      rfControllerSlaveSetState(NWK_STATE_joining);
+      if (ret == false)
+      {
+        // Command not triggered by shell
+        rfControllerSlaveSetState(NWK_STATE_joining);
+      }
+      else
+      {
+        // We are done here
+        rfControllerSlaveSetState(NWK_STATE_idle);
+      }
     }
     else
     {
       // Keep searching
-      RfControllerNetworkScan();
+      rfControllerNetworkScan();
     }
+  }
+  
+  if (rfCheckEvents(RF_EVENTS_SCAN_STOP))
+  {
+    rfClearEvents(RF_EVENTS_SCAN_STOP);
+
+    rfControllerCb.roleCb.slave.printScanResults = false;
+
+    rfControllerSlaveSetState(NWK_STATE_idle);
+  }
+  
+  if (rfCheckEvents(RF_EVENTS_SCAN_START))
+  {
+    rfClearEvents(RF_EVENTS_SCAN_START);
+
+    rfControllerNetworkScan();
   }
 
   if (rfCheckEvents(RF_EVENTS_JOIN_CHECK))
@@ -326,22 +457,7 @@ void RfControllerService(void)
     else
     {
       // Keep attempting to connect
-      RfControllerNetworkJoin(rfControllerCb.roleCb.slave.foundDeviceId);
-    }
-  }
-
-  if (rfCheckEvents(RF_EVENTS_AUTO_CONN_CHECK))
-  {
-    rfClearEvents(RF_EVENTS_AUTO_CONN_CHECK);
-
-    if (rfControllerNetworkGetStatus())
-    {
-      rfControllerSlaveSetState(NWK_STATE_connected);
-    }
-    else
-    {
-      // Keep attempting to connect
-      RfControllerAutoConnect();
+      rfControllerNetworkJoin();
     }
   }
 }
@@ -399,76 +515,68 @@ bool RfControllerPrintInfo(void)
   return ret;
 }
 
-void RfControllerNetworkJoin(uint32_t deviceId)
+void RfControllerNetworkJoinById(uint32_t deviceId)
 {
-  cc85xx_nwm_do_join_cmd_s cmd = 
-  {
-    .join_to = BE16(RF_JOIN_INTERVAL_MS / 10),
-    .device_id = BE32(deviceId),
-    .manf_id = 0,
-    .prod_id_mask = 0,
-    .prod_id_ref = 0
-  };
-  cc85xx_nwm_do_join(&cmd);
-
-  // Check for connection later
-  rfSetEventsLater(RF_EVENTS_JOIN_CHECK, RF_JOIN_INTERVAL_MS);
+  rfControllerCb.roleCb.slave.joinDeviceId = deviceId;
+  
+  rfControllerSlaveSetState(NWK_STATE_joining);
 }
 
-void RfControllerAutoConnect(void)
+void RfControllerNetworkDisconnect(void)
 {
-  RfControllerNetworkJoin(rfControllerCb.roleCb.slave.lastConnectedDeviceId);
-
-  // Check for connection later
-  rfSetEventsLater(RF_EVENTS_AUTO_CONN_CHECK, RF_JOIN_INTERVAL_MS);
+  rfControllerCb.roleCb.slave.joinDeviceId = 0;
+  
+  rfControllerNetworkJoin();
 }
 
-void RfControllerNetworkScan(void)
+void RfControllerPrintScanResults(void)
+{
+  rfControllerCb.roleCb.slave.printScanResults = true;
+}
+
+void RfControllerPrintStats(void)
 {
   uint32_t i;
-  uint8_t *pData;
-  cc85xx_nwm_do_scan_cmd_s cmd;
-
-  memset(&cmd, 0, sizeof(cc85xx_nwm_do_scan_cmd_s));
-  cmd.scan = RF_SCAN_INTERVAL_MS / 10; // in 10's of ms
-  cmd.scan |= (1 & 0xF) << 12;
-  cmd.scan = BE16(cmd.scan);
-  cmd.req_rssi = 0x80; // -128dB to disable filtering
+  uint16_t rxLen = sizeof(cc85xx_ps_rf_stats_s);
+  cc85xx_ps_rf_stats_s rsp;
+  bool ret = cc85xx_ps_rf_stats(&rsp, &rxLen);
   
-  pData = (uint8_t *)&cmd;
-  
-  D_PRINTF(DEBUG, "Scan command: ");
-  for (i = 0; i < sizeof(cc85xx_nwm_do_scan_cmd_s); i++)
-  {
-    D_PRINTF(DEBUG, "%02X ", pData[i]);
-  }
-  D_PRINTF(DEBUG, "\n");
-
-  cc85xx_nwm_do_scan(&cmd);
-  
-  D_PRINTF(DEBUG, "SW: 0x%04X\n", cc85xx_get_cached_status());
-
-  // Check for scan results later
-  rfSetEventsLater(RF_EVENTS_SCAN_CHECK, RF_SCAN_INTERVAL_MS);
-}
-
-bool RfControllerPrintScanResults(void)
-{
-  int rssi;
-  uint32_t i;
-  uint16_t rxLen = sizeof(cc85xx_nwm_do_scan_rsp_s);
-  cc85xx_nwm_do_scan_rsp_s rsp;
-  bool ret = false;
-
-  memset(&rsp, 0, sizeof(cc85xx_nwm_do_scan_rsp_s));
-  
-  ret = cc85xx_nwm_get_scan_results(&rsp, &rxLen);
-  
-  PRINTF("SW: 0x%04X\n", cc85xx_get_cached_status());
-
   if (ret)
   {
-    if (rxLen > 0)
+    PRINTF("RXLEN = %d\n", rxLen);
+    
+    PRINTF("\ttimeslot_count\t= %d\n", BE32(rsp.timeslot_count));
+    PRINTF("\trx_pkt_count\t= %d\n", BE32(rsp.rx_pkt_count));
+  
+    PRINTF("\trx_pkt_fail_count\t= %d\n", BE32(rsp.rx_pkt_fail_count));
+    PRINTF("\trx_slice_count\t= %d\n", BE32(rsp.rx_slice_count));
+    
+    PRINTF("\trx_slice_err_count\t= %d\n", BE32(rsp.rx_slice_err_count));
+
+    PRINTF("\tnwk_join_count\t= %d\n", rsp.nwk_join_count);
+    PRINTF("\tnwk_drop_count\t= %d\n", rsp.nwk_drop_count);
+    PRINTF("\tafh_swap_count\t= %d\n", BE16(rsp.afh_swap_count));
+    
+    for (i = 0; i < 20; i++)
+    {
+      PRINTF("\tafh_ch_usage_count[%d]\t= %d\n", i, BE16(rsp.afh_ch_usage_count[i]));
+    }
+  }
+}
+
+bool RfControllerPrintNetworkStats(void)
+{
+  bool ret = false;
+  uint16_t rxLen;
+  uint32_t i;
+  int rssi;
+  
+  if (IS_SLAVE())
+  {
+    cc85xx_nwm_get_status_rsp_slave_s rsp;
+    rxLen = sizeof(cc85xx_nwm_get_status_rsp_slave_s);
+    ret = cc85xx_nwm_get_status((uint8_t *)&rsp, &rxLen);
+    if (ret && rxLen > 0)
     {
       PRINTF("RXLEN = %d\n", rxLen);
       PRINTF("\tdevice_id\t= 0x%08X\n", BE32(rsp.device_id));
@@ -503,40 +611,49 @@ bool RfControllerPrintScanResults(void)
       PRINTF("\trssi\t= %d dBm\n", rssi);
 
       PRINTF("\tsample_rate\t= %d Hz\n", ((rsp.sample_rate_hi << 8 | rsp.sample_rate_lo) * 25));
-      PRINTF("\taudio_latency\t= %d samples\n", ((rsp.audio_latency_hi << 8 | rsp.audio_latency_lo)));
-      return true;
+      PRINTF("\tnwk_status\t= %d\n", rsp.nwk_status);
+      PRINTF("\taudio_latency\t= %d samples\n", ((rsp.latency_hi << 8 | rsp.latency_lo)));
+      PRINTF("\tach_used\t= 0x%04X\n", BE16(rsp.ach_used));
+    }
+    else
+    {
+      return false;
     }
   }
-
-  return false;
+  
+  return ret;
 }
 
-void RfControllerPrintStats(void)
+bool RfControllerPrintPmData(void)
 {
-  uint32_t i;
-  uint16_t rxLen = sizeof(cc85xx_ps_rf_stats_s);
-  cc85xx_ps_rf_stats_s rsp;
-  bool ret = cc85xx_ps_rf_stats(&rsp, &rxLen);
+  cc85xx_pm_get_data_s rsp;
+  uint16_t rxLen = sizeof(cc85xx_pm_get_data_s);
+  bool ret = cc85xx_pm_get_data(&rsp, &rxLen);
   
-  if (ret)
+  if (ret && rxLen > 0)
   {
     PRINTF("RXLEN = %d\n", rxLen);
-    
-    PRINTF("\ttimeslot_count\t= %d\n", BE32(rsp.timeslot_count));
-    PRINTF("\trx_pkt_count\t= %d\n", BE32(rsp.rx_pkt_count));
+    PRINTF("\tin_silence_time\t= %d ms\n", BE32(rsp.in_silence_time) * 10);
+    PRINTF("\tout_silence_time\t= %d ms\n", BE32(rsp.out_silence_time) * 10);
+    PRINTF("\tnwk_inactivity_time\t= %d ms\n", BE32(rsp.nwk_inactivity_time) * 10);
+    PRINTF("\tvbat_voltage\t= %d mV\n", BE16(rsp.vbat_voltage));
+  }
+  else
+  {
+    return false;
+  }
   
-    PRINTF("\trx_pkt_fail_count\t= %d\n", BE32(rsp.rx_pkt_fail_count));
-    PRINTF("\trx_slice_count\t= %d\n", BE32(rsp.rx_slice_count));
-    
-    PRINTF("\trx_slice_err_count\t= %d\n", BE32(rsp.rx_slice_err_count));
+  return ret;
+}
 
-    PRINTF("\tnwk_join_count\t= %d\n", rsp.nwk_join_count);
-    PRINTF("\tnwk_drop_count\t= %d\n", rsp.nwk_drop_count);
-    PRINTF("\tafh_swap_count\t= %d\n", BE16(rsp.afh_swap_count));
-    
-    for (i = 0; i < 20; i++)
-    {
-      PRINTF("\tafh_ch_usage_count[%d]\t= %d\n", i, BE16(rsp.afh_ch_usage_count[i]));
-    }
+rf_controller_nwk_state_e RfControllerGetState(void)
+{
+  if (IS_SLAVE())
+  {
+    return rfControllerCb.roleCb.slave.nwkState;
+  }
+  else
+  {
+    return rfControllerCb.roleCb.master.nwkState;
   }
 }
