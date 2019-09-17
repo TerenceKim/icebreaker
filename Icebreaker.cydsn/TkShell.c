@@ -165,11 +165,11 @@ static TK_SHELL_VERBS(cal) =
 };
 
 TK_SHELL_METHOD(audio, play_tone);
-TK_SHELL_METHOD(audio, stop_tone);
+TK_SHELL_METHOD(audio, play_cue);
 static TK_SHELL_VERBS(audio) =
 {
   TK_SHELL_VERB(audio, play_tone, "play tone"),
-  TK_SHELL_VERB(audio, stop_tone, "stop tone"),
+  TK_SHELL_VERB(audio, play_cue, "play cue: <cueId>"),
   { "", NULL, "" }
 };
 
@@ -775,17 +775,39 @@ TK_SHELL_METHOD(cal, save)
 
 TK_SHELL_METHOD(audio, play_tone)
 {
-  AudioManagerToneStart(strtoul(argv[2], NULL, 16));
+  int i = 2;
+  
+  argc -= i;
+  
+  if (argc < 2)
+  {
+    PRINTF("Invalid number of arguments!\n");
+    return -1;
+  }
+  
+  AudioManagerTonePlay(atoi(argv[i]), atoi(argv[i+1]));
   
   PRINTF("> audio:ok\n");
 
   return 0;
 }
 
-TK_SHELL_METHOD(audio, stop_tone)
+TK_SHELL_METHOD(audio, play_cue)
 {
-  AudioManagerToneStop();
+  int i = 2;
+  
+  argc -= i;
+  
+  if (argc < 1)
+  {
+    PRINTF("Invalid number of arguments!\n");
+    return -1;
+  }
+  
+  AudioManagerCuePlay(atoi(argv[i]));
+  
   PRINTF("> audio:ok\n");
+
   return 0;
 }
 

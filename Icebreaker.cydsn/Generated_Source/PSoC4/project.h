@@ -113,6 +113,7 @@
 #include "SPI_ss0_m.h"
 #include "SPI_ss0_m_aliases.h"
 #include "SPI_SCB_IRQ.h"
+#include "cy_em_eeprom.h"
 #include "core_cm0_psoc4.h"
 #include "CyFlash.h"
 #include "CyLib.h"
@@ -121,7 +122,6 @@
 #include "cypins.h"
 #include "CyDMA.h"
 #include "CyLFClk.h"
-#include "cy_em_eeprom.h"
 
 /*[]*/
 

@@ -44,9 +44,10 @@ volatile uint32_t audioEvents;
 #define G4_HZ      392.00
 #define A4_HZ      440.00
 #define B4_HZ      493.88
+#define C5_HZ      523.25
 
 // Define a C-major scale to play all the notes up and down.
-float scale[] = { C4_HZ, D4_HZ, E4_HZ, F4_HZ, G4_HZ, A4_HZ, B4_HZ, A4_HZ, G4_HZ, F4_HZ, E4_HZ, D4_HZ, C4_HZ };
+float scale[MUSIC_NOTE_MAX] = { C4_HZ, D4_HZ, E4_HZ, F4_HZ, G4_HZ, A4_HZ, B4_HZ, C5_HZ };
 
 // Store basic waveforms in memory.
 int32_t sine[WAV_SIZE]     = {0};
@@ -58,6 +59,45 @@ int32_t square[WAV_SIZE]   = {0};
 #define OUT_BUFSIZE (WAV_SIZE * 6)
 uint8 outBuffer[OUT_BUFSIZE];
 
+static const music_word_s cues[AUDIO_CUE_MAX][5] = 
+{
+  // [AUDIO_CUE_power_on]
+  {
+    { MUSIC_NOTE_C4, 150 },
+    { MUSIC_NOTE_E4, 150 },
+    { MUSIC_NOTE_G4, 150 },
+    { MUSIC_NOTE_C5, 150 },
+    { MUSIC_NOTE_none, 0 }, // END
+  },
+  // [AUDIO_CUE_start_scan]
+  {
+    { MUSIC_NOTE_G4, 200 },
+    { MUSIC_NOTE_C5, 200 },
+    { MUSIC_NOTE_none, 0 }, // END
+  },
+  // [AUDIO_CUE_connected]
+  {
+    { MUSIC_NOTE_C5, 50 },
+    { MUSIC_NOTE_none, 50 }, 
+    { MUSIC_NOTE_C5, 50 },
+    { MUSIC_NOTE_none, 0 }, // END
+  },
+  // [AUDIO_CUE_disconnected]
+  {
+    { MUSIC_NOTE_A4, 200 },
+    { MUSIC_NOTE_D4, 200 },
+    { MUSIC_NOTE_none, 0 }, // END
+  },
+  // [AUDIO_CUE_power_off]
+  {
+    { MUSIC_NOTE_C5, 150 },
+    { MUSIC_NOTE_G4, 150 },
+    { MUSIC_NOTE_E4, 150 },
+    { MUSIC_NOTE_C4, 150 },
+    { MUSIC_NOTE_none, 0 }, // END
+  },
+};
+
 CY_ISR(i2s_tx_dma_done)
 {
   audioSetEvents(AUDIO_EVENTS_I2S_TX_DMA_DONE);
@@ -67,9 +107,23 @@ void generateSine(int32_t amplitude, int32_t* buffer, uint16_t length) {
   // Generate a sine wave signal with the provided amplitude and store it in
   // the provided buffer of size length.
   for (int i=0; i<length; ++i) {
-//    buffer[i] = (int32_t)((float)(amplitude)*sin(2.0*PI*(1.0/length)*i));
+    buffer[i] = (int32_t)((float)(amplitude)*sin(2.0*PI*(1.0/length)*i));
   }
 }
+
+void generateSineByFreq(float frequency, int32_t amplitude, int32_t *buffer, uint16_t *pLength)
+{
+  float newLength = (float)SAMPLERATE_HZ / frequency;
+  
+  *pLength = (uint16_t)newLength;
+
+  // Generate a sine wave signal with the provided amplitude and store it in
+  // the provided buffer of size length.
+  for (int i=0; i<*pLength; ++i) {
+    buffer[i] = (int32_t)((float)(amplitude)*sin(2.0*PI*(1.0/(*pLength))*i));
+  }
+}
+
 void generateSawtooth(int32_t amplitude, int32_t* buffer, uint16_t length) {
   // Generate a sawtooth signal that goes from -amplitude/2 to amplitude/2
   // and store it in the provided buffer of size length.
@@ -172,75 +226,92 @@ void playWave(int32_t* buffer, uint16_t length, float frequency, int seconds)
 }
 #endif
 
-void AudioManagerToneStart(uint32_t word)
+static void audioManagerPlayNote(music_note_e note, uint32_t durationMs)
 {
-#if 0
-  int i;
-  uint32_t word1 = 0x8899AABB;
-  uint32_t word2 = 0xCCDDEEFF;
-
-  for (i = 0; i < OUT_BUFSIZE; i += 2*sizeof(int32_t))
-  {
-    outBuffer[i+7] = word2 & 0xFF;         // "FF"
-    outBuffer[i+6] = (word2 >> 8) & 0xFF;  // "EE"
-    outBuffer[i+5] = (word2 >> 16) & 0xFF; // "DD"
-    outBuffer[i+4] = (word2 >> 24) & 0xFF; // "CC"
-
-    outBuffer[i+3] = word1 & 0xFF;         // "BB"
-    outBuffer[i+2] = (word1 >> 8) & 0xFF;  // "AA"
-    outBuffer[i+1] = (word1 >> 16) & 0xFF; // "99"
-    outBuffer[i+0] = (word1 >> 24) & 0xFF; // "88"
-    
-  }
-#else
   uint32_t i;
-  uint16_t pos;
-  //int32_t sample;
-  float delta = (scale[word] * WAV_SIZE) / (float)(SAMPLERATE_HZ);
+  int32_t sample;
+  uint16_t length;
   
-  for (i = 0; i < OUT_BUFSIZE; i += 6)
+  if (note == MUSIC_NOTE_none)
   {
-    pos = (uint32_t)(i * delta) % WAV_SIZE;
-    
-    //memcpy(&outBuffer[i*4], &triangle[pos], sizeof(uint32_t));
-    outBuffer[i+5] = (triangle[pos] >> 16) & 0xFF;
-    outBuffer[i+4] = (triangle[pos] >> 8) & 0xFF;
-    outBuffer[i+3] = triangle[pos] & 0xFF;
-    
-    outBuffer[i+2] = (triangle[pos] >> 16) & 0xFF;
-    outBuffer[i+1] = (triangle[pos] >> 8) & 0xFF;
-    outBuffer[i+0] = triangle[pos] & 0xFF;
-    //outBuffer[i] = triangle[pos];
+    CyDelay(durationMs);
+    return;
   }
-#endif
 
+  generateSineByFreq(scale[note], AMPLITUDE, sine, &length);
+  
+  for (i = 0; i < length; i++)
+  {
+    sample = sine[i];
 
+    outBuffer[i*6+5] = (sample >> 16) & 0xFF;
+    outBuffer[i*6+4] = (sample >> 8) & 0xFF;
+    outBuffer[i*6+3] = sample & 0xFF;
+    
+    outBuffer[i*6+2] = (sample >> 16) & 0xFF;
+    outBuffer[i*6+1] = (sample >> 8) & 0xFF;
+    outBuffer[i*6+0] = sample & 0xFF;
+  }
+  
+  TxDMA_SetNumDataElements(0, length*6);
+  TxDMA_SetSrcAddress(0, (void *) outBuffer);
+	TxDMA_SetDstAddress(0, (void *) I2S_TX_FIFO_0_PTR);
+
+  /* Validate descriptor */
+  TxDMA_ValidateDescriptor(0);
+  
   I2S_ClearTxFIFO(); /* Clear the I2S internal FIFO */
-
-  //TxDMA_ChEnable();
   
   I2S_EnableTx(); /* Unmute the TX output */
   
+  TxDMA_ChEnable();
+  
+  CyDelay(durationMs);
+  
+  I2S_DisableTx(); /* Mute the TX output */
+  
+  TxDMA_ChDisable();
+}
+
+static void audioManagerPlayPhrase(music_word_s *pPhrase)
+{ 
   Codec_Activate();
 
   /* Enable power to speaker output */
   Codec_PowerOnControl(CODEC_POWER_CTRL_OUTPD);
   
-  playWave((int32_t *)triangle, sizeof(triangle) / 4, C4_HZ, 10);
-}
-
-void AudioManagerToneStop(void)
-{
+  while (pPhrase->duration_ms)
+  {
+    audioManagerPlayNote(pPhrase->note, pPhrase->duration_ms);
+    pPhrase++;
+  }
+  
   /* Enable power to speaker output */
   Codec_PowerOffControl(CODEC_POWER_CTRL_OUTPD);
 
   Codec_Deactivate();
 
   I2S_DisableTx();
-  
-  CyDelay(20);
+}
 
-  TxDMA_ChDisable();
+void AudioManagerTonePlay(music_note_e note, uint32_t durationMs)
+{  
+  Codec_Activate();
+  
+  /* Enable power to speaker output */
+  Codec_PowerOnControl(CODEC_POWER_CTRL_OUTPD);
+  
+  audioManagerPlayNote(note, durationMs);
+  
+  /* Enable power to speaker output */
+  Codec_PowerOffControl(CODEC_POWER_CTRL_OUTPD);
+
+  Codec_Deactivate();
+}
+
+void AudioManagerCuePlay(audio_cue_e cue)
+{
+  audioManagerPlayPhrase((music_word_s *)cues[cue]);
 }
 
 void AudioManagerService(void)
