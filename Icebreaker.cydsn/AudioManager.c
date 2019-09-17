@@ -35,6 +35,9 @@ volatile uint32_t audioEvents;
                              // quality the signal.  A size of 256 is more than enough for these simple
                              // waveforms.
 
+#define BITS_PER_SAMPLE     24
+#define BYTES_PER_SAMPLE    (BITS_PER_SAMPLE / sizeof(uint8_t) * 2) // For stereo
+
 
 // Define the frequency of music notes (from http://www.phy.mtu.edu/~suits/notefreqs.html):
 #define C4_HZ      261.63
@@ -46,17 +49,13 @@ volatile uint32_t audioEvents;
 #define B4_HZ      493.88
 #define C5_HZ      523.25
 
+#define OUT_BUFSIZE (WAV_SIZE * BYTES_PER_SAMPLE)
+
 // Define a C-major scale to play all the notes up and down.
 float scale[MUSIC_NOTE_MAX] = { C4_HZ, D4_HZ, E4_HZ, F4_HZ, G4_HZ, A4_HZ, B4_HZ, C5_HZ };
 
 // Store basic waveforms in memory.
 int32_t sine[WAV_SIZE]     = {0};
-int32_t sawtooth[WAV_SIZE] = {0};
-int32_t triangle[WAV_SIZE] = {0};
-int32_t square[WAV_SIZE]   = {0};
-
-
-#define OUT_BUFSIZE (WAV_SIZE * 6)
 uint8 outBuffer[OUT_BUFSIZE];
 
 static const music_word_s cues[AUDIO_CUE_MAX][5] = 
@@ -98,18 +97,12 @@ static const music_word_s cues[AUDIO_CUE_MAX][5] =
   },
 };
 
-CY_ISR(i2s_tx_dma_done)
+typedef struct
 {
-  audioSetEvents(AUDIO_EVENTS_I2S_TX_DMA_DONE);
-}
+  audio_routing_e routing;
+} audio_manager_cb_s;
 
-void generateSine(int32_t amplitude, int32_t* buffer, uint16_t length) {
-  // Generate a sine wave signal with the provided amplitude and store it in
-  // the provided buffer of size length.
-  for (int i=0; i<length; ++i) {
-    buffer[i] = (int32_t)((float)(amplitude)*sin(2.0*PI*(1.0/length)*i));
-  }
-}
+static audio_manager_cb_s audioManagerCb;
 
 void generateSineByFreq(float frequency, int32_t amplitude, int32_t *buffer, uint16_t *pLength)
 {
@@ -124,38 +117,6 @@ void generateSineByFreq(float frequency, int32_t amplitude, int32_t *buffer, uin
   }
 }
 
-void generateSawtooth(int32_t amplitude, int32_t* buffer, uint16_t length) {
-  // Generate a sawtooth signal that goes from -amplitude/2 to amplitude/2
-  // and store it in the provided buffer of size length.
-  float delta = (float)(amplitude)/(float)(length);
-  for (int i=0; i<length; ++i) {
-    buffer[i] = -(amplitude/2)+delta*i;
-  }
-}
-
-void generateTriangle(int32_t amplitude, int32_t* buffer, uint16_t length) {
-  // Generate a triangle wave signal with the provided amplitude and store it in
-  // the provided buffer of size length.
-  float delta = (float)(amplitude)/(float)(length);
-  for (int i=0; i<length/2; ++i) {
-    buffer[i] = -(amplitude/2)+delta*i;
-  }
-    for (int i=length/2; i<length; ++i) {
-    buffer[i] = (amplitude/2)-delta*(i-length/2);
-  }
-}
-
-void generateSquare(int32_t amplitude, int32_t* buffer, uint16_t length) {
-  // Generate a square wave signal with the provided amplitude and store it in
-  // the provided buffer of size length.
-  for (int i=0; i<length/2; ++i) {
-    buffer[i] = -(amplitude/2);
-  }
-    for (int i=length/2; i<length; ++i) {
-    buffer[i] = (amplitude/2);
-  }
-}
-
 void AudioManagerInit(void)
 {
   audioEvents = 0;
@@ -167,15 +128,6 @@ void AudioManagerInit(void)
   CyDmaEnable();
   
   TxDMA_Init();
-	TxDMA_SetNumDataElements(0, OUT_BUFSIZE);
-  TxDMA_SetSrcAddress(0, (void *) outBuffer);
-	TxDMA_SetDstAddress(0, (void *) I2S_TX_FIFO_0_PTR);
-
-  /* Validate descriptor */
-  TxDMA_ValidateDescriptor(0);
-  
-  /* Start interrupts */
-  isr_TxDMADone_StartEx(&i2s_tx_dma_done);
   
   /* Start I2C Master */
   CodecI2CM_Start();
@@ -189,42 +141,9 @@ void AudioManagerInit(void)
 		D_PRINTF(ERROR, "Codec comm DOESN'T work!... \r\n");
 	}
   
-  I2S_Start();
-  
-  generateSine(AMPLITUDE, sine, WAV_SIZE);
-  generateSawtooth(AMPLITUDE, sawtooth, WAV_SIZE);
-  generateTriangle(AMPLITUDE, triangle, WAV_SIZE);
-  generateSquare(AMPLITUDE, square, WAV_SIZE);
-  
-  
+  /* Disable power to speaker output */
+  Codec_PowerOffControl(CODEC_POWER_CTRL_OUTPD);
 }
-#if 1
-void playWave(int32_t* buffer, uint16_t length, float frequency, int seconds)
-{
-  // Play back the provided waveform buffer for the specified
-  // amount of seconds.
-  // First calculate how many samples need to play back to run
-  // for the desired amount of seconds.
-  uint32_t iterations = seconds*SAMPLERATE_HZ;
-  // Then calculate the 'speed' at which we move through the wave
-  // buffer based on the frequency of the tone being played.
-  float delta = (frequency*length)/(float)(SAMPLERATE_HZ);
-  // Now loop through all the samples and play them, calculating the
-  // position within the wave buffer for each moment in time.
-
-  for (uint32_t i=0; i<iterations; ++i)
-  {
-    uint16_t pos = (uint32_t)(i*delta) % length;
-    int32_t sample = buffer[pos];
-    // Duplicate the sample so it's sent to both the left and right channel.
-    // It appears the order is right channel, left channel if you want to write
-    // stereo sound.
-    //i2s.write(sample, sample);
-    I2S_WriteByte(sample, 0);
-    I2S_WriteByte(sample, 1);
-  }
-}
-#endif
 
 static void audioManagerPlayNote(music_note_e note, uint32_t durationMs)
 {
@@ -262,65 +181,115 @@ static void audioManagerPlayNote(music_note_e note, uint32_t durationMs)
   
   I2S_ClearTxFIFO(); /* Clear the I2S internal FIFO */
   
+  Codec_SetMute(false);
+  
   I2S_EnableTx(); /* Unmute the TX output */
   
   TxDMA_ChEnable();
   
   CyDelay(durationMs);
   
+  Codec_SetMute(true);
   I2S_DisableTx(); /* Mute the TX output */
   
   TxDMA_ChDisable();
 }
 
 static void audioManagerPlayPhrase(music_word_s *pPhrase)
-{ 
-  Codec_Activate();
-
-  /* Enable power to speaker output */
-  Codec_PowerOnControl(CODEC_POWER_CTRL_OUTPD);
+{
+  audio_routing_e routing_old = AudioManagerGetRouting();
+  AudioManagerSetRouting(AUDIO_ROUTING_mcu);
   
   while (pPhrase->duration_ms)
   {
     audioManagerPlayNote(pPhrase->note, pPhrase->duration_ms);
     pPhrase++;
   }
-  
-  /* Enable power to speaker output */
-  Codec_PowerOffControl(CODEC_POWER_CTRL_OUTPD);
-
-  Codec_Deactivate();
-
-  I2S_DisableTx();
+  AudioManagerSetRouting(routing_old);
 }
 
 void AudioManagerTonePlay(music_note_e note, uint32_t durationMs)
-{  
-  Codec_Activate();
-  
-  /* Enable power to speaker output */
-  Codec_PowerOnControl(CODEC_POWER_CTRL_OUTPD);
+{
+  audio_routing_e routing_old = AudioManagerGetRouting();
+  AudioManagerSetRouting(AUDIO_ROUTING_mcu);
   
   audioManagerPlayNote(note, durationMs);
   
-  /* Enable power to speaker output */
-  Codec_PowerOffControl(CODEC_POWER_CTRL_OUTPD);
-
-  Codec_Deactivate();
+  AudioManagerSetRouting(routing_old);
 }
 
 void AudioManagerCuePlay(audio_cue_e cue)
 {
+  audio_routing_e routing_old = AudioManagerGetRouting();
+  AudioManagerSetRouting(AUDIO_ROUTING_mcu);
+
   audioManagerPlayPhrase((music_word_s *)cues[cue]);
+  
+  AudioManagerSetRouting(routing_old);
 }
 
 void AudioManagerService(void)
 {
-  if (audioCheckEvents(AUDIO_EVENTS_I2S_TX_DMA_DONE))
-  {
-    D_PRINTF(DEBUG, "I2S TX DMA done\n");
-    audioClearEvents(AUDIO_EVENTS_I2S_TX_DMA_DONE);
-  }
+
 }
+
+void AudioManagerSetRouting(audio_routing_e routing)
+{
+  if (audioManagerCb.routing == routing)
+  {
+    return;
+  }
+  
+  switch (routing)
+  {
+    case AUDIO_ROUTING_none:
+    {
+      /* Disable power to speaker output to save power */
+      Codec_PowerOffControl(CODEC_POWER_CTRL_OUTPD);
+      
+      I2S_Stop();
+    } break;
+    
+    case AUDIO_ROUTING_mcu:
+    {      
+      Codec_Deactivate();
+      Codec_SendData(CODEC_REG_DIGITAL_IF, CODEC_DIGITAL_IF_IWL_24_BIT | CODEC_DIGITAL_IF_FORMAT_I2S);
+      Codec_SetSamplingRate(CODEC_SRATE_NORMAL_48KHZ_256FS);
+      Codec_Activate();
+
+      I2S_Start();
+      
+      /* Enable power to speaker output */
+      Codec_PowerOnControl(CODEC_POWER_CTRL_OUTPD);
+      
+      CyDelay(10);
+    } break;
+    
+    case AUDIO_ROUTING_rfc:
+    {   
+      I2S_Stop();
+      
+      Codec_Deactivate();
+      Codec_SendData(CODEC_REG_DIGITAL_IF, CODEC_DIGITAL_IF_IWL_16_BIT | CODEC_DIGITAL_IF_FORMAT_I2S);
+      Codec_SetSamplingRate(CODEC_SRATE_NORMAL_44KHZ_256FS);
+      Codec_Activate();
+      
+      /* Enable power to speaker output */
+      Codec_PowerOnControl(CODEC_POWER_CTRL_OUTPD);
+      
+      CyDelay(10);
+    } break;
+    
+    default:
+      break;
+  }
+  audioManagerCb.routing = routing;
+}
+
+audio_routing_e AudioManagerGetRouting(void)
+{
+  return audioManagerCb.routing; 
+}
+
 
 /* [] END OF FILE */

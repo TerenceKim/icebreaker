@@ -213,7 +213,11 @@ uint8 Codec_AdjustBothHeadphoneVolume(uint8 volume)
 		volume = CODEC_HP_VOLUME_MAX;
 	}
 	
-    codec_data.volume = volume;
+    if (volume)
+    {
+      // Only store away for non-mute operations
+      codec_data.volume = volume;
+    }
 
     if (codec_data.mute == false)
     {
@@ -235,7 +239,7 @@ uint8 Codec_AdjustBothHeadphoneVolumeLevel(uint8 level)
 
 uint8 Codec_GetHeadphoneVolume(void)
 {
-    return codec_data.volume;
+    return codec_data.reg[CODEC_REG_LHPOUT] & CODEC_LHPOUT_VOL_MASK;
 }
 
 uint8 Codec_SetMute(bool enable)

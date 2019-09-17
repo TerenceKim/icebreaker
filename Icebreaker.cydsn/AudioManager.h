@@ -38,6 +38,13 @@ typedef enum
   AUDIO_CUE_MAX
 } audio_cue_e;
 
+typedef enum
+{
+  AUDIO_ROUTING_none,
+  AUDIO_ROUTING_mcu,
+  AUDIO_ROUTING_rfc
+} audio_routing_e;
+
 typedef struct
 {
   music_note_e note;
@@ -58,6 +65,8 @@ extern volatile uint32_t audioEvents;
 
 void AudioManagerInit(void);
 void AudioManagerService(void);
+void AudioManagerSetRouting(audio_routing_e routing);
+audio_routing_e AudioManagerGetRouting(void);
 
 void AudioManagerTonePlay(music_note_e note, uint32_t durationMs);
 void AudioManagerCuePlay(audio_cue_e cue);
