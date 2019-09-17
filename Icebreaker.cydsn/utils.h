@@ -24,6 +24,10 @@
                   
 void printArray(uint8_t *p, uint32_t len);
 
+#define utilSetEvents(m, e)     { m |= (e); }
+#define utilCheckEvents(m, e)   ((m & (e)) != 0)
+#define utilClearEvents(m, e)   { m &= ~(e); }
+
 #endif /* UTILS_H */
 
 /* [] END OF FILE */

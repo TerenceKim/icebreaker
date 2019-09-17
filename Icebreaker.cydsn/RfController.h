@@ -30,6 +30,12 @@ extern volatile uint32_t rfEvents;
 #define rfCheckEvents(e)   ((rfEvents & (e)) != 0)
 #define rfClearEvents(e)   { rfEvents &= ~(e); }
 
+typedef enum
+{
+  PROTOCOL_ROLE_unknown,
+  PROTOCOL_ROLE_master,
+  PROTOCOL_ROLE_slave
+} rf_controller_protocol_role_e;
   
 typedef enum
 {
@@ -38,7 +44,8 @@ typedef enum
   NWK_STATE_auto_joining,
   NWK_STATE_joining,
   NWK_STATE_connected,
-  NWK_STATE_master_discoverable
+  NWK_STATE_master_discoverable,
+  NWK_STATE_MAX
 } rf_controller_nwk_state_e;
 
 void RfControllerInit(void);
@@ -52,5 +59,6 @@ void RfControllerNetworkJoinById(uint32_t deviceId);
 void RfControllerNetworkDisconnect(void);
 
 rf_controller_nwk_state_e RfControllerGetState(void);
+rf_controller_protocol_role_e RfControllerGetRole(void);
 
 #endif /* RF_CONTROLLER_H */

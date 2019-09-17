@@ -5,7 +5,7 @@
 #include <ButtonManager.h>
 
 #define NUM_OF_DEBOUNCE_CHECKS      (5)
-#define BUTTON_DEBOUNCE_INTERVAL_MS (10)
+#define BUTTON_DEBOUNCE_INTERVAL_MS (20)
 
 typedef enum
 {

@@ -2,12 +2,13 @@
 #include <Application.h>
 #include <cc85xx.h>
 #include <utils.h>
+#include <SystemManager.h>
 
 #define IS_MASTER()                 (rfControllerCb.role == PROTOCOL_ROLE_master)
 #define IS_SLAVE()                  (rfControllerCb.role == PROTOCOL_ROLE_slave)
 
 #define RF_SCAN_INTERVAL_MS         (1000)
-#define RF_JOIN_INTERVAL_MS         ( 500)
+#define RF_JOIN_INTERVAL_MS         (1000)
 
 #define RF_MANF_ID                  (0x00000001)
 #define RF_PRODUCT_ID_SLAVE         (0xB3F1233D)
@@ -23,13 +24,6 @@ typedef enum
   RUN_MODE_app,
   RUN_MODE_factorytest
 } rf_controller_run_mode_e;
-
-typedef enum
-{
-  PROTOCOL_ROLE_unknown,
-  PROTOCOL_ROLE_master,
-  PROTOCOL_ROLE_slave
-} rf_controller_protocol_role_e;
 
 typedef struct
 {
@@ -108,7 +102,7 @@ static bool rfControllerCheckNetworkScanResults(void)
   ret = cc85xx_nwm_get_scan_results(&rsp, &rxLen);
   if (ret)
   {
-    rfControllerCb.roleCb.slave.foundDeviceId = rsp.device_id;
+    rfControllerCb.roleCb.slave.foundDeviceId = BE32(rsp.device_id);
     
     if (rfControllerCb.roleCb.slave.printScanResults)
     {
@@ -148,14 +142,16 @@ static bool rfControllerCheckNetworkScanResults(void)
 
         PRINTF("\tsample_rate\t= %d Hz\n", ((rsp.sample_rate_hi << 8 | rsp.sample_rate_lo) * 25));
         PRINTF("\taudio_latency\t= %d samples\n", ((rsp.audio_latency_hi << 8 | rsp.audio_latency_lo)));
-        
-        return true;
+        rfControllerCb.roleCb.slave.printScanResults = false;   
       }
-      rfControllerCb.roleCb.slave.printScanResults = false;   
+      else
+      {
+        return false;
+      }
     }
   }
 
-  return false;
+  return ret;
 }
 
 static bool rfControllerNetworkGetStatus(void)
@@ -194,12 +190,15 @@ static void rfControllerSlaveSetState(rf_controller_nwk_state_e newState)
   {
     return;
   }
+  else
+  {
+    rfClearLaterEvents();
+  }
 
   switch (newState)
   {
     case NWK_STATE_idle:
     {
-      rfClearLaterEvents();
       if (RfControllerGetState() == NWK_STATE_connected)
       {
         // Disconnect
@@ -237,6 +236,14 @@ static void rfControllerSlaveSetState(rf_controller_nwk_state_e newState)
 
       // Enable audio channels
       cc85xx_nwm_ach_set_usage(&cmd);
+      
+      if (rfControllerCb.roleCb.slave.lastConnectedDeviceId != rfControllerCb.roleCb.slave.joinDeviceId)
+      {
+        rfControllerCb.roleCb.slave.lastConnectedDeviceId = rfControllerCb.roleCb.slave.joinDeviceId;
+        
+        // Store away for auto-conn on next boot-up
+        cc85xx_nvs_set_data(RF_NVS_ID_AUTO_CONN_DEV_ID, rfControllerCb.roleCb.slave.lastConnectedDeviceId);
+      }
     } break;
 
     default:
@@ -260,8 +267,11 @@ static void rfControllerNetworkJoin(void)
   };
   cc85xx_nwm_do_join(&cmd);
 
-  // Check for connection later
-  rfSetEventsLater(RF_EVENTS_JOIN_CHECK, RF_JOIN_INTERVAL_MS);
+  if (rfControllerCb.roleCb.slave.joinDeviceId)
+  {
+    // Check for connection later
+    rfSetEventsLater(RF_EVENTS_JOIN_CHECK, RF_JOIN_INTERVAL_MS);
+  }
 }
 
 static void rfControllerAutoConnect(void)
@@ -415,6 +425,8 @@ void RfControllerService(void)
       if (ret == false)
       {
         // Command not triggered by shell
+        // Attempt to connect to device that was found
+        rfControllerCb.roleCb.slave.joinDeviceId = rfControllerCb.roleCb.slave.foundDeviceId;
         rfControllerSlaveSetState(NWK_STATE_joining);
       }
       else
@@ -443,7 +455,7 @@ void RfControllerService(void)
   {
     rfClearEvents(RF_EVENTS_SCAN_START);
 
-    rfControllerNetworkScan();
+    rfControllerSlaveSetState(NWK_STATE_scanning);
   }
 
   if (rfCheckEvents(RF_EVENTS_JOIN_CHECK))
@@ -453,6 +465,8 @@ void RfControllerService(void)
     if (rfControllerNetworkGetStatus())
     {
       rfControllerSlaveSetState(NWK_STATE_connected);
+      
+      sysSetEvents(SYS_EVENTS_NWK_JOINED);
     }
     else
     {
@@ -656,4 +670,9 @@ rf_controller_nwk_state_e RfControllerGetState(void)
   {
     return rfControllerCb.roleCb.master.nwkState;
   }
+}
+
+rf_controller_protocol_role_e RfControllerGetRole(void)
+{
+  return rfControllerCb.role;
 }

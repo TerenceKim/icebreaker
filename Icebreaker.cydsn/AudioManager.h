@@ -13,6 +13,7 @@
 #define AUDIO_MANAGER_H
 
 #include <stdint.h>
+#include <utils.h>
   
 typedef enum
 {
@@ -45,23 +46,18 @@ typedef enum
   AUDIO_ROUTING_rfc
 } audio_routing_e;
 
-typedef struct
-{
-  music_note_e note;
-  uint32_t     duration_ms;
-} music_word_s;
-
 /* Clock Rates */
 #define RATE_48KHZ                                   0
 #define RATE_44KHZ                                   1
 
-#define AUDIO_EVENTS_I2S_TX_DMA_DONE                 (1 <<  0)
+#define AUDIO_EVENTS_PHRASE_PLAYBACK_CONTINUE        (1 <<  0)
+#define AUDIO_EVENTS_PHRASE_PLAYBACK_DONE            (1 <<  1)
   
 extern volatile uint32_t audioEvents;
   
-#define audioSetEvents(e)     { audioEvents |= (e); }
-#define audioCheckEvents(e)   ((audioEvents & (e)) != 0)
-#define audioClearEvents(e)   { audioEvents &= ~(e); } 
+#define audioSetEvents(e)     utilSetEvents(audioEvents, e)
+#define audioCheckEvents(e)   utilCheckEvents(audioEvents, e)
+#define audioClearEvents(e)   utilClearEvents(audioEvents, e)
 
 void AudioManagerInit(void);
 void AudioManagerService(void);

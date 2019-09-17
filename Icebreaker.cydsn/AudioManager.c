@@ -18,10 +18,14 @@
 #include <TxDMA.h>
 #include <isr_TxDMADone.h>
 #include <math.h>
+#include <timers.h>
 
-#define PI 3.14159
 
 volatile uint32_t audioEvents;
+
+#define AUDIO_MANAGER_AFTER_TONE_DELAY_MS       (1000)
+
+#define PI 3.14159
 
 #define SAMPLERATE_HZ 48000  // The sample rate of the audio.  Higher sample rates have better fidelity,
                              // but these tones are so simple it won't make a difference.  44.1khz is
@@ -50,6 +54,12 @@ volatile uint32_t audioEvents;
 #define C5_HZ      523.25
 
 #define OUT_BUFSIZE (WAV_SIZE * BYTES_PER_SAMPLE)
+
+typedef struct
+{
+  music_note_e note;
+  uint32_t     duration_ms;
+} music_word_s;
 
 // Define a C-major scale to play all the notes up and down.
 float scale[MUSIC_NOTE_MAX] = { C4_HZ, D4_HZ, E4_HZ, F4_HZ, G4_HZ, A4_HZ, B4_HZ, C5_HZ };
@@ -99,12 +109,38 @@ static const music_word_s cues[AUDIO_CUE_MAX][5] =
 
 typedef struct
 {
+  uint32_t tmrEvent;
+  tmrFuncType tmr;
   audio_routing_e routing;
+  music_word_s *pCurrentPhrase;
+  music_word_s *pQueuedPhrase;
+  
+  audio_routing_e routing_old;
 } audio_manager_cb_s;
 
 static audio_manager_cb_s audioManagerCb;
 
-void generateSineByFreq(float frequency, int32_t amplitude, int32_t *buffer, uint16_t *pLength)
+static uint16_t rfControllerSendEvent(void)
+{
+  audioSetEvents(audioManagerCb.tmrEvent);
+
+  return 0;
+}
+
+static void audioClearLaterEvents(void)
+{
+  tmrFuncDelete(&audioManagerCb.tmr);
+}
+
+static void audioSetEventsLater(uint32_t e, uint16_t mS)
+{
+  audioManagerCb.tmr.mS = mS;
+  audioManagerCb.tmr.func = rfControllerSendEvent;
+  audioManagerCb.tmrEvent = e;
+  tmrFuncAdd(&audioManagerCb.tmr);
+}
+
+static void generateSineByFreq(float frequency, int32_t amplitude, int32_t *buffer, uint16_t *pLength)
 {
   float newLength = (float)SAMPLERATE_HZ / frequency;
   
@@ -145,7 +181,7 @@ void AudioManagerInit(void)
   Codec_PowerOffControl(CODEC_POWER_CTRL_OUTPD);
 }
 
-static void audioManagerPlayNote(music_note_e note, uint32_t durationMs)
+static void audioManagerNotePlaybackStart(music_note_e note)
 {
   uint32_t i;
   int32_t sample;
@@ -153,7 +189,6 @@ static void audioManagerPlayNote(music_note_e note, uint32_t durationMs)
   
   if (note == MUSIC_NOTE_none)
   {
-    CyDelay(durationMs);
     return;
   }
 
@@ -186,9 +221,10 @@ static void audioManagerPlayNote(music_note_e note, uint32_t durationMs)
   I2S_EnableTx(); /* Unmute the TX output */
   
   TxDMA_ChEnable();
-  
-  CyDelay(durationMs);
-  
+}
+
+static void audioManagerNotePlaybackStop(void)
+{
   Codec_SetMute(true);
   I2S_DisableTx(); /* Mute the TX output */
   
@@ -198,39 +234,77 @@ static void audioManagerPlayNote(music_note_e note, uint32_t durationMs)
 static void audioManagerPlayPhrase(music_word_s *pPhrase)
 {
   audio_routing_e routing_old = AudioManagerGetRouting();
+  
+  if (audioManagerCb.pCurrentPhrase && audioManagerCb.pCurrentPhrase->duration_ms != 0)
+  {
+    audioManagerCb.pQueuedPhrase = pPhrase;
+    return;
+  }
+  
   AudioManagerSetRouting(AUDIO_ROUTING_mcu);
   
-  while (pPhrase->duration_ms)
-  {
-    audioManagerPlayNote(pPhrase->note, pPhrase->duration_ms);
-    pPhrase++;
-  }
-  AudioManagerSetRouting(routing_old);
+  audioManagerCb.pCurrentPhrase = pPhrase;
+
+  audioManagerNotePlaybackStart(audioManagerCb.pCurrentPhrase->note);
+  
+  audioSetEventsLater(AUDIO_EVENTS_PHRASE_PLAYBACK_CONTINUE, audioManagerCb.pCurrentPhrase->duration_ms);
+  audioManagerCb.pCurrentPhrase++;
 }
 
 void AudioManagerTonePlay(music_note_e note, uint32_t durationMs)
 {
-  audio_routing_e routing_old = AudioManagerGetRouting();
+  audioManagerCb.routing_old = AudioManagerGetRouting();
   AudioManagerSetRouting(AUDIO_ROUTING_mcu);
   
-  audioManagerPlayNote(note, durationMs);
+  audioManagerNotePlaybackStart(note);
   
-  AudioManagerSetRouting(routing_old);
+  CyDelay(durationMs);
+  
+  audioManagerNotePlaybackStop();
+  
+  AudioManagerSetRouting(audioManagerCb.routing_old);
 }
 
 void AudioManagerCuePlay(audio_cue_e cue)
 {
-  audio_routing_e routing_old = AudioManagerGetRouting();
-  AudioManagerSetRouting(AUDIO_ROUTING_mcu);
-
   audioManagerPlayPhrase((music_word_s *)cues[cue]);
-  
-  AudioManagerSetRouting(routing_old);
 }
 
 void AudioManagerService(void)
 {
-
+  if (audioCheckEvents(AUDIO_EVENTS_PHRASE_PLAYBACK_CONTINUE))
+  {
+    audioClearEvents(AUDIO_EVENTS_PHRASE_PLAYBACK_CONTINUE);
+    
+    if (audioManagerCb.pCurrentPhrase && audioManagerCb.pCurrentPhrase->duration_ms)
+    {
+      audioManagerNotePlaybackStop();
+      
+      audioManagerNotePlaybackStart(audioManagerCb.pCurrentPhrase->note);
+      
+      audioSetEventsLater(AUDIO_EVENTS_PHRASE_PLAYBACK_CONTINUE, audioManagerCb.pCurrentPhrase->duration_ms);
+      audioManagerCb.pCurrentPhrase++;
+    }
+    else
+    {
+      AudioManagerSetRouting(audioManagerCb.routing_old);
+      audioManagerCb.pCurrentPhrase = NULL;
+      
+      // Give some silence before next cue
+      audioSetEventsLater(AUDIO_EVENTS_PHRASE_PLAYBACK_DONE, AUDIO_MANAGER_AFTER_TONE_DELAY_MS);
+    }
+  }
+  
+  if (audioCheckEvents(AUDIO_EVENTS_PHRASE_PLAYBACK_DONE))
+  {
+    audioClearEvents(AUDIO_EVENTS_PHRASE_PLAYBACK_DONE);
+    
+    if (audioManagerCb.pQueuedPhrase)
+    {
+      audioManagerPlayPhrase(audioManagerCb.pQueuedPhrase);
+      audioManagerCb.pQueuedPhrase = NULL;
+    }
+  } 
 }
 
 void AudioManagerSetRouting(audio_routing_e routing)

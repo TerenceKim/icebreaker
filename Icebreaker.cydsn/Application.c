@@ -52,6 +52,7 @@
 #include <ButtonManager.h>
 #include <AudioManager.h>
 #include <RfController.h>
+#include <SystemManager.h>
 
 #define USBFS_DEVICE    (0u)
 #define USBUART_BUFFER_SIZE (64u)
@@ -242,6 +243,7 @@ void RunApplication(void)
         buttonManagerService();
         AudioManagerService();
         RfControllerService();
+        SystemManagerService();
     }
 #endif
 }
