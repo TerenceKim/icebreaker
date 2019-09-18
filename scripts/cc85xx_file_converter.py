@@ -58,7 +58,7 @@ def main(args):
   # tail -c +32769 out/wiem_slave.bin | head -c 31744 > wiem_slave.bin
   print subprocess.Popen('tail -c +32769 ' + tmp_binary_path + '| head -c 31744 > ' +  out_binary_path, shell=True, stdout=subprocess.PIPE).stdout.read()
 
-  print subprocess.Popen('cd out; xxd -i ' + os.path.basename(args.file).split('.')[0] + '.bin > ' + final_c_path, shell=True, stdout=subprocess.PIPE).stdout.read()
+  print subprocess.Popen('cd out; xxd -c 16 -i ' + os.path.basename(args.file).split('.')[0] + '.bin > ' + final_c_path, shell=True, stdout=subprocess.PIPE).stdout.read()
 
   print 'Finished!'
 
