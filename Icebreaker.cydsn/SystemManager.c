@@ -25,6 +25,8 @@ void SystemManagerService(void)
 
     if (RfControllerGetState() == NWK_STATE_idle)
     {
+      // TODO: Check for critical battery and show animation here
+
       if (RfControllerGetRole() == PROTOCOL_ROLE_slave)
       {
         AudioManagerCuePlay(AUDIO_CUE_power_on);
@@ -83,6 +85,8 @@ void SystemManagerService(void)
         (RfControllerGetRole() == PROTOCOL_ROLE_slave))
     {
       AudioManagerCuePlay(AUDIO_CUE_disconnected);
+      
+      // TODO: Go back to Auto-connect mode
     }
   }
   
