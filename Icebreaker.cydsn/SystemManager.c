@@ -9,6 +9,7 @@
  *
  * ========================================
 */
+#include <Features.h>
 #include <SystemManager.h>
 #include <AudioManager.h>
 #include <RfController.h>
@@ -90,7 +91,8 @@ void SystemManagerService(void)
       // TODO: Go back to Auto-connect mode
     }
   }
-  
+
+#ifdef FEATURE_USER_ROLE_SWITCH
   if (sysCheckEvents(SYS_EVENTS_UE_SWITCH_ROLE))
   {
     sysClearEvents(SYS_EVENTS_UE_SWITCH_ROLE);
@@ -99,6 +101,7 @@ void SystemManagerService(void)
 
     // TODO: LED feedback
   }
+#endif /* FEATURE_USER_ROLE_SWITCH */
 }
 
 /* [] END OF FILE */

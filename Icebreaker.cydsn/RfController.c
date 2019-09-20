@@ -679,7 +679,7 @@ rf_controller_run_mode_e RfControllerGetRunMode(void)
 
 bool RfControllerRunMode(rf_controller_run_mode_e runMode, rf_controller_protocol_role_e role)
 {
-#ifdef FEATURE_ROLE_SWITCH
+#if !defined(FEATURE_PROGRAMMING_OPTIMIZATION)
   const uint8_t *p = gpFactorytestImg;
   uint32_t ui32;
   bool ret = true;
