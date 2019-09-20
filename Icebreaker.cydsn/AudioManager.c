@@ -233,7 +233,7 @@ static void audioManagerNotePlaybackStop(void)
 
 static void audioManagerPlayPhrase(music_word_s *pPhrase)
 {
-  audio_routing_e routing_old = AudioManagerGetRouting();
+  audioManagerCb.routing_old = AudioManagerGetRouting();
   
   if (audioManagerCb.pCurrentPhrase && audioManagerCb.pCurrentPhrase->duration_ms != 0)
   {

@@ -108,6 +108,7 @@ TK_SHELL_METHOD(rf, join);
 TK_SHELL_METHOD(rf, nwk_stats);
 TK_SHELL_METHOD(rf, pm_data);
 TK_SHELL_METHOD(rf, pm_state);
+TK_SHELL_METHOD(rf, mode);
 static TK_SHELL_VERBS(rf) =
 {
   TK_SHELL_VERB(rf, init, "initialize RF chip"),
@@ -127,6 +128,7 @@ static TK_SHELL_VERBS(rf) =
   TK_SHELL_VERB(rf, nwk_stats, "print network stats"),
   TK_SHELL_VERB(rf, pm_data, "print power manager data"),
   TK_SHELL_VERB(rf, pm_state, "get/set power manager state: [state]"),
+  TK_SHELL_VERB(rf, mode, "get/set mode: <mode> <role>"),
   { "", NULL, "" }
 };
 
@@ -146,10 +148,12 @@ static TK_SHELL_VERBS(sys) =
 TK_SHELL_METHOD(led, pwm_period);
 TK_SHELL_METHOD(led, start);
 TK_SHELL_METHOD(led, stop);
+TK_SHELL_METHOD(led, fade);
 static TK_SHELL_VERBS(led) =
 {
     TK_SHELL_VERB(led, start, "start LED animation <led:red|green|blue> <period:uint32> <compare:uint32> <counter:uint32>"),
     TK_SHELL_VERB(led, stop, "stop LED animation <led:red|green|blue>"),
+    TK_SHELL_VERB(led, fade, "start fade: <colorcode> <fade_on_time> <on_time> <fade_off_time> <off_time>"),
     { "", NULL, "" }
 };
 
@@ -612,6 +616,36 @@ TK_SHELL_METHOD(rf, pm_state)
   return 0;
 }
 
+TK_SHELL_METHOD(rf, mode)
+{
+  int i = 2;
+  
+  argc -= i;
+  
+  if (argc == 0)
+  {
+    static const char *runModeStr[] = 
+    {
+      "unknown",
+      "bootloader",
+      "app",
+      "factorytest"
+    };
+
+    // Get
+    PRINTF("> rf:ok %s\n", runModeStr[RfControllerGetRunMode()]);
+  }
+  else if (argc == 2)
+  {
+    PRINTF("> rf:%s\n", RfControllerRunMode(atoi(argv[i++]), atoi(argv[i++])) ? OK_STR : ER_STR);
+  }
+  else
+  {
+    PRINTF("> rf:er\n");
+  }
+  return 0;
+}
+
 TK_SHELL_METHOD(sys, crash)
 {
   void (*fp)(void) = NULL;
@@ -647,7 +681,7 @@ TK_SHELL_METHOD(sys, adc)
 TK_SHELL_METHOD(led, start)
 {
     int i = 2;
-    LM_LED_e ledIdx = LM_LED_MAX;
+    LED_CH_e ledIdx = LED_CH_MAX;
     uint32_t pwmPeriod, pwmCompare, pwmCounter;
     
     argc -= i;
@@ -660,15 +694,15 @@ TK_SHELL_METHOD(led, start)
     
     if (strcicmp(argv[i], "red") == 0)
     {
-        ledIdx = LM_LED_RED;
+        ledIdx = LED_CH_red;
     }
     else if (strcicmp(argv[i], "green") == 0)
     {
-        ledIdx = LM_LED_GREEN;
+        ledIdx = LED_CH_green;
     }
     else if (strcicmp(argv[i], "blue") == 0)
     {
-        ledIdx = LM_LED_BLUE;
+        ledIdx = LED_CH_blue;
     }
     else
     {
@@ -690,7 +724,7 @@ TK_SHELL_METHOD(led, start)
 TK_SHELL_METHOD(led, stop)
 {
     int i = 2;
-    LM_LED_e ledIdx = LM_LED_MAX;
+    LED_CH_e ledIdx = LED_CH_MAX;
     
     argc -= i;
     
@@ -702,15 +736,15 @@ TK_SHELL_METHOD(led, stop)
     
     if (strcicmp(argv[i], "red") == 0)
     {
-        ledIdx = LM_LED_RED;
+        ledIdx = LED_CH_red;
     }
     else if (strcicmp(argv[i], "green") == 0)
     {
-        ledIdx = LM_LED_GREEN;
+        ledIdx = LED_CH_green;
     }
     else if (strcicmp(argv[i], "blue") == 0)
     {
-        ledIdx = LM_LED_BLUE;
+        ledIdx = LED_CH_blue;
     }
     else
     {
@@ -722,6 +756,51 @@ TK_SHELL_METHOD(led, stop)
     PRINTF("> led:ok\n");
 
     return 0;
+}
+
+TK_SHELL_METHOD(led, fade)
+{
+  int i = 2;
+  uint32_t ui32;
+  #if 0
+  typedef struct __attribute__((packed))
+{
+  led_action_e action;
+  uint32_t     color_code; /**< RGB code: 0x00RRGGBB. 0xFF000000 means show white/red for battery level. */
+  uint16_t     fade_on_time_ms;
+  uint16_t     on_time_ms;
+  uint16_t     fade_off_time_ms;
+  uint16_t     off_time_ms;
+  uint8_t      min_brightness_pct;
+  uint8_t      max_brightness_pct;
+  uint8_t      iterations; /**< Iteration of 0 means infinite */
+} 
+  #endif
+  led_seq_item_s seq;
+  
+  argc -= i;
+  
+  if (argc != 8)
+  {
+      PRINTF("Invalid number of arguments: %d\n", argc);
+      return -1;
+  }
+  
+  seq.action = LED_ACTION_fade_on;
+  seq.color_code = strtoul(argv[i++], NULL, 16);
+  seq.fade_on_time_ms = atoi(argv[i++]);
+  seq.on_time_ms = atoi(argv[i++]);
+  seq.fade_off_time_ms = atoi(argv[i++]);
+  seq.off_time_ms = atoi(argv[i++]);
+  seq.min_brightness_pct = atoi(argv[i++]);
+  seq.max_brightness_pct = atoi(argv[i++]);
+  seq.iterations = atoi(argv[i++]);
+  
+  LedPlaySeqItem(&seq);
+  
+  PRINTF("> led:ok\n");
+
+  return 0;
 }
 
 TK_SHELL_METHOD(cal, print)

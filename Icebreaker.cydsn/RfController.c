@@ -1,8 +1,11 @@
 #include <RfController.h>
 #include <Application.h>
 #include <cc85xx.h>
+#include <cc85xx_images.h>
 #include <utils.h>
 #include <SystemManager.h>
+
+#define RF_FLASH_CHUNK_SIZE         (64)
 
 #define IS_MASTER()                 (rfControllerCb.role == PROTOCOL_ROLE_master)
 #define IS_SLAVE()                  (rfControllerCb.role == PROTOCOL_ROLE_slave)
@@ -16,14 +19,6 @@
 #define RF_NVS_ID_AUTO_CONN_DEV_ID  (0)
 
 volatile uint32_t rfEvents;
-
-typedef enum
-{
-  RUN_MODE_unknown,
-  RUN_MODE_bootloader,
-  RUN_MODE_app,
-  RUN_MODE_factorytest
-} rf_controller_run_mode_e;
 
 typedef struct
 {
@@ -675,4 +670,81 @@ rf_controller_nwk_state_e RfControllerGetState(void)
 rf_controller_protocol_role_e RfControllerGetRole(void)
 {
   return rfControllerCb.role;
+}
+
+rf_controller_run_mode_e RfControllerGetRunMode(void)
+{
+  return rfControllerCb.runMode;
+}
+
+bool RfControllerRunMode(rf_controller_run_mode_e runMode, rf_controller_protocol_role_e role)
+{
+#ifdef FEATURE_ROLE_SWITCH
+  const uint8_t *p = gpFactorytestImg;
+  uint32_t ui32;
+  bool ret = true;
+
+  switch (runMode)
+  {
+    case RUN_MODE_bootloader:
+    {
+      ret = cc85xx_boot_reset();
+      cc85xx_bl_unlock_spi();
+    } break;
+    
+    case RUN_MODE_app:
+    {
+      if (role == RfControllerGetRole())
+      {
+        // Nothing to do here - exit
+        break;
+      }
+      else
+      {
+        p = (role == PROTOCOL_ROLE_master) ? gpMasterImg : gpSlaveImg;
+        // Fall through
+      }
+    } // Fall through
+    case RUN_MODE_factorytest:
+    {
+      cc85xx_boot_reset();
+      CyDelay(2);
+      
+      cc85xx_bl_unlock_spi();
+      
+      cc85xx_bl_mass_erase();
+      
+      CyDelay(100);
+      
+      ui32 = 0;
+
+      // Write 1K chunks at a time
+      while (ui32 < (CC85XX_IMAGE_SIZE_BYTES / RF_FLASH_CHUNK_SIZE))
+      {
+        cc85xx_flash_bytes(0x8000 + (ui32 * RF_FLASH_CHUNK_SIZE), p, RF_FLASH_CHUNK_SIZE);
+        p += RF_FLASH_CHUNK_SIZE;
+        ui32++;
+      }
+      
+      ret = cc85xx_bl_flash_verify(&ui32);
+
+      if (!ret)
+      {
+        D_PRINTF(ERROR, "ERROR: Switching to runMode %d failed (CRC: 0x%08X)\n", runMode, ui32);
+      }
+
+      // Re-initialize
+      RfControllerInit();
+    } break;
+
+    case RUN_MODE_unknown:
+    default:
+      // Do nothing
+      break;
+  }
+  
+  return ret;
+#else
+  return true;
+#endif
 }

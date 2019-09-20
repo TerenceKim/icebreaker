@@ -29,6 +29,14 @@ extern volatile uint32_t rfEvents;
 #define rfSetEvents(e)     { rfEvents |= (e); }
 #define rfCheckEvents(e)   ((rfEvents & (e)) != 0)
 #define rfClearEvents(e)   { rfEvents &= ~(e); }
+  
+typedef enum
+{
+  RUN_MODE_unknown,
+  RUN_MODE_bootloader,
+  RUN_MODE_app,
+  RUN_MODE_factorytest
+} rf_controller_run_mode_e;
 
 typedef enum
 {
@@ -60,5 +68,8 @@ void RfControllerNetworkDisconnect(void);
 
 rf_controller_nwk_state_e RfControllerGetState(void);
 rf_controller_protocol_role_e RfControllerGetRole(void);
+rf_controller_run_mode_e RfControllerGetRunMode(void);
+
+bool RfControllerRunMode(rf_controller_run_mode_e runMode, rf_controller_protocol_role_e role);
 
 #endif /* RF_CONTROLLER_H */
