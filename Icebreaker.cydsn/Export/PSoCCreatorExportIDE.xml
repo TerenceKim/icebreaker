@@ -46,12 +46,16 @@
           <File BuildType="BUILD" Toolchain="">ButtonManager.c</File>
           <File BuildType="BUILD" Toolchain="">Button.c</File>
           <File BuildType="BUILD" Toolchain="">timers.c</File>
-          <File BuildType="BUILD" Toolchain="">LedManager.c</File>
+          <File BuildType="BUILD" Toolchain="">Leds.c</File>
           <File BuildType="BUILD" Toolchain="">AudioManager.c</File>
           <File BuildType="BUILD" Toolchain="">cc85xx.c</File>
           <File BuildType="BUILD" Toolchain="">RfController.c</File>
           <File BuildType="BUILD" Toolchain="">utils.c</File>
           <File BuildType="BUILD" Toolchain="">SystemManager.c</File>
+          <File BuildType="BUILD" Toolchain="">cc85xx_slave_image.c</File>
+          <File BuildType="BUILD" Toolchain="">cc85xx_master_image.c</File>
+          <File BuildType="BUILD" Toolchain="">cc85xx_factorytest_image.c</File>
+          <File BuildType="BUILD" Toolchain="">LedManager.c</File>
           <File BuildType="BUILD" Toolchain="">cyapicallbacks.h</File>
           <File BuildType="BUILD" Toolchain="">Codec.h</File>
           <File BuildType="BUILD" Toolchain="">Application.h</File>
@@ -67,13 +71,15 @@
           <File BuildType="BUILD" Toolchain="">ButtonManager.h</File>
           <File BuildType="BUILD" Toolchain="">Button.h</File>
           <File BuildType="BUILD" Toolchain="">timers.h</File>
-          <File BuildType="BUILD" Toolchain="">LedManager.h</File>
+          <File BuildType="BUILD" Toolchain="">Leds.h</File>
           <File BuildType="BUILD" Toolchain="">AudioManager.h</File>
           <File BuildType="BUILD" Toolchain="">cc85xx.h</File>
           <File BuildType="BUILD" Toolchain="">utils.h</File>
           <File BuildType="BUILD" Toolchain="">RfController.h</File>
           <File BuildType="BUILD" Toolchain="">Features.h</File>
           <File BuildType="BUILD" Toolchain="">SystemManager.h</File>
+          <File BuildType="BUILD" Toolchain="">cc85xx_images.h</File>
+          <File BuildType="BUILD" Toolchain="">LedManager.h</File>
         </Files>
       </Folder>
       <Folder BuildType="STRICT" Path="C:\dev\git\icebreaker\Icebreaker.cydsn\Generated_Source\PSoC4">

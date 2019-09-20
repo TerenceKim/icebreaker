@@ -101,7 +101,7 @@ extern uint8  LED_RED_PWM_initVar;
 #define LED_RED_PWM_PWM_MODE                       (4lu)
 #define LED_RED_PWM_PWM_OUT_N_INVERT               (0lu)
 #define LED_RED_PWM_PWM_OUT_INVERT                 (0lu)
-#define LED_RED_PWM_PWM_ALIGN                      (2lu)
+#define LED_RED_PWM_PWM_ALIGN                      (0lu)
 #define LED_RED_PWM_PWM_RUN_MODE                   (0lu)
 #define LED_RED_PWM_PWM_DEAD_TIME_CYCLE            (0lu)
 #define LED_RED_PWM_PWM_PRESCALER                  (0lu)

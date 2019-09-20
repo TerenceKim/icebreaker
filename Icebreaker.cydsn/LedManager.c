@@ -10,6 +10,7 @@
  * ========================================
 */
 #include <LedManager.h>
+#include <Leds.h>
 #include <LED_RED_PWM_ISR.h>
 #include <LED_BLUE_PWM_ISR.h>
 #include <LED_GREEN_PWM_ISR.h>
@@ -18,114 +19,97 @@
 #include <LED_GREEN_PWM.h>
 #include <stdbool.h>
 
+#define LED_MANAGER_MAX_SEQ           (5)
+
 typedef struct
 {
-    void (* startIsr)(void);
-    void (* start)(void);
-    void (* stop)(void);
-    void (* writeCounter)(uint32 count);
-    uint32 (* readCounter)(void);
-    void (* writePeriod)(uint32 period);
-    uint32 (* readPeriod)(void);
-    void (* writeCompare)(uint32 compare);
-    uint32 (* readCompare)(void);
-} pwm_callbacks_s;
+  LED_SEQ_e             currentSeq;
+  LED_SEQ_e             nextSeq;
+  uint8_t               currentSeqIdx;
+  uint8_t               iteration;
+} led_manager_cb_s;
 
-static pwm_callbacks_s pwm[LM_LED_MAX] = 
+static const led_seq_item_s ledSequences[LED_SEQ_MAX+1][LED_MANAGER_MAX_SEQ] =
 {
-    // LM_LED_RED
-    {
-        .startIsr = LED_RED_PWM_ISR_Start,
-        .start = LED_RED_PWM_Start,
-        .stop = LED_RED_PWM_Stop,
-        .writeCounter = LED_RED_PWM_WriteCounter,
-        .readCounter = LED_RED_PWM_ReadCounter,
-        .writePeriod = LED_RED_PWM_WritePeriod,
-        .readPeriod = LED_RED_PWM_ReadPeriod,
-        .writeCompare = LED_RED_PWM_WriteCompare,
-        .readCompare = LED_RED_PWM_ReadCompare
-    },
-    // LM_LED_GREEN
-    {
-        .startIsr = LED_GREEN_PWM_ISR_Start,
-        .start = LED_GREEN_PWM_Start,
-        .stop = LED_GREEN_PWM_Stop,
-        .writeCounter = LED_GREEN_PWM_WriteCounter,
-        .readCounter = LED_GREEN_PWM_ReadCounter,
-        .writePeriod = LED_GREEN_PWM_WritePeriod,
-        .readPeriod = LED_GREEN_PWM_ReadPeriod,
-        .writeCompare = LED_GREEN_PWM_WriteCompare,
-        .readCompare = LED_GREEN_PWM_ReadCompare
-    },
-    // LM_LED_BLUE
-    {
-        .startIsr = LED_BLUE_PWM_ISR_Start,
-        .start = LED_BLUE_PWM_Start,
-        .stop = LED_BLUE_PWM_Stop,
-        .writeCounter = LED_BLUE_PWM_WriteCounter,
-        .readCounter = LED_BLUE_PWM_ReadCounter,
-        .writePeriod = LED_BLUE_PWM_WritePeriod,
-        .readPeriod = LED_BLUE_PWM_ReadPeriod,
-        .writeCompare = LED_BLUE_PWM_WriteCompare,
-        .readCompare = LED_BLUE_PWM_ReadCompare
-    },
+  { // LED_SEQ_event_power_on
+    // action             | color_code | fade_on_time_ms | on_time_ms | fade_off_time_ms | off_time_ms | min_brightness_pct | max_brightness_pct | iterations
+    {  LED_ACTION_fade_on,  0x000000FF,  250,              3000,        1000,              0,            0,                   100,                 1          },
+    {  LED_ACTION_none,     0,           0,                0,           0,                 0,            0,                   0,                   0          }
+  },
+  { // LED_SEQ_event_power_off
+    // action             | color_code | fade_on_time_ms | on_time_ms | fade_off_time_ms | off_time_ms | min_brightness_pct | max_brightness_pct | iterations
+    {  LED_ACTION_fade_off, 0x000000FF,  300,              300,         2000,              0,            0,                   100,                 1          },
+    {  LED_ACTION_none,     0,           0,                0,           0,                 0,            0,                   0,                   0          }
+  },
+  [ LED_SEQ_none ] =
+  {
+    {  LED_ACTION_none,     0,           0,                0,           0,                 0,            0,                   0,                   0          }
+  }
 };
 
-static bool override[LM_LED_MAX];
-static int32 change[LM_LED_MAX];
+static led_manager_cb_s ledManagerCb;
+volatile uint32_t ledEvents;
 
-void LedManagerStartOverride(LM_LED_e ledIdx, uint32_t pwmPeriod, uint32_t pwmCompare, uint32_t pwmCounter)
+static void ledManagerSequencer(void)
 {
-    override[ledIdx] = true;
+  const led_seq_item_s *pCurrentSeqItem = &ledSequences[ledManagerCb.currentSeq][ledManagerCb.currentSeqIdx];
+  
+  if (pCurrentSeqItem->action == LED_ACTION_none)
+  {
+    ledSetEvents(LED_EVENTS_SEQ_DONE);
+    return;
+  }
 
-    pwm[ledIdx].startIsr();
-    pwm[ledIdx].start();
-    pwm[ledIdx].writePeriod(pwmPeriod);
-    pwm[ledIdx].writeCounter(pwmCounter);
-    pwm[ledIdx].writeCompare(pwmCompare);
+  LedPlaySeqItem(pCurrentSeqItem);
+  
+  ledManagerCb.currentSeqIdx++;
+}
+
+void LedManagerInit(void)
+{
+  ledEvents = 0;
+  ledManagerCb.currentSeq = LED_SEQ_none;
+  ledManagerCb.nextSeq = LED_SEQ_none;
+}
+
+void LedManagerService(void)
+{
+  if (ledCheckEvents(LED_EVENTS_SEQ_CONTINUE))
+  {
+    ledClearEvents(LED_EVENTS_SEQ_CONTINUE);
+    ledManagerSequencer();
+  }
+
+  if (ledCheckEvents(LED_EVENTS_SEQ_DONE))
+  {
+    ledClearEvents(LED_EVENTS_SEQ_DONE);
+    ledManagerCb.currentSeq = LED_SEQ_none;
     
-    change[ledIdx] = pwmCompare;
-}
-
-void LedManagerStopOverride(LM_LED_e ledIdx)
-{
-    pwm[ledIdx].stop();
-    override[ledIdx] = false;
-}
-
-void LedManagerInterruptHandler(LM_LED_e ledIdx)
-{
-    if (override[ledIdx])
+    if (ledManagerCb.nextSeq != LED_SEQ_none)
     {
-        switch (ledIdx)
-        {
-            case LM_LED_RED:
-                LED_RED_PWM_ClearInterrupt(LED_RED_PWM_INTR_MASK_TC);
-                break;
-            
-            case LM_LED_GREEN:
-                LED_GREEN_PWM_ClearInterrupt(LED_GREEN_PWM_INTR_MASK_TC);
-                break;                
-            
-            case LM_LED_BLUE:
-                LED_BLUE_PWM_ClearInterrupt(LED_BLUE_PWM_INTR_MASK_TC);
-                break;
-
-            default:
-                break;
-        }
-        
-        if ((change[ledIdx] > 0 && (pwm[ledIdx].readCompare() + change[ledIdx]) <= pwm[ledIdx].readPeriod()) ||
-            (change[ledIdx] < 0 && ((int32)pwm[ledIdx].readCompare() + change[ledIdx]) >= 1))
-        {
-            pwm[ledIdx].writeCompare(pwm[ledIdx].readCompare() + change[ledIdx]);
-        }
-        else
-        {
-            // Change direction (next go around)
-            change[ledIdx] *= -1;
-        }
+      LedManagerSeqPlay(ledManagerCb.nextSeq, true);
+      ledManagerCb.nextSeq = LED_SEQ_none;
     }
+  }
+}
+
+void LedManagerSeqPlay(LED_SEQ_e seq, bool now)
+{
+  if (now)
+  {
+    ledManagerCb.currentSeq = seq;
+    ledManagerCb.currentSeqIdx = 0;
+    ledManagerSequencer();
+  }
+  else
+  {
+    ledManagerCb.nextSeq = seq;
+  }
+}
+
+LED_SEQ_e LedManagerGetPlayingSeq(void)
+{
+  return ledManagerCb.currentSeq;
 }
 
 /* [] END OF FILE */

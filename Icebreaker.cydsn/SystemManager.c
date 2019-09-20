@@ -9,9 +9,11 @@
  *
  * ========================================
 */
+#include <Features.h>
 #include <SystemManager.h>
 #include <AudioManager.h>
 #include <RfController.h>
+#include <LedManager.h>
 
 volatile uint32_t sysEvents;
 
@@ -26,6 +28,7 @@ void SystemManagerService(void)
     if (RfControllerGetState() == NWK_STATE_idle)
     {
       // TODO: Check for critical battery and show animation here
+      LedManagerSeqPlay(LED_SEQ_event_power_on, true);
 
       if (RfControllerGetRole() == PROTOCOL_ROLE_slave)
       {
@@ -42,6 +45,8 @@ void SystemManagerService(void)
     
     if (RfControllerGetState() != NWK_STATE_idle)
     {
+      LedManagerSeqPlay(LED_SEQ_event_power_off, true);
+
       if (RfControllerGetRole() == PROTOCOL_ROLE_slave)
       {
         AudioManagerCuePlay(AUDIO_CUE_power_off);
@@ -55,14 +60,11 @@ void SystemManagerService(void)
   {
     sysClearEvents(SYS_EVENTS_UE_ENTER_PAIRING);
     
-    if (RfControllerGetState() != NWK_STATE_idle)
+    if (RfControllerGetRole() == PROTOCOL_ROLE_slave && RfControllerGetState() != NWK_STATE_idle)
     {
-      if (RfControllerGetRole() == PROTOCOL_ROLE_slave)
-      {
-        AudioManagerCuePlay(AUDIO_CUE_start_scan);
+      AudioManagerCuePlay(AUDIO_CUE_start_scan);
 
-        rfSetEvents(RF_EVENTS_SCAN_START);
-      }
+      rfSetEvents(RF_EVENTS_SCAN_START);
     }
   }
   
@@ -89,13 +91,17 @@ void SystemManagerService(void)
       // TODO: Go back to Auto-connect mode
     }
   }
-  
+
+#ifdef FEATURE_USER_ROLE_SWITCH
   if (sysCheckEvents(SYS_EVENTS_UE_SWITCH_ROLE))
   {
     sysClearEvents(SYS_EVENTS_UE_SWITCH_ROLE);
     
-    // TODO: LED feedback and rfController implementation
+    RfControllerRunMode(RUN_MODE_app, (RfControllerGetRole() == PROTOCOL_ROLE_slave) ? PROTOCOL_ROLE_master : PROTOCOL_ROLE_slave);
+
+    // TODO: LED feedback
   }
+#endif /* FEATURE_USER_ROLE_SWITCH */
 }
 
 /* [] END OF FILE */

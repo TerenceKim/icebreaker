@@ -58,9 +58,9 @@ const uint8 CYCODE USBUART_DEVICE0_CONFIGURATION0_DESCR[67u] = {
 /*  wTotalLength                           */ 0x43u, 0x00u,
 /*  bNumInterfaces                         */ 0x02u,
 /*  bConfigurationValue                    */ 0x01u,
-/*  iConfiguration                         */ 0x01u,
+/*  iConfiguration                         */ 0x05u,
 /*  bmAttributes                           */ 0x80u,
-/*  bMaxPower                              */ 0x32u,
+/*  bMaxPower                              */ 0xFAu,
 /*********************************************************************
 * CDC Interface Descriptor
 *********************************************************************/
@@ -147,7 +147,7 @@ const uint8 CYCODE USBUART_DEVICE0_CONFIGURATION0_DESCR[67u] = {
 /*********************************************************************
 * String Descriptor Table
 *********************************************************************/
-const uint8 CYCODE USBUART_STRING_DESCRIPTORS[159u] = {
+const uint8 CYCODE USBUART_STRING_DESCRIPTORS[189u] = {
 /*********************************************************************
 * Language ID Descriptor
 *********************************************************************/
@@ -191,6 +191,14 @@ const uint8 CYCODE USBUART_STRING_DESCRIPTORS[159u] = {
 /* DescriptorType: STRING                  */ 0x03u,
  (uint8)'U', 0u,(uint8)'S', 0u,(uint8)'B', 0u,(uint8)'U', 0u,(uint8)'A', 0u,
  (uint8)'R', 0u,(uint8)'T', 0u,
+/*********************************************************************
+* String Descriptor: "TK Electronics"
+*********************************************************************/
+/* Descriptor Length                       */ 0x1Eu,
+/* DescriptorType: STRING                  */ 0x03u,
+ (uint8)'T', 0u,(uint8)'K', 0u,(uint8)' ', 0u,(uint8)'E', 0u,(uint8)'l', 0u,
+ (uint8)'e', 0u,(uint8)'c', 0u,(uint8)'t', 0u,(uint8)'r', 0u,(uint8)'o', 0u,
+ (uint8)'n', 0u,(uint8)'i', 0u,(uint8)'c', 0u,(uint8)'s', 0u,
 /*********************************************************************/
 /* Marks the end of the list.              */ 0x00u};
 /*********************************************************************/

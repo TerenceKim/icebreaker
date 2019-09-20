@@ -53,6 +53,7 @@
 #include <AudioManager.h>
 #include <RfController.h>
 #include <SystemManager.h>
+#include <LedManager.h>
 
 #define USBFS_DEVICE    (0u)
 #define USBUART_BUFFER_SIZE (64u)
@@ -183,6 +184,8 @@ void InitApp(void)
     CyIntSetPriority(CYDMA_INTR_NUMBER, 0);
 
     RfControllerInit();
+    
+    LedManagerInit();
  #endif
 }
 
@@ -244,6 +247,7 @@ void RunApplication(void)
         AudioManagerService();
         RfControllerService();
         SystemManagerService();
+        LedManagerService();
     }
 #endif
 }

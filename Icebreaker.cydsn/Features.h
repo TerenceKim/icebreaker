@@ -16,5 +16,8 @@
  * Debug features.
  */
 #define FEATURE_DEBUG_PRINTS
+#define FEATURE_ROLE_SWITCH
+//#define FEATURE_USER_ROLE_SWITCH
+//#define FEATURE_PROGRAMMING_OPTIMIZATION
 
 #endif /* FEATURES_H */

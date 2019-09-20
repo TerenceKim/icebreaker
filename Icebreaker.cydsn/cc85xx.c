@@ -340,7 +340,7 @@ static bool cc85xx_write(uint16_t dataLen, uint8_t *pData)
   pTxPkt = (cc85xx_write_s *)malloc(sizeof(cc85xx_write_s) + dataLen);
   
   pTxPkt->opcode = CC85XX_OP_WRITE;
-  pTxPkt->len_hi = (dataLen >> 8) & 0xFF;
+  pTxPkt->len_hi = (dataLen >> 8) & 0x0F;
   pTxPkt->len_lo = (dataLen & 0xFF);
   memcpy(pTxPkt->param, pData, dataLen);
   
@@ -428,7 +428,6 @@ bool cc85xx_bl_flash_verify(uint32_t *pCrc32)
 
   if (!ret || !cc85xx_wait_for_status(CC85XX_SW_BL_FLASH_VERIFY_SUCCESS, CC85XX_WAIT_FOR_OPERATION_TIMEOUT_MS))
   {
-    
     rv = false;
   }
   
