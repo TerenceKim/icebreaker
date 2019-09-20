@@ -51,14 +51,15 @@ def main(args):
 	    VERBOSE = True
 
 	with serial.Serial(port=args.device, timeout=args.timeout, writeTimeout=args.timeout) as ser:
-		print 'Boot CC85xx into bootloader...'
-		send_command(ser, 'rf bl_reset')
+		if not args.flashonly:
+			print 'Boot CC85xx into bootloader...'
+			send_command(ser, 'rf bl_reset')
 
-		print 'Unlock CC85xx bootloader for SPI access...'
-		send_command(ser, 'rf bl_unlock')
+			print 'Unlock CC85xx bootloader for SPI access...'
+			send_command(ser, 'rf bl_unlock')
 
-		print 'Perform mass erase...'
-		send_command(ser, 'rf bl_erase')
+			print 'Perform mass erase...'
+			send_command(ser, 'rf bl_erase')
 
 		# Flash pages
 		with open(args.file, 'r') as f:
@@ -92,6 +93,7 @@ if __name__ == "__main__":
 	parser.add_argument("-t", "--timeout", type=int, default=TIMEOUT, help="Specify timeout in waiting for response (default: 1s)")
 	parser.add_argument("-d", "--device", required=True, help="USB device (e.g. '/dev/cu.usbmodem143301')")
 	parser.add_argument("-f", "--file", type=str, required=True, help="Specify the hex file to flash")
+	parser.add_argument("--flashonly", action="store_true", help="Only flash, no pre-operations")
 
 	main(parser.parse_args())
 
