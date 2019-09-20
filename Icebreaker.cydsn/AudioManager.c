@@ -19,19 +19,24 @@
 #include <isr_TxDMADone.h>
 #include <math.h>
 #include <timers.h>
+#include <Codec_BCLK.h>
+#include <Codec_LRC.h>
+#include <Codec_DACDAT.h>
 
 
 volatile uint32_t audioEvents;
 
 #define AUDIO_MANAGER_AFTER_TONE_DELAY_MS       (1000)
 
-#define PI 3.14159
+#define BITS_PER_SAMPLE     16
+#define BYTES_PER_SAMPLE    (BITS_PER_SAMPLE / sizeof(uint8_t) * 2) // For stereo
 
-#define SAMPLERATE_HZ 48000  // The sample rate of the audio.  Higher sample rates have better fidelity,
+
+#define SAMPLERATE_HZ 44100  // The sample rate of the audio.  Higher sample rates have better fidelity,
                              // but these tones are so simple it won't make a difference.  44.1khz is
                              // standard CD quality sound.
 
-#define AMPLITUDE     ((1<<23)-1)   // Set the amplitude of generated waveforms.  This controls how loud
+#define AMPLITUDE     ((1<<(BITS_PER_SAMPLE - 1))-1)   // Set the amplitude of generated waveforms.  This controls how loud
                              // the signals are, and can be any value from 0 to 2**31 - 1.  Start with
                              // a low value to prevent damaging speakers!
 
@@ -39,9 +44,7 @@ volatile uint32_t audioEvents;
                              // quality the signal.  A size of 256 is more than enough for these simple
                              // waveforms.
 
-#define BITS_PER_SAMPLE     24
-#define BYTES_PER_SAMPLE    (BITS_PER_SAMPLE / sizeof(uint8_t) * 2) // For stereo
-
+#define PI 3.14159
 
 // Define the frequency of music notes (from http://www.phy.mtu.edu/~suits/notefreqs.html):
 #define C4_HZ      261.63
@@ -158,7 +161,7 @@ void AudioManagerInit(void)
   audioEvents = 0;
       
   /* Set the default Audio clock rate to 48 kHz */
-  AudioClkSel_Write(RATE_48KHZ);
+  //AudioClkSel_Write(RATE_48KHZ);
   
   /* Enable DMA */
   CyDmaEnable();
@@ -179,6 +182,9 @@ void AudioManagerInit(void)
   
   /* Disable power to speaker output */
   Codec_PowerOffControl(CODEC_POWER_CTRL_OUTPD);
+  
+  /* Default routing should be to RF controller. */
+  AudioManagerSetRouting(AUDIO_ROUTING_rfc);
 }
 
 static void audioManagerNotePlaybackStart(music_note_e note)
@@ -325,12 +331,12 @@ void AudioManagerSetRouting(audio_routing_e routing)
     } break;
     
     case AUDIO_ROUTING_mcu:
-    {      
+    {
+      I2S_Stop();
       Codec_Deactivate();
-      Codec_SendData(CODEC_REG_DIGITAL_IF, CODEC_DIGITAL_IF_IWL_24_BIT | CODEC_DIGITAL_IF_FORMAT_I2S);
-      Codec_SetSamplingRate(CODEC_SRATE_NORMAL_48KHZ_256FS);
+      Codec_SendData(CODEC_REG_DIGITAL_IF, CODEC_DIGITAL_IF_IWL_16_BIT | CODEC_DIGITAL_IF_FORMAT_I2S);
+      Codec_SetSamplingRate(CODEC_SRATE_NORMAL_44KHZ_256FS);
       Codec_Activate();
-
       I2S_Start();
       
       /* Enable power to speaker output */
@@ -341,13 +347,16 @@ void AudioManagerSetRouting(audio_routing_e routing)
     
     case AUDIO_ROUTING_rfc:
     {   
-      I2S_Stop();
+      I2S_Stop(); // RF Controller is the I2S master
+      Codec_LRC_SetDriveMode(Codec_LRC_DM_ALG_HIZ);
+      Codec_DACDAT_SetDriveMode(Codec_DACDAT_DM_ALG_HIZ);
+      Codec_BCLK_SetDriveMode(Codec_BCLK_DM_ALG_HIZ);
       
       Codec_Deactivate();
       Codec_SendData(CODEC_REG_DIGITAL_IF, CODEC_DIGITAL_IF_IWL_16_BIT | CODEC_DIGITAL_IF_FORMAT_I2S);
       Codec_SetSamplingRate(CODEC_SRATE_NORMAL_44KHZ_256FS);
       Codec_Activate();
-      
+
       /* Enable power to speaker output */
       Codec_PowerOnControl(CODEC_POWER_CTRL_OUTPD);
       

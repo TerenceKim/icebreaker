@@ -4,6 +4,8 @@
 #include <cc85xx_images.h>
 #include <utils.h>
 #include <SystemManager.h>
+#include <EHIF_IRQ.h>
+#include <EHIF_IRQ_ISR.h>
 
 #define RF_FLASH_CHUNK_SIZE         (64)
 
@@ -63,6 +65,14 @@ static rf_controller_cb_s rfControllerCb;
 static void rfControllerNetworkJoin(void);
 static void rfControllerAutoConnect(void);
 static void rfControllerNetworkScan(void);
+
+CY_ISR(EHIF_IRQ_handler)
+{
+  //EHIF_IRQ_ISR_ClearPending();
+  EHIF_IRQ_ClearInterrupt();
+
+  rfSetEvents(RF_EVENTS_EHIF_IRQ);
+}
 
 static uint16_t rfControllerSendEvent(void)
 {
@@ -303,11 +313,50 @@ static void rfControllerNetworkScan(void)
   rfSetEventsLater(RF_EVENTS_SCAN_CHECK, RF_SCAN_INTERVAL_MS);
 }
 
+static void rfControllerHandleEvents(void)
+{
+  uint8_t cmd;
+  uint16_t status = cc85xx_get_status();
+  cc85xx_get_status_s *pStatus = (cc85xx_get_status_s *)&status;
+
+  D_PRINTF(INFO, "EHIF IRQ: 0x%04X\n", status);
+  
+  if ((RfControllerGetState() == NWK_STATE_auto_joining) ||
+      (RfControllerGetState() == NWK_STATE_joining))
+  {
+    if (pStatus->wasp_conn)
+    {
+      // Connection established
+      rfClearLaterEvents();
+      
+      rfClearEvents(RF_EVENTS_JOIN_CHECK);
+
+      rfControllerSlaveSetState(NWK_STATE_connected);
+      
+      sysSetEvents(SYS_EVENTS_NWK_JOINED);
+    }
+  }
+  
+  if (pStatus->evt.nwk_chg)
+  {
+    if (RfControllerGetState() == NWK_STATE_connected)
+    {
+      // Link lost
+      rfControllerSlaveSetState(NWK_STATE_auto_joining);
+    }
+  }
+
+  // Mark all flags as "read"
+  cmd = 0xFF;
+  cc85xx_ehc_evt_clr((cc85xx_ehc_evt_clr_cmd_s *)&cmd);
+}
+
 void RfControllerInit(void)
 {
   uint8_t rsp[256];
   cc85xx_di_get_chip_info_rsp_s *pChipInfo = (cc85xx_di_get_chip_info_rsp_s *)rsp;
   cc85xx_di_get_device_info_rsp_s *pDevInfo = (cc85xx_di_get_device_info_rsp_s *)rsp;
+  cc85xx_ehc_evt_mask_cmd_s *pEvtMask = (cc85xx_ehc_evt_mask_cmd_s *)rsp;
 
   memset((void *)&rfControllerCb, 0, sizeof(rf_controller_cb_s));
 
@@ -347,6 +396,21 @@ void RfControllerInit(void)
         D_PRINTF(INFO, "Protocol Role: master\n");
         rfControllerCb.role = PROTOCOL_ROLE_master;
       }
+      
+      pEvtMask->rsvd = 0;
+      pEvtMask->ehif_irq_pol = 0;
+      pEvtMask->evt.sr_chg = 1;
+      pEvtMask->evt.nwk_chg = 1;
+      pEvtMask->evt.ps_chg = 1;
+      pEvtMask->evt.vol_chg = 1;
+      pEvtMask->evt.spi_error = 1;
+      pEvtMask->evt.dsc_reset = 0;
+      pEvtMask->evt.dsc_tx_avail = 0;
+      pEvtMask->evt.dsc_rx_avail = 0;
+      cc85xx_ehc_evt_mask(pEvtMask);
+      
+      //EHIF_IRQ_SetInterruptMode(EHIF_IRQ_MASK, EHIF_IRQ_INTR_FALLING);
+      EHIF_IRQ_ISR_StartEx(&EHIF_IRQ_handler);
     } break;
 
     default:
@@ -362,11 +426,14 @@ void RfControllerInit(void)
 void RfControllerDeinit(void)
 {
   cc85xx_pm_set_state(CC85XX_PM_STATE_off);
+  
+  EHIF_IRQ_ISR_Stop();
 }
 
 void RfControllerService(void)
 {
   bool ret = false;
+  uint8_t buf[256];
 
   if (rfCheckEvents(RF_EVENTS_POWER_ON))
   {
@@ -468,6 +535,13 @@ void RfControllerService(void)
       // Keep attempting to connect
       rfControllerNetworkJoin();
     }
+  }
+  
+  if (rfCheckEvents(RF_EVENTS_EHIF_IRQ))
+  {
+    rfClearEvents(RF_EVENTS_EHIF_IRQ);
+    
+    rfControllerHandleEvents();
   }
 }
 
