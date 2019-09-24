@@ -9,9 +9,6 @@
 
 #define RF_FLASH_CHUNK_SIZE         (64)
 
-#define IS_MASTER()                 (rfControllerCb.role == PROTOCOL_ROLE_master)
-#define IS_SLAVE()                  (rfControllerCb.role == PROTOCOL_ROLE_slave)
-
 #define RF_SCAN_INTERVAL_MS         (1000)
 #define RF_JOIN_INTERVAL_MS         (1000)
 
@@ -109,9 +106,9 @@ static bool rfControllerCheckNetworkScanResults(void)
   {
     rfControllerCb.roleCb.slave.foundDeviceId = BE32(rsp.device_id);
     
-    if (rfControllerCb.roleCb.slave.printScanResults)
+    if (rxLen > 0)
     {
-      if (rxLen > 0)
+      if (rfControllerCb.roleCb.slave.printScanResults)
       {
         PRINTF("RXLEN = %d\n", rxLen);
         PRINTF("\tdevice_id\t= 0x%08X\n", BE32(rsp.device_id));
@@ -147,12 +144,12 @@ static bool rfControllerCheckNetworkScanResults(void)
 
         PRINTF("\tsample_rate\t= %d Hz\n", ((rsp.sample_rate_hi << 8 | rsp.sample_rate_lo) * 25));
         PRINTF("\taudio_latency\t= %d samples\n", ((rsp.audio_latency_hi << 8 | rsp.audio_latency_lo)));
-        rfControllerCb.roleCb.slave.printScanResults = false;   
+        rfControllerCb.roleCb.slave.printScanResults = false;
       }
-      else
-      {
-        return false;
-      }
+    }
+    else
+    {
+      return false;
     }
   }
 
@@ -214,13 +211,13 @@ static void rfControllerSlaveSetState(rf_controller_nwk_state_e newState)
     case NWK_STATE_auto_joining:
     {
       // Start auto-connect
-      rfControllerAutoConnect();
+      sysSetEvents(SYS_EVENTS_UE_AUTO_CONNECT);
     } break;
 
     case NWK_STATE_scanning:
     {
       // Start searching
-      rfControllerNetworkScan();
+      sysSetEvents(SYS_EVENTS_UE_ENTER_PAIRING);
     } break;
 
     case NWK_STATE_joining:
@@ -341,8 +338,8 @@ static void rfControllerHandleEvents(void)
   {
     if (RfControllerGetState() == NWK_STATE_connected)
     {
-      // Link lost
-      rfControllerSlaveSetState(NWK_STATE_auto_joining);
+      // Link lost - notify system manager
+      sysSetEvents(SYS_EVENTS_NWK_LOST);
     }
   }
 
@@ -472,7 +469,7 @@ void RfControllerService(void)
   {
     rfClearEvents(RF_EVENTS_SCAN_START);
     
-    rfControllerSlaveSetState(NWK_STATE_scanning);
+    rfControllerNetworkScan();
   }
 
   if (rfCheckEvents(RF_EVENTS_SCAN_CHECK))
@@ -535,6 +532,13 @@ void RfControllerService(void)
       // Keep attempting to connect
       rfControllerNetworkJoin();
     }
+  }
+  
+  if (rfCheckEvents(RF_EVENTS_AUTO_CONNECT))
+  {
+    rfClearEvents(RF_EVENTS_AUTO_CONNECT);
+    
+    rfControllerAutoConnect();
   }
   
   if (rfCheckEvents(RF_EVENTS_EHIF_IRQ))

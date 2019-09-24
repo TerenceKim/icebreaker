@@ -23,6 +23,7 @@ typedef enum
   LED_SEQ_event_power_off,
   LED_SEQ_event_nwk_joined,
   LED_SEQ_event_switch_role,
+  LED_SEQ_event_show_level,
   LED_SEQ_states,
   LED_SEQ_state_charging = LED_SEQ_states,
   LED_SEQ_state_charged,
@@ -45,8 +46,9 @@ extern volatile uint32_t ledEvents;
 void LedManagerInit(void);
 void LedManagerService(void);
 
-void LedManagerSeqPlay(LED_SEQ_e seq, bool now);
+void LedManagerSeqPlay(LED_SEQ_e seq);
 LED_SEQ_e LedManagerGetPlayingSeq(void);
+LED_SEQ_e LedManagerGetQueuedSeq(void);
 
 #endif /* LED_MANAGER_H */
 /* [] END OF FILE */

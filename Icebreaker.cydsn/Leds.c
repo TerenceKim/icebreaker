@@ -136,6 +136,8 @@ static void ledPwmPrep(const led_seq_item_s *pItem)
   uint32_t i;
   uint8_t pct[LED_CH_MAX];
   
+  // TODO: check for top nibble of color_code and consult powerManagerIsLowBattery()
+
   pct[LED_CH_red] = ((pItem->color_code >> 16) & 0xFF) * 100UL / 0xFF;
   pct[LED_CH_green] = ((pItem->color_code >> 8) & 0xFF) * 100UL / 0xFF;
   pct[LED_CH_blue] = (pItem->color_code & 0xFF) * 100UL / 0xFF;
@@ -158,12 +160,12 @@ static void ledPwmPrep(const led_seq_item_s *pItem)
       ledsCb.channelCfg[i].onTimeMs = pItem->on_time_ms;
       ledsCb.channelCfg[i].offTimeMs = pItem->off_time_ms;
       ledsCb.channelCfg[i].ready = true;
-      D_PRINTF(INFO, "[%d].ceiling\t= %d\n", i, ledsCb.channelCfg[i].ceiling);
-      D_PRINTF(INFO, "[%d].floor\t= %d\n", i, ledsCb.channelCfg[i].floor);
-      D_PRINTF(INFO, "[%d].downSlope\t= %d\n", i, ledsCb.channelCfg[i].downSlope);
-      D_PRINTF(INFO, "[%d].upSlope\t= %d\n", i, ledsCb.channelCfg[i].upSlope);
-      D_PRINTF(INFO, "[%d].onTimeMs\t= %d\n", i, ledsCb.channelCfg[i].onTimeMs);
-      D_PRINTF(INFO, "[%d].offTimeMs\t= %d\n", i, ledsCb.channelCfg[i].offTimeMs);
+      D_PRINTF(DEBUG, "[%d].ceiling\t= %d\n", i, ledsCb.channelCfg[i].ceiling);
+      D_PRINTF(DEBUG, "[%d].floor\t= %d\n", i, ledsCb.channelCfg[i].floor);
+      D_PRINTF(DEBUG, "[%d].downSlope\t= %d\n", i, ledsCb.channelCfg[i].downSlope);
+      D_PRINTF(DEBUG, "[%d].upSlope\t= %d\n", i, ledsCb.channelCfg[i].upSlope);
+      D_PRINTF(DEBUG, "[%d].onTimeMs\t= %d\n", i, ledsCb.channelCfg[i].onTimeMs);
+      D_PRINTF(DEBUG, "[%d].offTimeMs\t= %d\n", i, ledsCb.channelCfg[i].offTimeMs);
       ledsCb.notifier = (pItem->iterations == 0) ? LED_CH_none : i;
     }
     else
@@ -243,6 +245,7 @@ void LedManagerStartOverride(LED_CH_e ledIdx, uint32_t pwmPeriod, uint32_t pwmCo
 void LedManagerStopOverride(LED_CH_e ledIdx)
 {
     pwm[ledIdx].stop();
+    pwm[ledIdx].stopIsr();
     override[ledIdx] = false;
 }
 
@@ -266,7 +269,7 @@ void LedManagerInterruptHandler(LED_CH_e ledIdx)
         ledsCb.intr[ledIdx].delta = 0;
         ledsCb.intr[ledIdx].lastEventTime = tmrGetCounter_ms();
         if (ledsCb.intr[ledIdx].delta == 0)
-        {
+        {   
           pwm[ledIdx].writeCompare(ledsCb.channelCfg[ledIdx].floor);
         }
         ledSetState(ledIdx, LEDS_STATE_on);
@@ -277,8 +280,17 @@ void LedManagerInterruptHandler(LED_CH_e ledIdx)
     {
       if (tmrGetElapsedMs(ledsCb.intr[ledIdx].lastEventTime) >= ledsCb.channelCfg[ledIdx].onTimeMs)
       {
-        ledsCb.intr[ledIdx].delta = ledsCb.channelCfg[ledIdx].upSlope;
-        ledSetState(ledIdx, LEDS_STATE_fade_off);
+        if (LedManagerGetQueuedSeq() != LED_SEQ_none)
+        {
+          // We are done here - onto the next item in the sequence (LedManager)
+          ledSetEvents(LED_EVENTS_SEQ_CONTINUE);
+          ledSetState(ledIdx, LEDS_STATE_idle);
+        }
+        else
+        {
+          ledsCb.intr[ledIdx].delta = ledsCb.channelCfg[ledIdx].upSlope;
+          ledSetState(ledIdx, LEDS_STATE_fade_off);
+        }
       }
     } break;
     
@@ -303,9 +315,12 @@ void LedManagerInterruptHandler(LED_CH_e ledIdx)
       {
         if (ledsCb.notifier != LED_CH_none)
         {
-          // We are done here - onto the next item in the sequence (LedManager)
-          ledSetEvents(LED_EVENTS_SEQ_CONTINUE);
-          ledSetState(ledIdx, LEDS_STATE_idle);
+          if (ledsCb.notifier == ledIdx)
+          {
+            // We are done here - onto the next item in the sequence (LedManager)
+            ledSetEvents(LED_EVENTS_SEQ_CONTINUE);
+            ledSetState(ledIdx, LEDS_STATE_idle);
+          }
         }
         else
         {

@@ -28,12 +28,9 @@ void SystemManagerService(void)
     if (RfControllerGetState() == NWK_STATE_idle)
     {
       // TODO: Check for critical battery and show animation here
-      LedManagerSeqPlay(LED_SEQ_event_power_on, true);
+      LedManagerSeqPlay(LED_SEQ_event_power_on);
 
-      if (RfControllerGetRole() == PROTOCOL_ROLE_slave)
-      {
-        AudioManagerCuePlay(AUDIO_CUE_power_on);
-      }
+      AudioManagerCuePlay(AUDIO_CUE_power_on);
       
       rfSetEvents(RF_EVENTS_POWER_ON);
     }
@@ -45,12 +42,9 @@ void SystemManagerService(void)
     
     if (RfControllerGetState() != NWK_STATE_idle)
     {
-      LedManagerSeqPlay(LED_SEQ_event_power_off, true);
+      LedManagerSeqPlay(LED_SEQ_event_power_off);
 
-      if (RfControllerGetRole() == PROTOCOL_ROLE_slave)
-      {
-        AudioManagerCuePlay(AUDIO_CUE_power_off);
-      }
+      AudioManagerCuePlay(AUDIO_CUE_power_off);
       
       rfSetEvents(RF_EVENTS_POWER_OFF);
     }
@@ -60,12 +54,34 @@ void SystemManagerService(void)
   {
     sysClearEvents(SYS_EVENTS_UE_ENTER_PAIRING);
     
-    if (RfControllerGetRole() == PROTOCOL_ROLE_slave && RfControllerGetState() != NWK_STATE_idle)
+    if (IS_SLAVE() && RfControllerGetState() != NWK_STATE_idle)
     {
+      LedManagerSeqPlay(LED_SEQ_state_scanning);
+
       AudioManagerCuePlay(AUDIO_CUE_start_scan);
 
       rfSetEvents(RF_EVENTS_SCAN_START);
     }
+  }
+  
+  if (sysCheckEvents(SYS_EVENTS_UE_AUTO_CONNECT))
+  {
+    sysClearEvents(SYS_EVENTS_UE_AUTO_CONNECT);
+    
+    if ((RfControllerGetState() != NWK_STATE_connected) &&
+        (IS_SLAVE()))
+    {
+      LedManagerSeqPlay(LED_SEQ_state_auto_conn);
+      
+      rfSetEvents(RF_EVENTS_AUTO_CONNECT);
+    }
+  }
+
+  if (sysCheckEvents(SYS_EVENTS_UE_SHOW_LEVEL))
+  {
+    sysClearEvents(SYS_EVENTS_UE_SHOW_LEVEL);
+    
+    LedManagerSeqPlay(LED_SEQ_event_show_level);
   }
   
   if (sysCheckEvents(SYS_EVENTS_NWK_JOINED))
@@ -74,6 +90,8 @@ void SystemManagerService(void)
     
     if (RfControllerGetState() == NWK_STATE_connected)
     {
+      LedManagerSeqPlay(LED_SEQ_event_nwk_joined);
+
       // Only for slaves
       AudioManagerCuePlay(AUDIO_CUE_connected);
     }
@@ -83,12 +101,14 @@ void SystemManagerService(void)
   {
     sysClearEvents(SYS_EVENTS_NWK_LOST);
     
-    if ((RfControllerGetState() != NWK_STATE_connected) &&
-        (RfControllerGetRole() == PROTOCOL_ROLE_slave))
+    if ((RfControllerGetState() == NWK_STATE_connected) &&
+        (IS_SLAVE()))
     {
+      LedManagerSeqPlay(LED_SEQ_state_auto_conn);
+
       AudioManagerCuePlay(AUDIO_CUE_disconnected);
       
-      // TODO: Go back to Auto-connect mode
+      rfSetEvents(RF_EVENTS_AUTO_CONNECT);
     }
   }
 

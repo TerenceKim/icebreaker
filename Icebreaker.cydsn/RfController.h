@@ -14,6 +14,9 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+  
+#define IS_MASTER()                 (RfControllerGetRole() == PROTOCOL_ROLE_master)
+#define IS_SLAVE()                  (RfControllerGetRole() == PROTOCOL_ROLE_slave)
 
 #define RF_EVENTS_POWER_ON            (1 <<  0)
 #define RF_EVENTS_POWER_OFF           (1 <<  1)
@@ -22,7 +25,7 @@
 #define RF_EVENTS_SCAN_CHECK          (1 <<  4)
 #define RF_EVENTS_SCAN_STOP			      (1 <<  5)
 #define RF_EVENTS_JOIN_CHECK		      (1 <<  6)
-#define RF_EVENTS_AUTO_CONN_CHECK	    (1 <<  7)
+#define RF_EVENTS_AUTO_CONNECT  	    (1 <<  7)
 
 extern volatile uint32_t rfEvents;
   

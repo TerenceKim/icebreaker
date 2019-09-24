@@ -761,21 +761,6 @@ TK_SHELL_METHOD(led, stop)
 TK_SHELL_METHOD(led, fade)
 {
   int i = 2;
-  uint32_t ui32;
-  #if 0
-  typedef struct __attribute__((packed))
-{
-  led_action_e action;
-  uint32_t     color_code; /**< RGB code: 0x00RRGGBB. 0xFF000000 means show white/red for battery level. */
-  uint16_t     fade_on_time_ms;
-  uint16_t     on_time_ms;
-  uint16_t     fade_off_time_ms;
-  uint16_t     off_time_ms;
-  uint8_t      min_brightness_pct;
-  uint8_t      max_brightness_pct;
-  uint8_t      iterations; /**< Iteration of 0 means infinite */
-} 
-  #endif
   led_seq_item_s seq;
   
   argc -= i;

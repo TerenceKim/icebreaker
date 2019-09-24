@@ -13,6 +13,7 @@
 #define LEDS_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef enum
 {
@@ -45,7 +46,8 @@ typedef struct
   uint16_t     off_time_ms;
   uint8_t      min_brightness_pct;
   uint8_t      max_brightness_pct;
-  uint8_t      iterations; /**< Iteration of 0 means infinite */
+  uint8_t      iterations; /**< Iteration of 0 means infinite */  
+  bool         immediate;
 } led_seq_item_s;
 
 void LedPlaySeqItem(const led_seq_item_s *pItem);
