@@ -112,6 +112,15 @@ void SystemManagerService(void)
     }
   }
 
+  if (sysCheckEvents(SYS_EVENTS_UE_DISCOVERABLE))
+  {
+    sysClearEvents(SYS_EVENTS_UE_DISCOVERABLE);
+
+    LedManagerSeqPlay(LED_SEQ_state_connectable);
+
+    rfSetEvents(RF_EVENTS_CONTROL_ENABLE);
+  }
+
 #ifdef FEATURE_USER_ROLE_SWITCH
   if (sysCheckEvents(SYS_EVENTS_UE_SWITCH_ROLE))
   {

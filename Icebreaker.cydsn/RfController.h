@@ -26,6 +26,7 @@
 #define RF_EVENTS_SCAN_STOP			      (1 <<  5)
 #define RF_EVENTS_JOIN_CHECK		      (1 <<  6)
 #define RF_EVENTS_AUTO_CONNECT  	    (1 <<  7)
+#define RF_EVENTS_CONTROL_ENABLE      (1 <<  8)
 
 extern volatile uint32_t rfEvents;
   

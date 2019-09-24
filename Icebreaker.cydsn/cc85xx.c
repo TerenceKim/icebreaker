@@ -622,6 +622,22 @@ bool cc85xx_nwm_ach_set_usage(cc85xx_nwm_ach_set_usage_cmd_s *pCmd)
   return cc85xx_cmd_req(CC85XX_CMD_TYPE_NWM_ACH_SET_USAGE, sizeof(cc85xx_nwm_ach_set_usage_cmd_s), (uint8_t *)pCmd);
 }
 
+bool cc85xx_nwm_control_enable(bool enable)
+{
+  cc85xx_nwm_control_enable_s cmd = 
+  {
+    .wm_enable = enable,
+    .rsvd = 0
+  };
+
+  return cc85xx_cmd_req(CC85XX_CMD_TYPE_NWM_CONTROL_ENABLE, sizeof(cc85xx_nwm_control_enable_s), (uint8_t *)&cmd);
+}
+
+bool cc85xx_nwm_set_rf_ch_mask(cc85xx_nwm_set_rf_ch_mask_s *pCmd)
+{
+  return cc85xx_cmd_req(CC85XX_CMD_TYPE_NWM_SET_RF_CH_MASK, sizeof(cc85xx_nwm_set_rf_ch_mask_s), (uint8_t *)pCmd);
+}
+
 bool cc85xx_ps_rf_stats(cc85xx_ps_rf_stats_s *pRsp, uint16_t *pRxLen)
 {
   bool ret = cc85xx_cmd_req(CC85XX_CMD_TYPE_PS_RF_STATS, 0, NULL);

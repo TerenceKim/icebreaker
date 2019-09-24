@@ -40,6 +40,8 @@
 #define CC85XX_CMD_TYPE_NWM_DO_JOIN           (0x09)
 #define CC85XX_CMD_TYPE_NWM_GET_STATUS        (0x0A)
 #define CC85XX_CMD_TYPE_NWM_ACH_SET_USAGE     (0x0B)
+#define CC85XX_CMD_TYPE_NWM_CONTROL_ENABLE    (0x0C)
+#define CC85XX_CMD_TYPE_NWM_SET_RF_CH_MASK    (0x0E)
 #define CC85XX_CMD_TYPE_BL_FLASH_VERIFY       (0x0F)
 #define CC85XX_CMD_TYPE_PS_RF_STATS           (0x10)
 #define CC85XX_CMD_TYPE_EHC_EVT_CLR           (0x19)
@@ -354,6 +356,17 @@ typedef struct __attribute__((packed))
   uint8_t ach[CC85XX_ACH_MAX];
 } cc85xx_nwm_ach_set_usage_cmd_s;
 
+typedef struct __attribute__((packed))
+{
+  unsigned  wm_enable:1;
+  unsigned  rsvd:7;
+} cc85xx_nwm_control_enable_s;
+
+typedef struct __attribute__((packed))
+{
+  uint32_t rf_ch_mask;
+} cc85xx_nwm_set_rf_ch_mask_s;
+
 /**
  * RF and Audio Statistics Commands.
  */
@@ -408,6 +421,8 @@ bool cc85xx_nvs_get_data(uint8_t slotIdx, uint32_t *pData);
 bool cc85xx_ps_rf_stats(cc85xx_ps_rf_stats_s *pRsp, uint16_t *pRxLen);
 bool cc85xx_pm_set_state(cc85xx_pm_state_e pmState);
 bool cc85xx_pm_get_data(cc85xx_pm_get_data_s *pRsp, uint16_t *pRxLen);
+bool cc85xx_nwm_control_enable(bool enable);
+bool cc85xx_nwm_set_rf_ch_mask(cc85xx_nwm_set_rf_ch_mask_s *pCmd);
 
 
 #endif /* CC85XX_H */

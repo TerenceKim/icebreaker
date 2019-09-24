@@ -26,11 +26,12 @@ extern volatile uint32_t sysEvents;
 #define SYS_EVENTS_UE_CHARGER_DISCONNECTED      (1 <<  3)
 #define SYS_EVENTS_UE_ENTER_PAIRING             (1 <<  4)
 #define SYS_EVENTS_UE_AUTO_CONNECT              (1 <<  5)
-#define SYS_EVENTS_UE_SWITCH_ROLE               (1 <<  6)
-#define SYS_EVENTS_UE_SHOW_LEVEL                (1 <<  7)
-#define SYS_EVENTS_NWK_JOINED                   (1 <<  8)
-#define SYS_EVENTS_NWK_LOST                     (1 <<  9)
-#define SYS_EVENTS_LOW_BATT                     (1 << 10)
+#define SYS_EVENTS_UE_DISCOVERABLE              (1 <<  6)
+#define SYS_EVENTS_UE_SWITCH_ROLE               (1 <<  7)
+#define SYS_EVENTS_UE_SHOW_LEVEL                (1 <<  8)
+#define SYS_EVENTS_NWK_JOINED                   (1 <<  9)
+#define SYS_EVENTS_NWK_LOST                     (1 << 10)
+#define SYS_EVENTS_LOW_BATT                     (1 << 11)
   
 void SystemManagerService(void);
   
